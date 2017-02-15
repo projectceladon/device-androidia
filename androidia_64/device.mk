@@ -367,6 +367,10 @@ PRODUCT_COPY_FILES += \
 # usb accessory
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
+##############################################################
+# Source: device/intel/mixins/groups/lights/true/product.mk
+##############################################################
+PRODUCT_PACKAGES += lights.android_ia
 # ------------------ END MIX-IN DEFINITIONS ------------------
 PRODUCT_PACKAGES += libhoudini houdini
 PRODUCT_PROPERTY_OVERRIDES += ro.dalvik.vm.isa.arm=x86 ro.enable.native.bridge.exec=1
