@@ -22,7 +22,7 @@ boot-arch: android_ia
 audio: android_ia
 wlan: iwlwifi
 cpu-arch: skl
-cpuset: 2cores
+cpuset: 4cores
 rfkill: true(force_disable=)
 dexpreopt: enabled
 disk-bus: auto
