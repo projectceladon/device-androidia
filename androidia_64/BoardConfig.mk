@@ -48,8 +48,8 @@ TARGET_USES_HWC2 := true
 BOARD_USES_DRM_HWCOMPOSER := false
 BOARD_USES_IA_HWCOMPOSER := true
 
+BOARD_USES_MINIGBM := true
 
-BOARD_USES_MINIGBM := false
 ##############################################################
 # Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
 ##############################################################
@@ -168,6 +168,10 @@ else
 TARGET_ARCH := x86
 TARGET_CPU_ABI := x86
 endif
+##############################################################
+# Source: device/intel/mixins/groups/cpuset/4cores/BoardConfig.mk
+##############################################################
+ENABLE_CPUSETS := true
 ##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/BoardConfig.mk
 ##############################################################
