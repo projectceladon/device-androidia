@@ -7,7 +7,7 @@ product.mk: device.mk
 [groups]
 android_ia: default
 sepolicy: permissive
-graphics: android_ia(gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=false)
+graphics: android_ia(gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true)
 media: android_ia
 device-type: tablet
 ethernet: dhcp
