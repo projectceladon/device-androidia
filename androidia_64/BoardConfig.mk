@@ -4,6 +4,7 @@
 # Source: device/intel/mixins/groups/android_ia/default/BoardConfig.mk
 ##############################################################
 ANDROID_IA_IMAGE = $(ANDROID_IA-EFI)
+KERNEL_CROSS_COMPILE_WRAPPER := x86_64-linux-android-
 ##############################################################
 # Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk.1
 ##############################################################
