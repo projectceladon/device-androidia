@@ -289,7 +289,7 @@ TARGET_KERNEL_ARCH := x86_64
 BOARD_USE_64BIT_KERNEL := true
 
 
-KERNEL_MODULES_ROOT_PATH ?= /system/lib/modules
+KERNEL_MODULES_ROOT_PATH ?= /vendor/lib/modules
 KERNEL_MODULES_ROOT ?= $(KERNEL_MODULES_ROOT_PATH)
 
 FIRMWARES_DIR ?= vendor/linux/firmware
@@ -371,6 +371,10 @@ PRODUCT_PACKAGES += \
 # Source: device/intel/mixins/groups/lights/true/product.mk
 ##############################################################
 PRODUCT_PACKAGES += lights.android_ia
+##############################################################
+# Source: device/intel/mixins/groups/vendor-partition/true/product.mk
+##############################################################
+PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/mmcblk1p10
 # ------------------ END MIX-IN DEFINITIONS ------------------
 PRODUCT_PACKAGES += libhoudini houdini
 PRODUCT_PROPERTY_OVERRIDES += ro.dalvik.vm.isa.arm=x86 ro.enable.native.bridge.exec=1

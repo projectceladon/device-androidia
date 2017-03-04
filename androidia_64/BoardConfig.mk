@@ -30,8 +30,6 @@ INTEL_VA := true
 BOARD_GRAPHIC_IS_GEN := true
 BOARD_GPU_DRIVERS := i965
 BOARD_USE_MESA := true
-GRALLOC_DRM := true
-BOARD_USES_IA_PLANNER := true
 
 # System's VSYNC phase offsets in nanoseconds
 VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
@@ -104,7 +102,7 @@ endif
 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE = 3221225472
 
-BOARD_BOOTLOADER_PARTITION_SIZE ?= 62914560
+BOARD_BOOTLOADER_PARTITION_SIZE ?= 42914560
 BOARD_BOOTLOADER_BLOCK_SIZE := 512
 TARGET_BOOTLOADER_BOARD_NAME := $(TARGET_DEVICE)
 
@@ -139,8 +137,7 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/fastboot-usb.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/recovery.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/cache.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
-#HACK: comment this out until we fix the vendor partition
-#BOARD_FLASHFILES += $(PRODUCT_OUT)/vendor.img
+BOARD_FLASHFILES += $(PRODUCT_OUT)/vendor.img
 ##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/BoardConfig.mk
 ##############################################################
@@ -190,6 +187,14 @@ BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/set_storage
 # Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
 ##############################################################
 BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
+##############################################################
+# Source: device/intel/mixins/groups/vendor-partition/true/BoardConfig.mk
+##############################################################
+# Those 3 lines are required to enable vendor image generation.
+# Remove them if vendor partition is not used.
+TARGET_COPY_OUT_VENDOR := vendor
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDORIMAGE_PARTITION_SIZE := 524288000
 # ------------------ END MIX-IN DEFINITIONS ------------------
 
 # Install Native Bridge

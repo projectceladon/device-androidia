@@ -25,7 +25,7 @@ KERNEL_NAME := bzImage
 # Set the output for the kernel build products.
 KERNEL_OUT := $(abspath $(TARGET_OUT_INTERMEDIATES)/kernel)
 KERNEL_BIN := $(KERNEL_OUT)/arch/$(TARGET_KERNEL_ARCH)/boot/$(KERNEL_NAME)
-KERNEL_MODULES_INSTALL := $(TARGET_OUT)/lib/modules
+KERNEL_MODULES_INSTALL := $(PRODUCT_OUT)/vendor/lib/modules
 
 KERNELRELEASE = $(shell cat $(KERNEL_OUT)/include/config/kernel.release)
 
@@ -36,7 +36,7 @@ build_kernel := $(MAKE) -C $(TARGET_KERNEL_SRC) \
 		KCFLAGS="$(KERNEL_CFLAGS)" \
 		KAFLAGS="$(KERNEL_AFLAGS)" \
 		$(if $(SHOW_COMMANDS),V=1) \
-		INSTALL_MOD_PATH=$(abspath $(TARGET_OUT))
+		INSTALL_MOD_PATH=$(abspath "$(PRODUCT_OUT)/vendor")
 
 KERNEL_CONFIG_FILE := device/intel/android_ia/kernel_config/$(TARGET_KERNEL_CONFIG)
 
@@ -59,16 +59,15 @@ $(ALL_EXTRA_MODULES): $(TARGET_OUT_INTERMEDIATES)/kmodule/%: $(PRODUCT_OUT)/kern
 # First copy modules keeping directory hierarchy lib/modules/`uname-r`for libkmod
 # Second, create flat hierarchy for insmod linking to previous hierarchy
 $(KERNEL_MODULES_INSTALL): $(PRODUCT_OUT)/kernel $(ALL_EXTRA_MODULES)
-	$(hide) rm -rf $(TARGET_OUT)/lib/modules
+	$(hide) rm -rf $(PRODUCT_OUT)/vendor/lib/modules
 	$(build_kernel) modules_install
 	$(hide) for kmod in "$(TARGET_EXTRA_KERNEL_MODULES)" ; do \
 		echo Installing additional kernel module $${kmod} ; \
 		$(subst +,,$(subst $(hide),,$(build_kernel))) M=$(abspath $(TARGET_OUT_INTERMEDIATES))/$${kmod}.kmodule modules_install ; \
 	done
-	$(hide) rm -f $(TARGET_OUT)/lib/modules/*/{build,source}
-	$(hide) rm -rf $(PRODUCT_OUT)/system/vendor/lib/modules
-	$(hide) mkdir -p $(PRODUCT_OUT)/system/vendor/lib/
-	$(hide) cp -rf $(TARGET_OUT)/lib/modules/$(KERNELRELEASE)/ $(PRODUCT_OUT)/system/vendor/lib/modules
+	$(hide) rm -f $(PRODUCT_OUT)/vendor/lib/modules/*/{build,source}
+	$(hide) mv $(PRODUCT_OUT)/vendor/lib/modules/$(KERNELRELEASE)/* $(PRODUCT_OUT)/vendor/lib/modules
+	$(hide) rm -rf $(PRODUCT_OUT)/vendor/lib/modules/$(KERNELRELEASE)
 	$(hide) touch $@
 
 # Makes sure any built modules will be included in the system image build.
@@ -248,4 +247,11 @@ $(INSTALLED_CONFIGIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK)
 		$(BOARD_CONFIGIMAGE_PARTITION_SIZE)
 
 INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_CONFIGIMAGE_TARGET)
+##############################################################
+# Source: device/intel/mixins/groups/vendor-partition/true/AndroidBoard.mk
+##############################################################
+
+# This is to ensure that kernel modules are installed before
+# vendor.img is generated.
+$(PRODUCT_OUT)/vendor.img : $(KERNEL_MODULES_INSTALL)
 # ------------------ END MIX-IN DEFINITIONS ------------------
