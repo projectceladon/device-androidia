@@ -38,16 +38,15 @@ SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
 BOARD_GPU_DRIVERS ?= i965 swrast
 ifneq ($(strip $(BOARD_GPU_DRIVERS)),)
 TARGET_HARDWARE_3D := true
-endif
-
 TARGET_USES_HWC2 := true
-
+endif
 
 
 BOARD_USES_DRM_HWCOMPOSER := false
 BOARD_USES_IA_HWCOMPOSER := true
 
 BOARD_USES_MINIGBM := true
+BOARD_ENABLE_EXPLICIT_SYNC := true
 
 ##############################################################
 # Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
