@@ -36,4 +36,4 @@ LOCAL_FIRMWARE_SRC += $(foreach f,$(LOCAL_FIRMWARE_PATTERN),$(shell cd $(FIRMWAR
 LOCAL_FIRMWARE_SRC += $(foreach f,$(LOCAL_FIRMWARE_DIR),$(shell cd $(FIRMWARES_DIR) && find $(f) -type f) )
 
 PRODUCT_COPY_FILES := \
-    $(foreach f,$(LOCAL_FIRMWARE_SRC),$(FIRMWARES_DIR)/$(f):vendor/firmware/$(f))
+    $(foreach f,$(LOCAL_FIRMWARE_SRC),$(FIRMWARES_DIR)/$(f):$(TARGET_COPY_OUT_VENDOR)/firmware/$(f))
