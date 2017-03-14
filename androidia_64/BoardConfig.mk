@@ -97,6 +97,7 @@ ifeq ($(SPARSE_IMG),true)
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
 else
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := true
+BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := squashfs
 endif
 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE = 3489660928
@@ -192,8 +193,12 @@ BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
 # Those 3 lines are required to enable vendor image generation.
 # Remove them if vendor partition is not used.
 TARGET_COPY_OUT_VENDOR := vendor
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_VENDORIMAGE_PARTITION_SIZE := 524288000
+ifeq ($(SPARSE_IMG),true)
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+else
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := squashfs
+endif
 # ------------------ END MIX-IN DEFINITIONS ------------------
 
 # Install Native Bridge
