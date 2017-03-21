@@ -3,8 +3,8 @@
 ##############################################################
 # Source: device/intel/mixins/groups/android_ia/default/AndroidBoard.mk
 ##############################################################
-droid: android_ia-efi
-	-$(hide) $(ACP) $(ANDROID_IA_IMAGE) $(DIST_DIR)
+droid: flashfiles
+	-$(hide) $(ACP) $(out_flashfiles) $(DIST_DIR)
 ##############################################################
 # Source: device/intel/mixins/groups/kernel/android_ia/AndroidBoard.mk
 ##############################################################
