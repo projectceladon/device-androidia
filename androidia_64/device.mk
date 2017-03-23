@@ -267,7 +267,7 @@ PRODUCT_COPY_FILES += \
         frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml
 
 PRODUCT_AAPT_CONFIG := normal large xlarge mdpi hdpi xhdpi
-PRODUCT_AAPT_PREF_CONFIG := hdpi
+PRODUCT_AAPT_PREF_CONFIG := mdpi
 
 PRODUCT_PROPERTY_OVERRIDES += \
    ro.sf.lcd_density=160
@@ -282,6 +282,11 @@ PRODUCT_COPY_FILES += \
 # Ethernet
 PRODUCT_PROPERTY_OVERRIDES += \
    net.eth0.startonboot=1
+
+##############################################################
+# Source: device/intel/mixins/groups/display-density/default/product.mk
+##############################################################
+ADDITIONAL_DEFAULT_PROPERTIES += ro.sf.lcd_density=160
 
 ##############################################################
 # Source: device/intel/mixins/groups/adb_net/true/product.mk
@@ -299,6 +304,7 @@ BOARD_USE_64BIT_KERNEL := true
 
 KERNEL_MODULES_ROOT_PATH ?= /vendor/lib/modules
 KERNEL_MODULES_ROOT ?= $(KERNEL_MODULES_ROOT_PATH)
+ADDITIONAL_DEFAULT_PROPERTIES += ro.boot.moduleslocation=/vendor/lib/modules
 
 FIRMWARES_DIR ?= vendor/linux/firmware
 
