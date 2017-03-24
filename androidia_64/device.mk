@@ -287,7 +287,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Source: device/intel/mixins/groups/display-density/default/product.mk
 ##############################################################
 ADDITIONAL_DEFAULT_PROPERTIES += ro.sf.lcd_density=160
-
 ##############################################################
 # Source: device/intel/mixins/groups/adb_net/true/product.mk
 ##############################################################
@@ -389,6 +388,73 @@ PRODUCT_PACKAGES += lights.android_ia
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
 PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/mmcblk1p10
+##############################################################
+# Source: device/intel/mixins/groups/debug-logs/true/product.mk
+##############################################################
+ifneq ($(TARGET_BUILD_VARIANT),user)
+MIXIN_DEBUG_LOGS := true
+endif
+
+ifeq ($(MIXIN_DEBUG_LOGS),true)
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/init.logs.rc:root/init.logs.rc
+PRODUCT_PACKAGES += \
+    elogs.sh \
+    start_log_srv.sh \
+    logcat_ep.sh
+endif
+
+ifeq ($(MIXIN_DEBUG_LOGS),true)
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.service.default_logfs=apklogfs
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.intel.logger=/system/bin/logcat
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += logd.kernel.raw_message=False
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.intel.logger.rot_cnt=20
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.intel.logger.rot_size=5000
+BOARD_SEPOLICY_DIRS += device/intel/sepolicy/debug-logs
+BOARD_SEPOLICY_M4DEFS += module_debug_logs=true
+endif
+##############################################################
+# Source: device/intel/mixins/groups/debug-crashlogd/true/product.mk
+##############################################################
+ifeq ($(MIXIN_DEBUG_LOGS),true)
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/init.crashlogd.rc:root/init.crashlogd.rc \
+	$(call add-to-product-copy-files-if-exists,$(LOCAL_PATH)/ingredients.conf:$(TARGET_COPY_OUT_VENDOR)/etc/ingredients.conf) \
+	$(call add-to-product-copy-files-if-exists,$(LOCAL_PATH)/crashlog.conf:$(TARGET_COPY_OUT_VENDOR)/etc/crashlog.conf)
+PRODUCT_PACKAGES += crashlogd \
+	dumpstate_dropbox.sh
+endif
+
+ifeq ($(MIXIN_DEBUG_LOGS),true)
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.crashlogd.data_quota=50
+BOARD_SEPOLICY_DIRS += device/intel/sepolicy/crashlogd
+
+CRASHLOGD_LOGS_PATH := "/data/logs"
+CRASHLOGD_APLOG := true
+CRASHLOGD_FULL_REPORT := true
+CRASHLOGD_MODULE_MODEM ?= true
+CRASHLOGD_USE_SD := false
+endif
+##############################################################
+# Source: device/intel/mixins/groups/debug-kernel/default/product.mk
+##############################################################
+ifneq ($(TARGET_BUILD_VARIANT),user)
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/init.kernel.rc:root/init.kernel.rc
+endif
+##############################################################
+# Source: device/intel/mixins/groups/debug-unresponsive/default/product.mk
+##############################################################
+ifneq ($(TARGET_BUILD_VARIANT),user)
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += sys.dropbox.max_size_kb=4096
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += sys.dump.binder_stats.uiwdt=1
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += sys.dump.binder_stats.anr=1
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += sys.dump.peer_depth=3
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += sys.dump.stacks_timeout=1500
+
+endif
 # ------------------ END MIX-IN DEFINITIONS ------------------
 PRODUCT_PACKAGES += libhoudini houdini
 PRODUCT_PROPERTY_OVERRIDES += ro.dalvik.vm.isa.arm=x86 ro.enable.native.bridge.exec=1
