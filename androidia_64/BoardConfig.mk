@@ -46,6 +46,7 @@ BOARD_USES_IA_HWCOMPOSER := true
 
 BOARD_USES_MINIGBM := true
 BOARD_ENABLE_EXPLICIT_SYNC := true
+INTEL_MINIGBM := external/minigbm
 
 ##############################################################
 # Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
