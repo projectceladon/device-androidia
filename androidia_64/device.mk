@@ -284,10 +284,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
    net.eth0.startonboot=1
 
 ##############################################################
-# Source: device/intel/mixins/groups/display-density/default/product.mk
-##############################################################
-ADDITIONAL_DEFAULT_PROPERTIES += ro.sf.lcd_density=160
-##############################################################
 # Source: device/intel/mixins/groups/adb_net/true/product.mk
 ##############################################################
 # Enable Secure Debugging
@@ -303,7 +299,6 @@ BOARD_USE_64BIT_KERNEL := true
 
 KERNEL_MODULES_ROOT_PATH ?= /vendor/lib/modules
 KERNEL_MODULES_ROOT ?= $(KERNEL_MODULES_ROOT_PATH)
-ADDITIONAL_DEFAULT_PROPERTIES += ro.boot.moduleslocation=/vendor/lib/modules
 
 FIRMWARES_DIR ?= vendor/linux/firmware
 
@@ -321,9 +316,6 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
 		frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml
-
-ADDITIONAL_BUILD_PROPERTIES += bluetooth.hwcfg=stop \
-                bluetooth.rfkill=1
 ##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/product.mk
 ##############################################################
