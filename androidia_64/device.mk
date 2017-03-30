@@ -284,6 +284,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
    net.eth0.startonboot=1
 
 ##############################################################
+# Source: device/intel/mixins/groups/display-density/default/product.mk
+##############################################################
+# Do not remove this file. Unable to update mixins without this.
+##############################################################
 # Source: device/intel/mixins/groups/adb_net/true/product.mk
 ##############################################################
 # Enable Secure Debugging
