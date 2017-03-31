@@ -231,6 +231,11 @@ $(BOOTLOADER_POLICY_OEMVARS): sign-efi-sig-list
 		$(BOOTLOADER_POLICY_OEMVARS)
 endif
 ##############################################################
+# Source: device/intel/mixins/groups/audio/android_ia/AndroidBoard.mk
+##############################################################
+# Target specific audio configuration files
+include device/intel/android_ia/common/audio/AndroidBoard.mk
+##############################################################
 # Source: device/intel/mixins/groups/config-partition/enabled/AndroidBoard.mk
 ##############################################################
 INSTALLED_CONFIGIMAGE_TARGET := $(PRODUCT_OUT)/config.img
