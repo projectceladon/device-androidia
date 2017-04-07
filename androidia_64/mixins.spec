@@ -12,7 +12,7 @@ media: android_ia
 device-type: tablet
 ethernet: dhcp
 debugfs: default
-storage: default
+storage: sdcard-mmc0-usb-sd(adoptablesd=true,adoptableusb=false)
 display-density: default
 usb-gadget: g_ffs
 adb_net: true
