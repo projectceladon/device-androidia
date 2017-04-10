@@ -1,0 +1,6 @@
+#
+# ueventd
+#
+
+allow ueventd sysfs_thermal_management:file rw_file_perms;
+allow ueventd sysfs_powercap:file w_file_perms;
