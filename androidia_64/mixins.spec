@@ -32,3 +32,4 @@ config-partition: enabled
 vendor-partition: true(partition_size=1500,partition_name=android_vendor)
 debug-crashlogd: true
 debug-logs: true
+debug-phonedoctor: true
