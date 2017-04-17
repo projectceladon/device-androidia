@@ -152,7 +152,7 @@ on early-boot
     # tracefs is mounted after 1st access to it
     chmod 0755 /sys/kernel/debug/tracing
 ##############################################################
-# Source: device/intel/mixins/groups/storage/default/init.rc
+# Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/init.rc
 ##############################################################
 on init
     # Support legacy paths
