@@ -430,6 +430,15 @@ CRASHLOGD_MODULE_MODEM ?= true
 CRASHLOGD_USE_SD := false
 endif
 ##############################################################
+# Source: device/intel/mixins/groups/debug-tools/true/product.mk
+##############################################################
+PRODUCT_PACKAGES_DEBUG += \
+    AndroidTerm \
+    libjackpal-androidterm4 \
+    peeknpoke \
+    pytimechart-record \
+    lspci
+##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)
