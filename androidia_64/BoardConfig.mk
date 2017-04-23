@@ -203,6 +203,11 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 else
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := squashfs
 endif
+##############################################################
+# Source: device/intel/mixins/groups/debug-phonedoctor/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_M4DEFS += module_debug_phonedoctor=true
+BOARD_SEPOLICY_DIRS += device/intel/sepolicy/debug-phonedoctor
 # ------------------ END MIX-IN DEFINITIONS ------------------
 
 # Install Native Bridge
