@@ -3,7 +3,7 @@
 ##############################################################
 # Source: device/intel/mixins/groups/android_ia/default/init.rc
 ##############################################################
-on early-init
+on fs
     mount_all /fstab.${ro.hardware}
 
 on init
@@ -151,6 +151,17 @@ on early-boot
     chmod 0222 /sys/kernel/debug/tracing/trace_marker
     # tracefs is mounted after 1st access to it
     chmod 0755 /sys/kernel/debug/tracing
+
+# Source: device/intel/mixins/groups/disk-encryption/default/init.rc
+##############################################################
+# This _should_ be the very last thing that happens in
+# the device's 'on post-fs-data' sections.  Since we compose
+# init scripts from various snippets with mixins, we need to
+# ensure this is included last in the mixin-update by listing
+# disk-encryption as LAST in the mixin spec file.
+on post-fs-data
+    setprop vold.post_fs_data_done 1
+
 ##############################################################
 # Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/init.rc
 ##############################################################
