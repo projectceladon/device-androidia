@@ -7,33 +7,100 @@ AUDIO_HARDWARE := default
 #AUDIO_HARDWARE := nuc-skull-canyon
 
 ###########################################
-# Audio stack Package
+# Audio stack Packages
 ###########################################
 include $(CLEAR_VARS)
 LOCAL_MODULE := audio_configuration_files
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := \
-    audio_policy.conf \
-    mixer_paths_0.xml
+    audio_policy_configuration_files \
+    audio_settings_configuration_files
 
 include $(BUILD_PHONY_PACKAGE)
 
 ###########################################
-# Audio Policy Configuration file
+# Audio Policy Configuration files
 ###########################################
 include $(CLEAR_VARS)
-LOCAL_MODULE := audio_policy.conf
+LOCAL_MODULE := audio_policy_configuration_files
+LOCAL_MODULE_TAGS := optional
+LOCAL_REQUIRED_MODULES := \
+    a2dp_audio_policy_configuration.xml \
+    r_submix_audio_policy_configuration.xml \
+    usb_audio_policy_configuration.xml \
+    audio_policy_volumes.xml \
+    default_volume_tables.xml \
+    audio_policy_configuration.xml
+
+include $(BUILD_PHONY_PACKAGE)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := a2dp_audio_policy_configuration.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
-LOCAL_SRC_FILES := $(AUDIO_HARDWARE)/audio_policy.conf
+LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := audio_policy_volumes.xml
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := default_volume_tables.xml
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := r_submix_audio_policy_configuration.xml
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := usb_audio_policy_configuration.xml
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := audio_policy_configuration.xml
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := $(AUDIO_HARDWARE)/policy/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
 ###########################################
 
 ###########################################
-# Audio HAL Custom configuration file
+# Audio HAL Custom configuration files
 ###########################################
+include $(CLEAR_VARS)
+LOCAL_MODULE := audio_settings_configuration_files
+LOCAL_MODULE_TAGS := optional
+LOCAL_REQUIRED_MODULES := \
+    mixer_paths_0.xml
+
+include $(BUILD_PHONY_PACKAGE)
+
 include $(CLEAR_VARS)
 LOCAL_MODULE := mixer_paths_0.xml
 LOCAL_MODULE_OWNER := intel
