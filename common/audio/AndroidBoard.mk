@@ -3,7 +3,8 @@ LOCAL_PATH := $(call my-dir)
 # audio hardware is not discoverable, select hardware or use basic default
 AUDIO_HARDWARE := default
 #AUDIO_HARDWARE := PCH-CX20724
-#AUDIO_HARDWARE := nuc
+# Next configuration is used for Intel NUC6i5SYH
+#AUDIO_HARDWARE := PCH-ALC283
 #AUDIO_HARDWARE := nuc-skull-canyon
 
 ###########################################
@@ -27,6 +28,7 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := \
     a2dp_audio_policy_configuration.xml \
     r_submix_audio_policy_configuration.xml \
+    stub_audio_policy_configuration.xml \
     usb_audio_policy_configuration.xml \
     audio_policy_volumes.xml \
     default_volume_tables.xml \
@@ -63,6 +65,15 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := r_submix_audio_policy_configuration.xml
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := stub_audio_policy_configuration.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
