@@ -26,6 +26,10 @@ LOCAL_REQUIRED_MODULES := \
     audio_policy_configuration_files \
     audio_settings_configuration_files
 
+ifeq ($(INTEL_AUDIO_HAL),audio_pfw)
+LOCAL_REQUIRED_MODULES += audio_hal_configuration_files
+endif
+
 include $(BUILD_PHONY_PACKAGE)
 
 ###########################################
@@ -37,7 +41,6 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := \
     a2dp_audio_policy_configuration.xml \
     r_submix_audio_policy_configuration.xml \
-    stub_audio_policy_configuration.xml \
     usb_audio_policy_configuration.xml \
     audio_policy_volumes.xml \
     default_volume_tables.xml \
@@ -82,15 +85,6 @@ LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := stub_audio_policy_configuration.xml
-LOCAL_MODULE_OWNER := intel
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
-LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
-include $(BUILD_PREBUILT)
-
-include $(CLEAR_VARS)
 LOCAL_MODULE := usb_audio_policy_configuration.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
@@ -107,7 +101,39 @@ LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
 LOCAL_SRC_FILES := $(AUDIO_HARDWARE)/policy/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
+###########################################
 
+###########################################
+# Audio HAL configuration file
+###########################################
+include $(CLEAR_VARS)
+LOCAL_MODULE := audio_hal_configuration_files
+LOCAL_MODULE_TAGS := optional
+LOCAL_REQUIRED_MODULES := \
+    vendor_audio_criteria.xml \
+    vendor_audio_criterion_types.xml
+
+include $(BUILD_PHONY_PACKAGE)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := vendor_audio_criteria.xml
+LOCAL_MODULE_STEM := audio_criteria.xml
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := default/route/$(LOCAL_MODULE_STEM)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE :=  vendor_audio_criterion_types.xml
+LOCAL_MODULE_STEM :=  audio_criterion_types.xml
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := default/route/$(LOCAL_MODULE_STEM)
+include $(BUILD_PREBUILT)
 ###########################################
 
 ###########################################
@@ -116,19 +142,25 @@ include $(BUILD_PREBUILT)
 include $(CLEAR_VARS)
 LOCAL_MODULE := audio_settings_configuration_files
 LOCAL_MODULE_TAGS := optional
-LOCAL_REQUIRED_MODULES := \
-    mixer_paths_0.xml
-
+ifeq ($(INTEL_AUDIO_HAL),audio_pfw)
+LOCAL_REQUIRED_MODULES := audio_parameter_framework
+else
+LOCAL_REQUIRED_MODULES := mixer_paths_0.xml
+endif
 include $(BUILD_PHONY_PACKAGE)
 
+ifeq ($(INTEL_AUDIO_HAL),audio_pfw)
+include device/intel/android_ia/common/audio/$(AUDIO_HARDWARE)/AndroidBoard.mk
+else
 include $(CLEAR_VARS)
 LOCAL_MODULE := mixer_paths_0.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
-LOCAL_SRC_FILES := $(AUDIO_HARDWARE)/mixer_paths_0.xml
+LOCAL_SRC_FILES := $(AUDIO_HARDWARE)/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
+endif
 ###########################################
 
 ifeq ($(USE_CONFIGURABLE_AUDIO_POLICY), 1)
