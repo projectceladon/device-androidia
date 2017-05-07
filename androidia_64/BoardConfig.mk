@@ -142,6 +142,7 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/recovery.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/cache.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/vendor.img
+BOARD_FLASHFILES += $(TARGET_DEVICE_DIR)/flash.json
 ##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/BoardConfig.mk
 ##############################################################

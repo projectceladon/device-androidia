@@ -291,7 +291,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Source: device/intel/mixins/groups/adb_net/true/product.mk
 ##############################################################
 # Enable Secure Debugging
-ifneq ($(TARGET_BUILD_VARIANT),eng)
+ifeq ($(TARGET_BUILD_VARIANT),user)
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.adb.secure=1
 endif
 ##############################################################

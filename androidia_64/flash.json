@@ -1,0 +1,516 @@
+{
+    "flash": {
+        "commands": [
+            {
+                "args": "flashing unlock", 
+                "description": "Set device state to unlocked", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "update"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flash boot ${boot}", 
+                "description": "Flash boot partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "update"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flash recovery ${recovery}", 
+                "description": "Flash recovery partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "update"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flash factory ${factory}", 
+                "description": "Flash factory partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "update"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flash system ${system}", 
+                "description": "Flash system partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "update"
+                ], 
+                "retry": 1, 
+                "timeout": 600000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flash bootloader ${bootloader}", 
+                "description": "Flash bootloader partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "update"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flash vendor ${vendor}", 
+                "description": "Flash bootloader partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "update"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flashing lock", 
+                "description": "Set device state to locked", 
+                "group": "lock-device", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "update"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "continue", 
+                "description": "Boot to main OS", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "update"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "description": "Leave time to the BIOS to clear the USB stack", 
+                "duration": 500, 
+                "restrict": [
+                    "blank"
+                ], 
+                "tool": "sleep"
+            }, 
+            {
+                "args": "flashing unlock", 
+                "description": "Set device state to unlocked", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flash gpt ${gpt}", 
+                "description": "Initialize the partition table", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "erase misc", 
+                "description": "Erase misc partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "erase persistent", 
+                "description": "Erase persistent partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "erase metadata", 
+                "description": "Erase metadata partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "format config", 
+                "description": "Format config partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "format cache", 
+                "description": "Format cache partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "format data", 
+                "description": "Format data partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flash vendor ${vendor}", 
+                "description": "Flash bootloader partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flash boot ${boot}", 
+                "description": "Flash boot partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flash recovery ${recovery}", 
+                "description": "Flash recovery partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flash factory ${factory}", 
+                "description": "Flash factory partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flash system ${system}", 
+                "description": "Flash system partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 600000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flash bootloader ${bootloader}", 
+                "description": "Flash bootloader partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "flashing lock", 
+                "description": "Set device state to locked", 
+                "group": "lock-device", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
+                "args": "continue", 
+                "description": "Boot to main OS", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            } 
+        ], 
+        "configurations": {
+            "blank": {
+                "brief": "blank", 
+                "description": "erase and flash all partitions, all data will be lost.", 
+                "groupsState": {
+                    "check-battery": true, 
+                    "erase-efivars": true, 
+                    "lock-device": true
+                }, 
+                "name": "blank", 
+                "startState": "pos"
+            }, 
+            "update": {
+                "brief": "update", 
+                "default": true, 
+                "description": "update phone to new release", 
+                "groupsState": {
+                    "check-battery": true, 
+                    "lock-device": true
+                }, 
+                "name": "update", 
+                "startState": "pos"
+            }
+        }, 
+        "groups": {
+            "check-battery": {
+                "description": "Check battery level before sending fastboot command", 
+                "name": "Check battery level"
+            }, 
+            "erase-efivars": {
+                "description": "Erase all optional efi vars", 
+                "name": "Erase efi vars"
+            }, 
+            "lock-device": {
+                "description": "Put the device in locked state at the end of the flash procedure.", 
+                "name": "Lock the device (it implies the userdata partition wipe)"
+            }
+        }, 
+        "osplatform": "android", 
+        "parameters": {
+            "battery": {
+                "computedValue": "$1", 
+                "description": "Fetch battery", 
+                "filter": "battery-voltage:[\\s]*([0-9]+)mV", 
+                "name": "battery", 
+                "subCommand": {
+                    "args": "getvar battery-voltage", 
+                    "description": "Fetch battery", 
+                    "mandatory": true, 
+                    "retry": 1, 
+                    "timeout": 60000, 
+                    "tool": "fastboot"
+                }, 
+                "type": "variable", 
+                "value": 3500
+            }, 
+            "boot": {
+                "description": "boot.img", 
+                "name": "boot", 
+                "type": "file", 
+                "value": "boot.img"
+            }, 
+            "bootloader": {
+                "description": "bootloader", 
+                "name": "bootloader", 
+                "type": "file", 
+                "value": "bootloader"
+            }, 
+            "gpt": {
+                "description": "gpt.bin", 
+                "name": "gpt", 
+                "type": "file", 
+                "value": "gpt.bin"
+            }, 
+            "recovery": {
+                "description": "recovery.img", 
+                "name": "recovery", 
+                "type": "file", 
+                "value": "recovery.img"
+            }, 
+            "factory": {
+                "description": "factory.img", 
+                "name": "factory", 
+                "type": "file", 
+                "value": "factory.img"
+            }, 
+            "system": {
+                "description": "system.img", 
+                "name": "system", 
+                "type": "file", 
+                "value": "system.img"
+            },
+            "vendor": {
+                "description": "vendor.img", 
+                "name": "vendor", 
+                "type": "file", 
+                "value": "vendor.img"
+            }
+        }, 
+        "version": "3.0"
+    }
+}
