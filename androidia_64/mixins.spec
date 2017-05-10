@@ -30,6 +30,7 @@ usb: host+acc
 lights: true
 config-partition: enabled
 vendor-partition: true(partition_size=1500,partition_name=android_vendor)
+factory-partition: true
 debug-crashlogd: true
 debug-logs: true
 debug-phonedoctor: true
