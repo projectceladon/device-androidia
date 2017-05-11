@@ -142,6 +142,7 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/recovery.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/cache.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/vendor.img
+BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
 BOARD_FLASHFILES += $(TARGET_DEVICE_DIR)/flash.json
 ##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/BoardConfig.mk
@@ -149,6 +150,10 @@ BOARD_FLASHFILES += $(TARGET_DEVICE_DIR)/flash.json
 BOARD_USES_ALSA_AUDIO := true
 BOARD_USES_TINY_ALSA_AUDIO := true
 BOARD_USES_GENERIC_AUDIO ?= false
+# Audio HAL selection Flag default setting.
+#  INTEL_AUDIO_HAL:= audio     -> baseline HAL
+#  INTEL_AUDIO_HAL:= audio_pfw -> PFW-based HAL
+INTEL_AUDIO_HAL := audio
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/BoardConfig.mk
 ##############################################################
@@ -204,6 +209,12 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 else
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := squashfs
 endif
+##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
+##############################################################
+BOARD_FACTORYIMAGE_PARTITION_SIZE := 10485760
+BOARD_SEPOLICY_DIRS += device/intel/sepolicy/factory-partition
+BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
 ##############################################################
 # Source: device/intel/mixins/groups/debug-phonedoctor/true/BoardConfig.mk
 ##############################################################
