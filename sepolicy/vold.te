@@ -1,1 +1,2 @@
 allow vold tmpfs:file open;
+allow vold config_file:dir r_dir_perms;

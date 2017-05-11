@@ -5,13 +5,7 @@
 ##############################################################
 KERNEL_CROSS_COMPILE_WRAPPER := x86_64-linux-android-
 ##############################################################
-# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk.1
-##############################################################
-# start kernel in permissive mode, this way we don't
-# need 'setenforce 0' from init.rc files
-BOARD_KERNEL_CMDLINE += enforcing=0 androidboot.selinux=permissive
-##############################################################
-# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk
+Source: device/intel/mixins/groups/sepolicy/enforcing/BoardConfig.mk
 ##############################################################
 # SELinux Policy
 BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy
@@ -69,7 +63,7 @@ TARGET_NO_KERNEL ?= false
 
 SERIAL_PARAMETER := console=tty0 console=ttyS2,115200n8
 
-BOARD_KERNEL_CMDLINE += root=/dev/ram0  androidboot.hardware=$(TARGET_PRODUCT) androidboot.selinux=permissive firmware_class.path=/vendor/firmware
+BOARD_KERNEL_CMDLINE += root=/dev/ram0  androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 ifeq ($(SPARSE_IMG),true)
@@ -233,6 +227,11 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 else
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := squashfs
 endif
+##############################################################
+# Source: device/intel/mixins/groups/debug-phonedoctor/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_M4DEFS += module_debug_phonedoctor=true
+BOARD_SEPOLICY_DIRS += device/intel/sepolicy/debug-phonedoctor
 ##############################################################
 # Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
 ##############################################################

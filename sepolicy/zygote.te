@@ -4,3 +4,4 @@ allow zygote tmpfs:dir mounton;
 allow zygote tmpfs:file open;
 allow zygote host1x_device:chr_file rw_file_perms;
 allow zygote product_locale_prop:file { read open getattr };
+allow zygote debugfs_tracing:file rw_file_perms;

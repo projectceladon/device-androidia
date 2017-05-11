@@ -443,6 +443,12 @@ ifeq ($(MIXIN_DEBUG_LOGS),true)
 PRODUCT_PACKAGES += crash_package
 endif
 ##############################################################
+# Source: device/intel/mixins/groups/debug-phonedoctor/true/product.mk
+##############################################################
+ifeq ($(MIXIN_DEBUG_LOGS),true)
+PRODUCT_PACKAGES += crash_package
+endif
+##############################################################
 # Source: device/intel/mixins/groups/debug-tools/true/product.mk
 ##############################################################
 PRODUCT_PACKAGES_DEBUG += \

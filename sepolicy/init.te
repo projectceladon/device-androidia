@@ -26,3 +26,7 @@ allow init sysfs:file create;
 allow init devpts:chr_file { ioctl };
 allow init audio_device:chr_file { write ioctl };
 allow init platform_app:unix_stream_socket { read };
+
+allow init debugfs_pstate:file w_file_perms;
+allow init userdata_block_device:blk_file write;
+allow init kernel:key search;

@@ -1,6 +1,7 @@
 allow surfaceflinger graphics_device:chr_file ioctl;
 allow surfaceflinger device:chr_file ioctl;
 
+allow surfaceflinger device:dir r_dir_perms;
 allow surfaceflinger gpu_device:dir search;
 allow surfaceflinger gpu_device:chr_file { read ioctl open write };
 allow surfaceflinger gpu_device:file { read ioctl open write };
@@ -46,3 +47,7 @@ allow surfaceflinger bootanim:file { read getattr open };
 # access to dev/sw_sync
 allow surfaceflinger sw_sync_device:chr_file rw_file_perms;
 allow surfaceflinger host1x_device:chr_file rw_file_perms;
+allow surfaceflinger debugfs_graphics_sync:dir r_dir_perms;
+allow surfaceflinger debugfs_graphics_sync:file rw_file_perms;
+
+allow surfaceflinger sysfs_app_readable:file r_file_perms;

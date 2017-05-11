@@ -19,3 +19,5 @@ r_dir_file(cameraserver, sysfs)
 
 allow cameraserver system_file:dir r_dir_perms;
 allow cameraserver tmpfs:dir search;
+
+allow cameraserver sysfs_app_readable:file r_file_perms;

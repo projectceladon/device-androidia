@@ -8,3 +8,5 @@ allow mediaserver sensorservice_service:service_manager find;
 allow mediaserver host1x_device:chr_file rw_file_perms;
 # needed for widevine classic
 allow mediaserver tee_device:chr_file { ioctl open read write };
+allow mediaserver surfaceflinger_tmpfs:file { read write };
+allow mediaserver sysfs_app_readable:file r_file_perms;
