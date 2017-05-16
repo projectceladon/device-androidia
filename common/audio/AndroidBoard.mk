@@ -121,3 +121,7 @@ LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
 LOCAL_SRC_FILES := $(AUDIO_HARDWARE)/mixer_paths_0.xml
 include $(BUILD_PREBUILT)
 ###########################################
+
+ifeq ($(USE_CONFIGURABLE_AUDIO_POLICY), 1)
+include device/intel/android_ia/common/audio/reference_configurable_audio_policy/AndroidBoard.mk
+endif
