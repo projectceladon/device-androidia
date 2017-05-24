@@ -106,7 +106,7 @@ endif
 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE = 3758096384
 
-BOARD_BOOTLOADER_PARTITION_SIZE ?= 42914560
+BOARD_BOOTLOADER_PARTITION_SIZE ?= 62914560
 BOARD_BOOTLOADER_BLOCK_SIZE := 512
 TARGET_BOOTLOADER_BOARD_NAME := $(TARGET_DEVICE)
 
@@ -144,6 +144,21 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/vendor.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
 BOARD_FLASHFILES += $(TARGET_DEVICE_DIR)/flash.json
+
+# -- OTA RELATED DEFINES --
+# tell build system where to get the recovery.fstab.
+TARGET_RECOVERY_FSTAB ?= $(TARGET_DEVICE_DIR)/fstab 
+# Used by ota_from_target_files to add platform-specific directives
+# to the OTA updater scripts
+TARGET_RELEASETOOLS_EXTENSIONS ?= device/intel/common/recovery
+# Adds edify commands swap_entries and copy_partition for robust
+# update of the EFI system partition
+TARGET_RECOVERY_UPDATER_LIBS := libupdater_esp
+# Extra libraries needed to be rolled into recovery updater
+# libgpt_static and libefivar are needed by libupdater_esp
+TARGET_RECOVERY_UPDATER_EXTRA_LIBS := libcommon_recovery libgpt_static libefivar
+# By default recovery minui expects RGBA framebuffer
+TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 ##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/BoardConfig.mk
 ##############################################################
@@ -224,6 +239,14 @@ BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
 ##############################################################
 BOARD_SEPOLICY_M4DEFS += module_debug_phonedoctor=true
 BOARD_SEPOLICY_DIRS += device/intel/sepolicy/debug-phonedoctor
+##############################################################
+# Source: device/intel/mixins/groups/flashfiles/ini/BoardConfig.mk
+##############################################################
+FLASHFILES_CONFIG ?= $(TARGET_DEVICE_DIR)/flashfiles.ini
+USE_INTEL_FLASHFILES := true
+VARIANT_SPECIFIC_FLASHFILES ?= false
+FAST_FLASHFILES := true
+
 # ------------------ END MIX-IN DEFINITIONS ------------------
 
 # Install Native Bridge
