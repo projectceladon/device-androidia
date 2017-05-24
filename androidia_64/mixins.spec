@@ -18,7 +18,7 @@ usb-gadget: g_ffs
 adb_net: true
 kernel: android_ia
 bluetooth: btusb
-boot-arch: android_ia
+boot-arch: android_ia(bootloader_policy=0x0,bootloader_len=60)
 audio: android_ia
 wlan: iwlwifi
 cpu-arch: skl
