@@ -1,6 +1,15 @@
 LOCAL_PATH := $(call my-dir)
 
 # audio hardware is not discoverable, select hardware or use basic default
+ifeq ($(INTEL_AUDIO_HAL), stub)
+
+# this option only enables USB, A2DP and remote submix audio.
+# the audio.primary.default HAL is part of the build to pass
+# CTS tests but only acts as a NULL sink/source
+
+AUDIO_HARDWARE := stub
+
+else
 AUDIO_HARDWARE := default
 #AUDIO_HARDWARE := PCH-CX20724
 # Next configuration is used for Intel NUC6i5SYH
