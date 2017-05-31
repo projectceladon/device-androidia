@@ -5,7 +5,7 @@
 ##############################################################
 KERNEL_CROSS_COMPILE_WRAPPER := x86_64-linux-android-
 ##############################################################
-Source: device/intel/mixins/groups/sepolicy/enforcing/BoardConfig.mk
+# Source: device/intel/mixins/groups/sepolicy/enforcing/BoardConfig.mk
 ##############################################################
 # SELinux Policy
 BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy
@@ -63,7 +63,7 @@ TARGET_NO_KERNEL ?= false
 
 SERIAL_PARAMETER := console=tty0 console=ttyS2,115200n8
 
-BOARD_KERNEL_CMDLINE += root=/dev/ram0  androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware
+BOARD_KERNEL_CMDLINE += root=/dev/ram0  androidboot.hardware=$(TARGET_PRODUCT) androidboot.selinux=permissive firmware_class.path=/vendor/firmware
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 ifeq ($(SPARSE_IMG),true)
@@ -77,6 +77,10 @@ BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_LINUX := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/bcm43241/
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/bluetooth/overlay-bt-pan
+##############################################################
+# Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/set_storage
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/android_ia/BoardConfig.mk
 ##############################################################
@@ -113,7 +117,8 @@ KERNELFLINGER_ALLOW_UNSUPPORTED_ACPI_TABLE := true
 KERNELFLINGER_USE_WATCHDOG := true
 # Tell Kernelflinger to ignore ACPI RSCI table
 KERNELFLINGER_IGNORE_RSCI := true
-KERNELFLINGER_SSL_LIBRARY := boringssl
+#KERNELFLINGER_SSL_LIBRARY := boringssl
+KERNELFLINGER_SSL_LIBRARY := openssl
 # Specify system verity partition
 #PRODUCT_SYSTEM_VERITY_PARTITION := /dev/block/by-name/system
 
@@ -153,6 +158,55 @@ TARGET_RECOVERY_UPDATER_LIBS := libupdater_esp
 TARGET_RECOVERY_UPDATER_EXTRA_LIBS := libcommon_recovery libgpt_static libefivar
 # By default recovery minui expects RGBA framebuffer
 TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
+
+
+ifneq (0x0,static)
+BOOTLOADER_POLICY_OEMVARS = $(PRODUCT_OUT)/bootloader_policy-oemvars.txt
+BOARD_FLASHFILES += $(BOOTLOADER_POLICY_OEMVARS)
+BOARD_OEM_VARS += $(BOOTLOADER_POLICY_OEMVARS)
+endif
+
+# It activates the Bootloader policy and RMA refurbishing
+# features. TARGET_BOOTLOADER_POLICY is the desired bitmask for this
+# device.
+# * bit 0:
+#   - 0: GVB class B.
+#   - 1: GVB class A.  Device unlock is not permitted.  The only way
+#     to unlock is to use the secured force-unlock mechanism.
+# * bit 1 and 2 defines the minimal boot state required to boot the
+#   device:
+#   - 0x0: BOOT_STATE_RED (GVB default behavior)
+#   - 0x1: BOOT_STATE_ORANGE
+#   - 0x2: BOOT_STATE_YELLOW
+#   - 0x3: BOOT_STATE_GREEN
+# If TARGET_BOOTLOADER_POLICY is equal to 'static' the bootloader
+# policy is not built but is provided statically in the repository.
+# If TARGET_BOOTLOADER_POLICY is equal to 'external' the bootloader
+# policy OEMVARS should be installed manually in
+# $(BOOTLOADER_POLICY_OEMVARS).
+TARGET_BOOTLOADER_POLICY := 0x0
+# If the following variable is set to false, the bootloader policy and
+# RMA refurbishing features does not use time-based authenticated EFI
+# variables to store the BPM and OAK values.  The BPM value is defined
+# compilation time by the TARGET_BOOTLOADER_POLICY variable.
+TARGET_BOOTLOADER_POLICY_USE_EFI_VAR := true
+ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),0x0 0x2 0x4 0x6))
+# OEM Unlock reporting 1
+ADDITIONAL_DEFAULT_PROPERTIES += \
+	ro.oem_unlock_supported=1
+endif
+ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),static external))
+# The bootloader policy is not generated build time but is supplied
+# statically in the repository or in $(PRODUCT_OUT)/.  If your
+# bootloader policy allows the device to be unlocked, uncomment the
+# following lines:
+# ADDITIONAL_DEFAULT_PROPERTIES += \
+# 	ro.oem_unlock_supported=1
+endif
+
+
+
+
 ##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/BoardConfig.mk
 ##############################################################
@@ -208,10 +262,6 @@ BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/rfkill
 WITH_DEXPREOPT := true
 WITH_DEXPREOPT_PIC := true
 ##############################################################
-# Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
-##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/set_storage
-##############################################################
 # Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
 ##############################################################
 BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
@@ -227,11 +277,6 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 else
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := squashfs
 endif
-##############################################################
-# Source: device/intel/mixins/groups/debug-phonedoctor/true/BoardConfig.mk
-##############################################################
-BOARD_SEPOLICY_M4DEFS += module_debug_phonedoctor=true
-BOARD_SEPOLICY_DIRS += device/intel/sepolicy/debug-phonedoctor
 ##############################################################
 # Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
 ##############################################################

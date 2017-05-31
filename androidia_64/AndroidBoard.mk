@@ -234,10 +234,11 @@ TARGET_ODM_KEY_PAIR := device/intel/build/testkeys/odm
 TARGET_OAK_KEY_PAIR := device/intel/build/testkeys/OAK
 
 $(BOOTLOADER_POLICY_OEMVARS): sign-efi-sig-list
-        $(GEN_BLPOLICY_OEMVARS) -K $(TARGET_ODM_KEY_PAIR) \
+	$(GEN_BLPOLICY_OEMVARS) -K $(TARGET_ODM_KEY_PAIR) \
 		-O $(TARGET_OAK_KEY_PAIR).x509.pem -B $(TARGET_BOOTLOADER_POLICY) \
 		$(BOOTLOADER_POLICY_OEMVARS)
 endif
+
 ##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/AndroidBoard.mk
 ##############################################################
@@ -248,20 +249,15 @@ include device/intel/android_ia/common/audio/AndroidBoard.mk
 ##############################################################
 INSTALLED_CONFIGIMAGE_TARGET := $(PRODUCT_OUT)/config.img
 
-selinux_fc := $(TARGET_ROOT_OUT)/file_contexts.bin
-
-$(INSTALLED_CONFIGIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
-$(INSTALLED_CONFIGIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
+$(INSTALLED_CONFIGIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK)
 	$(call pretty,"Target config fs image: $(INSTALLED_CONFIGIMAGE_TARGET)")
 	@mkdir -p $(PRODUCT_OUT)/config
-	$(hide) PATH=$(HOST_OUT_EXECUTABLES):$$PATH \
-		$(MKEXTUSERIMG) -s \
+	$(hide)	$(MKEXTUSERIMG) -s \
 		$(PRODUCT_OUT)/config \
 		$(PRODUCT_OUT)/config.img \
 		ext4 \
-		oem_config \
-		$(BOARD_CONFIGIMAGE_PARTITION_SIZE) \
-		$(PRIVATE_SELINUX_FC)
+		config \
+		$(BOARD_CONFIGIMAGE_PARTITION_SIZE)
 
 INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_CONFIGIMAGE_TARGET)
 ##############################################################

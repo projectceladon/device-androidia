@@ -103,6 +103,7 @@ on fs
 on init
     chown system system /sys/class/backlight/intel_backlight/brightness
     chown system system /sys/class/backlight/acpi_video0/brightness
+    write /sys/fs/selinux/enforce 0
 
 on post-fs
    #setprop debug.sf.nobootanimation 1
@@ -314,6 +315,15 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
     disabled
     oneshot
 ##############################################################
+# Source: device/intel/mixins/groups/disk-bus/auto/init.rc
+##############################################################
+on init
+    # Android creates by-name disk links with the disk controller
+    # in the generated path, so that the names pulled out of the GPT
+    # can be associated with the correct disk. Create a shortcut to
+    # /dev/block/by-name so that we can use the same fstabs everywhere.
+    exec u:r:set_storage:s0 root root -- /sbin/set_storage
+##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/init.rc
 ##############################################################
 on boot
@@ -374,15 +384,6 @@ service rfkill-init /system/bin/rfkill-init.sh
     group system
     oneshot
 ##############################################################
-# Source: device/intel/mixins/groups/disk-bus/auto/init.rc
-##############################################################
-on init
-    # Android creates by-name disk links with the disk controller
-    # in the generated path, so that the names pulled out of the GPT
-    # can be associated with the correct disk. Create a shortcut to
-    # /dev/block/by-name so that we can use the same fstabs everywhere.
-    exec u:r:set_storage:s0 root root -- /sbin/set_storage
-##############################################################
 # Source: device/intel/mixins/groups/usb/host+acc/init.rc
 ##############################################################
 on boot
@@ -397,7 +398,7 @@ on charger
 ##############################################################
 # Enable SELinux labeling
 on post-fs
-    restorecon_recursive /oem_config
+    restorecon_recursive /config
 ##############################################################
 # Source: device/intel/mixins/groups/factory-partition/true/init.rc
 ##############################################################

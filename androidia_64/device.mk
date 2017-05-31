@@ -322,6 +322,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
 		frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml
 ##############################################################
+# Source: device/intel/mixins/groups/disk-bus/auto/product.mk
+##############################################################
+# create primary storage symlink dynamically
+PRODUCT_PACKAGES += set_storage
+##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/product.mk
 ##############################################################
 # Tinyalsa
@@ -367,11 +372,6 @@ BOARD_WLAN_DEVICE := iwlwifi
 # Source: device/intel/mixins/groups/rfkill/true/product.mk
 ##############################################################
 PRODUCT_COPY_FILES += device/intel/common/rfkill/rfkill-init.sh:system/bin/rfkill-init.sh
-##############################################################
-# Source: device/intel/mixins/groups/disk-bus/auto/product.mk
-##############################################################
-# create primary storage symlink dynamically
-PRODUCT_PACKAGES += set_storage
 ##############################################################
 # Source: device/intel/mixins/groups/usb/host+acc/product.mk
 ##############################################################
@@ -435,12 +435,6 @@ CRASHLOGD_APLOG := true
 CRASHLOGD_FULL_REPORT := true
 CRASHLOGD_MODULE_MODEM ?= true
 CRASHLOGD_USE_SD := false
-endif
-##############################################################
-# Source: device/intel/mixins/groups/debug-phonedoctor/true/product.mk
-##############################################################
-ifeq ($(MIXIN_DEBUG_LOGS),true)
-PRODUCT_PACKAGES += crash_package
 endif
 ##############################################################
 # Source: device/intel/mixins/groups/debug-phonedoctor/true/product.mk
