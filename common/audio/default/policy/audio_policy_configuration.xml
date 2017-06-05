@@ -32,7 +32,23 @@
                     <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
                              samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
                 </mixPort>
-                <mixPort name="primary_input" role="sink"
+                <mixPort name="hdmi_stereo" role="source" flags="AUDIO_OUTPUT_FLAG_PRIMARY"
+                         card="PCH" device="3"
+                         requirePreEnable="0" requirePostDisable="0" silencePrologMs="0"
+                         periodSize="240" periodCount="2"
+                         startThreshold="239" stopThreshold="480" silenceThreshold="0" availMin="240">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                </mixPort>
+                <mixPort name="hdmi_multi" role="source" flags="AUDIO_OUTPUT_FLAG_DIRECT"
+                         card="PCH" device="3"
+                         requirePreEnable="0" requirePostDisable="0" silencePrologMs="0"
+                         periodSize="240" periodCount="4"
+                         startThreshold="239" stopThreshold="960" silenceThreshold="0" availMin="240">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000"/>
+                </mixPort>
+                <mixPort name="primary_input" role="sink" flags="AUDIO_INPUT_FLAG_PRIMARY"
                          card="PCH" device="0"
                          requirePreEnable="0" requirePostDisable="0" silencePrologMs="0"
                          periodSize="240" periodCount="2"
@@ -43,6 +59,7 @@
                              channelMasks="AUDIO_CHANNEL_IN_MONO,AUDIO_CHANNEL_IN_STEREO"/>
                 </mixPort>
             </mixPorts>
+
             <devicePorts>
                 <!-- Output devices declaration, i.e. Sink DEVICE PORT -->
                 <devicePort tagName="Speaker" type="AUDIO_DEVICE_OUT_SPEAKER" role="sink">
@@ -69,18 +86,27 @@
                              channelMasks="AUDIO_CHANNEL_IN_MONO,AUDIO_CHANNEL_IN_STEREO"/>
                 </devicePort>
 
+                <devicePort tagName="HDMI" type="AUDIO_DEVICE_OUT_HDMI" role="sink">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="32000,44100,48000"/>
+                </devicePort>
             </devicePorts>
             <!-- route declaration, i.e. list all available sources for a given sink -->
             <routes>
-                <route type="mix" sink="Speaker"
-                       sources="primary_output"/>
                 <route type="mix" sink="Wired Headset"
                        sources="primary_output"/>
                 <route type="mix" sink="Wired Headphones"
                        sources="primary_output"/>
-
-                <route type="mix" sink="primary_input"
-                       sources="Built-In Mic,Wired Headset Mic"/>
+		<route type="mix" sink="Speaker"
+                       sources="primary_output"/>
+		
+                 <route type="mix" sink="HDMI"
+			sources="hdmi_stereo,hdmi_multi"/>
+		 
+		 <route type="mix" sink="primary_input"
+                       sources="Wired Headset Mic,Built-In Mic"/>
             </routes>
 
         </module>
@@ -103,5 +129,10 @@
     <xi:include href="default_volume_tables.xml"/>
 
     <!-- End of Volume section -->
+
+    <!--Audio HAL Custom section -->
+    <xi:include href="audio_criteria.xml"/>
+    <xi:include href="audio_criterion_types.xml"/>
+    <!--End of Audio HAL Custom section -->
 
 </audioPolicyConfiguration>
