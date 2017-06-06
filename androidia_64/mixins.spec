@@ -5,6 +5,7 @@ mixinsdir: device/intel/mixins/groups
 product.mk: device.mk
 
 [groups]
+2ndstage: oemvars
 android_ia: default
 sepolicy: enforcing
 graphics: android_ia(gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true)
@@ -18,7 +19,7 @@ usb-gadget: g_ffs
 adb_net: true
 kernel: android_ia
 bluetooth: btusb
-boot-arch: android_ia(bootloader_policy=0x0,bootloader_len=60)
+boot-arch: android_ia(bootloader_policy=0x0,bootloader_len=60,magic_key_timeout=80)
 audio: android_ia
 wlan: iwlwifi
 cpu-arch: skl
