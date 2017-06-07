@@ -37,3 +37,4 @@ debug-logs: true
 debug-phonedoctor: true
 debug-tools: true
 flashfiles: ini(oemvars=false,version=3.0,fastboot_min_battery_level=3500,installer=true)
+midi: true

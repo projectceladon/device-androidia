@@ -476,6 +476,12 @@ PRODUCT_PACKAGES_DEBUG += \
     pytimechart-record \
     lspci
 ##############################################################
+# Source: device/intel/mixins/groups/midi/true/product.mk
+##############################################################
+# MIDI support
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
+##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)

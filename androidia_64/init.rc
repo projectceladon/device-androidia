@@ -180,6 +180,8 @@ on boot
     mkdir /config/usb_gadget/g1/functions/ffs.adb
     mkdir /config/usb_gadget/g1/functions/mtp.gs0
     mkdir /config/usb_gadget/g1/functions/ptp.gs1
+    mkdir /config/usb_gadget/g1/functions/midi.gs5
+
     mkdir /config/usb_gadget/g1/configs/b.1
     mkdir /config/usb_gadget/g1/configs/b.1/strings/0x409
     symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f1
@@ -233,6 +235,15 @@ on property:sys.usb.config=ptp,adb && property:sys.usb.configfs=1
     # write /config/usb_gadget/g1/os_desc/use 1
     write /config/usb_gadget/g1/idVendor 0x8087
     write /config/usb_gadget/g1/idProduct 0x0a61
+
+on property:sys.usb.config=midi && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x8087
+    write /config/usb_gadget/g1/idProduct 0x0a65
+
+on property:sys.usb.config=midi,adb && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x8087
+    write /config/usb_gadget/g1/idProduct 0x0a67
+
 ##############################################################
 # Source: device/intel/mixins/groups/adb_net/true/init.rc
 ##############################################################
@@ -444,6 +455,25 @@ import /init.logs.rc
 # Source: device/intel/mixins/groups/debug-crashlogd/true/init.rc
 ##############################################################
 import /init.crashlogd.rc
+##############################################################
+# Source: device/intel/mixins/groups/midi/true/init.rc
+##############################################################
+on property:sys.usb.config=midi
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 8087
+    write /sys/class/android_usb/android0/idProduct 0a67
+    write /sys/class/android_usb/android0/functions ${sys.usb.config}
+    write /sys/class/android_usb/android0/enable 1
+    setprop sys.usb.state ${sys.usb.config}
+
+on property:sys.usb.config=midi,adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 8087
+    write /sys/class/android_usb/android0/idProduct 0a65
+    write /sys/class/android_usb/android0/functions ${sys.usb.config}
+    write /sys/class/android_usb/android0/enable 1
+    start adbd
+    setprop sys.usb.state ${sys.usb.config}
 ##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/init.rc
 ##############################################################
