@@ -387,6 +387,26 @@ PRODUCT_PACKAGES += \
 ##############################################################
 PRODUCT_PACKAGES += lights.android_ia
 ##############################################################
+# Source: device/intel/mixins/groups/thermal/dptf/product.mk
+##############################################################
+# DPTF
+INTEL_MODEM_CTL := true
+PRODUCT_PACKAGES += esif_ufd \
+    dsp.dv \
+    dptf.dv \
+    libc++_shared.so \
+    Dptf \
+    DptfPolicyActive \
+    DptfPolicyAdaptivePerformance \
+    DptfPolicyConditionalLogicLib \
+    DptfPolicyCritical \
+    DptfPolicyEmergencyCallMode \
+    DptfPolicyPassive \
+    DptfPolicyVirtualSensor \
+    upe_java \
+    jhs
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/dptf.dv:/system/etc/dptf/dv/dptf.dv
+##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
 PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/mmcblk1p10

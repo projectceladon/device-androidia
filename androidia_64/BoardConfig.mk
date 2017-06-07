@@ -265,6 +265,12 @@ BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/rfkill
 WITH_DEXPREOPT := true
 WITH_DEXPREOPT_PIC := true
 ##############################################################
+# Source: device/intel/mixins/groups/thermal/dptf/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/thermal
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/thermal/dptf
+BOARD_KERNEL_CMDLINE += thermal.off=1
+##############################################################
 # Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
 ##############################################################
 BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
