@@ -15,6 +15,7 @@ AUDIO_HARDWARE := default
 # Next configuration is used for Intel NUC6i5SYH
 #AUDIO_HARDWARE := PCH-ALC283
 #AUDIO_HARDWARE := nuc-skull-canyon
+endif
 
 ###########################################
 # Audio stack Packages
@@ -26,8 +27,15 @@ LOCAL_REQUIRED_MODULES := \
     audio_policy_configuration_files \
     audio_settings_configuration_files
 
+ifeq ($(INTEL_AUDIO_HAL), stub)
+LOCAL_REQUIRED_MODULES += audio.stub.default
+else
+LOCAL_REQUIRED_MODULES += audio.primary.android_ia
+
 ifeq ($(INTEL_AUDIO_HAL),audio_pfw)
 LOCAL_REQUIRED_MODULES += audio_hal_configuration_files
+endif
+
 endif
 
 include $(BUILD_PHONY_PACKAGE)
@@ -45,6 +53,10 @@ LOCAL_REQUIRED_MODULES := \
     audio_policy_volumes.xml \
     default_volume_tables.xml \
     audio_policy_configuration.xml
+
+ifeq ($(INTEL_AUDIO_HAL), stub)
+LOCAL_REQUIRED_MODULES += stub_audio_policy_configuration.xml
+endif
 
 include $(BUILD_PHONY_PACKAGE)
 
@@ -86,6 +98,15 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := usb_audio_policy_configuration.xml
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := stub_audio_policy_configuration.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
