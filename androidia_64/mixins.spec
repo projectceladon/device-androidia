@@ -19,7 +19,7 @@ usb-gadget: g_ffs
 adb_net: true
 kernel: android_ia(loglevel=3, disable_cpuidle_on_boot=true)
 bluetooth: btusb
-boot-arch: android_ia(bootloader_policy=0x0,bootloader_len=60,magic_key_timeout=80)
+boot-arch: android_ia(bootloader_policy=0x0,bootloader_len=60,magic_key_timeout=80,assume_bios_secure_boot=true)
 audio: android_ia
 wlan: iwlwifi
 cpu-arch: skl
