@@ -66,9 +66,10 @@ TARGET_SUPPORTS_64_BIT_APPS := true
 TARGET_PRELINK_MODULE := false
 TARGET_NO_KERNEL ?= false
 
+KERNEL_LOGLEVEL ?= 3
 SERIAL_PARAMETER := console=tty0 console=ttyS2,115200n8
 
-BOARD_KERNEL_CMDLINE += root=/dev/ram0  androidboot.hardware=$(TARGET_PRODUCT) androidboot.selinux=permissive firmware_class.path=/vendor/firmware
+BOARD_KERNEL_CMDLINE += root=/dev/ram0  androidboot.hardware=$(TARGET_PRODUCT) androidboot.selinux=permissive firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL)
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 ifeq ($(SPARSE_IMG),true)
