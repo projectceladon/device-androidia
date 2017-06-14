@@ -218,6 +218,9 @@ endif
 
 
 
+# Kernelfligner will assume the BIOS support secure boot. Not check the EFI variable SecureBoot
+# It is useful when the BIOS does not support secure boot.
+KERNELFLINGER_ASSUME_BIOS_SECURE_BOOT := true
 
 ##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/BoardConfig.mk
