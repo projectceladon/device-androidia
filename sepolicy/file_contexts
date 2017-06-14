@@ -1,7 +1,8 @@
 /dev/block/mmcblk1p8        u:object_r:cache_block_device:s0
-/dev/block/mmcblk1p12        u:object_r:userdata_block_device:s0
+/dev/block/mmcblk1p13        u:object_r:userdata_block_device:s0
 /dev/block/mmcblk1p3        u:object_r:boot_block_device:s0
 /dev/block/mmcblk1p4        u:object_r:recovery_block_device:s0
+/dev/block/mmcblk1p5        u:object_r:misc_block_device:s0
 /dev/block/mmcblk1p9        u:object_r:frp_block_device:s0
 /dev/block/mmcblk1p6        u:object_r:metadata_block_device:s0
 /dev/block/mmcblk1p11       u:object_r:config_block_device:s0

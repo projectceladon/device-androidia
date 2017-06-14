@@ -19,4 +19,5 @@ allow system_server init:tcp_socket { getopt setopt read write };
 allow system_server init:udp_socket { getopt setopt read write };
 allow system_server init:process { getattr getpgid };
 allow system_server sysfs_app_readable:file r_file_perms;
+allow system_server self:capability2 wake_alarm;
 get_prop(system_server, wifi_region_prop)
