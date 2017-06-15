@@ -152,6 +152,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     LiveWallpapers \
     LiveWallpapersPicker \
+    WallpaperPicker \
     NotePad \
     Provision \
     camera.android_ia \
