@@ -185,5 +185,5 @@ endif
 ###########################################
 
 ifeq ($(USE_CONFIGURABLE_AUDIO_POLICY), 1)
-include device/intel/android_ia/common/audio/$(AUDIO_HARDWARE)/audiopolicy.mk
+include device/intel/android_ia/common/audio/reference_configurable_audio_policy/AndroidBoard.mk
 endif
