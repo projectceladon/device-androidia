@@ -48,8 +48,8 @@ BOARD_ENABLE_EXPLICIT_SYNC := true
 INTEL_MINIGBM := external/minigbm
 
 
+BOARD_USES_GRALLOC1 := true
 
-BOARD_USES_GRALLOC1 := false
 ##############################################################
 # Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
 ##############################################################
