@@ -51,6 +51,9 @@ INTEL_MINIGBM := external/minigbm
 BOARD_USES_GRALLOC1 := true
 
 ##############################################################
+# Source: device/intel/mixins/groups/media/android_ia/BoardConfig.mk
+##############################################################
+##############################################################
 # Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
 ##############################################################
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/device-type/overlay-tablet
