@@ -14,3 +14,5 @@ allow ueventd sysfs_socinfo:file w_file_perms;
 allow ueventd system_file:system { module_load };
 allow ueventd hidraw_device:chr_file { relabelfrom relabelto };
 allow ueventd kernel:key search;
+allow ueventd sysfs_app_readable:file rw_file_perms;
+allow ueventd kmsg_device:chr_file rw_file_perms;
