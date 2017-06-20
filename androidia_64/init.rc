@@ -103,6 +103,7 @@ on fs
 on init
     chown system system /sys/class/backlight/intel_backlight/brightness
     chown system system /sys/class/backlight/acpi_video0/brightness
+    write /sys/fs/selinux/enforce 0
 
 on post-fs
    #setprop debug.sf.nobootanimation 1
@@ -511,7 +512,7 @@ on boot
 ##############################################################
 # Enable SELinux labeling
 on post-fs
-    restorecon_recursive /oem_config
+    restorecon_recursive /config
 ##############################################################
 # Source: device/intel/mixins/groups/factory-partition/true/init.rc
 ##############################################################
