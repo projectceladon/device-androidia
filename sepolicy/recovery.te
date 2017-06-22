@@ -6,6 +6,11 @@ recovery_only(`
   allow recovery host1x_device:chr_file rw_file_perms;
 
   set_prop(recovery, ffs_prop)
+  allow recovery rootfs:dir { write create add_name };
+  allow recovery block_device:dir { write remove_name add_name search };
+  allow recovery block_device:blk_file { create unlink };
+  allow recovery vfat:dir create_dir_perms;
+  allow recovery vfat:file create_file_perms;
 
   # for operations in recovery/updater/flash_mtd.c
   allow recovery mtd_device:dir search;
