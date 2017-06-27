@@ -48,6 +48,9 @@ allow dptf sysfs_thermal_management:file rw_file_perms;
 # /sys/class/backlight/intel_backlight/brigthness
 # /sys/class/power_supply/bq*/max_charge_current
 allow dptf sysfs:file rw_file_perms;
+allow dptf sysfs:dir r_dir_perms;
+allow dptf system_file:dir r_dir_perms;
+allow dptf sysfs_thermal_file:file r_file_perms;
 
 # Set properties
 set_prop(dptf, powerctl_prop)
