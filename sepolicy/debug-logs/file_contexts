@@ -1,0 +1,14 @@
+# earlylogs entry point script
+(/system)?/vendor/bin/elogs.sh     u:object_r:logsvc_exec:s0
+
+(/system)?/vendor/bin/start_log_srv.sh  u:object_r:logsvc_exec:s0
+
+# ap[k]_logfs entry point script
+# this is also used by debug-npk, which is dependent on debug-logs
+(/system)?/vendor/bin/logcat_ep.sh      u:object_r:logsvc_exec:s0
+
+# earlylogs logs target
+/cache/elogs(/.*)?              u:object_r:log_file:s0
+
+# Logs
+/data/logs(/.*)?                u:object_r:log_file:s0
