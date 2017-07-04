@@ -429,7 +429,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.intel.logger=/system/bin/logcat
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += logd.kernel.raw_message=False
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.intel.logger.rot_cnt=20
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.intel.logger.rot_size=5000
-BOARD_SEPOLICY_DIRS += device/intel/sepolicy/debug-logs
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/debug-logs
 BOARD_SEPOLICY_M4DEFS += module_debug_logs=true
 endif
 ##############################################################
