@@ -1,3 +1,8 @@
+#
+# surfaceflinger
+#
+typeattribute surfaceflinger_tmpfs mlstrustedobject;
+
 allow surfaceflinger graphics_device:chr_file ioctl;
 allow surfaceflinger device:chr_file ioctl;
 
