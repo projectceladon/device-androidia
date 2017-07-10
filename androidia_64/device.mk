@@ -315,6 +315,21 @@ PRODUCT_PACKAGES += \
 # create primary storage symlink dynamically
 PRODUCT_PACKAGES += set_storage
 ##############################################################
+# Source: device/intel/mixins/groups/boot-arch/android_ia/product.mk
+##############################################################
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/android_persistent
+
+ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),0x0 0x2 0x4 0x6))
+# OEM Unlock reporting 1
+#ADDITIONAL_DEFAULT_PROPERTIES += \
+        ro.oem_unlock_supported=1
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+        ro.oem_unlock_supported=1
+
+endif
+
+##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/product.mk
 ##############################################################
 # Tinyalsa
@@ -515,3 +530,5 @@ $(call inherit-product,build/target/product/verity.mk)
 ifeq ($(MIXIN_DEBUG_LOGS),true)
 PRODUCT_PACKAGES += crash_package
 endif
+
+

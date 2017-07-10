@@ -141,7 +141,7 @@ KERNELFLINGER_SSL_LIBRARY := openssl
 BOARD_KERNEL_CMDLINE += iTCO_wdt.force_no_reboot=1
 
 # Show the "OEM unlocking" option in Android "Developer options"
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/android_persistent
+#PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/android_persistent
 
 # Specify file for creating final flashfiles
 BOARD_GPT_INI ?= $(TARGET_DEVICE_DIR)/gpt.ini
@@ -208,11 +208,11 @@ TARGET_BOOTLOADER_POLICY := 0x0
 # variables to store the BPM and OAK values.  The BPM value is defined
 # compilation time by the TARGET_BOOTLOADER_POLICY variable.
 TARGET_BOOTLOADER_POLICY_USE_EFI_VAR := true
-ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),0x0 0x2 0x4 0x6))
+#ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),0x0 0x2 0x4 0x6))
 # OEM Unlock reporting 1
-ADDITIONAL_DEFAULT_PROPERTIES += \
-	ro.oem_unlock_supported=1
-endif
+#ADDITIONAL_DEFAULT_PROPERTIES += \
+#	ro.oem_unlock_supported=1
+#endif
 ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),static external))
 # The bootloader policy is not generated build time but is supplied
 # statically in the repository or in $(PRODUCT_OUT)/.  If your

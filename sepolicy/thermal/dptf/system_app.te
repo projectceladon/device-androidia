@@ -1,2 +1,0 @@
-# JHS service
-allow system_app system_app_service:service_manager add;

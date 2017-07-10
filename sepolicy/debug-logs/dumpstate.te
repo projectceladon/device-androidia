@@ -1,5 +1,0 @@
-#
-# dumpstate
-#
-
-allow dumpstate log_file:file r_file_perms;

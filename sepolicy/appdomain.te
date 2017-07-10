@@ -1,2 +1,0 @@
-allow appdomain surfaceflinger:fifo_file rw_file_perms;
-allow appdomain sysfs_app_readable:file r_file_perms;

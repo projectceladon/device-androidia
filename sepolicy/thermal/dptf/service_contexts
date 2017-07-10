@@ -1,3 +1,0 @@
-esif_ufd                                  u:object_r:dptf_service:s0
-java_helper_client_service                u:object_r:dptf_service:s0
-java_helper_service                       u:object_r:system_app_service:s0

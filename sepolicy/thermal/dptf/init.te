@@ -1,7 +1,0 @@
-#
-# init
-#
-
-# allow init to start thermal lite from ramfs
-# thermal lite gets its label from seclabel
-domain_trans(init, rootfs, thermal_lite)
