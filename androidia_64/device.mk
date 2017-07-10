@@ -120,6 +120,29 @@ PRODUCT_PACKAGES += \
 # USB
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
+
+# Keymaster HAL
+PRODUCT_PACKAGES += \
+    android.hardware.keymaster@3.0-impl \
+    android.hardware.keymaster@3.0-service
+
+# Power HAL
+PRODUCT_PACKAGES += \
+    android.hardware.power@1.0-impl \
+    android.hardware.power@1.0-service
+
+# DumpState HAL
+PRODUCT_PACKAGES += \
+    android.hardware.dumpstate@1.0-impl \
+    android.hardware.dumpstate@1.0-service
+
+# Configstore HAL
+PRODUCT_PACKAGES += \
+    android.hardware.configstore@1.0-impl
+
+# Vendor Interface Manifest
+PRODUCT_COPY_FILES += \
+    device/intel/android_ia/manifest.xml:vendor/manifest.xml
 ##############################################################
 # Source: device/intel/mixins/groups/graphics/android_ia/product.mk
 ##############################################################
@@ -179,6 +202,17 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.vulkan=android_ia
+
+# Graphics HAL
+PRODUCT_PACKAGES += \
+   android.hardware.graphics.composer@2.1-impl \
+   android.hardware.graphics.composer@2.1-service
+
+# Gralloc HAL
+PRODUCT_PACKAGES += \
+   android.hardware.graphics.allocator@2.0-impl \
+   android.hardware.graphics.allocator@2.0-service \
+   android.hardware.graphics.mapper@2.0-impl
 ##############################################################
 # Source: device/intel/mixins/groups/media/android_ia/product.mk
 ##############################################################
@@ -269,6 +303,12 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
 		frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml
+
+# Bluetooth HAL
+PRODUCT_PACKAGES += \
+  android.hardware.bluetooth@1.0-impl \
+  android.hardware.bluetooth@1.0-service \
+  libbt-vendor
 ##############################################################
 # Source: device/intel/mixins/groups/disk-bus/auto/product.mk
 ##############################################################
@@ -290,6 +330,11 @@ PRODUCT_PACKAGES += \
     audio_policy.default.so \
     audio_configuration_files
 
+# Audio HAL
+PRODUCT_PACKAGES += \
+    android.hardware.audio.effect@2.0-impl \
+    android.hardware.audio@2.0-impl \
+    android.hardware.audio@2.0-service
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/product.mk
 ##############################################################
@@ -308,6 +353,10 @@ PRODUCT_COPY_FILES += \
 # Wifi configuration
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 BOARD_WLAN_DEVICE := iwlwifi
+
+# Wifi HAL.
+PRODUCT_PACKAGES += \
+  android.hardware.wifi@1.0-service
 ##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/product.mk
 ##############################################################
@@ -322,6 +371,11 @@ PRODUCT_COPY_FILES += \
 # usb accessory
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
+
+# USB HAL
+PRODUCT_PACKAGES += \
+    android.hardware.usb@1.0-impl \
+    android.hardware.usb@1.0-service
 ##############################################################
 # Source: device/intel/mixins/groups/lights/true/product.mk
 ##############################################################
