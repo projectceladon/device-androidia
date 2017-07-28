@@ -8,7 +8,7 @@ product.mk: device.mk
 2ndstage: oemvars
 android_ia: default
 sepolicy: enforcing
-graphics: android_ia(gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true,gralloc1=true)
+graphics: android_ia(gen9+=true,hwc2=true,vulkan=false,drmhwc=false,minigbm=true,gralloc1=true)
 media: android_ia(mediasdk=false,media_sdk_source=false)
 device-type: tablet
 ethernet: dhcp
