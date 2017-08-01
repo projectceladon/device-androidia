@@ -90,11 +90,11 @@
         </interface>
     </hal>
     <hal format="hidl">
-        <name>android.hardware.wifi</name>
+        <name>android.hardware.wifi.supplicant</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
         <interface>
-            <name>IWifi</name>
+            <name>ISupplicant</name>
             <instance>default</instance>
         </interface>
     </hal>
