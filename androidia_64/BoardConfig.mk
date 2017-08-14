@@ -28,6 +28,7 @@ INTEL_VA := true
 BOARD_GRAPHIC_IS_GEN := true
 BOARD_GPU_DRIVERS := i965
 BOARD_USE_MESA := true
+LIBDRM_VER := intel
 
 # System's VSYNC phase offsets in nanoseconds
 VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
@@ -36,7 +37,6 @@ SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
 BOARD_GPU_DRIVERS ?= i965 swrast
 ifneq ($(strip $(BOARD_GPU_DRIVERS)),)
 TARGET_HARDWARE_3D := true
-TARGET_USES_HWC2 := true
 endif
 
 
@@ -49,6 +49,9 @@ INTEL_MINIGBM := external/minigbm
 
 
 BOARD_USES_GRALLOC1 := true
+
+
+TARGET_USES_HWC2 := true
 
 ##############################################################
 # Source: device/intel/mixins/groups/media/android_ia/BoardConfig.mk
