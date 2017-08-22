@@ -245,6 +245,11 @@ endif
 # Target specific audio configuration files
 include device/intel/android_ia/common/audio/AndroidBoard.mk
 ##############################################################
+# Source: device/intel/mixins/groups/wlan/iwlwifi/AndroidBoard.mk
+##############################################################
+#LOCAL_KERNEL_PATH := $(abspath $(PRODUCT_OUT)/obj/kernel) is not defined yet
+#$(abspath $(PRODUCT_OUT)/obj/kernel)/copy_modules: iwlwifi
+##############################################################
 # Source: device/intel/mixins/groups/config-partition/enabled/AndroidBoard.mk
 ##############################################################
 INSTALLED_CONFIGIMAGE_TARGET := $(PRODUCT_OUT)/config.img

@@ -343,22 +343,41 @@ PRODUCT_PACKAGES += \
 # Source: device/intel/mixins/groups/wlan/iwlwifi/product.mk
 ##############################################################
 PRODUCT_PACKAGES += \
-    libwpa_client \
+    hostapd \
+    hostapd_cli \
+	wificond \
+    wifilogd \
+    wpa_supplicant \
     wpa_cli \
-    wpa_supplicant
+    iw
+   
+	
 
+# FW and PNVM
+PRODUCT_PACKAGES += \
+    iwl-fw          \
+    iwl-nvm
+
+# iwlwifi USC
+PRODUCT_PACKAGES += \
+    wifi_intel_usc
+
+#copy iwlwifi wpa config files
 PRODUCT_COPY_FILES += \
-  device/intel/common/wlan/wpa_supplicant-common.conf:system/etc/wifi/wpa_supplicant.conf \
-  device/intel/common/wlan/iwlwifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
-  frameworks/native/data/etc/android.software.app_widgets.xml:system/etc/permissions/android.software.app_widgets.xml \
-  frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
-  frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml
+        device/intel/common/wlan/wpa_supplicant-common.conf:system/etc/wifi/wpa_supplicant.conf \
+        device/intel/common/wlan/iwlwifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
+        frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
+        frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml
+
+
 
 # Wifi configuration
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 BOARD_WLAN_DEVICE := iwlwifi
 
-# Wifi HAL.
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.wifi.softap_dualband_allow=false
+
 PRODUCT_PACKAGES += \
   android.hardware.wifi@1.0-service
 ##############################################################
