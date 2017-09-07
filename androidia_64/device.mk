@@ -221,7 +221,7 @@ PRODUCT_COPY_FILES += \
 
 # GLES version
 PRODUCT_PROPERTY_OVERRIDES += \
-   ro.opengles.version=196609
+   ro.opengles.version=196610
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.vulkan.level-1.xml:system/etc/permissions/android.hardware.vulkan.level.xml
