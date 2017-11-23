@@ -426,7 +426,7 @@ PRODUCT_COPY_FILES += $(LOCAL_PATH)/dptf.dv:/system/etc/dptf/dv/dptf.dv
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
-PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/mmcblk1p10
+PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/by-name/android_vendor
 ##############################################################
 # Source: device/intel/mixins/groups/debug-logs/true/product.mk
 ##############################################################
