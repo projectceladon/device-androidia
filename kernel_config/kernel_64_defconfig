@@ -7041,9 +7041,8 @@ CONFIG_HARDENED_USERCOPY=y
 CONFIG_CC_STACKPROTECTOR=y
 CONFIG_CC_STACKPROTECTOR_STRONG=y
 
-# Provide userspace with ptrace ancestry protections.
 CONFIG_SECURITY=y
-CONFIG_SECURITY_YAMA=y
+# CONFIG_SECURITY_YAMA is not set
 
 # If we build using modules, they must be signed with a per-build key.
 CONFIG_MODULE_SIG=y
