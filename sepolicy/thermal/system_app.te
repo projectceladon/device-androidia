@@ -1,0 +1,22 @@
+#
+# system_app.te
+#
+
+# XXX Not sure which app this is for, so common for now
+allow system_app sysfs_thermal:file rw_file_perms;
+allow system_app thermal_device:chr_file rw_file_perms;
+allow system_app sysfs_thermal_management:{ file lnk_file } rw_file_perms;
+allow system_app sysfs_thermal_management:dir {read open search };
+allow system_app sysfs_devices_system_cpu:file rw_file_perms;
+allow system_app kernel:capability net_admin;
+
+allow system_app sysfs_powercap:{ file lnk_file } rw_file_perms;
+allow system_app sysfs_powercap:dir r_dir_perms;
+
+module_only(`camera_ipu2', `
+  set_prop(system_app, cam_flash_thrtl_prop)
+')
+
+module_only(`camera_ipu4', `
+  set_prop(system_app, cam_flash_thrtl_prop)
+')

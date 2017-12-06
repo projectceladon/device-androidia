@@ -1,0 +1,4 @@
+allow ueventd self:capability sys_module;
+allow ueventd vendor_file:system module_load;
+allow ueventd kernel:key search;
+allow ueventd kernel:system module_request;

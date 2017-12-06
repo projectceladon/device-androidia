@@ -1,0 +1,3 @@
+type msm_prop, property_type;
+type rpc_default_prop, property_type;
+type rpc_state_prop, property_type;

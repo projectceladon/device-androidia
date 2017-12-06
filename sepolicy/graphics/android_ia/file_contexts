@@ -1,0 +1,10 @@
+# devices
+/dev/dri(/.*)?              u:object_r:gpu_device:s0
+/dev/sw_sync                u:object_r:graphics_device:s0
+
+/sys/devices/pci0000\:00/0000\:00\:02.0/config u:object_r:sysfs_app_readable:s0
+/sys/devices/pci0000:00/0000:00:02.0/vendor u:object_r:sysfs_app_readable:s0
+/sys/devices/pci0000:00/0000:00:02.0/device u:object_r:sysfs_app_readable:s0
+/sys/devices/pci0000:00/0000:00:02.0/subsystem_vendor u:object_r:sysfs_app_readable:s0
+/sys/devices/pci0000:00/0000:00:02.0/subsystem_device u:object_r:sysfs_app_readable:s0
+/sys/devices/pci0000:00/0000:00:02.0/uevent u:object_r:sysfs_app_readable:s0

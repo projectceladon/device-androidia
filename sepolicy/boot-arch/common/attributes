@@ -1,0 +1,2 @@
+# all rpc sockets
+attribute rpc_socket_type;

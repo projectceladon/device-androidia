@@ -1,0 +1,3 @@
+allow init system_file:system module_load;
+allow init tmpfs:file r_file_perms;
+allow init { boot_block_device vendor_block_device }:lnk_file relabelto;

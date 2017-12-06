@@ -1,0 +1,9 @@
+#
+# init
+#
+
+#
+# The setup_nvm_fs helper no longer does the mount. It is now mounted in the init.rc directly.
+# path: /nvm_fs_partition
+#
+allow init efs_file:dir mounton;

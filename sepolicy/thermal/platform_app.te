@@ -1,0 +1,7 @@
+#
+# platform_app
+#
+
+# XXX Did the thermal apps drop out of the system app domain?
+allow platform_app sysfs_powercap:dir search;
+allow platform_app sysfs_powercap:file r_file_perms;

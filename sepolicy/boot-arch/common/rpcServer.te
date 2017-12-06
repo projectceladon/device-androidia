@@ -1,0 +1,26 @@
+type rpcServer, domain;
+type rpcServer_exec, exec_type, file_type;
+
+init_daemon_domain(rpcServer)
+
+allow rpcServer self:capability net_admin;
+
+set_prop(rpcServer, msm_prop)
+set_prop(rpcServer, config_prop)
+
+allow rpcServer rpc_device:chr_file rw_file_perms;
+
+allow rpcServer self:netlink_kobject_uevent_socket create_socket_perms;
+allowxperm rpcServer self:netlink_kobject_uevent_socket ioctl SIOCETHTOOL;
+
+# XXX Running shell
+allow rpcServer shell_exec:file rx_file_perms;
+
+allow rpcServer mvpipe_device:chr_file rw_file_perms;
+
+# Access NVM partitions
+allow rpcServer block_device:dir search;
+allow rpcServer ram_device:blk_file r_file_perms;
+
+# Run /system/bin/reboot
+allow rpcServer system_file:file execute_no_trans;

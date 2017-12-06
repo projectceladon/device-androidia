@@ -1,0 +1,11 @@
+#
+# RPC Socket types
+#
+type rpc_send_socket, rpc_socket_type, file_type;
+type rpc_recv_socket, rpc_socket_type, file_type;
+type rpc_reg_socket, rpc_socket_type, file_type;
+
+#
+# msm socket type
+#
+type msm_socket, file_type;

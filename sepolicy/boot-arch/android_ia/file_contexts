@@ -1,0 +1,11 @@
+#
+# Block Devices
+#
+
+/dev/block/(pci|platform)(/.*)?/.*/by-name/android_boot       u:object_r:boot_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/android_persistent u:object_r:frp_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/android_recovery   u:object_r:recovery_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/android_metadata   u:object_r:metadata_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/android_cache      u:object_r:cache_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/android_data       u:object_r:userdata_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/android_misc       u:object_r:misc_block_device:s0

@@ -1,0 +1,31 @@
+# define the type for all builds, but grant no permissions.
+# this is because seapp_contexts does not support macros.
+type crashreport_app, domain;
+
+userdebug_or_eng(`
+
+  permissive crashreport_app;
+
+  app_domain(crashreport_app)
+  net_domain(crashreport_app)
+  binder_service(crashreport_app)
+
+#============= crashreport_app ==============
+  module_only(`debug_crashlogd', `
+    allow crashreport_app crashlogd_prop:file r_file_perms;
+  ')
+
+  allow crashreport_app crashreport_app_data_file:dir create_dir_perms;
+  allow crashreport_app crashreport_app_data_file:file create_file_perms;
+  allow crashreport_app crashreport_app_data_file:file r_file_perms;
+  allow crashreport_app debugfs:dir r_dir_perms;
+  allow crashreport_app init:unix_stream_socket connectto;
+  allow crashreport_app log_file:dir create_dir_perms;
+  allow crashreport_app log_file:file create_file_perms;
+
+  dontaudit crashreport_app property_socket:sock_file w_file_perms;
+  dontaudit crashreport_app system_prop:property_service set;
+
+# any rules that violate neverallows can go here
+  dontaudit crashreport_app serialno_prop:file r_file_perms;
+')

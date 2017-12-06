@@ -1,0 +1,13 @@
+#
+# This process runs as root which will FAIL CTS
+# This process also triggers dac_override which
+# should not be granted
+#
+
+type nvm_useragent, domain;
+type nvm_useragent_exec, exec_type, file_type;
+init_daemon_domain(nvm_useragent)
+
+allow nvm_useragent efs_file:dir rw_dir_perms;
+allow nvm_useragent efs_file:file create_file_perms;
+allow nvm_useragent nvm_device:chr_file rw_file_perms;

@@ -1,0 +1,8 @@
+#
+# kernel
+#
+
+# vnvm
+allow kernel block_device:dir search;
+
+allow kernel ram_device:blk_file rw_file_perms;

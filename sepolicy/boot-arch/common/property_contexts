@@ -1,0 +1,6 @@
+msm.		u:object_r:msm_prop:s0
+rpc		u:object_r:rpc_default_prop:s0
+rpc.state	u:object_r:rpc_state_prop:s0
+
+# XXX this may be refactorable into a higher echelon
+persist.configure.modem u:object_r:config_prop:s0

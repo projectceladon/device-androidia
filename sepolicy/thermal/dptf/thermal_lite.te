@@ -1,0 +1,17 @@
+#
+# thermal_lite
+#
+
+type thermal_lite, domain;
+type thermal_lite_exec, exec_type, file_type, vendor_file_type;
+init_daemon_domain(thermal_lite)
+
+allow thermal_lite sysfs:dir r_dir_perms;
+allow thermal_lite sysfs_thermal_management:dir r_dir_perms;
+allow thermal_lite sysfs_thermal_management:file r_file_perms;
+allow thermal_lite sysfs_powercap:file rw_file_perms;
+allow thermal_lite sysfs_powercap:dir r_dir_perms;
+allow thermal_lite sysfs_thermal:file rw_file_perms;
+
+# properties
+set_prop(thermal_lite, powerctl_prop)

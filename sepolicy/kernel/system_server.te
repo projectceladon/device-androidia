@@ -1,0 +1,10 @@
+#
+# system_server
+#
+
+allow system_server proc_version:file r_file_perms;
+
+allow system_server audioserver:file rw_file_perms;
+allow system_server system_app:file rw_file_perms;
+
+allow system_server hal_graphics_allocator_default_tmpfs:file rw_file_perms;

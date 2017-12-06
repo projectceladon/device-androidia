@@ -1,0 +1,29 @@
+#
+# setup_fs_nvm
+#
+
+type setup_fs_nvm, domain;
+type setup_fs_nvm_exec, file_type, exec_type;
+
+init_daemon_domain(setup_fs_nvm)
+
+# execute e2fsck
+allow setup_fs_nvm fsck_exec:file rx_file_perms;
+
+# execute make_ext4fs
+allow setup_fs_nvm make_ext4fs_exec:file rx_file_perms;
+
+# Access nvm on factoryfs
+allow setup_fs_nvm efs_file:dir r_dir_perms;
+
+allow setup_fs_nvm kernel:process setsched;
+allow setup_fs_nvm nvm_block_device:blk_file getattr;
+allow setup_fs_nvm nvm_block_device:blk_file rw_file_perms;
+allow setup_fs_nvm nvm_block_device:dir search;
+allow setup_fs_nvm block_device:dir search;
+
+allow setup_fs_nvm setup_fs_nvm_exec:file x_file_perms;
+
+module_only(`swap', `
+  allow setup_fs_nvm swap_block_device:blk_file getattr;
+')

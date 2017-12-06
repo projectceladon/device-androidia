@@ -1,0 +1,2 @@
+type sysfs_thermal_management, fs_type, sysfs_type;
+type sysfs_powercap, fs_type, sysfs_type;

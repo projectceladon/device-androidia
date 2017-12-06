@@ -1,0 +1,5 @@
+#
+# dumpstate
+#
+
+dontaudit dumpstate debugfs_graphics_sync:file r_file_perms;

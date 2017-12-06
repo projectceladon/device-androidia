@@ -1,0 +1,12 @@
+/sys/devices/virtual/thermal/thermal_zone[0-9]/trip_point_[0-9]_temp u:object_r:sysfs_thermal:s0
+/sys/devices/virtual/thermal/cooling_device[0-9]/cur_state u:object_r:sysfs_thermal:s0
+/sys/devices/virtual/thermal/thermal_zone[0-9]/policy u:object_r:sysfs_thermal:s0
+/sys/devices/virtual/thermal/thermal_zone[0-9]/temp u:object_r:sysfs_thermal:s0
+/sys/devices/system/cpu/cpu[0-4]/cpufreq/thermal_scaling_max_freq u:object_r:sysfs_thermal:s0
+
+/dev/acpi_thermal_rel       u:object_r:thermal_device:s0
+
+# thermal management
+/sys/devices/platform/coretemp.0(/.*)? u:object_r:sysfs_thermal_management:s0
+/sys/devices/virtual/thermal(/.*)?     u:object_r:sysfs_thermal_management:s0
+/sys/devices/virtual/powercap(/.*)?  u:object_r:sysfs_powercap:s0

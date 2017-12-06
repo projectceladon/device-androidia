@@ -1,0 +1,7 @@
+#
+# wpa.te
+#
+
+# allow wpa to access Mac address given by wlan_prov tool
+#allow wpa config_file:dir search;
+#allow wpa config_file:file r_file_perms;

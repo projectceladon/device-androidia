@@ -1,0 +1,10 @@
+###################################
+#
+# allow a domain to connect and use
+#  the rpc sockets
+# rpc_socket_use(domain)
+#
+define(`rpc_socket_use', `
+	allow $1 rpcdaemon:unix_stream_socket connectto;
+	allow $1 rpc_socket_type:sock_file write;
+')

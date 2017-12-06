@@ -1,0 +1,15 @@
+#
+# Block Devices
+#
+/dev/block/(pci|platform)(/.*)?/.*/by-name/boot(_(a|b))?	u:object_r:boot_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/system(_(a|b))?	u:object_r:system_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/vendor(_(a|b))?	u:object_r:vendor_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/vbmeta(_(a|b))?	u:object_r:boot_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/tos(_(a|b))?		u:object_r:boot_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/persistent		u:object_r:frp_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/recovery		u:object_r:recovery_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/metadata		u:object_r:metadata_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/cache		u:object_r:cache_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/data			u:object_r:userdata_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/misc			u:object_r:misc_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/teedata		u:object_r:tee_device:s0

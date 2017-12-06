@@ -1,0 +1,2 @@
+genfscon proc /version u:object_r:proc_version:s0
+genfscon proc /sys/kernel/osrelease u:object_r:proc_version:s0

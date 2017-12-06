@@ -1,0 +1,5 @@
+#
+# vold
+#
+
+allow vold make_ext4fs_exec:file rx_file_perms;

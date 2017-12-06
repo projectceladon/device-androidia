@@ -1,0 +1,28 @@
+#
+# Devices
+#
+/dev/nvmdev	u:object_r:nvm_device:s0
+/dev/tee_rpc	u:object_r:tee_device:s0
+/dev/vmodem	u:object_r:rpc_device:s0
+
+#
+# nvm factory fs
+#
+/nvm_fs_partition(/.*)?	u:object_r:efs_file:s0
+
+#
+#  Sockets
+#
+/dev/socket/msmSock	u:object_r:msm_socket:s0
+/dev/socket/rpc_send	u:object_r:rpc_send_socket:s0
+/dev/socket/rpc_recv	u:object_r:rpc_recv_socket:s0
+/dev/socket/rpc_reg	u:object_r:rpc_reg_socket:s0
+
+#
+# System executables
+#
+/system/bin/rpcServer		u:object_r:rpcServer_exec:s0
+/system/bin/rpc-daemon		u:object_r:rpcdaemon_exec:s0
+/system/bin/nvm_useragent	u:object_r:nvm_useragent_exec:s0
+/system/bin/setup_fs_nvm        u:object_r:setup_fs_nvm_exec:s0
+/system/bin/make_ext4fs     u:object_r:make_ext4fs_exec:s0

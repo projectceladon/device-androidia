@@ -1,0 +1,33 @@
+#
+# rfkill
+#
+
+type rfkill, domain;
+type rfkill_exec, exec_type, file_type, vendor_file_type;
+init_daemon_domain(rfkill)
+
+# devices
+allow rfkill rfkill_device:chr_file rw_file_perms;
+
+
+# devices
+allow rfkill rfkill_device:chr_file rw_file_perms;
+
+# chmods sysfs rfkill files
+allow rfkill sysfs:file { getattr setattr };
+allow rfkill sysfs_bluetooth_writable:file { getattr setattr };
+
+allow rfkill sysfs:dir r_dir_perms;
+allow rfkill sysfs:file r_file_perms;
+allow rfkill sysfs_rfkill:file r_file_perms;
+
+not_full_treble(`
+  # its a shell script, so in order to run the interpreter
+  # it needs access to shell_exec
+  allow rfkill shell_exec:file rx_file_perms;
+  allow rfkill toolbox_exec:file rx_file_perms;
+')
+full_treble_only(`
+  allow rfkill vendor_shell_exec:file rx_file_perms;
+  allow rfkill vendor_toolbox_exec:file rx_file_perms;
+')

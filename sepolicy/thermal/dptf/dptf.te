@@ -1,0 +1,54 @@
+# Rules for esif_ufd
+type dptf, domain;
+type dptf_exec, exec_type, file_type, vendor_file_type;
+init_daemon_domain(dptf);
+
+# Need to use vendor binder
+vndbinder_use(dptf)
+binder_call(dptf, hal_thermal_default)
+
+# Allow dptf to find the thermal_hal_service service
+allow dptf thermal_hal_service:service_manager find;
+
+# Allow raw socket
+# Also requires DAC changes in device/intel/common/filesystem_config/android_filesystem_config.h
+allow dptf self:capability { net_raw };
+
+# Allow network access for DPTF UI
+net_domain(dptf)
+
+# Allow create and listen to uevent socket
+allow dptf self:netlink_kobject_uevent_socket create_socket_perms;
+allowxperm dptf self:netlink_kobject_uevent_socket ioctl SIOCETHTOOL;
+
+# Vendor directory
+# /vendor/lib64
+# /vendor/app and /vendor/etc/dptf/dv direcroty
+allow dptf vendor_file:dir r_dir_perms;
+allow dptf vendor_file:file rx_file_perms;
+
+# Data directory
+allow dptf dptf_data_file:dir create_dir_perms;
+allow dptf dptf_data_file:file create_file_perms;
+
+#
+# Sysfs files
+#
+allow dptf sysfs:dir r_dir_perms;
+allow dptf sysfs_devices_system_cpu:file rw_file_perms;
+allow dptf sysfs_powercap:{ file lnk_file } rw_file_perms;
+allow dptf sysfs_powercap:dir { read open search};
+allow dptf sysfs_powercap:dir r_dir_perms;
+allow dptf sysfs_dptf_file:dir r_dir_perms;
+allow dptf sysfs_dptf_file:file rw_file_perms;
+allow dptf sysfs_thermal_management:dir r_dir_perms;
+allow dptf sysfs_thermal_management:file rw_file_perms;
+allow dptf sysfs_thermal:file r_file_perms;
+allow dptf sysfs_thermal:file w_file_perms;
+
+# /sys/class/backlight/intel_backlight/brigthness
+# /sys/class/power_supply/bq*/max_charge_current
+allow dptf sysfs:file rw_file_perms;
+
+# Set properties
+set_prop(dptf, powerctl_prop)

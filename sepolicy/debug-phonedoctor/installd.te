@@ -1,0 +1,5 @@
+userdebug_or_eng(`
+  allow installd crashreport_app_data_file:dir create_dir_perms;
+  allow installd crashreport_app_data_file:dir relabelto;
+  allow installd crashreport_app_data_file:file relabelto;
+')

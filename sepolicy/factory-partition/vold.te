@@ -1,0 +1,7 @@
+#
+# Vold
+#
+
+allow vold factory_file:dir r_dir_perms;
+# uapi/linux/fs.h:#define FITRIM _IOWR('X', 121, struct fstrim_range) /* Trim */
+#allow vold factory_file:dir 0x5879;

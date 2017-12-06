@@ -1,0 +1,6 @@
+#
+# ueventd
+#
+
+allow ueventd config_file:dir search;
+allow ueventd config_file:file r_file_perms;

@@ -1,0 +1,1 @@
+allow bluetooth sysfs_rfkill:file r_file_perms;

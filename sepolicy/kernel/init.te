@@ -1,0 +1,17 @@
+allow init debugfs:file write;
+allow init kernel:key search;
+allow init kernel:system module_request;
+allow init {
+  rootfs
+  vendor_file
+}:system module_load;
+
+allow init sysfs_devices_system_cpu:dir rw_dir_perms;
+allow init sysfs_devices_system_cpu:file create_file_perms;
+allow init tmpfs:lnk_file create_file_perms;
+allow init configfs:{ file lnk_file } create_file_perms;
+allow init self:capability dac_read_search;
+allow init self:capability sys_module;
+allow init self:capability2 block_suspend;
+
+dontaudit init cgroup:file create_file_perms;

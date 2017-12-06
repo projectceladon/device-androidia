@@ -1,0 +1,9 @@
+#
+# rfkill
+#
+
+/dev/rfkill    u:object_r:rfkill_device:s0
+
+/vendor/bin/rfkill-init.sh  u:object_r:rfkill_exec:s0
+
+/sys/devices/virtual/ieee80211/phy0/rfkill[0-9]{1}/type u:object_r:sysfs_rfkill:s0

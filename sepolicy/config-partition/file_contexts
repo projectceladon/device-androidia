@@ -1,0 +1,4 @@
+# Config partition
+/oem_config(/.*)?               u:object_r:config_file:s0
+
+/dev/block/(pci|platform)(/.*)?/.*/by-name/android_config  u:object_r:config_block_device:s0

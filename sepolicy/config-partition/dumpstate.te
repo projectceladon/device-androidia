@@ -1,0 +1,2 @@
+dontaudit dumpstate config_file:dir r_dir_perms;
+dontaudit dumpstate config_file:file r_file_perms;

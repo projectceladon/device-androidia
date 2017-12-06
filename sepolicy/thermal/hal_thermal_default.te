@@ -1,0 +1,15 @@
+#============= hal_thermal_default ==============
+vndbinder_use(hal_thermal_default)
+
+add_service(hal_thermal_default, thermal_hal_service)
+
+allow hal_thermal_default thermal_hal_service:hwservice_manager find;
+allow hal_thermal_default sysfs_thermal_management:dir r_dir_perms;
+allow hal_thermal_default sysfs_thermal:file r_file_perms;
+allow hal_thermal_default proc_stat:file r_file_perms;
+allow hal_thermal_default self:can_socket create_socket_perms;
+allowxperm hal_thermal_default self:can_socket ioctl {
+  SIOCGIFINDEX
+  SIOCSIFNAME
+  SIOCSIFFLAGS
+};

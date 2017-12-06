@@ -1,0 +1,10 @@
+type rpcdaemon, domain;
+type rpcdaemon_exec, exec_type, file_type;
+
+init_daemon_domain(rpcdaemon)
+
+set_prop(rpcdaemon, rpc_state_prop)
+
+unix_socket_connect(rpcdaemon, msm, rpcServer)
+
+allow rpcdaemon mvpipe_device:chr_file rw_file_perms;

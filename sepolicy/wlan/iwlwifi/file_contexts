@@ -1,0 +1,1 @@
+/system/bin/wlan_intel_restore.sh  u:object_r:wlan_intel_restore_exec:s0

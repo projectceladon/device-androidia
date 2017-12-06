@@ -1,0 +1,15 @@
+#
+# kernel
+#
+
+#vnvm kthread
+allow kernel block_device:blk_file rw_file_perms;
+allow kernel block_device:dir search;
+
+# watchdog kernel option CONFIG_LOCKUP_DETECTOR
+allow kernel kernel:capability sys_admin;
+
+# For loading /lib/modules/inet_diag.ko
+allow kernel rootfs:system module_load;
+allow kernel system_file:system module_load;
+allow kernel self:system module_request;

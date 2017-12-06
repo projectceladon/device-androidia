@@ -1,0 +1,6 @@
+type make_ext4fs, domain;
+type make_ext4fs_exec, file_type, exec_type;
+
+init_daemon_domain(make_ext4fs)
+
+allow make_ext4fs nvm_block_device:blk_file rw_file_perms;

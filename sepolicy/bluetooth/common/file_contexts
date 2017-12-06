@@ -1,0 +1,2 @@
+/system/etc/bluetooth(/.*)?           u:object_r:bluetooth_config_file:s0
+/oem_config/bluetooth                  u:object_r:bluetooth_data_file:s0

@@ -1,0 +1,2 @@
+# Always define since seapp contexts does not support m4 macro support.
+type crashreport_app_data_file, file_type, data_file_type, mlstrustedobject;

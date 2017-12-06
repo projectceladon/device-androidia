@@ -1,0 +1,4 @@
+/data/misc/dptf(/.*)?           u:object_r:dptf_data_file:s0
+/etc/dptf(/.*)?                 u:object_r:dptf_data_file:s0
+(/system)?/vendor/bin/esif_ufd  u:object_r:dptf_exec:s0
+/vendor/bin/thermal_lite        u:object_r:thermal_lite_exec:s0

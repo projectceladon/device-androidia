@@ -1,0 +1,1 @@
+allow appdomain proc_version:file r_file_perms;

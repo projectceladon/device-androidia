@@ -1,0 +1,27 @@
+#
+# wlan_intel_restore - does what?
+#
+
+type wlan_intel_restore, domain;
+type wlan_intel_restore_exec, file_type, exec_type, vendor_file_type;
+
+init_daemon_domain(wlan_intel_restore)
+
+# Execute as a script and run toolbox and system commands
+allow wlan_intel_restore system_file:file rx_file_perms;
+
+allow wlan_intel_restore block_device:dir search;
+
+module_only(`config_partition', `
+  allow wlan_intel_restore config_file:dir rw_dir_perms;
+  allow wlan_intel_restore config_file:file r_file_perms;
+')
+
+not_full_treble(`
+  allow rfkill shell_exec:file rx_file_perms;
+  allow rfkill toolbox_exec:file rx_file_perms;
+')
+full_treble_only(`
+  allow rfkill vendor_shell_exec:file rx_file_perms;
+  allow rfkill vendor_toolbox_exec:file rx_file_perms;
+')

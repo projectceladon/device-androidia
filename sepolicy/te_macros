@@ -1,0 +1,41 @@
+#####################################
+# Userfastboot only
+# SELinux rules which apply only to userfastboot mode
+#
+define(`userfastboot_only', ifelse(target_userfastboot, `true', $1, ))
+
+define(`notuserfastboot', ifelse(target_userfastboot, `true', -userfastboot, ))
+
+
+#####################################
+# target_only(target, rules)
+# SELinux rules which only apply to a particular target
+# target - the target name in TARGET_PRODUCT. Note this is a substring search
+#          so target_only(`coh', `rules') is the same as target_only(`coho', `rules')
+# rules - Any rules you wish to add, make sure to quote them with `'
+#
+define(`target_only', `ifelse(eval(index(board_sepolicy_target_product, $1) >= 0),1,$2)')
+
+#####################################
+# module_only(module_name, rules)
+# Only add rules if a module is true.
+# Note: that a module must declare themselves exported
+# by adding BOARD_SEPOLICY_M4DEFS += module_<modname>=true
+# in the module specific mixin BoardConfig.mk file.
+# WARNING: <modname> cannot contain a dash, use underscores.
+define(`module_only', `ifelse(module_$1, `true', $2)')
+
+# ignore_adb_debug(domain)
+# Some hal interface expose a forwarded port over adb
+# for debugging, ignore these. If you need to access
+# the port, run setenforce 0 from a root shell.
+define(`ignore_adb_debug', `
+  userdebug_or_eng(`
+    dontaudit $1 node:tcp_socket *;
+    dontaudit $1 self:socket *;
+    dontaudit $1 self:tcp_socket *;
+    dontaudit $1 self:udp_socket *;
+    dontaudit $1 port:tcp_socket *;
+    permissive $1;
+  ')
+')

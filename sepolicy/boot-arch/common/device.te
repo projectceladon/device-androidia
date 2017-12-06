@@ -1,0 +1,9 @@
+#
+# Devices
+#
+type nvm_device, dev_type;
+type rpc_device, dev_type;
+
+# Block Devices
+type nvm_block_device, dev_type;
+type rpc_block_device, dev_type;

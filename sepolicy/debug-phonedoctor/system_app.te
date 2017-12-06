@@ -1,0 +1,11 @@
+# setprop ctl.logconfig
+set_prop(system_app, ctl_logconfig_prop)
+
+allow system_app sysfs_devices_system_cpu:file rw_file_perms;
+
+# com.intel.crashreport which is part of the crash_package used by phonedoctor
+# mixin.
+allow system_app sysfs_devices_system_cpu:file rw_file_perms;
+# create_socket_perms does not work becuae of neverallow on write
+allow system_app self:netlink_kobject_uevent_socket { read create setopt bind };
+allowxperm system_app self:netlink_kobject_uevent_socket ioctl SIOCETHTOOL;

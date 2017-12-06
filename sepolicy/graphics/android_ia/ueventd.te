@@ -1,0 +1,1 @@
+allow ueventd sysfs_app_readable:file rw_file_perms;

@@ -1,0 +1,6 @@
+#
+# drm
+#
+
+allow drmserver factory_file:dir r_dir_perms;
+allow drmserver factory_file:file r_file_perms;
