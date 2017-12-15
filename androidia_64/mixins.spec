@@ -31,7 +31,7 @@ usb: host+acc
 lights: true
 thermal: dptf(intel_modem=true)
 config-partition: enabled
-vendor-partition: true(partition_size=1500,partition_name=android_vendor)
+vendor-partition: true
 factory-partition: true
 debug-crashlogd: true
 debug-logs: true
