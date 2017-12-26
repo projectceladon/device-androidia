@@ -66,6 +66,22 @@
                 "tool": "fastboot"
             }, 
             {
+                "args": "flash tos ${tos}", 
+                "description": "Flash tos partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "update"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
                 "args": "flash system ${system}", 
                 "description": "Flash system partition", 
                 "mandatory": true, 
@@ -347,6 +363,22 @@
                 "tool": "fastboot"
             }, 
             {
+                "args": "flash tos ${tos}", 
+                "description": "Flash tos partition", 
+                "mandatory": true, 
+                "precondition": {
+                    "description": "Check battery level: ${battery}mV", 
+                    "expression": "${battery} >= 3500", 
+                    "skipOnFailure": false
+                }, 
+                "restrict": [
+                    "blank"
+                ], 
+                "retry": 1, 
+                "timeout": 60000, 
+                "tool": "fastboot"
+            }, 
+            {
                 "args": "flash system ${system}", 
                 "description": "Flash system partition", 
                 "mandatory": true, 
@@ -497,6 +529,12 @@
                 "name": "factory", 
                 "type": "file", 
                 "value": "factory.img"
+            }, 
+            "tos": {
+                "description": "tos.img", 
+                "name": "tos", 
+                "type": "file", 
+                "value": "tos.img"
             }, 
             "system": {
                 "description": "system.img", 

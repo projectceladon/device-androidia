@@ -17,6 +17,7 @@ flash recovery recovery.img
 flash system system.img
 flash factory factory.img
 flash bootloader bootloader
+flash tos tos.img
 flashing lock
 continue
 # ------------------ END MIX-IN DEFINITIONS ------------------
