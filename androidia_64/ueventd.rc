@@ -77,4 +77,11 @@
 ##############################################################
 # i915 backlight driver
 /sys/devices/pci0000:00/0000:00:02.0/drm/card*/card*/intel_backlight brightness 0644 system system
+##############################################################
+# Source: device/intel/mixins/groups/camera/usbcamera/ueventd.rc
+##############################################################
+# Camera
+/dev/video*       0666  system  camera
+/dev/media*       0660  system  camera
+/dev/v4l-subdev*  0660  system  camera
 # ------------------ END MIX-IN DEFINITIONS ------------------
