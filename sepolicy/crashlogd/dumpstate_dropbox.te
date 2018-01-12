@@ -1,0 +1,27 @@
+userdebug_or_eng(`
+  type dumpstate_dropbox, domain;
+  type dumpstate_dropbox_exec, exec_type, file_type;
+
+  domain_auto_trans(init, dumpstate_dropbox_exec, dumpstate_dropbox)
+
+  permissive dumpstate_dropbox;
+
+  allow dumpstate_dropbox self:capability { chown dac_override };
+  allow dumpstate_dropbox system_server:binder call;
+
+  allow domain dumpstate_dropbox:fd use;
+
+  allow dumpstate_dropbox dropbox_service:service_manager find;
+
+  binder_use(dumpstate_dropbox);
+  binder_call(system_server, dumpstate_dropbox);
+  set_prop(dumpstate_dropbox, ctl_dumpstate_prop)
+  unix_socket_connect(dumpstate_dropbox, dumpstate, dumpstate)
+
+  # Execute shell scripts, toolbox and system bin files.
+  allow dumpstate_dropbox toolbox_exec:file rx_file_perms;
+  allow dumpstate_dropbox shell_exec:file rx_file_perms;
+  allow dumpstate_dropbox system_file:file rx_file_perms;
+  allow dumpstate_dropbox system_data_file:dir { add_name write };
+
+')

@@ -2,4 +2,5 @@
 # dumpstate
 #
 
+allow dumpstate debugfs_graphics_sync:file r_file_perms;
 dontaudit dumpstate debugfs_graphics_sync:file r_file_perms;

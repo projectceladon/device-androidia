@@ -1,0 +1,2 @@
+# user changable crashlogd properties
+persist.crashlogd.          u:object_r:crashlogd_prop:s0
