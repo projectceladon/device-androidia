@@ -4,5 +4,4 @@ type rpmb_block_device, dev_type;
 type cros_ec_device, dev_type;
 type hidraw_device, dev_type;
 type host1x_device, dev_type, mlstrustedobject;
-type rfkill_device, dev_type;
 type config_block_device, dev_type;
