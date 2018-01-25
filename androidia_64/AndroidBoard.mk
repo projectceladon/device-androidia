@@ -257,17 +257,28 @@ include device/intel/android_ia/common/audio/AndroidBoard.mk
 ##############################################################
 INSTALLED_CONFIGIMAGE_TARGET := $(PRODUCT_OUT)/config.img
 
-$(INSTALLED_CONFIGIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK)
+selinux_fc := $(TARGET_ROOT_OUT)/file_contexts.bin
+
+$(INSTALLED_CONFIGIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
+$(INSTALLED_CONFIGIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
 	$(call pretty,"Target config fs image: $(INSTALLED_CONFIGIMAGE_TARGET)")
 	@mkdir -p $(PRODUCT_OUT)/config
-	$(hide)	$(MKEXTUSERIMG) -s \
+	$(hide)	PATH=$(HOST_OUT_EXECUTABLES):$$PATH \
+		$(MKEXTUSERIMG) -s \
 		$(PRODUCT_OUT)/config \
 		$(PRODUCT_OUT)/config.img \
 		ext4 \
 		oem_config \
-		$(BOARD_CONFIGIMAGE_PARTITION_SIZE)
+		$(BOARD_CONFIGIMAGE_PARTITION_SIZE) \
+		$(PRIVATE_SELINUX_FC)
 
 INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_CONFIGIMAGE_TARGET)
+
+selinux_fc :=
+
+selinux_fc :=
+.PHONY: configimage
+configimage: $(INSTALLED_CONFIGIMAGE_TARGET)
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/AndroidBoard.mk
 ##############################################################
@@ -279,11 +290,10 @@ $(PRODUCT_OUT)/vendor.img : $(KERNEL_MODULES_INSTALL)
 # Source: device/intel/mixins/groups/factory-partition/true/AndroidBoard.mk
 ##############################################################
 INSTALLED_FACTORYIMAGE_TARGET := $(PRODUCT_OUT)/factory.img
-#selinux_fc := $(TARGET_ROOT_OUT)/file_contexts
+selinux_fc := $(TARGET_ROOT_OUT)/file_contexts.bin
 
-#$(INSTALLED_FACTORYIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
-#$(INSTALLED_FACTORYIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
-$(INSTALLED_FACTORYIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK)
+$(INSTALLED_FACTORYIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
+$(INSTALLED_FACTORYIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
 	$(call pretty,"Target factory fs image: $(INSTALLED_FACTORYIMAGE_TARGET)")
 	@mkdir -p $(PRODUCT_OUT)/factory
 	$(hide)	$(MKEXTUSERIMG) -s \
@@ -291,12 +301,12 @@ $(INSTALLED_FACTORYIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK)
 		$(PRODUCT_OUT)/factory.img \
 		ext4 \
 		factory \
-		$(BOARD_FACTORYIMAGE_PARTITION_SIZE)
-#		$(PRIVATE_SELINUX_FC)
+		$(BOARD_FACTORYIMAGE_PARTITION_SIZE) \
+		$(PRIVATE_SELINUX_FC)
 
-#INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_FACTORYIMAGE_TARGET)
+INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_FACTORYIMAGE_TARGET)
 
-#selinux_fc :=
+selinux_fc :=
 
 .PHONY: factoryimage
 factoryimage: $(INSTALLED_FACTORYIMAGE_TARGET)

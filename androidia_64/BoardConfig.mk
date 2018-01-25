@@ -39,6 +39,8 @@ ifneq ($(strip $(BOARD_GPU_DRIVERS)),)
 TARGET_HARDWARE_3D := true
 endif
 
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/graphics/android_ia
+
 
 BOARD_USES_DRM_HWCOMPOSER := false
 BOARD_USES_IA_HWCOMPOSER := true
@@ -78,13 +80,17 @@ TARGET_NO_KERNEL ?= false
 KERNEL_LOGLEVEL ?= 3
 SERIAL_PARAMETER := console=tty0 console=ttyS2,115200n8
 
-BOARD_KERNEL_CMDLINE += root=/dev/ram0  androidboot.hardware=$(TARGET_PRODUCT) androidboot.selinux=permissive firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL)
+BOARD_KERNEL_CMDLINE += root=/dev/ram0  androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL)
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 ifeq ($(SPARSE_IMG),true)
 BOARD_KERNEL_CMDLINE += $(SERIAL_PARAMETER)
 endif
 endif
+
+
+BOARD_SEPOLICY_M4DEFS += module_kernel=true
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/kernel
 ##############################################################
 # Source: device/intel/mixins/groups/bluetooth/btusb/BoardConfig.mk
 ##############################################################
@@ -92,6 +98,8 @@ BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_LINUX := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/bcm43241/
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/bluetooth/overlay-bt-pan
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/bluetooth/common \
+                       device/intel/android_ia/sepolicy/bluetooth/btusb
 ##############################################################
 # Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
 ##############################################################
@@ -139,6 +147,8 @@ KERNELFLINGER_SSL_LIBRARY := openssl
 
 # Avoid Watchdog truggered reboot
 BOARD_KERNEL_CMDLINE += iTCO_wdt.force_no_reboot=1
+
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/boot-arch/android_ia
 
 # Show the "OEM unlocking" option in Android "Developer options"
 #PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/android_persistent
@@ -304,7 +314,7 @@ DEVICE_PACKAGE_OVERLAYS += device/intel/common/wlan/overlay-miracast-force-singl
 
 
 BOARD_SEPOLICY_M4DEFS += module_iwlwifi=true
-BOARD_SEPOLICY_DIRS += device/intel/sepolicy/wlan/iwlwifi
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/wlan/iwlwifi
 ##############################################################
 # Source: device/intel/mixins/groups/cpu-arch/skl/BoardConfig.mk
 ##############################################################
@@ -345,6 +355,8 @@ BOARD_KERNEL_CMDLINE += thermal.off=1
 # Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
 ##############################################################
 BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
+BOARD_SEPOLICY_M4DEFS += module_config_partition=true
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/config-partition
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/BoardConfig.mk
 ##############################################################
@@ -367,7 +379,7 @@ BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
 # Source: device/intel/mixins/groups/debug-phonedoctor/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_M4DEFS += module_debug_phonedoctor=true
-BOARD_SEPOLICY_DIRS += device/intel/sepolicy/debug-phonedoctor
+BOARD_SEPOLICY_DIRS += device/intel/androidia/sepolicy/debug-phonedoctor
 ##############################################################
 # Source: device/intel/mixins/groups/flashfiles/ini/BoardConfig.mk
 ##############################################################

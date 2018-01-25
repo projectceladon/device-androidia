@@ -532,7 +532,7 @@ on boot
 ##############################################################
 # Enable SELinux labeling
 on post-fs
-    restorecon_recursive /config
+    restorecon_recursive /oem_config
 ##############################################################
 # Source: device/intel/mixins/groups/factory-partition/true/init.rc
 ##############################################################
