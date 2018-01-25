@@ -159,10 +159,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     device/intel/android_ia/common/graphics/drirc:system/etc/drirc
 
-# Memtrack HAL
-PRODUCT_PACKAGES += \
-    memtrack.android_ia
-
 
 # HWComposer IA
 PRODUCT_PACKAGES += \
@@ -514,6 +510,14 @@ endif
 PRODUCT_PACKAGES += \
 	libtrusty
 
+##############################################################
+# Source: device/intel/mixins/groups/memtrack/true/product.mk
+##############################################################
+# memtrack HAL
+PRODUCT_PACKAGES += \
+	memtrack.android_ia \
+	android.hardware.memtrack@1.0-service \
+	android.hardware.memtrack@1.0-impl
 ##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/product.mk
 ##############################################################
