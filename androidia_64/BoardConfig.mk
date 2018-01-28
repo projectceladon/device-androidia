@@ -45,6 +45,8 @@ BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/graphics/android_ia
 BOARD_USES_DRM_HWCOMPOSER := false
 BOARD_USES_IA_HWCOMPOSER := true
 
+DISABLE_MEDIA_COMPOSITOR := true
+
 BOARD_USES_MINIGBM := true
 BOARD_ENABLE_EXPLICIT_SYNC := true
 INTEL_MINIGBM := external/minigbm
