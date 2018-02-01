@@ -363,8 +363,6 @@ PRODUCT_PACKAGES += \
     wpa_cli \
     iw
    
-	
-
 # FW and PNVM
 PRODUCT_PACKAGES += \
     iwl-fw          \

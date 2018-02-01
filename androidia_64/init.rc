@@ -510,6 +510,12 @@ service iprenew_p2p /system/bin/dhcpcd -n
     oneshot
 
 
+on post-fs
+    insmod /vendor/lib/modules/kernel/net/wireless/cfg80211.ko
+    insmod /vendor/lib/modules/kernel/net/mac80211/mac80211.ko
+    insmod /vendor/lib/modules/kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
+    insmod /vendor/lib/modules/kernel/drivers/net/wireless/intel/iwlwifi/mvm/iwlmvm.ko
+
 ##############################################################
 # Source: device/intel/mixins/groups/cpuset/4cores/init.rc
 ##############################################################
