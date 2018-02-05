@@ -1,0 +1,19 @@
+#
+# hal memtrack default service
+#
+
+# Goes diving into /proc/<pid>/smaps
+typeattribute hal_memtrack_default mlstrustedsubject;
+
+allow hal_memtrack_default domain:dir search;
+allow hal_memtrack_default domain:file r_file_perms;
+
+allow hal_memtrack_default proc_meminfo:file r_file_perms;
+
+# /sys/devices/pci0000:00/0000:00:02.0/drm/card0/gfx_memtrack/3973
+allow hal_memtrack_default sysfs:file r_file_perms;
+
+# /sys/devices/virtual/block/zram0/mem_used_total
+allow hal_memtrack_default sysfs_zram:dir search;
+allow hal_memtrack_default sysfs_zram:file r_file_perms;
+

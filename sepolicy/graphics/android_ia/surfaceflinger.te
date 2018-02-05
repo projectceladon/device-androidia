@@ -27,5 +27,6 @@ allowxperm surfaceflinger gpu_device:chr_file ioctl {
 	DRM_IOCTL_I915_GEM_CONTEXT_CREATE
 	DRM_IOCTL_I915_GEM_MMAP_GTT
 	DRM_IOCTL_MODE_GETPROPERTY
+	DRM_IOCTL_I915_GEM_WAIT
 	0x6475
 };
