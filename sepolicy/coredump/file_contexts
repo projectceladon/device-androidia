@@ -1,0 +1,2 @@
+# Coredump path
+/data/core(/.*)?                u:object_r:coredump_log_file:s0

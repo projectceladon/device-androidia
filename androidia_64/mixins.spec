@@ -35,6 +35,7 @@ vendor-partition: true(partition_size=1500,partition_name=android_vendor)
 factory-partition: true
 debug-crashlogd: true
 debug-logs: true
+debug-coredump: true
 debug-phonedoctor: true
 debug-tools: true
 flashfiles: ini(oemvars=false,version=3.0,fastboot_min_battery_level=3500,installer=true)

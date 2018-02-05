@@ -1,0 +1,1 @@
+type coredump_log_file, mlstrustedobject, file_type, data_file_type;
