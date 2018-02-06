@@ -573,7 +573,6 @@ ifeq ($(ENABLE_NATIVEBRIDGE_64BIT),true)
   PRODUCT_PACKAGES += houdini64
   PRODUCT_PROPERTY_OVERRIDES += ro.dalvik.vm.isa.arm64=x86_64 ro.enable.native.bridge.exec64=1
 endif
-$(call inherit-product,build/target/product/verity.mk)
 ##############################################################
 # Source: device/intel/mixins/groups/debug-phonedoctor/true/product.mk
 ##############################################################
