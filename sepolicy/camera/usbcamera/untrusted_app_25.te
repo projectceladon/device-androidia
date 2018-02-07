@@ -1,0 +1,11 @@
+#============= untrusted_app_25 ==============
+
+allow untrusted_app_25 device:dir open;
+allow untrusted_app_25 device:dir read;
+allow untrusted_app_25 video_device:chr_file { ioctl map };
+allow untrusted_app_25 video_device:chr_file open;
+#allow untrusted_app_25 video_device:chr_file read;
+#allow untrusted_app_25 video_device:chr_file write;
+
+#avc: denied { write } for pid=6896 comm="pool-3-thread-1" path=2F64726D206D6D206 dev="tmpfs" ino=56699 scontext=u:r:untrusted_app_25:s0:c512,c768 tcontext=u:object_r:hal_graphics_allocator_default_tmpfs:s0 tclass=file permissive=0
+allow untrusted_app_25 hal_graphics_allocator_default_tmpfs:file write;
