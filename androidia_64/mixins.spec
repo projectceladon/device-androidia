@@ -45,3 +45,5 @@ slcan: default
 ioc-slcan-reboot: false
 camera: usbcamera
 memtrack: true
+avb: true
+slot-ab: true
