@@ -429,7 +429,7 @@ BOARD_KERNEL_CMDLINE += cpu_init_udelay=500000
 ##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/sepolicy/memtrack
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/memtrack
 # ------------------ END MIX-IN DEFINITIONS ------------------
 
 # Install Native Bridge
