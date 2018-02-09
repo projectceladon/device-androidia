@@ -427,6 +427,10 @@ TRUSTY_ENV_VAR += LKBIN_DIR=$(TRUSTY_BUILDROOT)/build-sand-x86-64/
 #Workaround CPU lost issue on SIMICS, will remove this line below after PO.
 BOARD_KERNEL_CMDLINE += cpu_init_udelay=500000
 ##############################################################
+# Source: device/intel/mixins/groups/camera/usbcamera/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/camera/usbcamera
+##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/memtrack
