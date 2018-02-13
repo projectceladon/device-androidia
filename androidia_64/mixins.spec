@@ -45,5 +45,6 @@ slcan: default
 ioc-slcan-reboot: false
 camera: usbcamera
 memtrack: true
+touch: galax7200
 avb: true
 slot-ab: true
