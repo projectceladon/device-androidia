@@ -78,7 +78,7 @@ domainGroup: DeviceForStrategy
 				#
 				TelephonyMode IsNot InCall
 				TelephonyMode IsNot InCommunication
-				ForceUseForMedia Is ForceNoBtA2dp
+				ForceUseForMedia IsNot ForceNoBtA2dp
 				AvailableOutputDevices Includes BluetoothA2dp
 
 				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
@@ -96,6 +96,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0
 					hdmi = 0
 
 			conf: BluetoothA2dpHeadphones
@@ -105,7 +106,7 @@ domainGroup: DeviceForStrategy
 				#
 				TelephonyMode IsNot InCall
 				TelephonyMode IsNot InCommunication
-				ForceUseForMedia Is ForceNoBtA2dp
+				ForceUseForMedia IsNot ForceNoBtA2dp
 				AvailableOutputDevices Includes BluetoothA2dpHeadphones
 
 				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
@@ -123,6 +124,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0
 					hdmi = 0
 
 			conf: BluetoothA2dpSpeaker
@@ -132,7 +134,7 @@ domainGroup: DeviceForStrategy
 				#
 				TelephonyMode IsNot InCall
 				TelephonyMode IsNot InCommunication
-				ForceUseForMedia Is ForceNoBtA2dp
+				ForceUseForMedia IsNot ForceNoBtA2dp
 				AvailableOutputDevices Includes BluetoothA2dpSpeaker
 
 				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
@@ -150,6 +152,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: BluetoothScoCarkit
@@ -177,6 +180,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0
 					hdmi = 0
 
 			conf: BluetoothScoHeadset
@@ -204,6 +208,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0
 					hdmi = 0
 
 			conf: BluetoothSco
@@ -231,6 +236,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0
 					hdmi = 0
 
 			conf: WiredHeadphone
@@ -268,6 +274,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0
 					hdmi = 0
 
 			conf: Line
@@ -309,6 +316,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: WiredHeadset
@@ -346,6 +354,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0
 					hdmi = 0
 
 			conf: UsbDevice
@@ -385,6 +394,47 @@ domainGroup: DeviceForStrategy
 					usb_accessory = 0
 					usb_device = 1
 					hdmi = 0
+					usb_headset = 0
+
+			conf: UsbHeadset
+				ANY
+					ALL
+						#
+						# SonificationRespectful Follows Phone strategy if in call
+						#
+						ANY
+							TelephonyMode Is InCall
+							TelephonyMode Is InCommunication
+						ForceUseForCommunication IsNot ForceSpeaker
+					ALL
+						#
+						# SonificationRespectful Follows Sonification that falls through Media strategy if not in call
+						# SonificationRespectful follows media if music stream is active
+						#
+						TelephonyMode IsNot InCall
+						TelephonyMode IsNot InCommunication
+						ForceUseForMedia IsNot ForceSpeaker
+						AvailableOutputDevices Excludes UsbAccessory
+					AvailableOutputDevices Includes UsbHeadset
+
+				component: /Policy/policy/strategies/sonification_respectful/selected_output_devices/mask
+					earpiece = 0
+					bluetooth_sco = 0
+					bluetooth_sco_headset = 0
+					bluetooth_sco_carkit = 0
+					bluetooth_a2dp_headphones = 0
+					bluetooth_a2dp_speaker = 0
+					bluetooth_a2dp = 0
+					wired_headset = 0
+					wired_headphone = 0
+					line = 0
+					angl_dock_headset = 0
+					dgtl_dock_headset = 0
+					usb_accessory = 0
+					usb_device = 0
+					usb_headset = 1
+					hdmi = 0
+
 
 			conf: UsbAccessory
 				#
@@ -414,6 +464,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 1
 					usb_device = 0
+					usb_headset = 0
 					hdmi = 0
 
 			conf: DgtlDockHeadset
@@ -444,6 +495,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 1
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0
 					hdmi = 0
 
 			conf: AuxDigital
@@ -474,6 +526,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0
 					hdmi = 1
 
 			conf: AnlgDockHeadset
@@ -505,6 +558,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0
 					hdmi = 0
 
 			conf: Earpiece
@@ -532,5 +586,6 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 

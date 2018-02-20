@@ -50,6 +50,7 @@ supDomain: DeviceForInputSource
 				dgtl_dock_headset = 0
 				usb_accessory = 0
 				usb_device = 0
+				usb_headset = 0
 				fm_tuner = 0
 				tv_tuner = 0
 				line = 0
@@ -72,6 +73,7 @@ supDomain: DeviceForInputSource
 				dgtl_dock_headset = 0
 				usb_accessory = 0
 				usb_device = 0
+				usb_headset = 0
 				fm_tuner = 0
 				tv_tuner = 0
 				line = 0
@@ -94,6 +96,7 @@ supDomain: DeviceForInputSource
 				dgtl_dock_headset = 0
 				usb_accessory = 0
 				usb_device = 0
+				usb_headset = 0
 				fm_tuner = 0
 				tv_tuner = 0
 				line = 0
@@ -115,6 +118,7 @@ supDomain: DeviceForInputSource
 				dgtl_dock_headset = 0
 				usb_accessory = 0
 				usb_device = 0
+				usb_headset = 0
 				fm_tuner = 0
 				tv_tuner = 0
 				line = 0
@@ -174,6 +178,7 @@ supDomain: DeviceForInputSource
 				dgtl_dock_headset = 0
 				usb_accessory = 0
 				usb_device = 0
+				usb_headset = 0
 				fm_tuner = 0
 				tv_tuner = 0
 				line = 0
@@ -235,6 +240,7 @@ supDomain: DeviceForInputSource
 				dgtl_dock_headset = 0
 				usb_accessory = 0
 				usb_device = 0
+				usb_headset = 0
 				tv_tuner = 0
 				line = 0
 				spdif = 0
@@ -253,12 +259,14 @@ supDomain: DeviceForInputSource
 					bluetooth_a2dp = 1
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 					bluetooth_sco_headset = 0
 				component: mic/applicable_input_device/mask/
 					bluetooth_a2dp = 1
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0 
 					builtin_mic = 0
 					bluetooth_sco_headset = 0
 
@@ -271,12 +279,14 @@ supDomain: DeviceForInputSource
 					bluetooth_a2dp = 0
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 					bluetooth_sco_headset = 1
 				component: mic/applicable_input_device/mask/
 					bluetooth_a2dp = 0
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 					bluetooth_sco_headset = 1
 
@@ -288,12 +298,14 @@ supDomain: DeviceForInputSource
 					bluetooth_a2dp = 0
 					wired_headset = 1
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 					bluetooth_sco_headset = 0
 				component: mic/applicable_input_device/mask/
 					bluetooth_a2dp = 0
 					wired_headset = 1
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 					bluetooth_sco_headset = 0
 
@@ -305,14 +317,35 @@ supDomain: DeviceForInputSource
 					bluetooth_a2dp = 0
 					wired_headset = 0
 					usb_device = 1
+					usb_headset = 0
 					builtin_mic = 0
 					bluetooth_sco_headset = 0
 				component: mic/applicable_input_device/mask/
 					bluetooth_a2dp = 0
 					wired_headset = 0
 					usb_device = 1
+					usb_headset = 0
 					builtin_mic = 0
 					bluetooth_sco_headset = 0
+		conf: UsbHeadset
+			AvailableInputDevices Includes UsbHeadset
+
+			component: /Policy/policy/input_sources
+				component: default/applicable_input_device/mask/
+					bluetooth_a2dp = 0
+					wired_headset = 0
+					usb_device = 0
+					usb_headset = 1
+					builtin_mic = 0
+					bluetooth_sco_headset = 0
+				component: mic/applicable_input_device/mask/
+					bluetooth_a2dp = 0
+					wired_headset = 0
+					usb_device = 0
+					usb_headset = 1
+					builtin_mic = 0
+					bluetooth_sco_headset = 0
+            
 
 		conf: BuiltinMic
 			AvailableInputDevices Includes BuiltinMic
@@ -322,12 +355,14 @@ supDomain: DeviceForInputSource
 					bluetooth_a2dp = 0
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 1
 					bluetooth_sco_headset = 0
 				component: mic/applicable_input_device/mask/
 					bluetooth_a2dp = 0
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0 
 					builtin_mic = 1
 					bluetooth_sco_headset = 0
 
@@ -337,12 +372,14 @@ supDomain: DeviceForInputSource
 					bluetooth_a2dp = 0
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 					bluetooth_sco_headset = 0
 				component: mic/applicable_input_device/mask/
 					bluetooth_a2dp = 0
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 					bluetooth_sco_headset = 0
 
@@ -391,16 +428,19 @@ supDomain: DeviceForInputSource
 					bluetooth_sco_headset = 1
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 				component: unprocessed/applicable_input_device/mask
 					bluetooth_sco_headset = 1
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 				component: hotword/applicable_input_device/mask
 					bluetooth_sco_headset = 1
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 
 		conf: WiredHeadset
@@ -411,16 +451,19 @@ supDomain: DeviceForInputSource
 					bluetooth_sco_headset = 0
 					wired_headset = 1
 					usb_device = 0
+					usb_headset = 0 
 					builtin_mic = 0
 				component: unprocessed/applicable_input_device/mask
 					bluetooth_sco_headset = 0
 					wired_headset = 1
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 				component: hotword/applicable_input_device/mask
 					bluetooth_sco_headset = 0
 					wired_headset = 1
-					usb_device = 0
+					usb_device  = 0
+					usb_headset = 0 
 					builtin_mic = 0
 
 		conf: UsbDevice
@@ -431,17 +474,44 @@ supDomain: DeviceForInputSource
 					bluetooth_sco_headset = 0
 					wired_headset = 0
 					usb_device = 1
+					usb_headset = 0
 					builtin_mic = 0
 				component: unprocessed/applicable_input_device/mask
 					bluetooth_sco_headset = 0
 					wired_headset = 0
 					usb_device = 1
+					usb_headset = 0
 					builtin_mic = 0
 				component: hotword/applicable_input_device/mask
 					bluetooth_sco_headset = 0
 					wired_headset = 0
 					usb_device = 1
+					usb_headset = 0
 					builtin_mic = 0
+
+		conf: UsbHeadset
+			AvailableInputDevices Includes UsbHeadset
+
+			component: /Policy/policy/input_sources
+				component: voice_recognition/applicable_input_device/mask
+					bluetooth_sco_headset = 0
+					wired_headset = 0
+					usb_device = 0
+					usb_headset = 1
+					builtin_mic = 0
+				component: unprocessed/applicable_input_device/mask
+					bluetooth_sco_headset = 0
+					wired_headset = 0
+					usb_device = 0
+					usb_headset = 1
+					builtin_mic = 0
+				component: hotword/applicable_input_device/mask
+					bluetooth_sco_headset = 0
+					wired_headset = 0
+					usb_device = 0
+					usb_headset = 1
+					builtin_mic = 0
+
 
 		conf: BuiltinMic
 			AvailableInputDevices Includes BuiltinMic
@@ -451,16 +521,19 @@ supDomain: DeviceForInputSource
 					bluetooth_sco_headset = 0
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 1
 				component: unprocessed/applicable_input_device/mask
 					bluetooth_sco_headset = 0
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 1
 				component: hotword/applicable_input_device/mask
 					bluetooth_sco_headset = 0
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 1
 
 		conf: Default
@@ -469,16 +542,19 @@ supDomain: DeviceForInputSource
 					bluetooth_sco_headset = 0
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 				component: unprocessed/applicable_input_device/mask
 					bluetooth_sco_headset = 0
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 				component: hotword/applicable_input_device/mask
 					bluetooth_sco_headset = 0
 					wired_headset = 0
 					usb_device = 0
+					usb_headset = 0
 					builtin_mic = 0
 
 	domain: VoiceCommunication
@@ -493,6 +569,7 @@ supDomain: DeviceForInputSource
 				bluetooth_sco_headset = 1
 				wired_headset = 0
 				usb_device = 0
+				usb_headset = 0
 				builtin_mic = 0
 				back_mic = 0
 
@@ -504,6 +581,7 @@ supDomain: DeviceForInputSource
 				bluetooth_sco_headset = 0
 				wired_headset = 1
 				usb_device = 0
+				usb_headset = 0
 				builtin_mic = 0
 				back_mic = 0
 
@@ -515,6 +593,19 @@ supDomain: DeviceForInputSource
 				bluetooth_sco_headset = 0
 				wired_headset = 0
 				usb_device = 1
+				usb_headset = 0
+				builtin_mic = 0
+				back_mic = 0
+       
+		conf: UsbHeadset
+			ForceUseForCommunication Is ForceNone
+			AvailableInputDevices Includes UsbHeadset
+
+			component: /Policy/policy/input_sources/voice_communication/applicable_input_device/mask
+				bluetooth_sco_headset = 0
+				wired_headset = 0
+				usb_device = 0
+				usb_headset = 1
 				builtin_mic = 0
 				back_mic = 0
 
@@ -530,6 +621,7 @@ supDomain: DeviceForInputSource
 				bluetooth_sco_headset = 0
 				wired_headset = 0
 				usb_device = 0
+				usb_headset = 0
 				builtin_mic = 1
 				back_mic = 0
 
@@ -541,6 +633,7 @@ supDomain: DeviceForInputSource
 				bluetooth_sco_headset = 0
 				wired_headset = 0
 				usb_device = 0
+				usb_headset = 0
 				builtin_mic = 0
 				back_mic = 1
 
@@ -552,6 +645,7 @@ supDomain: DeviceForInputSource
 				bluetooth_sco_headset = 0
 				wired_headset = 0
 				usb_device = 0
+				usb_headset = 0
 				builtin_mic = 1
 				back_mic = 0
 

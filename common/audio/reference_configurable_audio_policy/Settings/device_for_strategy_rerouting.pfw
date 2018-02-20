@@ -38,6 +38,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: BluetoothA2dp
@@ -57,6 +58,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: BluetoothA2dpHeadphone
@@ -76,6 +78,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: BluetoothA2dpSpeaker
@@ -95,6 +98,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: ForceSpeaker
@@ -114,6 +118,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: WiredHeadphone
@@ -132,6 +137,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: Line
@@ -150,6 +156,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: WiredHeadset
@@ -168,6 +175,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: UsbAccessory
@@ -186,6 +194,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 1
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: UsbDevice
@@ -204,6 +213,26 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 1
+					usb_headset = 0
+					hdmi = 0
+
+			conf: UsbHeadset
+				AvailableOutputDevices Includes UsbHeadset
+
+				component: /Policy/policy/strategies/rerouting/selected_output_devices/mask
+					remote_submix = 0
+					bluetooth_a2dp = 0
+					bluetooth_a2dp_headphones = 0
+					bluetooth_a2dp_speaker = 0
+					speaker = 0
+					wired_headset = 0
+					wired_headphone = 0
+					line = 0
+					angl_dock_headset = 0
+					dgtl_dock_headset = 0
+					usb_accessory = 0
+					usb_device = 0
+					usb_headset = 1
 					hdmi = 0
 
 			conf: DgtlDockHeadset
@@ -222,6 +251,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 1
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: AuxDigital
@@ -243,6 +273,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 1
 
 			conf: AnlgDockHeadset
@@ -262,6 +293,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: Speaker
@@ -280,6 +312,7 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0 
 					hdmi = 0
 
 			conf: Default
@@ -296,5 +329,6 @@ domainGroup: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 0
+					usb_headset = 0
 					hdmi = 0
 

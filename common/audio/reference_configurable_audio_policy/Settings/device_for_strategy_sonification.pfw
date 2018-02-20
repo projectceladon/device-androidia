@@ -72,7 +72,8 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 0
 					dgtl_dock_headset = 0
 					usb_accessory = 0
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 0
 
@@ -98,7 +99,8 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 0
 					dgtl_dock_headset = 0
 					usb_accessory = 0
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 0
 
@@ -124,7 +126,8 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 0
 					dgtl_dock_headset = 0
 					usb_accessory = 0
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 0
 
@@ -151,7 +154,8 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 0
 					dgtl_dock_headset = 0
 					usb_accessory = 0
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 0
 
@@ -178,7 +182,8 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 0
 					dgtl_dock_headset = 0
 					usb_accessory = 0
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 0
 
@@ -205,7 +210,8 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 0
 					dgtl_dock_headset = 0
 					usb_accessory = 0
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 0
 
@@ -241,7 +247,8 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 0
 					dgtl_dock_headset = 0
 					usb_accessory = 0
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 0
 
@@ -279,7 +286,8 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 0
 					dgtl_dock_headset = 0
 					usb_accessory = 0
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 1
 
@@ -315,7 +323,8 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 0
 					dgtl_dock_headset = 0
 					usb_accessory = 0
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 0
 
@@ -353,6 +362,45 @@ supDomain: DeviceForStrategy
 					dgtl_dock_headset = 0
 					usb_accessory = 0
 					usb_device = 1
+					usb_headset = 0
+					telephony_tx = 0
+					line = 0
+
+			conf: UsbHeadset
+				AvailableOutputDevices Includes UsbHeadset
+				ANY
+					#
+					# Sonification falls through media strategy if not in call (widely speaking)
+					#
+					ALL
+						AvailableOutputDevices Excludes UsbAccessory
+						TelephonyMode IsNot InCall
+						TelephonyMode IsNot InCommunication
+						ForceUseForMedia IsNot ForceSpeaker
+					ALL
+						#
+						# Sonification Follows Phone Strategy if in call (widely speaking)
+						#
+						ANY
+							TelephonyMode Is InCall
+							TelephonyMode Is InCommunication
+						ForceUseForCommunication IsNot ForceSpeaker
+
+				component: /Policy/policy/strategies/sonification/selected_output_devices/mask
+					earpiece = 0
+					wired_headset = 0
+					wired_headphone = 0
+					bluetooth_sco = 0
+					bluetooth_sco_headset = 0
+					bluetooth_sco_carkit = 0
+					bluetooth_a2dp = 0
+					bluetooth_a2dp_headphones = 0
+					bluetooth_a2dp_speaker = 0
+					angl_dock_headset = 0
+					dgtl_dock_headset = 0
+					usb_accessory = 0
+					usb_device = 0
+					usb_headset = 1
 					telephony_tx = 0
 					line = 0
 
@@ -381,7 +429,8 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 0
 					dgtl_dock_headset = 0
 					usb_accessory = 1
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 0
 
@@ -410,7 +459,8 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 0
 					dgtl_dock_headset = 1
 					usb_accessory = 0
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 0
 
@@ -440,7 +490,8 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 1
 					dgtl_dock_headset = 0
 					usb_accessory = 0
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 0
 
@@ -467,7 +518,8 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 0
 					dgtl_dock_headset = 0
 					usb_accessory = 0
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 0
 
@@ -485,6 +537,7 @@ supDomain: DeviceForStrategy
 					angl_dock_headset = 0
 					dgtl_dock_headset = 0
 					usb_accessory = 0
-					usb_device = 0
+					usb_device = 0 
+					usb_headset = 0
 					telephony_tx = 0
 					line = 0

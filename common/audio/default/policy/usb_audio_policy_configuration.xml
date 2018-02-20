@@ -22,7 +22,9 @@
                      samplingRates="44100" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
         </mixPort>
         <mixPort name="usb_device output" role="source"/>
+        <mixPort name="usb_headset output" role="source"/>
         <mixPort name="usb_device input" role="sink"/>
+        <mixPort name="usb_headset input" role="sink"/>
     </mixPorts>
     <devicePorts>
         <devicePort tagName="USB Host Out" type="AUDIO_DEVICE_OUT_USB_ACCESSORY" role="sink">
@@ -30,14 +32,20 @@
                      samplingRates="44100" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
         </devicePort>
         <devicePort tagName="USB Device Out" type="AUDIO_DEVICE_OUT_USB_DEVICE" role="sink"/>
+        <devicePort tagName="USB Headset Out" type="AUDIO_DEVICE_OUT_USB_HEADSET" role="sink"/>
         <devicePort tagName="USB Device In" type="AUDIO_DEVICE_IN_USB_DEVICE" role="source"/>
+        <devicePort tagName="USB Headset In" type="AUDIO_DEVICE_IN_USB_HEADSET" role="source"/>
     </devicePorts>
     <routes>
         <route type="mix" sink="USB Host Out"
                sources="usb_accessory output"/>
         <route type="mix" sink="USB Device Out"
                sources="usb_device output"/>
+        <route type="mix" sink="USB Headset Out"
+               sources="usb_headset output"/>
         <route type="mix" sink="usb_device input"
                sources="USB Device In"/>
+        <route type="mix" sink="usb_headset input"
+               sources="USB Headset In"/>
     </routes>
 </module>
