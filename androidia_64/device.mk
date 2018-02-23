@@ -546,6 +546,12 @@ PRODUCT_PACKAGES += \
 	android.hardware.memtrack@1.0-service \
 	android.hardware.memtrack@1.0-impl
 ##############################################################
+# Source: device/intel/mixins/groups/touch/galax7200/product.mk
+##############################################################
+PRODUCT_COPY_FILES += \
+        frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:vendor/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml\
+        device/intel/common/touch/Vendor_0eef_Product_7200.idc:system/usr/idc/Vendor_0eef_Product_7200.idc
+##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)
