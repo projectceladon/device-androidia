@@ -555,6 +555,10 @@ import /init.logs.rc
 ##############################################################
 import /init.crashlogd.rc
 ##############################################################
+# Source: device/intel/mixins/groups/debug-coredump/true/init.rc
+##############################################################
+import /init.coredump.rc
+##############################################################
 # Source: device/intel/mixins/groups/midi/true/init.rc
 ##############################################################
 on property:sys.usb.config=midi

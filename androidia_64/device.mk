@@ -477,6 +477,23 @@ CRASHLOGD_MODULE_MODEM ?= true
 CRASHLOGD_USE_SD := false
 endif
 ##############################################################
+# Source: device/intel/mixins/groups/debug-coredump/true/product.mk
+##############################################################
+ifeq ($(MIXIN_DEBUG_LOGS),true)
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/init.coredump.rc:root/init.coredump.rc
+endif
+
+ifeq ($(MIXIN_DEBUG_LOGS),true)
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/coredump
+# Enable core dump for eng builds
+ifeq ($(TARGET_BUILD_VARIANT),eng)
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.core.enabled=1
+else
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.core.enabled=0
+endif
+CRASHLOGD_COREDUMP := true
+endif
+##############################################################
 # Source: device/intel/mixins/groups/debug-phonedoctor/true/product.mk
 ##############################################################
 ifeq ($(MIXIN_DEBUG_LOGS),true)
