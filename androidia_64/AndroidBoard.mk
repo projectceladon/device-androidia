@@ -357,6 +357,7 @@ $(BOARD_GPT_BIN): $(TARGET_DEVICE_DIR)/gpt.ini
 ##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/AndroidBoard.mk
 ##############################################################
+pfw_rebuild_settings := true
 # Target specific audio configuration files
 include device/intel/android_ia/common/audio/AndroidBoard.mk
 ##############################################################
