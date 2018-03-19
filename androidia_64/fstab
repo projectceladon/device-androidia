@@ -6,6 +6,25 @@
 */usb*/*/host*/*/block/sd*              auto             auto    defaults                                   voldmanaged=usbdisk:auto
 */mmc0/*/block/mmcblk*                  auto             auto    defaults                                   voldmanaged=sdcard1:auto,encryptable=userdata
 ##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/fstab
+##############################################################
+/dev/block/by-name/factory      /factory        ext4    rw,noatime                                                  wait
+##############################################################
+# Source: device/intel/mixins/groups/config-partition/enabled/fstab
+##############################################################
+/dev/block/by-name/config	    /oem_config     ext4    noatime,nosuid,nodev,errors=panic                           wait,check
+##############################################################
+# Source: device/intel/mixins/groups/avb/true/fstab
+##############################################################
+/dev/block/by-name/vbmeta       /vbmeta         emmc    defaults                                                    defaults,slotselect,avb
+##############################################################
+# Source: device/intel/mixins/groups/vendor-partition/true/fstab
+##############################################################
+# Following line is required if you use a vendor image.
+# If the vendor image is not used,
+# following line should be commented with the related ones in BoardConfig.mk
+/dev/block/by-name/vendor	    /vendor         ext4    ro                                                          wait,slotselect,avb
+##############################################################
 # Source: device/intel/mixins/groups/boot-arch/android_ia/fstab
 ##############################################################
 # Android fstab file.
@@ -13,33 +32,18 @@
 # The filesystem that contains the filesystem checker binary (typically /system) cannot
 # specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
 
-/devices/*/usb*/*		auto	auto	defaults		voldmanaged=usb:auto,encryptable=userdata
-/devices/*/*sdmmc*/*		auto	auto	defaults		voldmanaged=sdcard1:auto,encryptable=userdata
-/devices/*/80860F14:01/mmc_*	auto	auto	defaults		voldmanaged=sdcard1:auto,encryptable=userdata
+/devices/*/usb*/*               auto            auto    defaults                                                    voldmanaged=usb:auto,encryptable=userdata
+/devices/*/*sdmmc*/*            auto            auto    defaults                                                    voldmanaged=sdcard1:auto,encryptable=userdata
+/devices/*/80860F14:01/mmc_*    auto            auto    defaults                                                    voldmanaged=sdcard1:auto,encryptable=userdata
 
-/dev/block/by-name/android_system   	/system         ext4    ro															wait
-/dev/block/by-name/android_cache		/cache          ext4    noatime,nosuid,nodev,errors=panic                           wait,check
-/dev/block/by-name/android_data         /data           ext4    noatime,nosuid,nodev,discard,noauto_da_alloc,errors=panic   wait,check,formattable,forceencrypt=/dev/block/by-name/android_metadata,quota
-/dev/block/by-name/android_boot         /boot           emmc    defaults                                                    defaults
-/dev/block/by-name/android_recovery     /recovery       emmc    defaults                                                    defaults
-/dev/block/by-name/android_misc         /misc           emmc    defaults                                                    defaults
-/dev/block/by-name/android_bootloader   /bootloader     emmc    defaults                                                    recoveryonly
-/dev/block/by-name/android_bootloader2  /bootloader2    emmc    defaults                                                    recoveryonly
-/dev/block/by-name/android_persistent   /persistent     emmc    defaults                                                    defaults
-/dev/block/by-name/android_metadata     /metadata       emmc    defaults                                                    defaults
-##############################################################
-# Source: device/intel/mixins/groups/config-partition/enabled/fstab
-##############################################################
-/dev/block/by-name/android_config	/oem_config         ext4    noatime,nosuid,nodev,errors=panic          wait,check
-##############################################################
-# Source: device/intel/mixins/groups/vendor-partition/true/fstab
-##############################################################
-# Following line is required if you use a vendor image.
-# If the vendor image is not used,
-# following line should be commented with the related ones in BoardConfig.mk
-/dev/block/by-name/android_vendor	/vendor         ext4    ro                                         wait
-##############################################################
-# Source: device/intel/mixins/groups/factory-partition/true/fstab
-##############################################################
-/dev/block/by-name/android_factory      /factory        ext4    rw,noatime                                         wait
+# If enable AVB and A/B slot, then will mount system partition as / through /dev/dm-0
+/dev/block/by-name/system       /               ext4    ro                                                          wait,slotselect,avb
+/dev/block/by-name/data         /data           ext4    noatime,nosuid,nodev,discard,noauto_da_alloc,errors=panic   wait,check,formattable,forceencrypt=/dev/block/by-name/metadata,quota
+/dev/block/by-name/boot         /boot           emmc    defaults                                                    defaults,slotselect,avb
+/dev/block/by-name/misc         /misc           emmc    defaults                                                    defaults
+/dev/block/by-name/bootloader   /bootloader     emmc    defaults                                                    recoveryonly
+/dev/block/by-name/bootloader2  /bootloader2    emmc    defaults                                                    recoveryonly
+/dev/block/by-name/persistent   /persistent     emmc    defaults                                                    defaults
+/dev/block/by-name/metadata     /metadata       emmc    defaults                                                    defaults
+/dev/block/by-name/tos          /tos            emmc    defaults                                                    defaults,slotselect,avb
 # ------------------ END MIX-IN DEFINITIONS ------------------

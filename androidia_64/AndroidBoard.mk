@@ -6,6 +6,17 @@
 droid: flashfiles
 	-$(hide) $(ACP) $(out_flashfiles) $(DIST_DIR)
 ##############################################################
+# Source: device/intel/mixins/groups/slot-ab/true/AndroidBoard.mk
+##############################################################
+
+make_dir_slot_ab:
+	@mkdir -p $(PRODUCT_OUT)/root/boot
+	@mkdir -p $(PRODUCT_OUT)/root/misc
+	@mkdir -p $(PRODUCT_OUT)/root/persistent
+	@mkdir -p $(PRODUCT_OUT)/root/metadata
+
+$(PRODUCT_OUT)/ramdisk.img: make_dir_slot_ab
+##############################################################
 # Source: device/intel/mixins/groups/kernel/android_ia/AndroidBoard.mk
 ##############################################################
 ifneq ($(TARGET_PREBUILT_KERNEL),)
@@ -80,6 +91,96 @@ installclean: FILES += $(KERNEL_OUT) $(PRODUCT_OUT)/kernel
 .PHONY: kernel
 kernel: $(PRODUCT_OUT)/kernel
 ##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/AndroidBoard.mk
+##############################################################
+INSTALLED_FACTORYIMAGE_TARGET := $(PRODUCT_OUT)/factory.img
+selinux_fc := $(TARGET_ROOT_OUT)/file_contexts.bin
+
+$(INSTALLED_FACTORYIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
+$(INSTALLED_FACTORYIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
+	$(call pretty,"Target factory fs image: $(INSTALLED_FACTORYIMAGE_TARGET)")
+	@mkdir -p $(PRODUCT_OUT)/factory
+	$(hide)	$(MKEXTUSERIMG) -s \
+		$(PRODUCT_OUT)/factory \
+		$(PRODUCT_OUT)/factory.img \
+		ext4 \
+		factory \
+		$(BOARD_FACTORYIMAGE_PARTITION_SIZE) \
+		$(PRIVATE_SELINUX_FC)
+
+INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_FACTORYIMAGE_TARGET)
+
+selinux_fc :=
+
+.PHONY: factoryimage
+factoryimage: $(INSTALLED_FACTORYIMAGE_TARGET)
+
+make_dir_ab_factory:
+	@mkdir -p $(PRODUCT_OUT)/root/factory
+
+$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_factory
+##############################################################
+# Source: device/intel/mixins/groups/config-partition/enabled/AndroidBoard.mk
+##############################################################
+INSTALLED_CONFIGIMAGE_TARGET := $(PRODUCT_OUT)/config.img
+
+selinux_fc := $(TARGET_ROOT_OUT)/file_contexts.bin
+
+$(INSTALLED_CONFIGIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
+$(INSTALLED_CONFIGIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
+	$(call pretty,"Target config fs image: $(INSTALLED_CONFIGIMAGE_TARGET)")
+	@mkdir -p $(PRODUCT_OUT)/config
+	$(hide)	PATH=$(HOST_OUT_EXECUTABLES):$$PATH \
+		$(MKEXTUSERIMG) -s \
+		$(PRODUCT_OUT)/config \
+		$(PRODUCT_OUT)/config.img \
+		ext4 \
+		oem_config \
+		$(BOARD_CONFIGIMAGE_PARTITION_SIZE) \
+		$(PRIVATE_SELINUX_FC)
+
+INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_CONFIGIMAGE_TARGET)
+
+selinux_fc :=
+
+selinux_fc :=
+.PHONY: configimage
+configimage: $(INSTALLED_CONFIGIMAGE_TARGET)
+
+make_dir_ab_config:
+	@mkdir -p $(PRODUCT_OUT)/root/oem_config
+
+$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_config
+##############################################################
+# Source: device/intel/mixins/groups/variants/default/AndroidBoard.mk
+##############################################################
+# flashfile_add_blob <blob_name> <path> <mandatory> <var_name>
+# - Delete ::variant:: from <path>
+# - If the result does not exists and <mandatory> is set, error
+# - If <var_name> is set, put the result in <var_name>
+# - Add the pair <result>:<blob_name> in BOARD_FLASHFILES_FIRMWARE
+define flashfile_add_blob
+$(eval blob := $(subst ::variant::,,$(2))) \
+$(if $(wildcard $(blob)), \
+    $(if $(4), $(eval $(4) := $(blob))) \
+    $(eval BOARD_FLASHFILES_FIRMWARE += $(blob):$(1)) \
+    , \
+    $(if $(3), $(error $(blob) does not exist)))
+endef
+
+##############################################################
+# Source: device/intel/mixins/groups/vendor-partition/true/AndroidBoard.mk
+##############################################################
+
+# This is to ensure that kernel modules are installed before
+# vendor.img is generated.
+$(PRODUCT_OUT)/vendor.img : $(KERNEL_MODULES_INSTALL)
+
+make_dir_ab_vendor:
+	@mkdir -p $(PRODUCT_OUT)/root/vendor
+
+$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_vendor
+##############################################################
 # Source: device/intel/mixins/groups/boot-arch/android_ia/AndroidBoard.mk
 ##############################################################
 src_loader_file := $(PRODUCT_OUT)/efi/kernelflinger.efi
@@ -96,7 +197,11 @@ else
 out_flashfiles := $(PRODUCT_OUT)/$(TARGET_PRODUCT).flashfiles.$(TARGET_BUILD_VARIANT).$(USER).zip
 endif
 
-$(PRODUCT_OUT)/efi/installer.cmd:
+$(PRODUCT_OUT)/efi/installer.cmd: $(TARGET_DEVICE_DIR)/$(@F)
+	$(ACP) $(TARGET_DEVICE_DIR)/$(@F) $@
+	sed -i '/#/d' $@
+
+$(PRODUCT_OUT)/efi/flash.json: $(TARGET_DEVICE_DIR)/$(@F)
 	$(ACP) $(TARGET_DEVICE_DIR)/$(@F) $@
 	sed -i '/#/d' $@
 
@@ -242,6 +347,13 @@ $(BOOTLOADER_POLICY_OEMVARS): sign-efi-sig-list
 		$(BOOTLOADER_POLICY_OEMVARS)
 endif
 
+
+GPT_INI2BIN := ./device/intel/common/gpt_bin/gpt_ini2bin.py
+
+$(BOARD_GPT_BIN): $(TARGET_DEVICE_DIR)/gpt.ini
+	$(hide) $(GPT_INI2BIN) $< > $@
+	$(hide) echo GEN $(notdir $@)
+
 ##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/AndroidBoard.mk
 ##############################################################
@@ -252,81 +364,6 @@ include device/intel/android_ia/common/audio/AndroidBoard.mk
 ##############################################################
 #LOCAL_KERNEL_PATH := $(abspath $(PRODUCT_OUT)/obj/kernel) is not defined yet
 #$(abspath $(PRODUCT_OUT)/obj/kernel)/copy_modules: iwlwifi
-##############################################################
-# Source: device/intel/mixins/groups/config-partition/enabled/AndroidBoard.mk
-##############################################################
-INSTALLED_CONFIGIMAGE_TARGET := $(PRODUCT_OUT)/config.img
-
-selinux_fc := $(TARGET_ROOT_OUT)/file_contexts.bin
-
-$(INSTALLED_CONFIGIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
-$(INSTALLED_CONFIGIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
-	$(call pretty,"Target config fs image: $(INSTALLED_CONFIGIMAGE_TARGET)")
-	@mkdir -p $(PRODUCT_OUT)/config
-	$(hide)	PATH=$(HOST_OUT_EXECUTABLES):$$PATH \
-		$(MKEXTUSERIMG) -s \
-		$(PRODUCT_OUT)/config \
-		$(PRODUCT_OUT)/config.img \
-		ext4 \
-		oem_config \
-		$(BOARD_CONFIGIMAGE_PARTITION_SIZE) \
-		$(PRIVATE_SELINUX_FC)
-
-INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_CONFIGIMAGE_TARGET)
-
-selinux_fc :=
-
-selinux_fc :=
-.PHONY: configimage
-configimage: $(INSTALLED_CONFIGIMAGE_TARGET)
-##############################################################
-# Source: device/intel/mixins/groups/vendor-partition/true/AndroidBoard.mk
-##############################################################
-
-# This is to ensure that kernel modules are installed before
-# vendor.img is generated.
-$(PRODUCT_OUT)/vendor.img : $(KERNEL_MODULES_INSTALL)
-##############################################################
-# Source: device/intel/mixins/groups/factory-partition/true/AndroidBoard.mk
-##############################################################
-INSTALLED_FACTORYIMAGE_TARGET := $(PRODUCT_OUT)/factory.img
-selinux_fc := $(TARGET_ROOT_OUT)/file_contexts.bin
-
-$(INSTALLED_FACTORYIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
-$(INSTALLED_FACTORYIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
-	$(call pretty,"Target factory fs image: $(INSTALLED_FACTORYIMAGE_TARGET)")
-	@mkdir -p $(PRODUCT_OUT)/factory
-	$(hide)	$(MKEXTUSERIMG) -s \
-		$(PRODUCT_OUT)/factory \
-		$(PRODUCT_OUT)/factory.img \
-		ext4 \
-		factory \
-		$(BOARD_FACTORYIMAGE_PARTITION_SIZE) \
-		$(PRIVATE_SELINUX_FC)
-
-INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_FACTORYIMAGE_TARGET)
-
-selinux_fc :=
-
-.PHONY: factoryimage
-factoryimage: $(INSTALLED_FACTORYIMAGE_TARGET)
-##############################################################
-# Source: device/intel/mixins/groups/variants/default/AndroidBoard.mk
-##############################################################
-# flashfile_add_blob <blob_name> <path> <mandatory> <var_name>
-# - Delete ::variant:: from <path>
-# - If the result does not exists and <mandatory> is set, error
-# - If <var_name> is set, put the result in <var_name>
-# - Add the pair <result>:<blob_name> in BOARD_FLASHFILES_FIRMWARE
-define flashfile_add_blob
-$(eval blob := $(subst ::variant::,,$(2))) \
-$(if $(wildcard $(blob)), \
-    $(if $(4), $(eval $(4) := $(blob))) \
-    $(eval BOARD_FLASHFILES_FIRMWARE += $(blob):$(1)) \
-    , \
-    $(if $(3), $(error $(blob) does not exist)))
-endef
-
 ##############################################################
 # Source: device/intel/mixins/groups/flashfiles/ini/AndroidBoard.mk
 ##############################################################
@@ -408,12 +445,30 @@ TOS_SIGNING_CERT := $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_VERITY_SIGNING_KEY).x
 
 .PHONY: tosimage
 tosimage: $(INSTALLED_TOS_IMAGE_TARGET)
+
+ifeq (true,$(BOARD_AVB_ENABLE)) # BOARD_AVB_ENABLE == true
+$(INSTALLED_TOS_IMAGE_TARGET): $(TOS_IMAGE_TARGET) $(MKBOOTIMG) $(AVBTOOL)
+	@echo "mkbootimg to create boot image for TOS file: $@"
+	$(hide) $(MKBOOTIMG) --kernel $(TOS_IMAGE_TARGET) --output $@
+	$(hide) $(AVBTOOL) add_hash_footer \
+		--image $@ \
+		--partition_size $(BOARD_TOSIMAGE_PARTITION_SIZE) \
+		--partition_name tos $(INTERNAL_AVB_SIGNING_ARGS)
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --include_descriptors_from_image $(INSTALLED_TOS_IMAGE_TARGET)
+$(INSTALLED_VBMETAIMAGE_TARGET): $(INSTALLED_TOS_IMAGE_TARGET)
+else
 $(INSTALLED_TOS_IMAGE_TARGET): $(TOS_IMAGE_TARGET) $(MKBOOTIMG) $(BOOT_SIGNER)
 	@echo "mkbootimg to create boot image for TOS file: $@"
 	$(hide) $(MKBOOTIMG) --kernel $(TOS_IMAGE_TARGET) --output $@
 	$(if $(filter true,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_SUPPORTS_BOOT_SIGNER)),\
 		@echo "sign prebuilt TOS file: $@" &&\
 		$(BOOT_SIGNER) /tos $@ $(TOS_SIGNING_KEY) $(TOS_SIGNING_CERT) $@)
+endif
 
 INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_TOS_IMAGE_TARGET)
+
+make_dir_ab_tos:
+	@mkdir -p $(PRODUCT_OUT)/root/tos
+
+$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_tos
 # ------------------ END MIX-IN DEFINITIONS ------------------

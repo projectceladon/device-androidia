@@ -67,6 +67,17 @@ DEVICE_PACKAGE_OVERLAYS += device/intel/common/device-type/overlay-tablet
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/debugfs
 ##############################################################
+# Source: device/intel/mixins/groups/slot-ab/true/BoardConfig.mk
+##############################################################
+AB_OTA_UPDATER := true
+AB_OTA_PARTITIONS := \
+    boot \
+    system
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+TARGET_NO_RECOVERY := true
+BOARD_USES_RECOVERY_AS_BOOT := true
+BOARD_SLOT_AB_ENABLE := true
+##############################################################
 # Source: device/intel/mixins/groups/kernel/android_ia/BoardConfig.mk
 ##############################################################
 TARGET_USES_64_BIT_BINDER := true
@@ -80,7 +91,8 @@ TARGET_NO_KERNEL ?= false
 KERNEL_LOGLEVEL ?= 3
 SERIAL_PARAMETER := console=tty0 console=ttyS2,115200n8
 
-BOARD_KERNEL_CMDLINE += root=/dev/ram0  androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL)
+
+BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL)
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 ifeq ($(SPARSE_IMG),true)
@@ -105,6 +117,45 @@ BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/bluetooth/common \
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/set_storage
 ##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
+##############################################################
+BOARD_FACTORYIMAGE_PARTITION_SIZE := 10485760
+BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/factory-partition
+BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
+##############################################################
+# Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
+##############################################################
+BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
+BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
+BOARD_SEPOLICY_M4DEFS += module_config_partition=true
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/config-partition
+##############################################################
+# Source: device/intel/mixins/groups/avb/true/BoardConfig.mk
+##############################################################
+BOARD_AVB_ENABLE := true
+
+KERNELFLINGER_AVB_CMDLINE := true
+
+BOARD_VBMETAIMAGE_PARTITION_SIZE := 2097152
+BOARD_FLASHFILES += $(PRODUCT_OUT)/vbmeta.img
+
+# Now use AVB to support A/B slot
+PRODUCT_STATIC_BOOT_CONTROL_HAL := bootctrl.avb libavb_user
+##############################################################
+# Source: device/intel/mixins/groups/vendor-partition/true/BoardConfig.mk
+##############################################################
+# Those 3 lines are required to enable vendor image generation.
+# Remove them if vendor partition is not used.
+TARGET_COPY_OUT_VENDOR := vendor
+BOARD_VENDORIMAGE_PARTITION_SIZE := 1572864000
+ifeq ($(SPARSE_IMG),true)
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+else
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := squashfs
+endif
+BOARD_FLASHFILES += $(PRODUCT_OUT)/vendor.img
+##############################################################
 # Source: device/intel/mixins/groups/boot-arch/android_ia/BoardConfig.mk
 ##############################################################
 #TARGET_NO_RECOVERY ?= false
@@ -117,6 +168,8 @@ BOARD_CACHEIMAGE_PARTITION_SIZE := 69206016
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 512
 
+BOARD_BOOTIMAGE_PARTITION_SIZE := 31457280
+
 ifeq ($(SPARSE_IMG),true)
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -125,7 +178,7 @@ TARGET_USERIMAGES_SPARSE_EXT_DISABLED := true
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := squashfs
 endif
 
-BOARD_SYSTEMIMAGE_PARTITION_SIZE = 3758096384
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3758096384
 
 BOARD_BOOTLOADER_PARTITION_SIZE ?= 62914560
 BOARD_BOOTLOADER_BLOCK_SIZE := 512
@@ -154,7 +207,7 @@ BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/boot-arch/android_ia
 #PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/android_persistent
 
 # Specify file for creating final flashfiles
-BOARD_GPT_INI ?= $(TARGET_DEVICE_DIR)/gpt.ini
+# BOARD_GPT_INI ?= $(TARGET_DEVICE_DIR)/gpt.ini
 BOARD_GPT_BIN = $(PRODUCT_OUT)/gpt.bin
 BOARD_FLASHFILES += $(PRODUCT_OUT)/system.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/gpt.bin
@@ -165,26 +218,15 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/startup.nsh
 BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/installer.cmd
 BOARD_FLASHFILES += $(PRODUCT_OUT)/bootloader
 BOARD_FLASHFILES += $(PRODUCT_OUT)/fastboot-usb.img
-BOARD_FLASHFILES += $(PRODUCT_OUT)/recovery.img
-BOARD_FLASHFILES += $(PRODUCT_OUT)/cache.img
-BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
-BOARD_FLASHFILES += $(PRODUCT_OUT)/vendor.img
-BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
-BOARD_FLASHFILES += $(TARGET_DEVICE_DIR)/flash.json
+BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/flash.json
 BOARD_FLASHFILES += $(PRODUCT_OUT)/tos.img
 
 # -- OTA RELATED DEFINES --
 # tell build system where to get the recovery.fstab.
-TARGET_RECOVERY_FSTAB ?= $(TARGET_DEVICE_DIR)/fstab 
+TARGET_RECOVERY_FSTAB ?= $(TARGET_DEVICE_DIR)/fstab
 # Used by ota_from_target_files to add platform-specific directives
 # to the OTA updater scripts
 TARGET_RELEASETOOLS_EXTENSIONS ?= device/intel/common/recovery
-# Adds edify commands swap_entries and copy_partition for robust
-# update of the EFI system partition
-TARGET_RECOVERY_UPDATER_LIBS := libupdater_esp
-# Extra libraries needed to be rolled into recovery updater
-# libgpt_static and libefivar are needed by libupdater_esp
-TARGET_RECOVERY_UPDATER_EXTRA_LIBS := libcommon_recovery libgpt_static libefivar
 # By default recovery minui expects RGBA framebuffer
 TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 
@@ -352,30 +394,6 @@ BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/thermal
 BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/thermal/dptf
 BOARD_KERNEL_CMDLINE += thermal.off=1
 ##############################################################
-# Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
-##############################################################
-BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
-BOARD_SEPOLICY_M4DEFS += module_config_partition=true
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/config-partition
-##############################################################
-# Source: device/intel/mixins/groups/vendor-partition/true/BoardConfig.mk
-##############################################################
-# Those 3 lines are required to enable vendor image generation.
-# Remove them if vendor partition is not used.
-TARGET_COPY_OUT_VENDOR := vendor
-BOARD_VENDORIMAGE_PARTITION_SIZE := 1572864000
-ifeq ($(SPARSE_IMG),true)
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-else
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := squashfs
-endif
-##############################################################
-# Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
-##############################################################
-BOARD_FACTORYIMAGE_PARTITION_SIZE := 10485760
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/factory-partition
-BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
-##############################################################
 # Source: device/intel/mixins/groups/debug-phonedoctor/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_M4DEFS += module_debug_phonedoctor=true
@@ -426,6 +444,8 @@ TRUSTY_ENV_VAR += LKBIN_DIR=$(TRUSTY_BUILDROOT)/build-sand-x86-64/
 
 #Workaround CPU lost issue on SIMICS, will remove this line below after PO.
 BOARD_KERNEL_CMDLINE += cpu_init_udelay=500000
+
+BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
 ##############################################################
 # Source: device/intel/mixins/groups/camera/usbcamera/BoardConfig.mk
 ##############################################################

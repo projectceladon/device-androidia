@@ -264,6 +264,17 @@ ifeq ($(TARGET_BUILD_VARIANT),user)
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.adb.secure=1
 endif
 ##############################################################
+# Source: device/intel/mixins/groups/slot-ab/true/product.mk
+##############################################################
+
+
+# Currently the update_verifier does not support AVB and A/B slot, so do not include it if enable AVB and A/B slot.
+# Will enable it after the update_verifier updated.
+#PRODUCT_PACKAGES += \
+    update_engine \
+    update_engine_client \
+    update_verifier
+##############################################################
 # Source: device/intel/mixins/groups/kernel/android_ia/product.mk
 ##############################################################
 TARGET_KERNEL_ARCH := x86_64
@@ -301,9 +312,13 @@ PRODUCT_PACKAGES += \
 # create primary storage symlink dynamically
 PRODUCT_PACKAGES += set_storage
 ##############################################################
+# Source: device/intel/mixins/groups/vendor-partition/true/product.mk
+##############################################################
+PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/by-name/vendor
+##############################################################
 # Source: device/intel/mixins/groups/boot-arch/android_ia/product.mk
 ##############################################################
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/android_persistent
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/persistent
 
 ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),0x0 0x2 0x4 0x6))
 # OEM Unlock reporting 1
@@ -426,10 +441,6 @@ PRODUCT_PACKAGES += esif_ufd \
     upe_java \
     jhs
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/dptf.dv:/system/etc/dptf/dv/dptf.dv
-##############################################################
-# Source: device/intel/mixins/groups/vendor-partition/true/product.mk
-##############################################################
-PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/by-name/android_vendor
 ##############################################################
 # Source: device/intel/mixins/groups/debug-logs/true/product.mk
 ##############################################################
