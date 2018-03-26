@@ -221,40 +221,6 @@
                 "tool": "fastboot"
             },
             {
-                "args": "flash tos_a ${tos}",
-                "description": "Flash tos_a partition",
-                "mandatory": true,
-                "precondition": {
-                    "description": "Check battery level: ${battery}mV",
-                    "expression": "${battery} >= 3500",
-                    "skipOnFailure": false
-                },
-                "restrict": [
-                    "blank",
-                    "update"
-                ],
-                "retry": 1,
-                "timeout": 60000,
-                "tool": "fastboot"
-            },
-            {
-                "args": "flash tos_b ${tos}",
-                "description": "Flash tos_b partition",
-                "mandatory": true,
-                "precondition": {
-                    "description": "Check battery level: ${battery}mV",
-                    "expression": "${battery} >= 3500",
-                    "skipOnFailure": false
-                },
-                "restrict": [
-                    "blank",
-                    "update"
-                ],
-                "retry": 1,
-                "timeout": 60000,
-                "tool": "fastboot"
-            },
-            {
                 "args": "flash system_a ${system}",
                 "description": "Flash system_a partition",
                 "mandatory": true,
