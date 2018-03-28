@@ -1,0 +1,6 @@
+allow hal_bootctl_default rootfs:file r_file_perms;
+allow hal_bootctl_default proc:file r_file_perms;
+allow hal_bootctl_default block_device:dir r_dir_perms;
+allow hal_bootctl_default misc_block_device:blk_file rw_file_perms;
+allow hal_bootctl_default tmpfs:file r_file_perms;
+allow hal_bootctl_default tmpfs:dir r_dir_perms;
