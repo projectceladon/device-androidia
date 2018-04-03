@@ -411,13 +411,13 @@ FAST_FLASHFILES := true
 ##############################################################
 TARGET_USE_TRUSTY := true
 
-KM_VERSION := 1
+KM_VERSION := 2
 ifeq ($(KM_VERSION),1)
 BOARD_USES_TRUSTY := true
 BOARD_USES_KEYMASTER1 := true
 endif
 
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy
+BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/trusty
 BOARD_SEPOLICY_M4DEFS += module_trusty=true
 
 LK_PRODUCT := androidia_64

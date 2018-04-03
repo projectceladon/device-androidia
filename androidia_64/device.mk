@@ -527,7 +527,14 @@ PRODUCT_COPY_FILES += \
 # Source: device/intel/mixins/groups/trusty/true/product.mk
 ##############################################################
 
-KM_VERSION := 1
+KM_VERSION := 2
+
+ifeq ($(KM_VERSION),2)
+PRODUCT_PACKAGES += \
+	keystore.trusty
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.hardware.keystore=trusty
+endif
 
 ifeq ($(KM_VERSION),1)
 PRODUCT_PACKAGES += \
