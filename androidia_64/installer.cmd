@@ -15,6 +15,8 @@ flash vbmeta_a vbmeta.img
 flash vbmeta_b vbmeta.img
 flash boot_a boot.img
 flash boot_b boot.img
+flash tos_a tos.img
+flash tos_b tos.img
 flash system_a system.img
 flash system_b system.img
 flash vendor_a vendor.img

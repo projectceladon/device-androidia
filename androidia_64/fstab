@@ -45,4 +45,5 @@
 /dev/block/by-name/bootloader2  /bootloader2    emmc    defaults                                                    recoveryonly
 /dev/block/by-name/persistent   /persistent     emmc    defaults                                                    defaults
 /dev/block/by-name/metadata     /metadata       emmc    defaults                                                    defaults
+/dev/block/by-name/tos          /tos            emmc    defaults                                                    defaults,slotselect,avb
 # ------------------ END MIX-IN DEFINITIONS ------------------
