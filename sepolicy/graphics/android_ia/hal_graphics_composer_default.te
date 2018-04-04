@@ -13,3 +13,4 @@ allow hal_graphics_composer_default hal_graphics_allocator_hwservice:hwservice_m
 allow hal_graphics_composer_default gpu_device:dir r_dir_perms;
 allow hal_graphics_composer_default gpu_device:chr_file rw_file_perms;
 allow hal_graphics_composer_default sysfs_app_readable:file r_file_perms;
+allow hal_graphics_composer_default hwc_info_service:service_manager add;
