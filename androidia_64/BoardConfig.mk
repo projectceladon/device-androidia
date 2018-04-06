@@ -215,6 +215,8 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/boot.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/installer.efi
 BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/kernelflinger.efi
 BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/startup.nsh
+BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/unlock_device.nsh
+BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/efivar_oemlock
 BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/installer.cmd
 BOARD_FLASHFILES += $(PRODUCT_OUT)/bootloader
 BOARD_FLASHFILES += $(PRODUCT_OUT)/fastboot-usb.img
@@ -280,6 +282,8 @@ endif
 # Kernelfligner will assume the BIOS support secure boot. Not check the EFI variable SecureBoot
 # It is useful when the BIOS does not support secure boot.
 KERNELFLINGER_ASSUME_BIOS_SECURE_BOOT := true
+
+
 
 ##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/BoardConfig.mk
