@@ -551,7 +551,10 @@ PRODUCT_PACKAGES += \
 endif
 
 PRODUCT_PACKAGES += \
-	libtrusty
+	libtrusty \
+	storageproxyd \
+	libtrustystorage \
+	libtrustystorageinterface \
 
 ##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/product.mk
