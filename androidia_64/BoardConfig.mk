@@ -284,6 +284,7 @@ endif
 KERNELFLINGER_ASSUME_BIOS_SECURE_BOOT := true
 
 
+KERNELFLINGER_USE_RPMB_SIMULATE := true
 
 ##############################################################
 # Source: device/intel/mixins/groups/audio/android_ia/BoardConfig.mk
