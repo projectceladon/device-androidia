@@ -1,0 +1,8 @@
+set_prop(postinstall, ota_prop)
+recovery_only(`
+  allow postinstall rootfs:file rx_file_perms;
+')
+
+allow postinstall vendor_shell_exec:file rx_file_perms;
+allow postinstall vendor_toolbox_exec:file rx_file_perms;
+allow postinstall vendor_file:file rx_file_perms;
