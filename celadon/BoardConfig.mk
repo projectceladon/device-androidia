@@ -6,19 +6,19 @@
 TARGET_BOOTLOADER_IS_2ND := true
 BOARD_OEM_VARS += $(TARGET_DEVICE_DIR)/oemvars.txt
 ##############################################################
-# Source: device/intel/mixins/groups/android_ia/default/BoardConfig.mk
+# Source: device/intel/mixins/groups/project-celadon/default/BoardConfig.mk
 ##############################################################
 KERNEL_CROSS_COMPILE_WRAPPER := x86_64-linux-android-
 ##############################################################
 # Source: device/intel/mixins/groups/sepolicy/enforcing/BoardConfig.mk
 ##############################################################
 # SELinux Policy
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy
 
 # Pass device target to build
 BOARD_SEPOLICY_M4DEFS += board_sepolicy_target_product=$(TARGET_PRODUCT)
 ##############################################################
-# Source: device/intel/mixins/groups/graphics/android_ia/BoardConfig.mk
+# Source: device/intel/mixins/groups/graphics/project-celadon/BoardConfig.mk
 ##############################################################
 BOARD_KERNEL_CMDLINE += vga=current i915.modeset=1 drm.atomic=1 i915.nuclear_pageflip=1 drm.vblankoffdelay=1 i915.fastboot=1
 USE_OPENGL_RENDERER := true
@@ -39,7 +39,7 @@ ifneq ($(strip $(BOARD_GPU_DRIVERS)),)
 TARGET_HARDWARE_3D := true
 endif
 
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/graphics/android_ia
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/graphics/project-celadon
 
 
 BOARD_USES_DRM_HWCOMPOSER := false
@@ -58,7 +58,7 @@ BOARD_USES_GRALLOC1 := true
 TARGET_USES_HWC2 := true
 
 ##############################################################
-# Source: device/intel/mixins/groups/media/android_ia/BoardConfig.mk
+# Source: device/intel/mixins/groups/media/project-celadon/BoardConfig.mk
 ##############################################################
 ##############################################################
 # Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
@@ -67,7 +67,7 @@ DEVICE_PACKAGE_OVERLAYS += device/intel/common/device-type/overlay-tablet
 ##############################################################
 # Source: device/intel/mixins/groups/debugfs/default/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/debugfs
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/debugfs
 ##############################################################
 # Source: device/intel/mixins/groups/slot-ab/true/BoardConfig.mk
 ##############################################################
@@ -80,7 +80,7 @@ TARGET_NO_RECOVERY := true
 BOARD_USES_RECOVERY_AS_BOOT := true
 BOARD_SLOT_AB_ENABLE := true
 ##############################################################
-# Source: device/intel/mixins/groups/kernel/android_ia/BoardConfig.mk
+# Source: device/intel/mixins/groups/kernel/project-celadon/BoardConfig.mk
 ##############################################################
 TARGET_USES_64_BIT_BINDER := true
 BOARD_USE_64BIT_USERSPACE := true
@@ -104,7 +104,7 @@ endif
 
 
 BOARD_SEPOLICY_M4DEFS += module_kernel=true
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/kernel
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/kernel
 ##############################################################
 # Source: device/intel/mixins/groups/bluetooth/btusb/BoardConfig.mk
 ##############################################################
@@ -112,18 +112,18 @@ BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_LINUX := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/bcm43241/
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/bluetooth/overlay-bt-pan
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/bluetooth/common \
-                       device/intel/android_ia/sepolicy/bluetooth/intel
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/bluetooth/common \
+                       device/intel/project-celadon/sepolicy/bluetooth/intel
 ##############################################################
 # Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/set_storage
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/set_storage
 ##############################################################
 # Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
 ##############################################################
 BOARD_FACTORYIMAGE_PARTITION_SIZE := 10485760
 BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/factory-partition
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/factory-partition
 BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
 ##############################################################
 # Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
@@ -131,7 +131,7 @@ BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
 BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
 BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
 BOARD_SEPOLICY_M4DEFS += module_config_partition=true
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/config-partition
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/config-partition
 ##############################################################
 # Source: device/intel/mixins/groups/avb/true/BoardConfig.mk
 ##############################################################
@@ -158,11 +158,11 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := squashfs
 endif
 BOARD_FLASHFILES += $(PRODUCT_OUT)/vendor.img
 ##############################################################
-# Source: device/intel/mixins/groups/boot-arch/android_ia/BoardConfig.mk
+# Source: device/intel/mixins/groups/boot-arch/project-celadon/BoardConfig.mk
 ##############################################################
 #TARGET_NO_RECOVERY ?= false
 
-TARGET_BOARD_PLATFORM := android_ia
+TARGET_BOARD_PLATFORM := project-celadon
 
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 576716800
@@ -201,7 +201,7 @@ KERNELFLINGER_SSL_LIBRARY := openssl
 # Avoid Watchdog truggered reboot
 BOARD_KERNEL_CMDLINE += iTCO_wdt.force_no_reboot=1
 
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/boot-arch/android_ia
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/boot-arch/project-celadon
 
 # Show the "OEM unlocking" option in Android "Developer options"
 #PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/android_persistent
@@ -287,7 +287,7 @@ KERNELFLINGER_ASSUME_BIOS_SECURE_BOOT := true
 KERNELFLINGER_USE_RPMB_SIMULATE := true
 
 ##############################################################
-# Source: device/intel/mixins/groups/audio/android_ia/BoardConfig.mk
+# Source: device/intel/mixins/groups/audio/project-celadon/BoardConfig.mk
 ##############################################################
 BOARD_USES_ALSA_AUDIO := true
 BOARD_USES_TINY_ALSA_AUDIO := true
@@ -361,7 +361,7 @@ DEVICE_PACKAGE_OVERLAYS += device/intel/common/wlan/overlay-miracast-force-singl
 
 
 BOARD_SEPOLICY_M4DEFS += module_iwlwifi=true
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/wlan/iwlwifi
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/wlan/iwlwifi
 ##############################################################
 # Source: device/intel/mixins/groups/cpu-arch/skl/BoardConfig.mk
 ##############################################################
@@ -385,7 +385,7 @@ ENABLE_CPUSETS := true
 ##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/rfkill
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/rfkill
 ##############################################################
 # Source: device/intel/mixins/groups/dexpreopt/enabled/BoardConfig.mk
 ##############################################################
@@ -395,8 +395,8 @@ WITH_DEXPREOPT_PIC := true
 ##############################################################
 # Source: device/intel/mixins/groups/thermal/dptf/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/thermal
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/thermal/dptf
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal/dptf
 BOARD_KERNEL_CMDLINE += thermal.off=1
 ##############################################################
 # Source: device/intel/mixins/groups/debug-phonedoctor/true/BoardConfig.mk
@@ -422,10 +422,10 @@ BOARD_USES_TRUSTY := true
 BOARD_USES_KEYMASTER1 := true
 endif
 
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/trusty
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/trusty
 BOARD_SEPOLICY_M4DEFS += module_trusty=true
 
-LK_PRODUCT := androidia_64
+LK_PRODUCT := project-celadon_64
 
 LKBUILD_TOOLCHAIN_ROOT = $(PWD)/vendor/intel/external/prebuilts/elf/
 LKBUILD_X86_TOOLCHAIN =
@@ -454,11 +454,11 @@ BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
 ##############################################################
 # Source: device/intel/mixins/groups/camera/usbcamera/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/camera/usbcamera
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/camera/usbcamera
 ##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/memtrack
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/memtrack
 # ------------------ END MIX-IN DEFINITIONS ------------------
 
 # Install Native Bridge
@@ -489,4 +489,4 @@ else
 endif
 
 BOARD_SEPOLICY_M4DEFS += module_houdini=true
-BOARD_SEPOLICY_DIRS += device/intel/android_ia/sepolicy/houdini
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/houdini

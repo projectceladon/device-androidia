@@ -15,6 +15,6 @@
 /metadata                    u:object_r:rootfs:s0
 /misc                        u:object_r:rootfs:s0
 /boot                        u:object_r:rootfs:s0
-/gpt.androidia_64.ini        u:object_r:rootfs:s0
+/gpt.celadon.ini        u:object_r:rootfs:s0
 /persistent                  u:object_r:rootfs:s0
 /tos                         u:object_r:rootfs:s0

@@ -74,7 +74,7 @@ on init
     exec u:r:set_storage:s0 root root -- /sbin/set_storage
     symlink /dev/block/pci/pci0000:00/0000:00:1c.0/by-name /dev/block/by-name
 ##############################################################
-# Source: device/intel/mixins/groups/boot-arch/android_ia/init.recovery.rc
+# Source: device/intel/mixins/groups/boot-arch/project-celadon/init.recovery.rc
 ##############################################################
 service watchdogd /sbin/watchdogd
     user root

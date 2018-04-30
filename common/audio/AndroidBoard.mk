@@ -30,7 +30,7 @@ LOCAL_REQUIRED_MODULES := \
 ifeq ($(INTEL_AUDIO_HAL), stub)
 LOCAL_REQUIRED_MODULES += audio.stub.default
 else
-LOCAL_REQUIRED_MODULES += audio.primary.android_ia
+LOCAL_REQUIRED_MODULES += audio.primary.project-celadon
 
 ifeq ($(INTEL_AUDIO_HAL),audio_pfw)
 LOCAL_REQUIRED_MODULES += audio_hal_configuration_files
@@ -171,7 +171,7 @@ endif
 include $(BUILD_PHONY_PACKAGE)
 
 ifeq ($(INTEL_AUDIO_HAL),audio_pfw)
-include device/intel/android_ia/common/audio/$(AUDIO_HARDWARE)/AndroidBoard.mk
+include device/intel/project-celadon/common/audio/$(AUDIO_HARDWARE)/AndroidBoard.mk
 else
 include $(CLEAR_VARS)
 LOCAL_MODULE := mixer_paths_0.xml
@@ -185,5 +185,5 @@ endif
 ###########################################
 
 ifeq ($(USE_CONFIGURABLE_AUDIO_POLICY), 1)
-include device/intel/android_ia/common/audio/reference_configurable_audio_policy/AndroidBoard.mk
+include device/intel/project-celadon/common/audio/reference_configurable_audio_policy/AndroidBoard.mk
 endif

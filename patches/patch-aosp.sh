@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PATCH_DIR=`pwd`/device/intel/android_ia/patches
+PATCH_DIR=`pwd`/device/intel/project-celadon/patches
 
 echo "Android IA: Patching AOSP Tree"
 
