@@ -1,0 +1,1 @@
+allow system_server sysfs_power_state:file rw_file_perms;

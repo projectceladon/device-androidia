@@ -1,0 +1,3 @@
+add_lunch_combo cel_apl-eng
+add_lunch_combo cel_apl-userdebug
+add_lunch_combo cel_apl-user

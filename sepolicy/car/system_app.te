@@ -1,0 +1,2 @@
+# allow CarService to write /sys/power/state to enter deep sleep.
+allow system_app sysfs_power_state:file rw_file_perms;

@@ -1,0 +1,8 @@
+typeattribute hal_broadcastradio_default binder_in_vendor_violators;
+binder_use(hal_broadcastradio_default)
+binder_call(hal_broadcastradio_default, system_server)
+
+allow hal_broadcastradio_default i2c_device:chr_file rw_file_perms;
+
+allow hal_broadcastradio_default rootfs:dir r_dir_perms;
+allow hal_broadcastradio_default sysfs:dir r_dir_perms;

@@ -1,0 +1,7 @@
+#
+# CarService.apk
+# when system is going to suspend, by press ignition button, Carservice needs to write
+# /sys/power/state to put system to suspend
+#
+type sysfs_power_state, fs_type, sysfs_type;
+type sysfs_early_evs, fs_type, sysfs_type;
