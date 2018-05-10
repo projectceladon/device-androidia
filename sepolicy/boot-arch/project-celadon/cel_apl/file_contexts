@@ -1,0 +1,20 @@
+#
+# Block Devices
+#
+
+/dev/block/(pci|platform)(/.*)?/.*/by-name/boot       u:object_r:boot_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/persistent u:object_r:frp_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/recovery   u:object_r:recovery_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/metadata   u:object_r:metadata_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/cache      u:object_r:cache_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/data       u:object_r:userdata_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/misc       u:object_r:misc_block_device:s0
+/dev/block/(pci|platform)(/.*)?/.*/by-name/teedata    u:object_r:tee_device:s0
+
+/file_contexts.bin           u:object_r:rootfs:s0
+/metadata                    u:object_r:rootfs:s0
+/misc                        u:object_r:rootfs:s0
+/boot                        u:object_r:rootfs:s0
+/gpt.cel_apl.ini        u:object_r:rootfs:s0
+/persistent                  u:object_r:rootfs:s0
+/tos                         u:object_r:rootfs:s0
