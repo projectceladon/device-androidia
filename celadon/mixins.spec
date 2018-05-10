@@ -33,7 +33,7 @@ thermal: dptf(intel_modem=true)
 config-partition: enabled
 vendor-partition: true
 factory-partition: true
-debug-crashlogd: true
+debug-crashlogd: true(binder=true, ssram_crashlog=broxton, ramdump=broxton)
 debug-logs: true
 debug-coredump: true
 debug-phonedoctor: true
