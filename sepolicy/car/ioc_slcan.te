@@ -1,0 +1,7 @@
+#module_only(`ioc_slcan', `
+#  # alow vns to find the slcan service
+#  allow vns ioc_slcan_service:service_manager find;
+# 
+#  # allow vns to call found interfaces belonging to ioc_slcan; 
+#  binder_call(vns, ioc_slcan)
+#')

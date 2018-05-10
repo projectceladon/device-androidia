@@ -1,0 +1,5 @@
+/(vendor|system/vendor)/bin/hw/android\.hardware\.automotive\.vehicle\.intel@2\.0-service  u:object_r:hal_vehicle_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.automotive\.vehicle\.intel@2\.1-service  u:object_r:hal_vehicle_default_exec:s0
+/sys/power/state u:object_r:sysfs_power_state:s0
+
+/vendor/bin/hw/android.hardware.broadcastradio@intel-service u:object_r:hal_broadcastradio_default_exec:s0

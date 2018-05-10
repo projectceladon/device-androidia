@@ -1,0 +1,9 @@
+#
+# configuration to allow Google emulator script connecting vehicle HAL
+# service through socket
+#
+
+userdebug_or_eng(`
+  allow netd hal_vehicle_default:fd use;
+  allow netd hal_vehicle_default:tcp_socket { read write getopt setopt };
+')
