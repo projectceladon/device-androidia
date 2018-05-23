@@ -144,6 +144,8 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/vbmeta.img
 
 # Now use AVB to support A/B slot
 PRODUCT_STATIC_BOOT_CONTROL_HAL := bootctrl.avb libavb_user
+
+AB_OTA_PARTITIONS += vbmeta
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/BoardConfig.mk
 ##############################################################
@@ -157,6 +159,7 @@ else
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := squashfs
 endif
 BOARD_FLASHFILES += $(PRODUCT_OUT)/vendor.img
+AB_OTA_PARTITIONS += vendor
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/BoardConfig.mk
 ##############################################################
@@ -217,11 +220,10 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/kernelflinger.efi
 BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/startup.nsh
 BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/unlock_device.nsh
 BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/efivar_oemlock
-BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/installer.cmd
 BOARD_FLASHFILES += $(PRODUCT_OUT)/bootloader
 BOARD_FLASHFILES += $(PRODUCT_OUT)/fastboot-usb.img
-BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/flash.json
 BOARD_FLASHFILES += $(PRODUCT_OUT)/tos.img
+AB_OTA_PARTITIONS += tos
 
 # -- OTA RELATED DEFINES --
 # tell build system where to get the recovery.fstab.
@@ -286,6 +288,11 @@ KERNELFLINGER_ASSUME_BIOS_SECURE_BOOT := true
 
 KERNELFLINGER_USE_RPMB_SIMULATE := true
 
+AB_OTA_POSTINSTALL_CONFIG += \
+    RUN_POSTINSTALL_vendor=true \
+    POSTINSTALL_PATH_vendor=bin/updater_ab_esp \
+    FILESYSTEM_TYPE_vendor=ext4 \
+    POSTINSTALL_OPTIONAL_vendor=true
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/BoardConfig.mk
 ##############################################################

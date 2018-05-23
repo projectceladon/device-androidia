@@ -291,14 +291,23 @@ endif
 ##############################################################
 # Source: device/intel/mixins/groups/slot-ab/true/product.mk
 ##############################################################
-
-
-# Currently the update_verifier does not support AVB and A/B slot, so do not include it if enable AVB and A/B slot.
-# Will enable it after the update_verifier updated.
-#PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES += \
     update_engine \
+    update_verifier \
+    update_engine_sideload \
+    libavb \
+    bootctrl.avb \
+    bootctrl.intel \
+    bootctrl.intel.static \
+    android.hardware.boot@1.0-impl \
+    android.hardware.boot@1.0-service
+
+PRODUCT_PACKAGES_DEBUG += \
     update_engine_client \
-    update_verifier
+    bootctl
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hardware.bootctrl=intel
 ##############################################################
 # Source: device/intel/mixins/groups/kernel/project-celadon/product.mk
 ##############################################################
@@ -360,6 +369,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 
 endif
 
+PRODUCT_PACKAGES += updater_ab_esp
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/product.mk
 ##############################################################

@@ -203,13 +203,6 @@ else
 out_flashfiles := $(PRODUCT_OUT)/$(TARGET_PRODUCT).flashfiles.$(TARGET_BUILD_VARIANT).$(USER).zip
 endif
 
-$(PRODUCT_OUT)/efi/installer.cmd: $(TARGET_DEVICE_DIR)/$(@F)
-	$(ACP) $(TARGET_DEVICE_DIR)/$(@F) $@
-	sed -i '/#/d' $@
-
-$(PRODUCT_OUT)/efi/flash.json: $(TARGET_DEVICE_DIR)/$(@F)
-	$(ACP) $(TARGET_DEVICE_DIR)/$(@F) $@
-	sed -i '/#/d' $@
 
 $(PRODUCT_OUT)/efi/startup.nsh: $(TARGET_DEVICE_DIR)/$(@F)
 	$(ACP) $(TARGET_DEVICE_DIR)/$(@F) $@
@@ -225,8 +218,9 @@ $(PRODUCT_OUT)/efi/efivar_oemlock: $(TARGET_DEVICE_DIR)/$(@F)
 $(out_flashfiles): $(BOARD_FLASHFILES) | $(ACP)
 	$(call generate_flashfiles,$@, $^)
 
-.PHONY: flashfiles
-flashfiles: $(out_flashfiles)
+
+.PHONY: flashfiles_simple
+flashfiles_simple: $(out_flashfiles)
 
 # Rules to create bootloader zip file, a precursor to the bootloader
 # image that is stored in the target-files-package. There's also
@@ -366,6 +360,11 @@ GPT_INI2BIN := ./device/intel/common/gpt_bin/gpt_ini2bin.py
 $(BOARD_GPT_BIN): $(TARGET_DEVICE_DIR)/gpt.ini
 	$(hide) $(GPT_INI2BIN) $< > $@
 	$(hide) echo GEN $(notdir $@)
+
+# Use by updater_ab_esp
+$(PRODUCT_OUT)/vendor.img: $(PRODUCT_OUT)/vendor/firmware/kernelflinger.efi
+$(PRODUCT_OUT)/vendor/firmware/kernelflinger.efi: $(PRODUCT_OUT)/efi/kernelflinger.efi
+	$(ACP) $(PRODUCT_OUT)/efi/kernelflinger.efi $@
 
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/AndroidBoard.mk
