@@ -23,7 +23,7 @@ boot-arch: project-celadon(bootloader_policy=0x0,bootloader_len=60,magic_key_tim
 audio: project-celadon
 wlan: iwlwifi
 cpu-arch: skl
-cpuset: 4cores
+cpuset: autocores
 rfkill: true(force_disable=)
 dexpreopt: enabled
 disk-bus: auto

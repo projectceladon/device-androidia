@@ -386,10 +386,6 @@ TARGET_ARCH := x86
 TARGET_CPU_ABI := x86
 endif
 ##############################################################
-# Source: device/intel/mixins/groups/cpuset/4cores/BoardConfig.mk
-##############################################################
-ENABLE_CPUSETS := true
-##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/rfkill
