@@ -402,6 +402,8 @@ PRODUCT_PACKAGES += \
     android.hardware.audio.effect@2.0-impl \
     android.hardware.audio@2.0-impl \
     android.hardware.audio@2.0-service
+
+PRODUCT_PROPERTY_OVERRIDES += audio.safemedia.bypass=true
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/product.mk
 ##############################################################
