@@ -275,7 +275,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 ##############################################################
 # Source: device/intel/mixins/groups/display-density/default/product.mk
 ##############################################################
-# Do not remove this file. Unable to update mixins without this.
+PRODUCT_AAPT_CONFIG := normal
+PRODUCT_AAPT_PREF_CONFIG := mdpi
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.sf.lcd_density=160
 ##############################################################
 # Source: device/intel/mixins/groups/usb-gadget/g_ffs/product.mk
 ##############################################################
