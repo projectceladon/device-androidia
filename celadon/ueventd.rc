@@ -12,8 +12,6 @@
 # rfkill node
 /dev/rfkill 0660 bluetooth bluetooth
 
-#Bluedroid uhid support
-/dev/uhid                                    0660 bluetooth bluetooth
 /dev/ttyS*                                   0660   system     radio
 
 # NFCC node
@@ -51,9 +49,6 @@
 ##############################################################
 # Source: device/intel/mixins/groups/bluetooth/btusb/ueventd.rc
 ##############################################################
-#Bluedroid uhid support
-/dev/uhid                                    0660 bluetooth bluetooth
-
 # Bluetooth rfkill nodes
 /sys/devices/pci*/0000:00:*/usb*/*/*/*/bluetooth/hci0/rfkill* state  0660 bluetooth bluetooth
 /sys/devices/pci*/0000:00:*/usb*/*/*/*/bluetooth/hci0/rfkill* type   0440 bluetooth bluetooth
