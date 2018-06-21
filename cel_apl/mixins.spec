@@ -49,3 +49,4 @@ touch: galax7200
 avb: true
 slot-ab: true
 art-config: default
+gptbuild: true(size=14G)
