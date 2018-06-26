@@ -638,8 +638,8 @@ on post-fs-data
 
 service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/misc/securestorage -r /dev/rpmb0
     class late_start
-    user root
-    group root
+    user system
+    group system
 
 ##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/init.rc
