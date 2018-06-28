@@ -17,14 +17,19 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.dalvik.vm.native.bridge=libhoudini.so
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
-PRODUCT_AAPT_CONFIG := normal large xlarge mdpi hdpi xhdpi xxhdpi
-PRODUCT_AAPT_PREF_CONFIG := xxhdpi
-
 DEVICE_PACKAGE_OVERLAYS += device/intel/project-celadon/common/overlay
 
 PRODUCT_PACKAGES += $(THIRD_PARTY_APPS)
 
 PRODUCT_PACKAGES += fio
+
+# Set default sounds
+# Note: As the override mechanism, must make sure this config 
+# being in front of generic_no_telephony.mk(defined the aosp sound config) 
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.config.notification_sound=Xenon.ogg \
+    ro.config.alarm_alert=Cesium.ogg \
+    ro.config.ringtone=Sceptrum.ogg \
 
 # Get a list of languages.
 $(call inherit-product,$(SRC_TARGET_DIR)/product/locales_full.mk)
@@ -272,7 +277,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 ##############################################################
 # Source: device/intel/mixins/groups/display-density/default/product.mk
 ##############################################################
-PRODUCT_AAPT_CONFIG := normal
+PRODUCT_AAPT_CONFIG := normal large mdpi
 PRODUCT_AAPT_PREF_CONFIG := mdpi
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.sf.lcd_density=160
