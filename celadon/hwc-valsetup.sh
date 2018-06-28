@@ -1,5 +1,5 @@
 LOCAL_PATH="$(gettop)"
-HWCOMPOSER_PATH="$(find vendor -name hwcomposer*)"
+HWCOMPOSER_PATH="$(find vendor/intel/external -name hwcomposer*)"
 export HWCVAL_ROOT=$LOCAL_PATH/$HWCOMPOSER_PATH/tests/hwc-val/tests/hwc
 export VAL_HWC_TOP="`( cd "$HWCVAL_ROOT/../.." && pwd)`"
 export PATH=$HWCVAL_ROOT/host_scripts:$HWCVAL_ROOT/tools:$PATH
