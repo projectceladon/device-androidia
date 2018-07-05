@@ -110,10 +110,11 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/kernel
 ##############################################################
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_LINUX := true
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/bcm43241/
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/bluetooth/overlay-bt-pan
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/bluetooth/common \
                        device/intel/project-celadon/sepolicy/bluetooth/intel
+
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/intel/tablet/
 ##############################################################
 # Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
 ##############################################################
@@ -363,6 +364,7 @@ endif
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/wlan/overlay-miracast-go
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/wlan/overlay-p2p-connected-stop-scan
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/wlan/overlay-miracast-force-single-ch
+DEVICE_PACKAGE_OVERLAYS += device/intel/common/wlan/overlay-wifi-tethering
 
 #BOARD_SEPOLICY_DIRS += #device/intel/sepolicy/wlan/load_iwlwifi
 
