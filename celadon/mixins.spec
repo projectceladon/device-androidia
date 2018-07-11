@@ -48,3 +48,4 @@ memtrack: true
 touch: galax7200
 avb: true
 slot-ab: true
+gptbuild: true(size=14G)
