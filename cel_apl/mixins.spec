@@ -38,7 +38,7 @@ debug-logs: true
 debug-coredump: true
 debug-phonedoctor: true
 debug-tools: true
-flashfiles: ini(oemvars=false,version=3.0,fastboot_min_battery_level=3500,installer=true)
+flashfiles: ini(oemvars=false,version=3.0,fastboot_min_battery_level=false,installer=true)
 midi: true
 trusty: true(ref_target=project-celadon_64)
 slcan: default
