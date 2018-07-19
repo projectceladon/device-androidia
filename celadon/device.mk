@@ -539,6 +539,11 @@ PRODUCT_PACKAGES += esif_ufd \
     jhs
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/dptf.dv:/system/etc/dptf/dv/dptf.dv
 ##############################################################
+# Source: device/intel/mixins/groups/pstore/ram_dummy/product.mk
+##############################################################
+PRODUCT_PACKAGES += \
+    pstore-clean
+##############################################################
 # Source: device/intel/mixins/groups/debug-logs/true/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)

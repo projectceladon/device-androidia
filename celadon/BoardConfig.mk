@@ -358,6 +358,33 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal/dptf
 BOARD_KERNEL_CMDLINE += thermal.off=1
 ##############################################################
+# Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk.1
+##############################################################
+BOARD_KERNEL_CMDLINE += pstore.backend=ramoops
+##############################################################
+# Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk.2
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/sepolicy/pstore
+##############################################################
+# Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk
+##############################################################
+BOARD_KERNEL_CMDLINE += \
+	memmap=0x400000\$$0x50000000 \
+	ramoops.mem_address=0x50000000 \
+	ramoops.mem_size=0x400000
+BOARD_KERNEL_CMDLINE += \
+	ramoops.record_size=0x4000
+
+BOARD_KERNEL_CMDLINE += \
+	ramoops.console_size=0x200000
+
+BOARD_KERNEL_CMDLINE += \
+	ramoops.ftrace_size=0x2000
+
+BOARD_KERNEL_CMDLINE += \
+	ramoops.dump_oops=1
+
+##############################################################
 # Source: device/intel/mixins/groups/debug-phonedoctor/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_M4DEFS += module_debug_phonedoctor=true
