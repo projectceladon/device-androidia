@@ -300,6 +300,7 @@ AB_OTA_POSTINSTALL_CONFIG += \
     POSTINSTALL_PATH_vendor=bin/updater_ab_esp \
     FILESYSTEM_TYPE_vendor=ext4 \
     POSTINSTALL_OPTIONAL_vendor=true
+
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/BoardConfig.mk
 ##############################################################
