@@ -24,7 +24,7 @@ BOARD_KERNEL_CMDLINE += vga=current i915.modeset=1 drm.atomic=1 i915.nuclear_pag
 USE_OPENGL_RENDERER := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 USE_INTEL_UFO_DRIVER := false
-INTEL_VA := true
+INTEL_VA := false
 HWC_DISABLE_VA_DRIVER := true
 BOARD_GRAPHIC_IS_GEN := true
 BOARD_GPU_DRIVERS := i965
@@ -61,6 +61,13 @@ TARGET_USES_HWC2 := true
 ##############################################################
 # Source: device/intel/mixins/groups/media/project-celadon/BoardConfig.mk
 ##############################################################
+INTEL_STAGEFRIGHT := true
+
+# Settings for the Media SDK library and plug-ins:
+# - USE_MEDIASDK: use Media SDK support or not
+USE_MEDIASDK := true
+
+BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
 ##############################################################
 # Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
 ##############################################################
