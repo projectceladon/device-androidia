@@ -437,8 +437,8 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/memtrack
 # Source: device/intel/mixins/groups/gptbuild/true/BoardConfig.mk
 ##############################################################
 # can't use := here, as PRODUCT_OUT is not defined yet
-GPTIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT).img
-CRAFFIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT).craff
+GPTIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT)_gptimage.img
+CRAFFIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT)_gptimage.craff
 # ------------------ END MIX-IN DEFINITIONS ------------------
 
 # Install Native Bridge
