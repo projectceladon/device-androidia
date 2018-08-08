@@ -10,7 +10,13 @@ BOARD_OEM_VARS += $(TARGET_DEVICE_DIR)/oemvars.txt
 ##############################################################
 KERNEL_CROSS_COMPILE_WRAPPER := x86_64-linux-android-
 ##############################################################
-# Source: device/intel/mixins/groups/sepolicy/enforcing/BoardConfig.mk
+# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk.1
+##############################################################
+# start kernel in permissive mode, this way we don't
+# need 'setenforce 0' from init.rc files
+BOARD_KERNEL_CMDLINE += enforcing=0 androidboot.selinux=permissive
+##############################################################
+# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk
 ##############################################################
 # SELinux Policy
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy
@@ -236,8 +242,6 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/unlock_device.nsh
 BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/efivar_oemlock
 BOARD_FLASHFILES += $(PRODUCT_OUT)/bootloader
 BOARD_FLASHFILES += $(PRODUCT_OUT)/fastboot-usb.img
-BOARD_FLASHFILES += $(PRODUCT_OUT)/tos.img
-AB_OTA_PARTITIONS += tos
 
 # -- OTA RELATED DEFINES --
 # tell build system where to get the recovery.fstab.
@@ -371,6 +375,33 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal/dptf
 BOARD_KERNEL_CMDLINE += thermal.off=1
 ##############################################################
+# Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk.1
+##############################################################
+BOARD_KERNEL_CMDLINE += pstore.backend=ramoops
+##############################################################
+# Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk.2
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/sepolicy/pstore
+##############################################################
+# Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk
+##############################################################
+BOARD_KERNEL_CMDLINE += \
+	memmap=0x400000\$$0x50000000 \
+	ramoops.mem_address=0x50000000 \
+	ramoops.mem_size=0x400000
+BOARD_KERNEL_CMDLINE += \
+	ramoops.record_size=0x4000
+
+BOARD_KERNEL_CMDLINE += \
+	ramoops.console_size=0x200000
+
+BOARD_KERNEL_CMDLINE += \
+	ramoops.ftrace_size=0x2000
+
+BOARD_KERNEL_CMDLINE += \
+	ramoops.dump_oops=1
+
+##############################################################
 # Source: device/intel/mixins/groups/debug-phonedoctor/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_M4DEFS += module_debug_phonedoctor=true
@@ -383,47 +414,6 @@ USE_INTEL_FLASHFILES := true
 VARIANT_SPECIFIC_FLASHFILES ?= false
 FAST_FLASHFILES := true
 
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/BoardConfig.mk
-##############################################################
-TARGET_USE_TRUSTY := true
-
-KM_VERSION := 2
-ifeq ($(KM_VERSION),1)
-BOARD_USES_TRUSTY := true
-BOARD_USES_KEYMASTER1 := true
-endif
-
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/trusty
-BOARD_SEPOLICY_M4DEFS += module_trusty=true
-
-LK_PRODUCT := project-celadon_64
-
-LKBUILD_TOOLCHAIN_ROOT = $(PWD)/vendor/intel/external/prebuilts/elf/
-LKBUILD_X86_TOOLCHAIN =
-LKBUILD_X64_TOOLCHAIN = $(LKBUILD_TOOLCHAIN_ROOT)x86_64-elf-4.9.1-Linux-x86_64/bin
-EVMMBUILD_TOOLCHAIN ?= x86_64-linux-android-
-TRUSTY_BUILDROOT = $(PWD)/$(PRODUCT_OUT)/obj/trusty/
-
-TRUSTY_ENV_VAR += LK_CORE_NUM=1
-TRUSTY_ENV_VAR += TRUSTY_REF_TARGET=project-celadon_64
-
-#for trusty lk
-TRUSTY_ENV_VAR += BUILDROOT=$(TRUSTY_BUILDROOT)
-TRUSTY_ENV_VAR += PATH=$(PATH):$(LKBUILD_X86_TOOLCHAIN):$(LKBUILD_X64_TOOLCHAIN)
-
-#for trusty vmm
-# use same toolchain as android kernel
-TRUSTY_ENV_VAR += COMPILE_TOOLCHAIN=$(EVMMBUILD_TOOLCHAIN)
-
-# output build dir to android out folder
-TRUSTY_ENV_VAR += BUILD_DIR=$(TRUSTY_BUILDROOT)
-TRUSTY_ENV_VAR += LKBIN_DIR=$(TRUSTY_BUILDROOT)/build-sand-x86-64/
-
-#Workaround CPU lost issue on SIMICS, will remove this line below after PO.
-BOARD_KERNEL_CMDLINE += cpu_init_udelay=500000
-
-BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
 ##############################################################
 # Source: device/intel/mixins/groups/camera/usbcamera/BoardConfig.mk
 ##############################################################

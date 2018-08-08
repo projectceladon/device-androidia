@@ -638,36 +638,6 @@ PRODUCT_PACKAGES_DEBUG += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/product.mk
-##############################################################
-
-KM_VERSION := 2
-
-ifeq ($(KM_VERSION),2)
-PRODUCT_PACKAGES += \
-	keystore.trusty
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.keystore=trusty
-endif
-
-ifeq ($(KM_VERSION),1)
-PRODUCT_PACKAGES += \
-	keystore.project-celadon
-endif
-
-PRODUCT_PACKAGES += \
-	libtrusty \
-	storageproxyd \
-	libtrustystorage \
-	libtrustystorageinterface \
-	gatekeeper.trusty \
-	android.hardware.gatekeeper@1.0-impl \
-	android.hardware.gatekeeper@1.0-service
-
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.gatekeeper=trusty
-
-##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/product.mk
 ##############################################################
 # memtrack HAL
