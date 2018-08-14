@@ -183,6 +183,7 @@ on post-fs
     insmod /vendor/lib/modules/kernel/drivers/net/usb/usbnet.ko
     insmod /vendor/lib/modules/kernel/drivers/net/usb/asix.ko
     insmod /vendor/lib/modules/kernel/drivers/net/usb/r8152.ko
+    insmod /vendor/lib/modules/kernel/drivers/net/ethernet/realtek/r8169.ko
 ##############################################################
 # Source: device/intel/mixins/groups/debugfs/default/init.rc
 ##############################################################
@@ -447,6 +448,7 @@ on property:sys.boot_completed=1
 on post-fs-data
     # To store BT paired info
     mkdir /data/misc/hcid 0770 bluetooth bluetooth
+    setprop persist.bluetooth.enablenewavrcp false
 
 on boot
     chmod 0644 /sys/kernel/debug/bluetooth/l2cap_le_max_credits
