@@ -19,7 +19,7 @@ usb-gadget: g_ffs
 adb_net: true
 kernel: project-celadon(loglevel=3, disable_cpuidle_on_boot=true)
 bluetooth: btusb (ivi=true)
-boot-arch: project-celadon(bootloader_policy=0x0,bootloader_len=60,magic_key_timeout=80,assume_bios_secure_boot=true,rpmb_simulate=true,disk_encryption=false,file_encryption=true)
+boot-arch: project-celadon(bootloader_policy=0x0,bootloader_len=60,magic_key_timeout=80,assume_bios_secure_boot=true,tos_partition=true,rpmb_simulate=true,disk_encryption=false,file_encryption=true)
 audio: project-celadon
 wlan: iwlwifi
 cpu-arch: skl
@@ -41,7 +41,7 @@ debug-phonedoctor: true
 debug-tools: true
 flashfiles: ini(oemvars=false,version=3.0,fastboot_min_battery_level=false,installer=true)
 midi: true
-trusty: false
+trusty: true(enable_hw_sec=true,enable_storage_proxyd=true,ref_target=project-celadon_64)
 slcan: default
 ioc-slcan-reboot: false
 camera: usbcamera
