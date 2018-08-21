@@ -32,7 +32,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.config.ringtone=Sceptrum.ogg \
 
 # Get a list of languages.
-$(call inherit-product,$(SRC_TARGET_DIR)/product/locales_full.mk)
+#$(call inherit-product,$(SRC_TARGET_DIR)/product/locales_full.mk)
+$(call inherit-product,$(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Get everything else from the parent package
 $(call inherit-product, $(SRC_TARGET_DIR)/product/generic_no_telephony.mk)
@@ -256,9 +257,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.broadcastradio.xml:vendor/etc/permissions/android.hardware.broadcastradio.xml \
     frameworks/native/data/etc/android.software.activities_on_secondary_displays.xml:vendor/etc/permissions/android.software.activities_on_secondary_displays.xml
 
-# Make sure vendor car product overlays take precedence than google definition
-# under packages/services/Car/car_product/overlay/
-PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/device-type/overlay-car
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
 
 $(call inherit-product,frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
@@ -377,6 +375,8 @@ PRODUCT_PACKAGES += \
   android.hardware.bluetooth@1.0-impl \
   android.hardware.bluetooth@1.0-service \
   libbt-vendor
+
+PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-car-disablehfp
 ##############################################################
 # Source: device/intel/mixins/groups/disk-bus/auto/product.mk
 ##############################################################
@@ -567,6 +567,11 @@ PRODUCT_PACKAGES += esif_ufd \
     jhs
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/dptf.dv:/system/etc/dptf/dv/dptf.dv
 ##############################################################
+# Source: device/intel/mixins/groups/pstore/ram_dummy/product.mk
+##############################################################
+PRODUCT_PACKAGES += \
+    pstore-clean
+##############################################################
 # Source: device/intel/mixins/groups/debug-logs/true/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)
@@ -650,36 +655,6 @@ PRODUCT_PACKAGES_DEBUG += \
 # MIDI support
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/product.mk
-##############################################################
-
-KM_VERSION := 2
-
-ifeq ($(KM_VERSION),2)
-PRODUCT_PACKAGES += \
-	keystore.trusty
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.keystore=trusty
-endif
-
-ifeq ($(KM_VERSION),1)
-PRODUCT_PACKAGES += \
-	keystore.project-celadon
-endif
-
-PRODUCT_PACKAGES += \
-	libtrusty \
-	storageproxyd \
-	libtrustystorage \
-	libtrustystorageinterface \
-	gatekeeper.trusty \
-	android.hardware.gatekeeper@1.0-impl \
-	android.hardware.gatekeeper@1.0-service
-
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.gatekeeper=trusty
-
 ##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/product.mk
 ##############################################################
