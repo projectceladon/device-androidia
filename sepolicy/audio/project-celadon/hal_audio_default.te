@@ -1,3 +1,15 @@
+#
+# hal_audio_default is provided by the base policy and mixin
+# project-celadon defines the hal services.
+#
+# Audio uses the default implementations as defined in the product.mk:
+# audio/project-celadon/product.mk:    android.hardware.audio@2.0-impl \
+# audio/project-celadon/product.mk:    android.hardware.audio@2.0-service \
+# audio/project-celadon/product.mk:    android.hardware.audio.effect@2.0-impl \
+#
+# Which can be found digging around: hardware/interfaces/audio/2.0
+#
+
 ignore_adb_debug(hal_audio_default)
 
 allow hal_audio_default self:capability sys_nice;
