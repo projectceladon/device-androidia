@@ -1,0 +1,2 @@
+audiohal.            u:object_r:audiohal_prop:s0
+persist.audiohal.    u:object_r:audiohal_prop:s0
