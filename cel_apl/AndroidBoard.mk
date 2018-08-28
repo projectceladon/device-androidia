@@ -352,7 +352,7 @@ GEN_BLPOLICY_OEMVARS := device/intel/build/generate_blpolicy_oemvars
 TARGET_ODM_KEY_PAIR := device/intel/build/testkeys/odm
 TARGET_OAK_KEY_PAIR := device/intel/build/testkeys/OAK
 
-$(BOOTLOADER_POLICY_OEMVARS): sign-efi-sig-list
+$(BOOTLOADER_POLICY_OEMVARS):
 	$(GEN_BLPOLICY_OEMVARS) -K $(TARGET_ODM_KEY_PAIR) \
 		-O $(TARGET_OAK_KEY_PAIR).x509.pem -B $(TARGET_BOOTLOADER_POLICY) \
 		$(BOOTLOADER_POLICY_OEMVARS)
@@ -541,10 +541,6 @@ $(GPTIMAGE_BIN): \
 	$(hide) rm -f $(INSTALLED_SYSTEMIMAGE).raw
 	$(hide) rm -f $(INSTALLED_USERDATAIMAGE_TARGET).raw
 
-	$(MAKE_EXT4FS) \
-		-l $(BOARD_USERDATAIMAGE_PARTITION_SIZE) -L data \
-		$(PRODUCT_OUT)/userdata.dummy
-
 	$(SIMG2IMG) $(INSTALLED_SYSTEMIMAGE) $(INSTALLED_SYSTEMIMAGE).raw
 	$(SIMG2IMG) $(INSTALLED_VENDORIMAGE_TARGET) $(INSTALLED_VENDORIMAGE_TARGET).raw
 
@@ -561,7 +557,6 @@ $(GPTIMAGE_BIN): \
 		--vbmeta $(INSTALLED_VBMETAIMAGE_TARGET) \
 		--system $(INSTALLED_SYSTEMIMAGE).raw \
 		--vendor $(INSTALLED_VENDORIMAGE_TARGET).raw \
-		--data $(PRODUCT_OUT)/userdata.dummy \
 		--config $(raw_config) \
 		--factory $(raw_factory)
 
