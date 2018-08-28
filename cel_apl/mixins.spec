@@ -8,7 +8,7 @@ product.mk: device.mk
 2ndstage: oemvars
 project-celadon: default
 sepolicy: enforcing
-graphics: project-celadon(gen9+=true,hwc2=true,vulkan=false,drmhwc=false,minigbm=true,gralloc1=true)
+graphics: project-celadon(gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true,gralloc1=true)
 media: project-celadon(mediasdk=false,media_sdk_source=false)
 device-type: car
 ethernet: dhcp
