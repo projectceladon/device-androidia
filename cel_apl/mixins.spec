@@ -5,7 +5,7 @@ mixinsdir: device/intel/mixins/groups
 product.mk: device.mk
 
 [groups]
-2ndstage: oemvars
+2ndstage: false
 project-celadon: default
 sepolicy: enforcing
 graphics: project-celadon(gen9+=true,hwc2=true,vulkan=false,drmhwc=false,minigbm=true,gralloc1=true)
@@ -19,7 +19,7 @@ usb-gadget: g_ffs
 adb_net: true
 kernel: project-celadon(loglevel=3, disable_cpuidle_on_boot=true)
 bluetooth: btusb (ivi=true)
-boot-arch: project-celadon(bootloader_policy=0x0,bootloader_len=60,magic_key_timeout=80,assume_bios_secure_boot=true,tos_partition=true,rpmb_simulate=true,disk_encryption=false,file_encryption=true)
+boot-arch: project-celadon(bootloader_policy=false,bootloader_len=60,magic_key_timeout=80,assume_bios_secure_boot=true,tos_partition=true,rpmb_simulate=true,disk_encryption=false,file_encryption=true)
 audio: project-celadon
 wlan: iwlwifi
 cpu-arch: skl

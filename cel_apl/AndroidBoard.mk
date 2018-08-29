@@ -340,23 +340,6 @@ $(call dist-for-goals,droidcore,$(fastboot_usb_bin):$(TARGET_PRODUCT)-fastboot-u
 $(call dist-for-goals,droidcore,device/intel/build/testkeys/testkeys_lockdown.txt:test-keys_efi_lockdown.txt)
 $(call dist-for-goals,droidcore,device/intel/build/testkeys/unlock.txt:efi_unlock.txt)
 
-ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),static external))
-# The bootloader policy is not built but is provided statically in the
-# repository or in $(PRODUCT_OUT)/.
-else
-# Bootloader policy values are generated based on the
-# TARGET_BOOTLOADER_POLICY value and the
-# device/intel/build/testkeys/{odm,OAK} keys.  The OEM must provide
-# its own keys.
-GEN_BLPOLICY_OEMVARS := device/intel/build/generate_blpolicy_oemvars
-TARGET_ODM_KEY_PAIR := device/intel/build/testkeys/odm
-TARGET_OAK_KEY_PAIR := device/intel/build/testkeys/OAK
-
-$(BOOTLOADER_POLICY_OEMVARS):
-	$(GEN_BLPOLICY_OEMVARS) -K $(TARGET_ODM_KEY_PAIR) \
-		-O $(TARGET_OAK_KEY_PAIR).x509.pem -B $(TARGET_BOOTLOADER_POLICY) \
-		$(BOOTLOADER_POLICY_OEMVARS)
-endif
 
 
 GPT_INI2BIN := ./device/intel/common/gpt_bin/gpt_ini2bin.py
