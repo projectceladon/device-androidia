@@ -197,8 +197,19 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PROPERTY_OVERRIDES += \
    ro.opengles.version=196610
 
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.vulkan.level-1.xml:system/etc/permissions/android.hardware.vulkan.level.xml
 
 
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.vulkan.version-1_1.xml:system/etc/permissions/android.hardware.vulkan.version.xml
+
+PRODUCT_PACKAGES += \
+    vulkan.project-celadon \
+    libvulkan_intel
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hardware.vulkan=project-celadon
 
 # Graphics HAL
 PRODUCT_PACKAGES += \
