@@ -490,7 +490,7 @@ on post-fs
 ##############################################################
 # Enable SELinux labeling
 on post-fs
-    restorecon_recursive /oem_config
+    restorecon_recursive /vendor/oem_config
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/init.rc
 ##############################################################

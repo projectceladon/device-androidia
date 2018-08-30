@@ -5,10 +5,6 @@
 ##############################################################
 /dev/block/by-name/factory      /factory        ext4    rw,noatime                                                  wait
 ##############################################################
-# Source: device/intel/mixins/groups/config-partition/enabled/fstab.recovery
-##############################################################
-/dev/block/by-name/config	    /oem_config     ext4    noatime,nosuid,nodev,errors=panic                           wait,check
-##############################################################
 # Source: device/intel/mixins/groups/avb/true/fstab.recovery
 ##############################################################
 /dev/block/by-name/vbmeta       /vbmeta         emmc    defaults                                                    defaults,slotselect
@@ -19,6 +15,10 @@
 # If the vendor image is not used,
 # following line should be commented with the related ones in BoardConfig.mk
 /dev/block/by-name/vendor	    /vendor         ext4    ro                                                          wait,slotselect
+##############################################################
+# Source: device/intel/mixins/groups/config-partition/enabled/fstab.recovery
+##############################################################
+/dev/block/by-name/config	    /vendor/oem_config      ext4    noatime,nosuid,nodev,errors=panic                           wait,check
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/fstab.recovery
 ##############################################################

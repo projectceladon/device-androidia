@@ -122,6 +122,18 @@ make_dir_ab_factory:
 
 $(PRODUCT_OUT)/ramdisk.img: make_dir_ab_factory
 ##############################################################
+# Source: device/intel/mixins/groups/vendor-partition/true/AndroidBoard.mk
+##############################################################
+
+# This is to ensure that kernel modules are installed before
+# vendor.img is generated.
+$(PRODUCT_OUT)/vendor.img : $(KERNEL_MODULES_INSTALL)
+
+make_dir_ab_vendor:
+	@mkdir -p $(PRODUCT_OUT)/root/vendor
+
+$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_vendor
+##############################################################
 # Source: device/intel/mixins/groups/config-partition/enabled/AndroidBoard.mk
 ##############################################################
 INSTALLED_CONFIGIMAGE_TARGET := $(PRODUCT_OUT)/config.img
@@ -150,7 +162,7 @@ selinux_fc :=
 configimage: $(INSTALLED_CONFIGIMAGE_TARGET)
 
 make_dir_ab_config:
-	@mkdir -p $(PRODUCT_OUT)/root/oem_config
+	@mkdir -p $(PRODUCT_OUT)/vendor/oem_config
 
 $(PRODUCT_OUT)/ramdisk.img: make_dir_ab_config
 ##############################################################
@@ -170,18 +182,6 @@ $(if $(wildcard $(blob)), \
     $(if $(3), $(error $(blob) does not exist)))
 endef
 
-##############################################################
-# Source: device/intel/mixins/groups/vendor-partition/true/AndroidBoard.mk
-##############################################################
-
-# This is to ensure that kernel modules are installed before
-# vendor.img is generated.
-$(PRODUCT_OUT)/vendor.img : $(KERNEL_MODULES_INSTALL)
-
-make_dir_ab_vendor:
-	@mkdir -p $(PRODUCT_OUT)/root/vendor
-
-$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_vendor
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/AndroidBoard.mk
 ##############################################################

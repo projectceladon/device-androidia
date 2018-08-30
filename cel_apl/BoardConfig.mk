@@ -140,13 +140,6 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/factory-partition
 BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
 ##############################################################
-# Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
-##############################################################
-BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
-BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
-BOARD_SEPOLICY_M4DEFS += module_config_partition=true
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/config-partition
-##############################################################
 # Source: device/intel/mixins/groups/avb/true/BoardConfig.mk
 ##############################################################
 BOARD_AVB_ENABLE := true
@@ -174,6 +167,13 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := squashfs
 endif
 BOARD_FLASHFILES += $(PRODUCT_OUT)/vendor.img
 AB_OTA_PARTITIONS += vendor
+##############################################################
+# Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
+##############################################################
+BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
+BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
+BOARD_SEPOLICY_M4DEFS += module_config_partition=true
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/config-partition
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/BoardConfig.mk
 ##############################################################
