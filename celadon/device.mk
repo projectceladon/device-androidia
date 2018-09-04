@@ -534,25 +534,13 @@ PRODUCT_PACKAGES += lights.project-celadon \
     android.hardware.light@2.0-service \
     android.hardware.light@2.0-impl
 ##############################################################
-# Source: device/intel/mixins/groups/thermal/dptf/product.mk
+# Source: device/intel/mixins/groups/thermal/thermal-daemon/product.mk
 ##############################################################
-# DPTF
-INTEL_MODEM_CTL := true
-PRODUCT_PACKAGES += esif_ufd \
-    dsp.dv \
-    dptf.dv \
-    libc++_shared.so \
-    Dptf \
-    DptfPolicyActive \
-    DptfPolicyAdaptivePerformance \
-    DptfPolicyConditionalLogicLib \
-    DptfPolicyCritical \
-    DptfPolicyEmergencyCallMode \
-    DptfPolicyPassive \
-    DptfPolicyVirtualSensor \
-    upe_java \
-    jhs
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/dptf.dv:/system/etc/dptf/dv/dptf.dv
+# thermal-daemon
+PRODUCT_PACKAGES += thermal-daemon
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/thermal-conf.xml:/vendor/etc/thermal-daemon/thermal-conf.xml \
+	$(LOCAL_PATH)/thermal-cpu-cdev-order.xml:/vendor/etc/thermal-daemon/thermal-cpu-cdev-order.xml
 ##############################################################
 # Source: device/intel/mixins/groups/pstore/ram_dummy/product.mk
 ##############################################################
