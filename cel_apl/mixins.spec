@@ -43,7 +43,7 @@ midi: true
 trusty: true(enable_hw_sec=true,enable_storage_proxyd=true,ref_target=project-celadon_64)
 slcan: default
 ioc-slcan-reboot: false
-camera: usbcamera
+camera-ext: ext-camera-only
 memtrack: true
 touch: galax7200
 avb: true
