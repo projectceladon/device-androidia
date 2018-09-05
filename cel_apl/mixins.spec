@@ -10,7 +10,6 @@ project-celadon: default
 sepolicy: enforcing
 graphics: project-celadon(gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true,gralloc1=true)
 media: project-celadon(mediasdk=false,media_sdk_source=false)
-device-type: car
 ethernet: dhcp
 debugfs: default
 storage: sdcard-mmc0-usb-sd(adoptablesd=true,adoptableusb=false)
@@ -51,3 +50,4 @@ avb: true
 slot-ab: true
 art-config: default
 gptbuild: true(size=14G)
+device-type: car
