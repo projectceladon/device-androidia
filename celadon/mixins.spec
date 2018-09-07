@@ -51,3 +51,4 @@ avb: true
 slot-ab: true
 art-config: default
 gptbuild: true(size=14G)
+disallow3rdapp: true
