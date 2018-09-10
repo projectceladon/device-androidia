@@ -68,16 +68,6 @@ USE_MEDIASDK := true
 
 BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
 ##############################################################
-# Source: device/intel/mixins/groups/device-type/car/BoardConfig.mk
-##############################################################
-
-BOARD_SEPOLICY_DIRS += \
-    packages/services/Car/car_product/sepolicy \
-    device/generic/car/common/sepolicy \
-    device/intel/project-celadon/sepolicy/car
-
-TARGET_USES_CAR_FUTURE_FEATURES := true
-##############################################################
 # Source: device/intel/mixins/groups/debugfs/default/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/debugfs
@@ -467,6 +457,16 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/memtrack
 # can't use := here, as PRODUCT_OUT is not defined yet
 GPTIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT)_gptimage.img
 CRAFFIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT)_gptimage.craff
+##############################################################
+# Source: device/intel/mixins/groups/device-type/car/BoardConfig.mk
+##############################################################
+
+BOARD_SEPOLICY_DIRS += \
+    packages/services/Car/car_product/sepolicy \
+    device/generic/car/common/sepolicy \
+    device/intel/project-celadon/sepolicy/car
+
+TARGET_USES_CAR_FUTURE_FEATURES := true
 # ------------------ END MIX-IN DEFINITIONS ------------------
 
 # Install Native Bridge

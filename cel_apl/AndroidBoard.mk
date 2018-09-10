@@ -6,12 +6,6 @@
 droid: flashfiles
 	-$(hide) $(ACP) $(out_flashfiles) $(DIST_DIR)
 ##############################################################
-# Source: device/intel/mixins/groups/device-type/car/AndroidBoard.mk
-##############################################################
-# Car device required kernel diff config
-#KERNEL_CAR_DIFFCONFIG = $(wildcard $(KERNEL_CONFIG_PATH)/car_diffconfig)
-#KERNEL_DIFFCONFIG += $(KERNEL_CAR_DIFFCONFIG)
-##############################################################
 # Source: device/intel/mixins/groups/slot-ab/true/AndroidBoard.mk
 ##############################################################
 
@@ -564,4 +558,10 @@ $(GPTIMAGE_BIN): \
 
 .PHONY: gptimage
 gptimage: $(GPTIMAGE_BIN)
+##############################################################
+# Source: device/intel/mixins/groups/device-type/car/AndroidBoard.mk
+##############################################################
+# Car device required kernel diff config
+#KERNEL_CAR_DIFFCONFIG = $(wildcard $(KERNEL_CONFIG_PATH)/car_diffconfig)
+#KERNEL_DIFFCONFIG += $(KERNEL_CAR_DIFFCONFIG)
 # ------------------ END MIX-IN DEFINITIONS ------------------
