@@ -393,6 +393,9 @@ endif
 
 PRODUCT_PACKAGES += updater_ab_esp
 
+# Allow Kernelflinger to ignore the RSCI reset source "not_applicable"
+# when setting the bootreason
+KERNELFLINGER_IGNORE_NOT_APPLICABLE_RESET := true
 
 
 ifneq (0x0,static)
