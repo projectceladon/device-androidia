@@ -1,0 +1,1 @@
+allow recovery sysfs_thermal_management:dir { search };
