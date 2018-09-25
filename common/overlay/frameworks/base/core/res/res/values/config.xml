@@ -48,6 +48,9 @@
     <!-- This device is not "voice capable"; it's data-only. -->
     <bool name="config_voice_capable">false</bool>
 
+    <!-- Flag indicates that whether non-system apps can be installed on internal storage. -->
+    <bool name="config_allow3rdPartyAppOnInternal">false</bool>
+
     <!-- This device does not allow sms service. -->
     <bool name="config_sms_capable">false</bool>
 
