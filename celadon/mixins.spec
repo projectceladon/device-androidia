@@ -39,6 +39,7 @@ debug-logs: true
 debug-coredump: true
 debug-phonedoctor: true
 debug-tools: true
+disallow3rdapp: true
 flashfiles: ini(oemvars=false,version=3.0,fastboot_min_battery_level=false,installer=true)
 midi: true
 trusty: true(enable_hw_sec=true,enable_storage_proxyd=true,ref_target=project-celadon_64)
