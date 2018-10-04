@@ -661,6 +661,20 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.hardware.gatekeeper=trusty
 
 ##############################################################
+# Source: device/intel/mixins/groups/camera-ext/ext-camera-only/product.mk
+##############################################################
+# Camera: Device-specific configuration files. Supports only External USB camera, no CSI support
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.camera.external.xml:vendor/etc/permissions/android.hardware.camera.external.xml \
+    device/intel/project-celadon/common/camera-ext/external_camera_config.xml:vendor/etc/external_camera_config.xml
+
+# External camera service
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-external-service \
+                    android.hardware.camera.provider@2.4-impl
+
+# Only include test apps in eng or userdebug builds.
+PRODUCT_PACKAGES_DEBUG += TestingCamera
+##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/product.mk
 ##############################################################
 # memtrack HAL
