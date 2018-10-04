@@ -1,0 +1,2 @@
+/dev/video*                 u:object_r:video_device:s0
+/dev/media([0-9])+          u:object_r:video_device:s0

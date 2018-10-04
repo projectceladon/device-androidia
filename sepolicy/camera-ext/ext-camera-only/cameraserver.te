@@ -1,0 +1,4 @@
+#============= cameraserver ==============
+allow cameraserver gpu_device:dir search;
+allow cameraserver hal_graphics_allocator_default_tmpfs:file map;
+allow cameraserver hal_graphics_allocator_default_tmpfs:file { read write };
