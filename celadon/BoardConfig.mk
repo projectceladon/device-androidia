@@ -453,9 +453,9 @@ BOARD_KERNEL_CMDLINE += cpu_init_udelay=500000
 
 BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
 ##############################################################
-# Source: device/intel/mixins/groups/camera/usbcamera/BoardConfig.mk
+# Source: device/intel/mixins/groups/camera-ext/ext-camera-only/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/camera/usbcamera
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/camera-ext/ext-camera-only
 ##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/BoardConfig.mk
 ##############################################################
