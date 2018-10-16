@@ -140,6 +140,11 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/factory-partition
 BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
 ##############################################################
+# Source: device/intel/mixins/groups/firststage-mount/true/BoardConfig.mk
+##############################################################
+BOARD_FIRSTSTAGE_MOUNT_ENABLE := true
+BOARD_KERNEL_CMDLINE += androidboot.android_dt_dir=/sys/bus/platform/devices/ANDR0001:00/properties/android/
+##############################################################
 # Source: device/intel/mixins/groups/avb/true/BoardConfig.mk
 ##############################################################
 BOARD_AVB_ENABLE := true
