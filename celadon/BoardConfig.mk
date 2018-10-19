@@ -104,7 +104,7 @@ TARGET_PRELINK_MODULE := false
 TARGET_NO_KERNEL ?= false
 
 KERNEL_LOGLEVEL ?= 3
-SERIAL_PARAMETER := console=tty0 console=ttyS2,115200n8
+SERIAL_PARAMETER ?= console=tty0 console=ttyS0,115200n8
 
 
 BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL)
