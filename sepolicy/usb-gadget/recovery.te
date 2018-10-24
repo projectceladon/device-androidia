@@ -1,0 +1,8 @@
+recovery_only(`
+  # rules for ota update from udisk
+  allow recovery rootfs:dir w_dir_perms;
+  allow recovery block_device:dir w_dir_perms;
+  allow recovery block_device:blk_file { create unlink };
+  allow recovery vfat:dir create_dir_perms;
+  allow recovery vfat:file create_file_perms;
+')
