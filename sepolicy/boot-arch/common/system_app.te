@@ -1,2 +1,0 @@
-unix_socket_connect(system_app, msm, rpcServer)
-allow system_app msm_socket:sock_file write;

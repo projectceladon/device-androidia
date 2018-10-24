@@ -1,2 +1,0 @@
-type sysfs_app_readable, fs_type, sysfs_type;
-typeattribute hal_graphics_allocator_default_tmpfs mlstrustedobject;

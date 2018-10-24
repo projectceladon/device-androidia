@@ -1,6 +1,0 @@
-#
-# rild
-#
-rpc_socket_use(rild)
-
-unix_socket_connect(rild, msm, rpcServer)

@@ -1,6 +1,0 @@
-#
-# init
-#
-
-# mount /factory
-allow init factory_file:dir mounton;

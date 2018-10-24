@@ -1,1 +1,0 @@
-allow wificond kernel:system module_request;
