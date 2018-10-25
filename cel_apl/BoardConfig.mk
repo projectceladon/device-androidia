@@ -141,8 +141,6 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/vbmeta.img
 
 # Now use AVB to support A/B slot
 PRODUCT_STATIC_BOOT_CONTROL_HAL := bootctrl.avb libavb_user
-
-AB_OTA_PARTITIONS += vbmeta
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/BoardConfig.mk
 ##############################################################
@@ -242,6 +240,9 @@ KERNELFLINGER_ASSUME_BIOS_SECURE_BOOT := true
 
 
 KERNELFLINGER_USE_RPMB_SIMULATE := true
+
+AB_OTA_PARTITIONS += vbmeta
+AB_OTA_PARTITIONS += tos
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_vendor=true \
