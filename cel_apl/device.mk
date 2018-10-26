@@ -295,26 +295,6 @@ ifeq ($(TARGET_BUILD_VARIANT),user)
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.adb.secure=1
 endif
 ##############################################################
-# Source: device/intel/mixins/groups/slot-ab/true/product.mk
-##############################################################
-PRODUCT_PACKAGES += \
-    update_engine \
-    update_verifier \
-    update_engine_sideload \
-    libavb \
-    bootctrl.avb \
-    bootctrl.intel \
-    bootctrl.intel.static \
-    android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-service
-
-PRODUCT_PACKAGES_DEBUG += \
-    update_engine_client \
-    bootctl
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.bootctrl=intel
-##############################################################
 # Source: device/intel/mixins/groups/kernel/project-celadon/product.mk
 ##############################################################
 TARGET_KERNEL_ARCH := x86_64
@@ -355,10 +335,13 @@ PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-car-disablehf
 # create primary storage symlink dynamically
 PRODUCT_PACKAGES += set_storage
 ##############################################################
-# Source: device/intel/mixins/groups/avb/true/product.mk
+# Source: device/intel/mixins/groups/avb/false/product.mk
 ##############################################################
 
-PRODUCT_PACKAGES += avbctl
+# Use GVB (Google Verify Boot)
+$(call inherit-product,build/target/product/verity.mk)
+
+
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
@@ -378,7 +361,6 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 
 endif
 
-PRODUCT_PACKAGES += updater_ab_esp
 
 # Allow Kernelflinger to ignore the RSCI reset source "not_applicable"
 # when setting the bootreason
