@@ -27,6 +27,8 @@ rfkill: true(force_disable=)
 dexpreopt: enabled
 disk-bus: auto
 usb: host+acc
+usb-gadget: configfs(usb_config=adb,mtp_adb_pid=0x0a5f,ptp_adb_pid=0x0a61,rndis_pid=0x0a62,rndis_adb_pid=0x0a63,bcdDevice=0x0,bcdUSB=0x200,controller=dwc3.0.auto,f_acm=false,f_dvc_trace=false)
+usb-otg-switch: true
 lights: true
 thermal: dptf(intel_modem=true)
 config-partition: enabled
