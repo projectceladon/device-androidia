@@ -46,8 +46,8 @@ ioc-slcan-reboot: false
 camera-ext: ext-camera-only
 memtrack: true
 touch: galax7200
-avb: true
-slot-ab: true
+avb: false
+slot-ab: false
 art-config: default
 gptbuild: true(size=14G)
 device-type: car
