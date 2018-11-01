@@ -13,7 +13,7 @@ media: project-celadon(mediasdk=false,media_sdk_source=false)
 device-type: tablet
 ethernet: dhcp
 debugfs: default
-storage: sdcard-mmc0-usb-sd(adoptablesd=true,adoptableusb=false)
+storage: sdcard-mmc0-usb-sd(adoptablesd=true,adoptableusb=true)
 display-density: default
 usb-gadget: g_ffs
 adb_net: true
