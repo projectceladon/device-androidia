@@ -51,3 +51,4 @@ slot-ab: true
 art-config: default
 gptbuild: true(size=14G)
 device-type: car
+usb-otg-switch: true
