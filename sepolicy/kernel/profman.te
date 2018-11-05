@@ -1,0 +1,1 @@
+allow profman apk_data_file:file map;
