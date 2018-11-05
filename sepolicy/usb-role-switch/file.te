@@ -1,0 +1,2 @@
+type sysfs_usb_mux_writable, fs_type, sysfs_type;
+type sysfs_usb_role_writeable, fs_type, sysfs_type;

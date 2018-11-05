@@ -1,0 +1,34 @@
+type usb_roleswitch, domain;
+type usb_roleswitch_exec, exec_type, file_type, vendor_file_type;
+
+init_daemon_domain(usb_roleswitch)
+
+allow usb_roleswitch self:capability net_raw;
+
+#allow usb_roleswitch sysfs:dir w_dir_perms;
+allow usb_roleswitch sysfs:file rw_file_perms;
+
+allow usb_roleswitch sysfs_usb_mux_writable:file rw_file_perms;
+allow usb_roleswitch kernel:key search;
+
+allow usb_roleswitch serial_device:chr_file rw_file_perms;
+allow usb_roleswitch sysfs_usb_role_writeable:file rw_file_perms;
+
+# allows needed for cansend utility
+allow usb_roleswitch vendor_toolbox_exec:file rx_file_perms;
+module_only(`ioc_slcan', `
+  allow usb_roleswitch ioc_slcan_exec:file rx_file_perms;
+')
+allow usb_roleswitch self:udp_socket create_socket_perms;
+allow usb_roleswitch self:socket create_socket_perms_no_ioctl;
+allow usb_roleswitch self:can_socket create_socket_perms_no_ioctl;
+
+not_full_treble(`
+  allow usb_roleswitch shell_exec:file rx_file_perms;
+  allow usb_roleswitch toolbox_exec:file rx_file_perms;
+')
+
+# To allow carservice app to  access sys.usb.cfg
+module_only(`carservice_app', `
+  set_prop(carservice_app, system_radio_prop)
+')
