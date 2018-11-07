@@ -2,7 +2,7 @@
 # set_storage - set symlink on /dev/block/by-name
 #
 
-type set_storage, domain;
+type set_storage, domain, coredomain;
 
 allow set_storage self:capability { fsetid };
 
