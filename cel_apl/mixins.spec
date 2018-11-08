@@ -5,6 +5,8 @@ mixinsdir: device/intel/mixins/groups
 product.mk: device.mk
 
 [groups]
+treble: true
+vndk: true
 2ndstage: oemvars
 project-celadon: default
 sepolicy: enforcing
