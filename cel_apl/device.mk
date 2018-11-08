@@ -315,46 +315,6 @@ PRODUCT_PACKAGES_DEBUG += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.bootctrl=intel
 ##############################################################
-# Source: device/intel/mixins/groups/kernel/project-celadon/product.mk
-##############################################################
-TARGET_KERNEL_ARCH := x86_64
-BOARD_USE_64BIT_KERNEL := true
-
-
-KERNEL_MODULES_ROOT_PATH ?= /vendor/lib/modules
-KERNEL_MODULES_ROOT ?= $(KERNEL_MODULES_ROOT_PATH)
-
-FIRMWARES_DIR ?= vendor/linux/firmware
-
-# Include common settings.
-FIRMWARE_FILTERS ?= .git/% %.mk
-
-# Firmware
-$(call inherit-product,device/intel/project-celadon/common/firmware.mk)
-##############################################################
-# Source: device/intel/mixins/groups/bluetooth/btusb/product.mk
-##############################################################
-PRODUCT_PACKAGES += \
-    audio.a2dp.default \
-    ath3k-1.fw
-
-PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
-		frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml
-
-# Bluetooth HAL
-PRODUCT_PACKAGES += \
-  android.hardware.bluetooth@1.0-impl \
-  android.hardware.bluetooth@1.0-service \
-  libbt-vendor
-
-PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-car-disablehfp
-
-##############################################################
-# Source: device/intel/mixins/groups/disk-bus/auto/product.mk
-##############################################################
-# create primary storage symlink dynamically
-PRODUCT_PACKAGES += set_storage
-##############################################################
 # Source: device/intel/mixins/groups/avb/true/product.mk
 ##############################################################
 
@@ -363,6 +323,11 @@ PRODUCT_PACKAGES += avbctl
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
 PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/by-name/vendor
+##############################################################
+# Source: device/intel/mixins/groups/disk-bus/auto/product.mk
+##############################################################
+# create primary storage symlink dynamically
+PRODUCT_PACKAGES += set_storage
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/product.mk
 ##############################################################
@@ -429,6 +394,73 @@ ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),static ex
 	ro.oem_unlock_supported=1
 endif
 
+
+
+KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := true
+##############################################################
+# Source: device/intel/mixins/groups/trusty/true/product.mk
+##############################################################
+
+KM_VERSION := 2
+
+ifeq ($(KM_VERSION),2)
+PRODUCT_PACKAGES += \
+	keystore.trusty
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.hardware.keystore=trusty
+endif
+
+ifeq ($(KM_VERSION),1)
+PRODUCT_PACKAGES += \
+	keystore.project-celadon
+endif
+
+PRODUCT_PACKAGES += \
+	libtrusty \
+	storageproxyd \
+	libtrustystorage \
+	libtrustystorageinterface \
+	gatekeeper.trusty \
+	android.hardware.gatekeeper@1.0-impl \
+	android.hardware.gatekeeper@1.0-service
+
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.hardware.gatekeeper=trusty
+
+##############################################################
+# Source: device/intel/mixins/groups/kernel/project-celadon/product.mk
+##############################################################
+TARGET_KERNEL_ARCH := x86_64
+BOARD_USE_64BIT_KERNEL := true
+
+
+KERNEL_MODULES_ROOT_PATH ?= /vendor/lib/modules
+KERNEL_MODULES_ROOT ?= $(KERNEL_MODULES_ROOT_PATH)
+
+FIRMWARES_DIR ?= vendor/linux/firmware
+
+# Include common settings.
+FIRMWARE_FILTERS ?= .git/% %.mk
+
+# Firmware
+$(call inherit-product,device/intel/project-celadon/common/firmware.mk)
+##############################################################
+# Source: device/intel/mixins/groups/bluetooth/btusb/product.mk
+##############################################################
+PRODUCT_PACKAGES += \
+    audio.a2dp.default \
+    ath3k-1.fw
+
+PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
+		frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml
+
+# Bluetooth HAL
+PRODUCT_PACKAGES += \
+  android.hardware.bluetooth@1.0-impl \
+  android.hardware.bluetooth@1.0-service \
+  libbt-vendor
+
+PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-car-disablehfp
 
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/product.mk
@@ -630,36 +662,6 @@ PRODUCT_PACKAGES_DEBUG += \
 # MIDI support
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/product.mk
-##############################################################
-
-KM_VERSION := 2
-
-ifeq ($(KM_VERSION),2)
-PRODUCT_PACKAGES += \
-	keystore.trusty
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.keystore=trusty
-endif
-
-ifeq ($(KM_VERSION),1)
-PRODUCT_PACKAGES += \
-	keystore.project-celadon
-endif
-
-PRODUCT_PACKAGES += \
-	libtrusty \
-	storageproxyd \
-	libtrustystorage \
-	libtrustystorageinterface \
-	gatekeeper.trusty \
-	android.hardware.gatekeeper@1.0-impl \
-	android.hardware.gatekeeper@1.0-service
-
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.gatekeeper=trusty
-
 ##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/product.mk
 ##############################################################

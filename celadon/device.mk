@@ -195,8 +195,19 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PROPERTY_OVERRIDES += \
    ro.opengles.version=196610
 
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.vulkan.level-1.xml:system/etc/permissions/android.hardware.vulkan.level.xml
 
 
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.vulkan.version-1_1.xml:system/etc/permissions/android.hardware.vulkan.version.xml
+
+PRODUCT_PACKAGES += \
+    vulkan.project-celadon \
+    libvulkan_intel
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hardware.vulkan=project-celadon
 
 # Graphics HAL
 PRODUCT_PACKAGES += \
@@ -244,17 +255,6 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += \
     device/intel/project-celadon/common/media/mfx_omxil_core.conf:vendor/etc/mfx_omxil_core.conf
-##############################################################
-# Source: device/intel/mixins/groups/device-type/tablet/product.mk
-##############################################################
-PRODUCT_CHARACTERISTICS := tablet
-
-$(call inherit-product,frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
-
-PRODUCT_COPY_FILES += \
-        frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml
-
-
 ##############################################################
 # Source: device/intel/mixins/groups/ethernet/dhcp/product.mk
 ##############################################################
@@ -315,46 +315,6 @@ PRODUCT_PACKAGES_DEBUG += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.bootctrl=intel
 ##############################################################
-# Source: device/intel/mixins/groups/kernel/project-celadon/product.mk
-##############################################################
-TARGET_KERNEL_ARCH := x86_64
-BOARD_USE_64BIT_KERNEL := true
-
-
-KERNEL_MODULES_ROOT_PATH ?= /vendor/lib/modules
-KERNEL_MODULES_ROOT ?= $(KERNEL_MODULES_ROOT_PATH)
-
-FIRMWARES_DIR ?= vendor/linux/firmware
-
-# Include common settings.
-FIRMWARE_FILTERS ?= .git/% %.mk
-
-# Firmware
-$(call inherit-product,device/intel/project-celadon/common/firmware.mk)
-##############################################################
-# Source: device/intel/mixins/groups/bluetooth/btusb/product.mk
-##############################################################
-PRODUCT_PACKAGES += \
-    audio.a2dp.default \
-    ath3k-1.fw
-
-PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
-		frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml
-
-# Bluetooth HAL
-PRODUCT_PACKAGES += \
-  android.hardware.bluetooth@1.0-impl \
-  android.hardware.bluetooth@1.0-service \
-  libbt-vendor
-
-
-PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-tablet
-##############################################################
-# Source: device/intel/mixins/groups/disk-bus/auto/product.mk
-##############################################################
-# create primary storage symlink dynamically
-PRODUCT_PACKAGES += set_storage
-##############################################################
 # Source: device/intel/mixins/groups/avb/true/product.mk
 ##############################################################
 
@@ -363,6 +323,11 @@ PRODUCT_PACKAGES += avbctl
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
 PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/by-name/vendor
+##############################################################
+# Source: device/intel/mixins/groups/disk-bus/auto/product.mk
+##############################################################
+# create primary storage symlink dynamically
+PRODUCT_PACKAGES += set_storage
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/product.mk
 ##############################################################
@@ -429,6 +394,73 @@ ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),static ex
 	ro.oem_unlock_supported=1
 endif
 
+
+
+KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := true
+##############################################################
+# Source: device/intel/mixins/groups/trusty/true/product.mk
+##############################################################
+
+KM_VERSION := 2
+
+ifeq ($(KM_VERSION),2)
+PRODUCT_PACKAGES += \
+	keystore.trusty
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.hardware.keystore=trusty
+endif
+
+ifeq ($(KM_VERSION),1)
+PRODUCT_PACKAGES += \
+	keystore.project-celadon
+endif
+
+PRODUCT_PACKAGES += \
+	libtrusty \
+	storageproxyd \
+	libtrustystorage \
+	libtrustystorageinterface \
+	gatekeeper.trusty \
+	android.hardware.gatekeeper@1.0-impl \
+	android.hardware.gatekeeper@1.0-service
+
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.hardware.gatekeeper=trusty
+
+##############################################################
+# Source: device/intel/mixins/groups/kernel/project-celadon/product.mk
+##############################################################
+TARGET_KERNEL_ARCH := x86_64
+BOARD_USE_64BIT_KERNEL := true
+
+
+KERNEL_MODULES_ROOT_PATH ?= /vendor/lib/modules
+KERNEL_MODULES_ROOT ?= $(KERNEL_MODULES_ROOT_PATH)
+
+FIRMWARES_DIR ?= vendor/linux/firmware
+
+# Include common settings.
+FIRMWARE_FILTERS ?= .git/% %.mk
+
+# Firmware
+$(call inherit-product,device/intel/project-celadon/common/firmware.mk)
+##############################################################
+# Source: device/intel/mixins/groups/bluetooth/btusb/product.mk
+##############################################################
+PRODUCT_PACKAGES += \
+    audio.a2dp.default \
+    ath3k-1.fw
+
+PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
+		frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml
+
+# Bluetooth HAL
+PRODUCT_PACKAGES += \
+  android.hardware.bluetooth@1.0-impl \
+  android.hardware.bluetooth@1.0-service \
+  libbt-vendor
+
+PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-car-disablehfp
 
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/product.mk
@@ -522,13 +554,25 @@ PRODUCT_PACKAGES += lights.project-celadon \
     android.hardware.light@2.0-service \
     android.hardware.light@2.0-impl
 ##############################################################
-# Source: device/intel/mixins/groups/thermal/thermal-daemon/product.mk
+# Source: device/intel/mixins/groups/thermal/dptf/product.mk
 ##############################################################
-# thermal-daemon
-PRODUCT_PACKAGES += thermal-daemon
-PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/thermal-conf.xml:/vendor/etc/thermal-daemon/thermal-conf.xml \
-	$(LOCAL_PATH)/thermal-cpu-cdev-order.xml:/vendor/etc/thermal-daemon/thermal-cpu-cdev-order.xml
+# DPTF
+INTEL_MODEM_CTL := true
+PRODUCT_PACKAGES += esif_ufd \
+    dsp.dv \
+    dptf.dv \
+    libc++_shared.so \
+    Dptf \
+    DptfPolicyActive \
+    DptfPolicyAdaptivePerformance \
+    DptfPolicyConditionalLogicLib \
+    DptfPolicyCritical \
+    DptfPolicyEmergencyCallMode \
+    DptfPolicyPassive \
+    DptfPolicyVirtualSensor \
+    upe_java \
+    jhs
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/dptf.dv:/system/etc/dptf/dv/dptf.dv
 ##############################################################
 # Source: device/intel/mixins/groups/pstore/ram_dummy/product.mk
 ##############################################################
@@ -619,36 +663,6 @@ PRODUCT_PACKAGES_DEBUG += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/product.mk
-##############################################################
-
-KM_VERSION := 2
-
-ifeq ($(KM_VERSION),2)
-PRODUCT_PACKAGES += \
-	keystore.trusty
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.keystore=trusty
-endif
-
-ifeq ($(KM_VERSION),1)
-PRODUCT_PACKAGES += \
-	keystore.project-celadon
-endif
-
-PRODUCT_PACKAGES += \
-	libtrusty \
-	storageproxyd \
-	libtrustystorage \
-	libtrustystorageinterface \
-	gatekeeper.trusty \
-	android.hardware.gatekeeper@1.0-impl \
-	android.hardware.gatekeeper@1.0-service
-
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.gatekeeper=trusty
-
-##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/product.mk
 ##############################################################
 # memtrack HAL
@@ -673,6 +687,32 @@ PRODUCT_PACKAGES_TESTS += \
     libarttest \
     libnativebridgetest \
     libart-gtest
+##############################################################
+# Source: device/intel/mixins/groups/device-type/car/product.mk
+##############################################################
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/car_core_hardware.xml:vendor/etc/permissions/car_core_hardware.xml \
+    frameworks/native/data/etc/android.hardware.type.automotive.xml:vendor/etc/permissions/android.hardware.type.automotive.xml \
+    frameworks/native/data/etc/android.hardware.screen.landscape.xml:vendor/etc/permissions/android.hardware.screen.landscape.xml \
+    frameworks/native/data/etc/android.hardware.ethernet.xml:vendor/etc/permissions/android.hardware.ethernet.xml \
+    frameworks/native/data/etc/android.hardware.broadcastradio.xml:vendor/etc/permissions/android.hardware.broadcastradio.xml \
+    frameworks/native/data/etc/android.software.activities_on_secondary_displays.xml:vendor/etc/permissions/android.software.activities_on_secondary_displays.xml
+
+$(call inherit-product, packages/services/Car/car_product/build/car.mk)
+
+$(call inherit-product,frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
+
+PRODUCT_PACKAGES += \
+    radio.fm.default \
+    CarSettings \
+    VmsPublisherClientSample \
+    VmsSubscriberClientSample \
+
+PRODUCT_PACKAGES += android.hardware.automotive.vehicle.intel@2.0-service \
+					android.hardware.automotive.vehicle@2.0-service \
+					android.hardware.automotive.vehicle@2.0-impl
+
+VEHICLE_HAL_PROTO_TYPE := google-emulator
 ##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/product.mk
 ##############################################################

@@ -340,6 +340,44 @@ service setconsole /system/bin/setconsole -g
     oneshot
 
 ##############################################################
+# Source: device/intel/mixins/groups/config-partition/enabled/init.rc
+##############################################################
+# Enable SELinux labeling
+on post-fs
+    restorecon_recursive /vendor/oem_config
+##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/init.rc
+##############################################################
+# init.rc for telephony services specific to flashless platforms using /factory partition
+
+on init
+# Used as mounting point for factory partition.
+# Calibration files configuring IMEI and RF calibration will also be stored on this partition.
+    mkdir /factory 0770 system system
+
+on post-fs
+    restorecon_recursive /factory
+    trigger post-fs-factory
+##############################################################
+# Source: device/intel/mixins/groups/trusty/true/init.rc
+##############################################################
+on fs
+    # Update device node r/w attribute
+    chown system system /dev/trusty-ipc-dev0
+    chmod 666 /dev/trusty-ipc-dev0
+
+on post-fs-data
+    mkdir /data/vendor/securestorage 0700 system system
+    chmod 666 /dev/rpmb0
+
+on early-boot
+    start storageproxyd
+
+service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/vendor/securestorage -r /dev/rpmb0
+    user system
+    group system
+
+##############################################################
 # Source: device/intel/mixins/groups/kernel/project-celadon/init.rc
 ##############################################################
 on boot
@@ -472,25 +510,6 @@ on post-fs
     insmod /vendor/lib/modules/kernel/drivers/bluetooth/btbcm.ko
     insmod /vendor/lib/modules/kernel/drivers/bluetooth/btrtl.ko
     insmod /vendor/lib/modules/kernel/drivers/bluetooth/btusb.ko
-##############################################################
-# Source: device/intel/mixins/groups/factory-partition/true/init.rc
-##############################################################
-# init.rc for telephony services specific to flashless platforms using /factory partition
-
-on init
-# Used as mounting point for factory partition.
-# Calibration files configuring IMEI and RF calibration will also be stored on this partition.
-    mkdir /factory 0770 system system
-
-on post-fs
-    restorecon_recursive /factory
-    trigger post-fs-factory
-##############################################################
-# Source: device/intel/mixins/groups/config-partition/enabled/init.rc
-##############################################################
-# Enable SELinux labeling
-on post-fs
-    restorecon_recursive /vendor/oem_config
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/init.rc
 ##############################################################
@@ -673,25 +692,6 @@ on property:sys.usb.config=midi,adb
     write /sys/class/android_usb/android0/enable 1
     start adbd
     setprop sys.usb.state ${sys.usb.config}
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/init.rc
-##############################################################
-on fs
-    # Update device node r/w attribute
-    chown system system /dev/trusty-ipc-dev0
-    chmod 666 /dev/trusty-ipc-dev0
-
-on post-fs-data
-    mkdir /data/vendor/securestorage 0700 system system
-    chmod 666 /dev/rpmb0
-
-on early-boot
-    start storageproxyd
-
-service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/vendor/securestorage -r /dev/rpmb0
-    user system
-    group system
-
 ##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/init.rc
 ##############################################################

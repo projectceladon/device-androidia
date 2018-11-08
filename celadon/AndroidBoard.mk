@@ -17,112 +17,6 @@ make_dir_slot_ab:
 
 $(PRODUCT_OUT)/ramdisk.img: make_dir_slot_ab
 ##############################################################
-# Source: device/intel/mixins/groups/kernel/project-celadon/AndroidBoard.mk
-##############################################################
-ifneq ($(TARGET_PREBUILT_KERNEL),)
-$(error TARGET_PREBUILT_KERNEL defined but AndroidIA kernels build from source)
-endif
-
-TARGET_KERNEL_SRC ?= kernel/project-celadon
-
-TARGET_KERNEL_ARCH := x86_64
-TARGET_KERNEL_CONFIG ?= kernel_64_defconfig
-
-KERNEL_CONFIG_DIR := device/intel/project-celadon/kernel_config
-
-KERNEL_NAME := bzImage
-
-# Set the output for the kernel build products.
-KERNEL_OUT := $(abspath $(TARGET_OUT_INTERMEDIATES)/kernel)
-KERNEL_BIN := $(KERNEL_OUT)/arch/$(TARGET_KERNEL_ARCH)/boot/$(KERNEL_NAME)
-KERNEL_MODULES_INSTALL := $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules
-
-KERNELRELEASE = $(shell cat $(KERNEL_OUT)/include/config/kernel.release)
-
-KMOD_OUT := $(shell readlink -f "$(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)")
-
-build_kernel := $(MAKE) -C $(TARGET_KERNEL_SRC) \
-		O=$(KERNEL_OUT) \
-		ARCH=$(TARGET_KERNEL_ARCH) \
-		CROSS_COMPILE="$(KERNEL_CROSS_COMPILE_WRAPPER)" \
-		KCFLAGS="$(KERNEL_CFLAGS)" \
-		KAFLAGS="$(KERNEL_AFLAGS)" \
-		$(if $(SHOW_COMMANDS),V=1) \
-		INSTALL_MOD_PATH=$(KMOD_OUT)
-
-KERNEL_CONFIG_FILE := device/intel/project-celadon/kernel_config/$(TARGET_KERNEL_CONFIG)
-
-KERNEL_CONFIG := $(KERNEL_OUT)/.config
-$(KERNEL_CONFIG): $(KERNEL_CONFIG_FILE)
-	$(hide) mkdir -p $(@D) && cat $(wildcard $^) > $@
-	$(build_kernel) oldnoconfig
-
-# Produces the actual kernel image!
-$(PRODUCT_OUT)/kernel: $(KERNEL_CONFIG) | $(ACP)
-	$(build_kernel) $(KERNEL_NAME) modules
-	$(hide) $(ACP) -fp $(KERNEL_BIN) $@
-
-EXTMOD_SRC := ../../../../../..
-TARGET_EXTRA_KERNEL_MODULES := $(EXTMOD_SRC)/kernel/modules/perftools-external/soc_perf_driver/src
-TARGET_EXTRA_KERNEL_MODULES += $(EXTMOD_SRC)/kernel/modules/perftools-external/socwatch_driver
-
-ALL_EXTRA_MODULES := $(patsubst %,$(TARGET_OUT_INTERMEDIATES)/kmodule/%,$(TARGET_EXTRA_KERNEL_MODULES))
-$(ALL_EXTRA_MODULES): $(TARGET_OUT_INTERMEDIATES)/kmodule/%: $(PRODUCT_OUT)/kernel
-	@echo Building additional kernel module $*
-	$(build_kernel) M=$(abspath $@) modules
-
-# Copy modules in directory pointed by $(KERNEL_MODULES_ROOT)
-# First copy modules keeping directory hierarchy lib/modules/`uname-r`for libkmod
-# Second, create flat hierarchy for insmod linking to previous hierarchy
-$(KERNEL_MODULES_INSTALL): $(PRODUCT_OUT)/kernel $(ALL_EXTRA_MODULES)
-	$(hide) rm -rf $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules
-	$(build_kernel) modules_install
-	$(hide) for kmod in $(TARGET_EXTRA_KERNEL_MODULES) ; do \
-		echo Installing additional kernel module $${kmod} ; \
-		$(subst +,,$(subst $(hide),,$(build_kernel))) M=$(abspath $(TARGET_OUT_INTERMEDIATES))/kernel/$${kmod} modules_install ; \
-	done
-	$(hide) rm -f $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules/*/{build,source}
-	$(hide) mv $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules/$(KERNELRELEASE)/* $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules
-	$(hide) rm -rf $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules/$(KERNELRELEASE)
-	$(hide) touch $@
-
-# Makes sure any built modules will be included in the system image build.
-ALL_DEFAULT_INSTALLED_MODULES += $(KERNEL_MODULES_INSTALL)
-
-installclean: FILES += $(KERNEL_OUT) $(PRODUCT_OUT)/kernel
-
-.PHONY: kernel
-kernel: $(PRODUCT_OUT)/kernel
-##############################################################
-# Source: device/intel/mixins/groups/factory-partition/true/AndroidBoard.mk
-##############################################################
-INSTALLED_FACTORYIMAGE_TARGET := $(PRODUCT_OUT)/factory.img
-selinux_fc := $(TARGET_ROOT_OUT)/file_contexts.bin
-
-$(INSTALLED_FACTORYIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
-$(INSTALLED_FACTORYIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
-	$(call pretty,"Target factory fs image: $(INSTALLED_FACTORYIMAGE_TARGET)")
-	@mkdir -p $(PRODUCT_OUT)/factory
-	$(hide)	$(MKEXTUSERIMG) -s \
-		$(PRODUCT_OUT)/factory \
-		$(PRODUCT_OUT)/factory.img \
-		ext4 \
-		factory \
-		$(BOARD_FACTORYIMAGE_PARTITION_SIZE) \
-		$(PRIVATE_SELINUX_FC)
-
-INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_FACTORYIMAGE_TARGET)
-
-selinux_fc :=
-
-.PHONY: factoryimage
-factoryimage: $(INSTALLED_FACTORYIMAGE_TARGET)
-
-make_dir_ab_factory:
-	@mkdir -p $(PRODUCT_OUT)/root/factory
-
-$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_factory
-##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/AndroidBoard.mk
 ##############################################################
 
@@ -166,6 +60,35 @@ make_dir_ab_config:
 	@mkdir -p $(PRODUCT_OUT)/vendor/oem_config
 
 $(PRODUCT_OUT)/ramdisk.img: make_dir_ab_config
+##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/AndroidBoard.mk
+##############################################################
+INSTALLED_FACTORYIMAGE_TARGET := $(PRODUCT_OUT)/factory.img
+selinux_fc := $(TARGET_ROOT_OUT)/file_contexts.bin
+
+$(INSTALLED_FACTORYIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
+$(INSTALLED_FACTORYIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
+	$(call pretty,"Target factory fs image: $(INSTALLED_FACTORYIMAGE_TARGET)")
+	@mkdir -p $(PRODUCT_OUT)/factory
+	$(hide)	$(MKEXTUSERIMG) -s \
+		$(PRODUCT_OUT)/factory \
+		$(PRODUCT_OUT)/factory.img \
+		ext4 \
+		factory \
+		$(BOARD_FACTORYIMAGE_PARTITION_SIZE) \
+		$(PRIVATE_SELINUX_FC)
+
+INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_FACTORYIMAGE_TARGET)
+
+selinux_fc :=
+
+.PHONY: factoryimage
+factoryimage: $(INSTALLED_FACTORYIMAGE_TARGET)
+
+make_dir_ab_factory:
+	@mkdir -p $(PRODUCT_OUT)/root/factory
+
+$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_factory
 ##############################################################
 # Source: device/intel/mixins/groups/variants/default/AndroidBoard.mk
 ##############################################################
@@ -366,6 +289,132 @@ $(PRODUCT_OUT)/vendor/firmware/kernelflinger.efi: $(PRODUCT_OUT)/efi/kernelfling
 	$(ACP) $(PRODUCT_OUT)/efi/kernelflinger.efi $@
 
 ##############################################################
+# Source: device/intel/mixins/groups/trusty/true/AndroidBoard.mk
+##############################################################
+TOS_IMAGE_TARGET := $(TRUSTY_BUILDROOT)/evmm_lk_pkg.bin
+
+INTERNAL_PLATFORM := ikgt
+LOCAL_MAKE := make
+
+# Build the evmm_pkg.bin and lk.bin
+.PHONY: $(TOS_IMAGE_TARGET)
+$(TOS_IMAGE_TARGET):
+	@echo "making lk.bin.."
+	$(hide) (cd $(TOPDIR)trusty && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE) sand-x86-64)
+	@echo "making tos image.."
+	$(hide) (cd $(TOPDIR)vendor/intel/fw/evmm/$(INTERNAL_PLATFORM) && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE))
+
+#tos partition is assigned for trusty
+INSTALLED_TOS_IMAGE_TARGET := $(PRODUCT_OUT)/tos.img
+TOS_SIGNING_KEY := $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_VERITY_SIGNING_KEY).pk8
+TOS_SIGNING_CERT := $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_VERITY_SIGNING_KEY).x509.pem
+
+.PHONY: tosimage
+tosimage: $(INSTALLED_TOS_IMAGE_TARGET)
+
+ifeq (true,$(BOARD_AVB_ENABLE)) # BOARD_AVB_ENABLE == true
+$(INSTALLED_TOS_IMAGE_TARGET): $(TOS_IMAGE_TARGET) $(MKBOOTIMG) $(AVBTOOL)
+	@echo "mkbootimg to create boot image for TOS file: $@"
+	$(hide) $(MKBOOTIMG) --kernel $(TOS_IMAGE_TARGET) --output $@
+	$(hide) $(AVBTOOL) add_hash_footer \
+		--image $@ \
+		--partition_size $(BOARD_TOSIMAGE_PARTITION_SIZE) \
+		--partition_name tos $(INTERNAL_AVB_SIGNING_ARGS)
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --include_descriptors_from_image $(INSTALLED_TOS_IMAGE_TARGET)
+$(PRODUCT_OUT)/vbmeta.img: $(INSTALLED_TOS_IMAGE_TARGET)
+else
+$(INSTALLED_TOS_IMAGE_TARGET): $(TOS_IMAGE_TARGET) $(MKBOOTIMG) $(BOOT_SIGNER)
+	@echo "mkbootimg to create boot image for TOS file: $@"
+	$(hide) $(MKBOOTIMG) --kernel $(TOS_IMAGE_TARGET) --output $@
+	$(if $(filter true,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_SUPPORTS_BOOT_SIGNER)),\
+		@echo "sign prebuilt TOS file: $@" &&\
+		$(BOOT_SIGNER) /tos $@ $(TOS_SIGNING_KEY) $(TOS_SIGNING_CERT) $@)
+endif
+
+INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_TOS_IMAGE_TARGET)
+
+make_dir_ab_tos:
+	@mkdir -p $(PRODUCT_OUT)/root/tos
+
+$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_tos
+##############################################################
+# Source: device/intel/mixins/groups/kernel/project-celadon/AndroidBoard.mk
+##############################################################
+ifneq ($(TARGET_PREBUILT_KERNEL),)
+$(error TARGET_PREBUILT_KERNEL defined but AndroidIA kernels build from source)
+endif
+
+TARGET_KERNEL_SRC ?= kernel/project-celadon
+
+TARGET_KERNEL_ARCH := x86_64
+TARGET_KERNEL_CONFIG ?= kernel_64_defconfig
+
+KERNEL_CONFIG_DIR := device/intel/project-celadon/kernel_config
+
+KERNEL_NAME := bzImage
+
+# Set the output for the kernel build products.
+KERNEL_OUT := $(abspath $(TARGET_OUT_INTERMEDIATES)/kernel)
+KERNEL_BIN := $(KERNEL_OUT)/arch/$(TARGET_KERNEL_ARCH)/boot/$(KERNEL_NAME)
+KERNEL_MODULES_INSTALL := $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules
+
+KERNELRELEASE = $(shell cat $(KERNEL_OUT)/include/config/kernel.release)
+
+KMOD_OUT := $(shell readlink -f "$(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)")
+
+build_kernel := $(MAKE) -C $(TARGET_KERNEL_SRC) \
+		O=$(KERNEL_OUT) \
+		ARCH=$(TARGET_KERNEL_ARCH) \
+		CROSS_COMPILE="$(KERNEL_CROSS_COMPILE_WRAPPER)" \
+		KCFLAGS="$(KERNEL_CFLAGS)" \
+		KAFLAGS="$(KERNEL_AFLAGS)" \
+		$(if $(SHOW_COMMANDS),V=1) \
+		INSTALL_MOD_PATH=$(KMOD_OUT)
+
+KERNEL_CONFIG_FILE := device/intel/project-celadon/kernel_config/$(TARGET_KERNEL_CONFIG)
+
+KERNEL_CONFIG := $(KERNEL_OUT)/.config
+$(KERNEL_CONFIG): $(KERNEL_CONFIG_FILE)
+	$(hide) mkdir -p $(@D) && cat $(wildcard $^) > $@
+	$(build_kernel) oldnoconfig
+
+# Produces the actual kernel image!
+$(PRODUCT_OUT)/kernel: $(KERNEL_CONFIG) | $(ACP)
+	$(build_kernel) $(KERNEL_NAME) modules
+	$(hide) $(ACP) -fp $(KERNEL_BIN) $@
+
+EXTMOD_SRC := ../../../../../..
+TARGET_EXTRA_KERNEL_MODULES := $(EXTMOD_SRC)/kernel/modules/perftools-external/soc_perf_driver/src
+TARGET_EXTRA_KERNEL_MODULES += $(EXTMOD_SRC)/kernel/modules/perftools-external/socwatch_driver
+
+ALL_EXTRA_MODULES := $(patsubst %,$(TARGET_OUT_INTERMEDIATES)/kmodule/%,$(TARGET_EXTRA_KERNEL_MODULES))
+$(ALL_EXTRA_MODULES): $(TARGET_OUT_INTERMEDIATES)/kmodule/%: $(PRODUCT_OUT)/kernel
+	@echo Building additional kernel module $*
+	$(build_kernel) M=$(abspath $@) modules
+
+# Copy modules in directory pointed by $(KERNEL_MODULES_ROOT)
+# First copy modules keeping directory hierarchy lib/modules/`uname-r`for libkmod
+# Second, create flat hierarchy for insmod linking to previous hierarchy
+$(KERNEL_MODULES_INSTALL): $(PRODUCT_OUT)/kernel $(ALL_EXTRA_MODULES)
+	$(hide) rm -rf $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules
+	$(build_kernel) modules_install
+	$(hide) for kmod in $(TARGET_EXTRA_KERNEL_MODULES) ; do \
+		echo Installing additional kernel module $${kmod} ; \
+		$(subst +,,$(subst $(hide),,$(build_kernel))) M=$(abspath $(TARGET_OUT_INTERMEDIATES))/kernel/$${kmod} modules_install ; \
+	done
+	$(hide) rm -f $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules/*/{build,source}
+	$(hide) mv $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules/$(KERNELRELEASE)/* $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules
+	$(hide) rm -rf $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules/$(KERNELRELEASE)
+	$(hide) touch $@
+
+# Makes sure any built modules will be included in the system image build.
+ALL_DEFAULT_INSTALLED_MODULES += $(KERNEL_MODULES_INSTALL)
+
+installclean: FILES += $(KERNEL_OUT) $(PRODUCT_OUT)/kernel
+
+.PHONY: kernel
+kernel: $(PRODUCT_OUT)/kernel
+##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/AndroidBoard.mk
 ##############################################################
 pfw_rebuild_settings := true
@@ -434,55 +483,6 @@ $(provdata_zip): $(provdata_zip_deps) | $(ACP)
 
 INSTALLED_RADIOIMAGE_TARGET += $(provdata_zip)
 
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/AndroidBoard.mk
-##############################################################
-TOS_IMAGE_TARGET := $(TRUSTY_BUILDROOT)/evmm_lk_pkg.bin
-
-INTERNAL_PLATFORM := ikgt
-LOCAL_MAKE := make
-
-# Build the evmm_pkg.bin and lk.bin
-.PHONY: $(TOS_IMAGE_TARGET)
-$(TOS_IMAGE_TARGET):
-	@echo "making lk.bin.."
-	$(hide) (cd $(TOPDIR)trusty && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE) sand-x86-64)
-	@echo "making tos image.."
-	$(hide) (cd $(TOPDIR)vendor/intel/fw/evmm/$(INTERNAL_PLATFORM) && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE))
-
-#tos partition is assigned for trusty
-INSTALLED_TOS_IMAGE_TARGET := $(PRODUCT_OUT)/tos.img
-TOS_SIGNING_KEY := $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_VERITY_SIGNING_KEY).pk8
-TOS_SIGNING_CERT := $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_VERITY_SIGNING_KEY).x509.pem
-
-.PHONY: tosimage
-tosimage: $(INSTALLED_TOS_IMAGE_TARGET)
-
-ifeq (true,$(BOARD_AVB_ENABLE)) # BOARD_AVB_ENABLE == true
-$(INSTALLED_TOS_IMAGE_TARGET): $(TOS_IMAGE_TARGET) $(MKBOOTIMG) $(AVBTOOL)
-	@echo "mkbootimg to create boot image for TOS file: $@"
-	$(hide) $(MKBOOTIMG) --kernel $(TOS_IMAGE_TARGET) --output $@
-	$(hide) $(AVBTOOL) add_hash_footer \
-		--image $@ \
-		--partition_size $(BOARD_TOSIMAGE_PARTITION_SIZE) \
-		--partition_name tos $(INTERNAL_AVB_SIGNING_ARGS)
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --include_descriptors_from_image $(INSTALLED_TOS_IMAGE_TARGET)
-$(PRODUCT_OUT)/vbmeta.img: $(INSTALLED_TOS_IMAGE_TARGET)
-else
-$(INSTALLED_TOS_IMAGE_TARGET): $(TOS_IMAGE_TARGET) $(MKBOOTIMG) $(BOOT_SIGNER)
-	@echo "mkbootimg to create boot image for TOS file: $@"
-	$(hide) $(MKBOOTIMG) --kernel $(TOS_IMAGE_TARGET) --output $@
-	$(if $(filter true,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_SUPPORTS_BOOT_SIGNER)),\
-		@echo "sign prebuilt TOS file: $@" &&\
-		$(BOOT_SIGNER) /tos $@ $(TOS_SIGNING_KEY) $(TOS_SIGNING_CERT) $@)
-endif
-
-INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_TOS_IMAGE_TARGET)
-
-make_dir_ab_tos:
-	@mkdir -p $(PRODUCT_OUT)/root/tos
-
-$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_tos
 ##############################################################
 # Source: device/intel/mixins/groups/gptbuild/true/AndroidBoard.mk
 ##############################################################
@@ -558,4 +558,10 @@ $(GPTIMAGE_BIN): \
 
 .PHONY: gptimage
 gptimage: $(GPTIMAGE_BIN)
+##############################################################
+# Source: device/intel/mixins/groups/device-type/car/AndroidBoard.mk
+##############################################################
+# Car device required kernel diff config
+#KERNEL_CAR_DIFFCONFIG = $(wildcard $(KERNEL_CONFIG_PATH)/car_diffconfig)
+#KERNEL_DIFFCONFIG += $(KERNEL_CAR_DIFFCONFIG)
 # ------------------ END MIX-IN DEFINITIONS ------------------

@@ -10,13 +10,7 @@ BOARD_OEM_VARS += $(TARGET_DEVICE_DIR)/oemvars.txt
 ##############################################################
 KERNEL_CROSS_COMPILE_WRAPPER := x86_64-linux-android-
 ##############################################################
-# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk.1
-##############################################################
-# start kernel in permissive mode, this way we don't
-# need 'setenforce 0' from init.rc files
-BOARD_KERNEL_CMDLINE += enforcing=0 androidboot.selinux=permissive
-##############################################################
-# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk
+# Source: device/intel/mixins/groups/sepolicy/enforcing/BoardConfig.mk
 ##############################################################
 # SELinux Policy
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy
@@ -74,10 +68,6 @@ USE_MEDIASDK := true
 
 BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
 ##############################################################
-# Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
-##############################################################
-DEVICE_PACKAGE_OVERLAYS += device/intel/common/device-type/overlay-tablet
-##############################################################
 # Source: device/intel/mixins/groups/debugfs/default/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/debugfs
@@ -92,53 +82,6 @@ BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 TARGET_NO_RECOVERY := true
 BOARD_USES_RECOVERY_AS_BOOT := true
 BOARD_SLOT_AB_ENABLE := true
-##############################################################
-# Source: device/intel/mixins/groups/kernel/project-celadon/BoardConfig.mk
-##############################################################
-TARGET_USES_64_BIT_BINDER := true
-BOARD_USE_64BIT_USERSPACE := true
-TARGET_SUPPORTS_64_BIT_APPS := true
-
-
-TARGET_PRELINK_MODULE := false
-TARGET_NO_KERNEL ?= false
-
-KERNEL_LOGLEVEL ?= 3
-SERIAL_PARAMETER := console=tty0 console=ttyS2,115200n8
-
-
-BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL)
-
-ifneq ($(TARGET_BUILD_VARIANT),user)
-ifeq ($(SPARSE_IMG),true)
-BOARD_KERNEL_CMDLINE += $(SERIAL_PARAMETER)
-endif
-endif
-
-
-BOARD_SEPOLICY_M4DEFS += module_kernel=true
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/kernel
-##############################################################
-# Source: device/intel/mixins/groups/bluetooth/btusb/BoardConfig.mk
-##############################################################
-BOARD_HAVE_BLUETOOTH := true
-BOARD_HAVE_BLUETOOTH_LINUX := true
-DEVICE_PACKAGE_OVERLAYS += device/intel/common/bluetooth/overlay-bt-pan
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/bluetooth/common \
-                       device/intel/project-celadon/sepolicy/bluetooth/intel
-
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/intel/tablet/
-##############################################################
-# Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
-##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/set_storage
-##############################################################
-# Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
-##############################################################
-BOARD_FACTORYIMAGE_PARTITION_SIZE := 10485760
-BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/factory-partition
-BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
 ##############################################################
 # Source: device/intel/mixins/groups/avb/true/BoardConfig.mk
 ##############################################################
@@ -174,6 +117,17 @@ BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
 BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
 BOARD_SEPOLICY_M4DEFS += module_config_partition=true
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/config-partition
+##############################################################
+# Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/set_storage
+##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
+##############################################################
+BOARD_FACTORYIMAGE_PARTITION_SIZE := 10485760
+BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/factory-partition
+BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/BoardConfig.mk
 ##############################################################
@@ -258,6 +212,85 @@ AB_OTA_POSTINSTALL_CONFIG += \
     POSTINSTALL_PATH_vendor=bin/updater_ab_esp \
     FILESYSTEM_TYPE_vendor=ext4 \
     POSTINSTALL_OPTIONAL_vendor=true
+
+##############################################################
+# Source: device/intel/mixins/groups/trusty/true/BoardConfig.mk
+##############################################################
+TARGET_USE_TRUSTY := true
+
+KM_VERSION := 2
+ifeq ($(KM_VERSION),1)
+BOARD_USES_TRUSTY := true
+BOARD_USES_KEYMASTER1 := true
+endif
+
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/trusty
+BOARD_SEPOLICY_M4DEFS += module_trusty=true
+
+LK_PRODUCT := project-celadon_64
+
+LKBUILD_TOOLCHAIN_ROOT = $(PWD)/vendor/intel/external/prebuilts/elf/
+LKBUILD_X86_TOOLCHAIN =
+LKBUILD_X64_TOOLCHAIN = $(LKBUILD_TOOLCHAIN_ROOT)x86_64-elf-4.9.1-Linux-x86_64/bin
+EVMMBUILD_TOOLCHAIN ?= x86_64-linux-android-
+TRUSTY_BUILDROOT = $(PWD)/$(PRODUCT_OUT)/obj/trusty/
+
+TRUSTY_ENV_VAR += LK_CORE_NUM=1
+TRUSTY_ENV_VAR += TRUSTY_REF_TARGET=project-celadon_64
+
+#for trusty lk
+TRUSTY_ENV_VAR += BUILDROOT=$(TRUSTY_BUILDROOT)
+TRUSTY_ENV_VAR += PATH=$$PATH:$(LKBUILD_X86_TOOLCHAIN):$(LKBUILD_X64_TOOLCHAIN)
+TRUSTY_ENV_VAR += CLANG_BINDIR=$(PWD)/$(LLVM_PREBUILTS_PATH)
+TRUSTY_ENV_VAR += ARCH_x86_64_TOOLCHAIN_PREFIX=${PWD}/prebuilts/gcc/linux-x86/x86/x86_64-linux-android-${TARGET_GCC_VERSION}/bin/x86_64-linux-android-
+
+#for trusty vmm
+# use same toolchain as android kernel
+TRUSTY_ENV_VAR += COMPILE_TOOLCHAIN=$(EVMMBUILD_TOOLCHAIN)
+
+# output build dir to android out folder
+TRUSTY_ENV_VAR += BUILD_DIR=$(TRUSTY_BUILDROOT)
+TRUSTY_ENV_VAR += LKBIN_DIR=$(TRUSTY_BUILDROOT)/build-sand-x86-64/
+
+#Workaround CPU lost issue on SIMICS, will remove this line below after PO.
+BOARD_KERNEL_CMDLINE += cpu_init_udelay=500000
+
+BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
+##############################################################
+# Source: device/intel/mixins/groups/kernel/project-celadon/BoardConfig.mk
+##############################################################
+TARGET_USES_64_BIT_BINDER := true
+BOARD_USE_64BIT_USERSPACE := true
+TARGET_SUPPORTS_64_BIT_APPS := true
+
+
+TARGET_PRELINK_MODULE := false
+TARGET_NO_KERNEL ?= false
+
+KERNEL_LOGLEVEL ?= 3
+SERIAL_PARAMETER := console=tty0 console=ttyS2,115200n8
+
+
+BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL)
+
+ifneq ($(TARGET_BUILD_VARIANT),user)
+ifeq ($(SPARSE_IMG),true)
+BOARD_KERNEL_CMDLINE += $(SERIAL_PARAMETER)
+endif
+endif
+
+
+BOARD_SEPOLICY_M4DEFS += module_kernel=true
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/kernel
+##############################################################
+# Source: device/intel/mixins/groups/bluetooth/btusb/BoardConfig.mk
+##############################################################
+BOARD_HAVE_BLUETOOTH := true
+BOARD_HAVE_BLUETOOTH_LINUX := true
+DEVICE_PACKAGE_OVERLAYS += device/intel/common/bluetooth/overlay-bt-pan
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/bluetooth/common \
+                       device/intel/project-celadon/sepolicy/bluetooth/intel
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/intel/car/
 
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/BoardConfig.mk
@@ -365,10 +398,11 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/rfkill
 WITH_DEXPREOPT := true
 WITH_DEXPREOPT_PIC := true
 ##############################################################
-# Source: device/intel/mixins/groups/thermal/thermal-daemon/BoardConfig.mk
+# Source: device/intel/mixins/groups/thermal/dptf/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal/thermal-daemon
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal/dptf
+BOARD_KERNEL_CMDLINE += thermal.off=1
 ##############################################################
 # Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk.1
 ##############################################################
@@ -410,49 +444,6 @@ VARIANT_SPECIFIC_FLASHFILES ?= false
 FAST_FLASHFILES := true
 
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/BoardConfig.mk
-##############################################################
-TARGET_USE_TRUSTY := true
-
-KM_VERSION := 2
-ifeq ($(KM_VERSION),1)
-BOARD_USES_TRUSTY := true
-BOARD_USES_KEYMASTER1 := true
-endif
-
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/trusty
-BOARD_SEPOLICY_M4DEFS += module_trusty=true
-
-LK_PRODUCT := project-celadon_64
-
-LKBUILD_TOOLCHAIN_ROOT = $(PWD)/vendor/intel/external/prebuilts/elf/
-LKBUILD_X86_TOOLCHAIN =
-LKBUILD_X64_TOOLCHAIN = $(LKBUILD_TOOLCHAIN_ROOT)x86_64-elf-4.9.1-Linux-x86_64/bin
-EVMMBUILD_TOOLCHAIN ?= x86_64-linux-android-
-TRUSTY_BUILDROOT = $(PWD)/$(PRODUCT_OUT)/obj/trusty/
-
-TRUSTY_ENV_VAR += LK_CORE_NUM=1
-TRUSTY_ENV_VAR += TRUSTY_REF_TARGET=project-celadon_64
-
-#for trusty lk
-TRUSTY_ENV_VAR += BUILDROOT=$(TRUSTY_BUILDROOT)
-TRUSTY_ENV_VAR += PATH=$$PATH:$(LKBUILD_X86_TOOLCHAIN):$(LKBUILD_X64_TOOLCHAIN)
-TRUSTY_ENV_VAR += CLANG_BINDIR=$(PWD)/$(LLVM_PREBUILTS_PATH)
-TRUSTY_ENV_VAR += ARCH_x86_64_TOOLCHAIN_PREFIX=${PWD}/prebuilts/gcc/linux-x86/x86/x86_64-linux-android-${TARGET_GCC_VERSION}/bin/x86_64-linux-android-
-
-#for trusty vmm
-# use same toolchain as android kernel
-TRUSTY_ENV_VAR += COMPILE_TOOLCHAIN=$(EVMMBUILD_TOOLCHAIN)
-
-# output build dir to android out folder
-TRUSTY_ENV_VAR += BUILD_DIR=$(TRUSTY_BUILDROOT)
-TRUSTY_ENV_VAR += LKBIN_DIR=$(TRUSTY_BUILDROOT)/build-sand-x86-64/
-
-#Workaround CPU lost issue on SIMICS, will remove this line below after PO.
-BOARD_KERNEL_CMDLINE += cpu_init_udelay=500000
-
-BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
-##############################################################
 # Source: device/intel/mixins/groups/camera/usbcamera/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/camera/usbcamera
@@ -466,6 +457,16 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/memtrack
 # can't use := here, as PRODUCT_OUT is not defined yet
 GPTIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT)_gptimage.img
 CRAFFIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT)_gptimage.craff
+##############################################################
+# Source: device/intel/mixins/groups/device-type/car/BoardConfig.mk
+##############################################################
+
+BOARD_SEPOLICY_DIRS += \
+    packages/services/Car/car_product/sepolicy \
+    device/generic/car/common/sepolicy \
+    device/intel/project-celadon/sepolicy/car
+
+TARGET_USES_CAR_FUTURE_FEATURES := true
 # ------------------ END MIX-IN DEFINITIONS ------------------
 BOARD_FIRSTSTAGE_MOUNT_ENABLE := true
 BOARD_KERNEL_CMDLINE += androidboot.android_dt_dir=/sys/bus/platform/devices/ANDR0001:00/properties/android/

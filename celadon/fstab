@@ -6,10 +6,6 @@
 */usb*/*/host*/*/block/sd*              auto             auto    defaults                                   voldmanaged=usbdisk:auto
 */mmc0/*/block/mmcblk*                  auto             auto    defaults                                   voldmanaged=sdcard1:auto
 ##############################################################
-# Source: device/intel/mixins/groups/factory-partition/true/fstab
-##############################################################
-/dev/block/by-name/factory      /factory        ext4    rw,noatime                                                  wait
-##############################################################
 # Source: device/intel/mixins/groups/avb/true/fstab
 ##############################################################
 /dev/block/by-name/vbmeta       /vbmeta         emmc    defaults                                                    defaults,slotselect,avb
@@ -24,6 +20,10 @@
 # Source: device/intel/mixins/groups/config-partition/enabled/fstab
 ##############################################################
 /dev/block/by-name/config	    /vendor/oem_config      ext4    noatime,nosuid,nodev,errors=panic                           wait,check
+##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/fstab
+##############################################################
+/dev/block/by-name/factory      /factory        ext4    rw,noatime                                                  wait
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/fstab
 ##############################################################
