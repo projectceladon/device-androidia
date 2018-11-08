@@ -430,6 +430,8 @@ ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),static ex
 endif
 
 
+
+KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := true
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/product.mk
 ##############################################################
