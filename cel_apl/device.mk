@@ -347,7 +347,7 @@ PRODUCT_PACKAGES += \
   android.hardware.bluetooth@1.0-service \
   libbt-vendor
 
-PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-car-disablehfp
+PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-car
 
 ##############################################################
 # Source: device/intel/mixins/groups/disk-bus/auto/product.mk
