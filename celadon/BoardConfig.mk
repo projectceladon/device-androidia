@@ -10,13 +10,7 @@ BOARD_OEM_VARS += $(TARGET_DEVICE_DIR)/oemvars.txt
 ##############################################################
 KERNEL_CROSS_COMPILE_WRAPPER := x86_64-linux-android-
 ##############################################################
-# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk.1
-##############################################################
-# start kernel in permissive mode, this way we don't
-# need 'setenforce 0' from init.rc files
-BOARD_KERNEL_CMDLINE += enforcing=0 androidboot.selinux=permissive
-##############################################################
-# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk
+# Source: device/intel/mixins/groups/sepolicy/enforcing/BoardConfig.mk
 ##############################################################
 # SELinux Policy
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy
