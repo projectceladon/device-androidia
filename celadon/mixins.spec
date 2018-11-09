@@ -7,7 +7,7 @@ product.mk: device.mk
 [groups]
 2ndstage: oemvars
 project-celadon: default
-sepolicy: permissive
+sepolicy: enforcing
 graphics: project-celadon(gen9+=true,hwc2=true,vulkan=false,drmhwc=false,minigbm=true,gralloc1=true)
 media: project-celadon(mediasdk=false,media_sdk_source=false)
 device-type: tablet
