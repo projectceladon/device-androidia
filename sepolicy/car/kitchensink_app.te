@@ -1,0 +1,3 @@
+userdebug_or_eng(`
+  allow kitchensink_app { textservices_service bluetooth_manager_service }:service_manager find;
+')
