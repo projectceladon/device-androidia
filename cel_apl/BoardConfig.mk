@@ -356,11 +356,10 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/rfkill
 WITH_DEXPREOPT := true
 WITH_DEXPREOPT_PIC := true
 ##############################################################
-# Source: device/intel/mixins/groups/thermal/dptf/BoardConfig.mk
+# Source: device/intel/mixins/groups/thermal/thermal-daemon/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal/dptf
-BOARD_KERNEL_CMDLINE += thermal.off=1
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal/thermal-daemon
 ##############################################################
 # Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk.1
 ##############################################################
