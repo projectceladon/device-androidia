@@ -31,3 +31,4 @@ allow init debugfs_pstate:file w_file_perms;
 allow init userdata_block_device:blk_file write;
 allow init misc_block_device:blk_file write;
 allow init kernel:key search;
+allow init proc:file w_file_perms;
