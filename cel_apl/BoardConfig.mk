@@ -264,7 +264,8 @@ AB_OTA_POSTINSTALL_CONFIG += \
 ##############################################################
 BOARD_USES_ALSA_AUDIO := true
 BOARD_USES_TINY_ALSA_AUDIO := true
-BOARD_USES_GENERIC_AUDIO ?= false
+BOARD_USES_GENERIC_AUDIO := true
+#BOARD_USES_GENERIC_AUDIO ?= false
 ifneq ($(BOARD_USES_GENERIC_AUDIO), true)
 # Audio HAL selection Flag default setting.
 #  INTEL_AUDIO_HAL:= audio     -> baseline HAL
