@@ -2,7 +2,7 @@
 # wlan_intel_restore - does what?
 #
 
-type wlan_intel_restore, domain;
+type wlan_intel_restore, coredomain;
 type wlan_intel_restore_exec, file_type, exec_type, vendor_file_type;
 
 init_daemon_domain(wlan_intel_restore)
