@@ -47,6 +47,7 @@ camera-ext: ext-camera-only
 memtrack: true
 touch: galax7200
 avb: true
+health: true
 slot-ab: true
 art-config: default
 gptbuild: true(size=14G)

@@ -1,0 +1,3 @@
+# health_hal files
+type sysfs_health2_0_management, fs_type, sysfs_type;
+
