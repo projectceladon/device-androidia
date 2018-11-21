@@ -6,11 +6,10 @@ allow init {
   vendor_file
 }:system module_load;
 
-allow init sysfs_devices_system_cpu:dir rw_dir_perms;
+allow init sysfs_devices_system_cpu:dir r_dir_perms;
 allow init sysfs_devices_system_cpu:file create_file_perms;
 allow init tmpfs:lnk_file create_file_perms;
 allow init configfs:{ file lnk_file } create_file_perms;
-allow init self:capability dac_read_search;
 allow init self:capability sys_module;
 allow init self:capability2 block_suspend;
 
