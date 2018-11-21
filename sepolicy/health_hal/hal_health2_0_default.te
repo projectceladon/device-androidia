@@ -1,0 +1,5 @@
+# health info abstraction
+
+allow hal_health_default sysfs_health2_0_management:dir r_dir_perms;
+allow hal_health_default sysfs_health2_0_management:file rw_file_perms;
+allow hal_health_default sysfs_health2_0_management:lnk_file r_file_perms;
