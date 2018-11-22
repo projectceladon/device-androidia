@@ -70,7 +70,7 @@ BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
 ##############################################################
 # Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
 ##############################################################
-DEVICE_PACKAGE_OVERLAYS += device/intel/common/device-type/overlay-tablet
+DEVICE_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/device-type/overlay-tablet
 ##############################################################
 # Source: device/intel/mixins/groups/debugfs/default/BoardConfig.mk
 ##############################################################
@@ -125,7 +125,7 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/int
 ##############################################################
 # Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/set_storage
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/set_storage
 ##############################################################
 # Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
 ##############################################################
@@ -359,9 +359,13 @@ TARGET_ARCH := x86
 TARGET_CPU_ABI := x86
 endif
 ##############################################################
+# Source: device/intel/mixins/groups/cpuset/autocores/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/config_cpuset
+##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/rfkill
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/rfkill
 ##############################################################
 # Source: device/intel/mixins/groups/dexpreopt/enabled/BoardConfig.mk
 ##############################################################
@@ -463,7 +467,7 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/camera-ext/ext-came
 ##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/memtrack
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/memtrack
 ##############################################################
 # Source: device/intel/mixins/groups/gptbuild/true/BoardConfig.mk
 ##############################################################

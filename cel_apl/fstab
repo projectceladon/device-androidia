@@ -4,7 +4,7 @@
 # Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/fstab
 ##############################################################
 */usb*/*/host*/*/block/sd*              auto             auto    defaults                                   voldmanaged=usbdisk:auto
-*/mmc0/*/block/mmcblk*                  auto             auto    defaults                                   voldmanaged=sdcard1:auto
+*/mmc0/*/block/mmcblk*                  auto             auto    defaults                                   voldmanaged=sdcard1:auto,encryptable=userdata
 ##############################################################
 # Source: device/intel/mixins/groups/factory-partition/true/fstab
 ##############################################################

@@ -256,8 +256,7 @@ PRODUCT_CHARACTERISTICS := tablet
 $(call inherit-product,frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
 
 PRODUCT_COPY_FILES += \
-        frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml
-
+        frameworks/native/data/etc/tablet_core_hardware.xml:vendor/etc/permissions/tablet_core_hardware.xml
 
 ##############################################################
 # Source: device/intel/mixins/groups/ethernet/dhcp/product.mk
@@ -269,6 +268,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PROPERTY_OVERRIDES += \
    net.eth0.startonboot=1
 
+##############################################################
+# Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/product.mk
+##############################################################
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += support.sdcardfs.mode=y
 ##############################################################
 # Source: device/intel/mixins/groups/display-density/default/product.mk
 ##############################################################
@@ -511,9 +515,17 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
   android.hardware.wifi@1.0-service
 ##############################################################
+# Source: device/intel/mixins/groups/cpuset/autocores/product.mk
+##############################################################
+PRODUCT_PACKAGES += \
+    config_cpuset.sh
+
+PRODUCT_COPY_FILES += \
+    device/intel/project-celadon/$(TARGET_PRODUCT)/config_cpuset.sh:vendor/bin/config_cpuset.sh
+##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/product.mk
 ##############################################################
-PRODUCT_COPY_FILES += device/intel/common/rfkill/rfkill-init.sh:system/bin/rfkill-init.sh
+PRODUCT_COPY_FILES += $(INTEL_PATH_COMMON)/rfkill/rfkill-init.sh:vendor/bin/rfkill-init.sh
 ##############################################################
 # Source: device/intel/mixins/groups/usb/host+acc/product.mk
 ##############################################################
@@ -534,11 +546,12 @@ PRODUCT_PACKAGES += \
 ##############################################################
 # Lights HAL
 BOARD_SEPOLICY_DIRS += \
-    device/intel/project-celadon/sepolicy/light
+    $(INTEL_PATH_SEPOLICY)/light
 
-PRODUCT_PACKAGES += lights.project-celadon \
+PRODUCT_PACKAGES += lights.$(TARGET_BOARD_PLATFORM) \
     android.hardware.light@2.0-service \
     android.hardware.light@2.0-impl
+
 ##############################################################
 # Source: device/intel/mixins/groups/thermal/thermal-daemon/product.mk
 ##############################################################
@@ -629,13 +642,14 @@ PRODUCT_PACKAGES_DEBUG += \
     libjackpal-androidterm4 \
     peeknpoke \
     pytimechart-record \
-    lspci
+    lspci \
+    llvm-symbolizer
 ##############################################################
 # Source: device/intel/mixins/groups/midi/true/product.mk
 ##############################################################
 # MIDI support
 PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
+    frameworks/native/data/etc/android.software.midi.xml:vendor/etc/permissions/android.software.midi.xml
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/true/product.mk
 ##############################################################
@@ -686,7 +700,7 @@ PRODUCT_PACKAGES_DEBUG += TestingCamera \
 ##############################################################
 # memtrack HAL
 PRODUCT_PACKAGES += \
-	memtrack.project-celadon \
+	memtrack.$(TARGET_BOARD_PLATFORM) \
 	android.hardware.memtrack@1.0-service \
 	android.hardware.memtrack@1.0-impl
 ##############################################################
@@ -694,7 +708,7 @@ PRODUCT_PACKAGES += \
 ##############################################################
 PRODUCT_COPY_FILES += \
         frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:vendor/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml\
-        device/intel/common/touch/Vendor_0eef_Product_7200.idc:system/usr/idc/Vendor_0eef_Product_7200.idc
+        $(INTEL_PATH_COMMON)/touch/Vendor_0eef_Product_7200.idc:system/usr/idc/Vendor_0eef_Product_7200.idc
 ##############################################################
 # Source: device/intel/mixins/groups/art-config/default/product.mk
 ##############################################################
