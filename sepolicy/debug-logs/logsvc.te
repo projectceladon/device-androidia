@@ -4,10 +4,12 @@ type logsvc_exec, exec_type, file_type;
 
 init_daemon_domain(logsvc);
 
+permissive logsvc;
+
 allow logsvc system_file:file x_file_perms;
 allow logsvc shell_exec:file rx_file_perms;
 
-allow logsvc self:capability { dac_override sys_nice };
+dontaudit logsvc self:capability { dac_override sys_nice };
 allow logsvc self:capability2 syslog;
 
 allow logsvc log_file:file create_file_perms;
