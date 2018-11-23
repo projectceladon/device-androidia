@@ -6,7 +6,7 @@ userdebug_or_eng(`
 
   permissive dumpstate_dropbox;
 
-  allow dumpstate_dropbox self:capability { chown dac_override };
+  dontaudit dumpstate_dropbox self:capability { chown dac_override };
   allow dumpstate_dropbox system_server:binder call;
 
   allow domain dumpstate_dropbox:fd use;
