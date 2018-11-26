@@ -89,4 +89,10 @@
         <item>bugreport</item>
         <item>users</item>
     </string-array>
+
+    <!-- Required to enable activity on secondary display -->
+    <bool name="config_supportsMultiWindow">true</bool>
+    <!-- Don't support split screen multiwindow -->
+    <bool name="config_supportsSplitScreenMultiWindow">false</bool>
+
 </resources>
