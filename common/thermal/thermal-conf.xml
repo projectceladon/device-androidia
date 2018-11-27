@@ -67,7 +67,7 @@
 				<TripPoints>
 					<TripPoint>
 						<SensorType>x86_pkg_temp</SensorType>
-						<Temperature>90000</Temperature>
+						<Temperature>80000</Temperature>
 						<Type>Passive</Type>
 						<CoolingDevice>
 							<Type>rapl_limit_1</Type>
@@ -75,7 +75,7 @@
 					</TripPoint>
 					<TripPoint>
 						<SensorType>x86_pkg_temp</SensorType>
-						<Temperature>105000</Temperature>
+						<Temperature>85000</Temperature>
 						<Type>Passive</Type>
 						<CoolingDevice>
 							<Type>rapl_limit_2</Type>
@@ -88,7 +88,7 @@
 				<TripPoints>
 					<TripPoint>
 						<SensorType>x86_pkg_temp</SensorType>
-						<Temperature>110000</Temperature>
+						<Temperature>90000</Temperature>
 						<Type>Critical</Type>
 					</TripPoint>
 				</TripPoints>
