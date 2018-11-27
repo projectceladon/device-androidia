@@ -408,7 +408,7 @@ BOARD_KERNEL_CMDLINE += \
 # Source: device/intel/mixins/groups/debug-phonedoctor/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_M4DEFS += module_debug_phonedoctor=true
-BOARD_SEPOLICY_DIRS += device/intel/androidia/sepolicy/debug-phonedoctor
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/debug-phonedoctor
 ##############################################################
 # Source: device/intel/mixins/groups/flashfiles/ini/BoardConfig.mk
 ##############################################################
@@ -468,6 +468,13 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/camera-ext/ext-came
 # Source: device/intel/mixins/groups/memtrack/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/memtrack
+##############################################################
+# Source: device/intel/mixins/groups/health/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/health_hal
+
+DEVICE_FRAMEWORK_MANIFEST_FILE += \
+				system/libhidl/vintfdata/manifest_healthd_exclude.xml
 ##############################################################
 # Source: device/intel/mixins/groups/gptbuild/true/BoardConfig.mk
 ##############################################################

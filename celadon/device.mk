@@ -500,8 +500,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
         device/intel/common/wlan/wpa_supplicant-common.conf:system/etc/wifi/wpa_supplicant.conf \
         device/intel/common/wlan/iwlwifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
-        frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
-        frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml
+        frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml 
 
 
 
@@ -586,7 +585,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.intel.logger=/system/bin/logcat
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += logd.kernel.raw_message=False
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.intel.logger.rot_cnt=20
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.intel.logger.rot_size=5000
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/debug-logs
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/debug-logs
 BOARD_SEPOLICY_M4DEFS += module_debug_logs=true
 endif
 ##############################################################
@@ -619,7 +618,7 @@ PRODUCT_COPY_FILES += $(LOCAL_PATH)/init.coredump.rc:root/init.coredump.rc
 endif
 
 ifeq ($(MIXIN_DEBUG_LOGS),true)
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/coredump
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/coredump
 # Enable core dump for eng builds
 ifeq ($(TARGET_BUILD_VARIANT),eng)
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.core.enabled=1
@@ -709,6 +708,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
         frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:vendor/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml\
         $(INTEL_PATH_COMMON)/touch/Vendor_0eef_Product_7200.idc:system/usr/idc/Vendor_0eef_Product_7200.idc
+##############################################################
+# Source: device/intel/mixins/groups/health/true/product.mk
+##############################################################
+PRODUCT_PACKAGES += health
+PRODUCT_PACKAGES += health.$(TARGET_BOARD_PLATFORM) \
+					android.hardware.health@2.0-service.celadon
 ##############################################################
 # Source: device/intel/mixins/groups/art-config/default/product.mk
 ##############################################################
