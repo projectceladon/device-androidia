@@ -3,6 +3,8 @@
 ##############################################################
 # Source: device/intel/mixins/groups/project-celadon/default/product.mk
 ##############################################################
+TARGET_BOARD_PLATFORM := project-celadon
+
 #Product Characteristics
 PRODUCT_DIR := $(dir $(lastword $(filter-out device/common/%,$(filter device/%,$(ALL_PRODUCTS)))))
 
