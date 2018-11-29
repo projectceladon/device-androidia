@@ -12,7 +12,7 @@ graphics: project-celadon(gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=
 media: project-celadon(mediasdk=false,media_sdk_source=false)
 ethernet: dhcp
 debugfs: default
-storage: sdcard-mmc0-usb-sd(adoptablesd=true,adoptableusb=false)
+storage: sdcard-mmc0-usb-sd(adoptablesd=true,adoptableusb=true)
 display-density: default
 usb-gadget: g_ffs
 adb_net: true
