@@ -52,3 +52,4 @@ health: true
 slot-ab: true
 art-config: default
 gptbuild: true(size=14G)
+swap:zram(size=1073741824,swappiness=false,hardware=celadon)
