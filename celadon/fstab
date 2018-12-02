@@ -46,4 +46,9 @@
 /dev/block/by-name/persistent   /persistent     emmc    defaults                                                    defaults
 /dev/block/by-name/metadata     /metadata       emmc    defaults                                                    defaults
 /dev/block/by-name/tos          /tos            emmc    defaults                                                    defaults,slotselect,avb
+##############################################################
+# Source: device/intel/mixins/groups/swap/zram/fstab
+##############################################################
+/dev/block/zram0                        none             swap    defaults                                   zramsize=1073741824
+
 # ------------------ END MIX-IN DEFINITIONS ------------------

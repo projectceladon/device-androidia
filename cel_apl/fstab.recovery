@@ -47,4 +47,9 @@
 /dev/block/by-name/persistent   /persistent     emmc    defaults                                                    defaults
 /dev/block/by-name/metadata     /metadata       ext4    noatime,nosuid,nodev,errors=panic                           wait,check
 /dev/block/by-name/tos          /tos            emmc    defaults                                                    defaults,slotselect
+##############################################################
+# Source: device/intel/mixins/groups/swap/zram/fstab.recovery
+##############################################################
+/dev/block/zram0                        none             swap    defaults                                   zramsize=1073741824
+
 # ------------------ END MIX-IN DEFINITIONS ------------------

@@ -704,6 +704,17 @@ service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data
     group system
 
 ##############################################################
+# Source: device/intel/mixins/groups/swap/zram/init.rc
+##############################################################
+
+on boot
+    # Read one page at a time for swap (default is 8)
+    write /proc/sys/vm/page-cluster 0
+
+on post-fs-data
+    # Enable swaps described in the fstab
+    swapon_all /fstab.${ro.hardware}
+##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/init.rc
 ##############################################################
 import /init.kernel.rc
