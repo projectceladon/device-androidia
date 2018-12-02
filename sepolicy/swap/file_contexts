@@ -1,0 +1,2 @@
+# ZRam device configured as swap space
+/dev/block/zram0    u:object_r:swap_block_device:s0
