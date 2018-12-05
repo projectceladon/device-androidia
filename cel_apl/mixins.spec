@@ -52,3 +52,4 @@ slot-ab: true
 art-config: default
 gptbuild: true(size=14G)
 device-type: car
+vndk: false
