@@ -479,4 +479,9 @@ DEVICE_FRAMEWORK_MANIFEST_FILE += \
 # can't use := here, as PRODUCT_OUT is not defined yet
 GPTIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT)_gptimage.img
 CRAFFIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT)_gptimage.craff
+##############################################################
+# Source: device/intel/mixins/groups/swap/zram/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/swap
+BOARD_SEPOLICY_M4DEFS += module_swap=true
 # ------------------ END MIX-IN DEFINITIONS ------------------
