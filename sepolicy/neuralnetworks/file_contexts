@@ -1,1 +1,3 @@
-/(vendor|system/vendor)/bin/hw/android\.hardware\.neuralnetworks@1.1-service-sample-all   u:object_r:hal_neuralnetworks_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.neuralnetworks@1.0-service-sample-all   u:object_r:hal_neuralnetworks_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.neuralnetworks@1.0-generic-service   u:object_r:hal_neuralnetworks_default_exec:s0
+
