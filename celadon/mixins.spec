@@ -7,7 +7,7 @@ product.mk: device.mk
 [groups]
 2ndstage: oemvars
 project-celadon: default
-sepolicy: enforcing
+sepolicy: permissive
 graphics: project-celadon(gen9+=true,hwc2=true,vulkan=false,drmhwc=false,minigbm=true,gralloc1=true)
 media: project-celadon(mediasdk=false,media_sdk_source=false)
 device-type: tablet
@@ -53,3 +53,4 @@ slot-ab: true
 art-config: default
 gptbuild: true(size=14G)
 swap:zram(size=1073741824,swappiness=false,hardware=celadon)
+neuralnetworks: true
