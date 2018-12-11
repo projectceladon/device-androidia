@@ -556,4 +556,11 @@ $(GPTIMAGE_BIN): \
 
 .PHONY: gptimage
 gptimage: $(GPTIMAGE_BIN)
+##############################################################
+# Source: device/intel/mixins/groups/firststage-mount/true/AndroidBoard.mk
+##############################################################
+FIRST_STAGE_MOUNT_CFG_FILE := $(TARGET_DEVICE_DIR)/config.asl
+
+$(FIRSTSTAGE_MOUNT_SSDT): $(FIRST_STAGE_MOUNT_CFG_FILE) $(IASL)
+	$(hide) $(IASL) -p $(@:.aml=) $(FIRST_STAGE_MOUNT_CFG_FILE);
 # ------------------ END MIX-IN DEFINITIONS ------------------

@@ -126,6 +126,7 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/int
 # Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/set_storage
+BOARD_DISK_BUS = ff.ff
 ##############################################################
 # Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
 ##############################################################
@@ -484,4 +485,10 @@ CRAFFIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT)_gptimage.craff
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/swap
 BOARD_SEPOLICY_M4DEFS += module_swap=true
+##############################################################
+# Source: device/intel/mixins/groups/firststage-mount/true/BoardConfig.mk
+##############################################################
+BOARD_FIRSTSTAGE_MOUNT_ENABLE := true
+BOARD_KERNEL_CMDLINE += androidboot.android_dt_dir=/sys/bus/platform/devices/ANDR0001:00/properties/android/
+FIRSTSTAGE_MOUNT_SSDT = $(PRODUCT_OUT)/firststage-mount.aml
 # ------------------ END MIX-IN DEFINITIONS ------------------
