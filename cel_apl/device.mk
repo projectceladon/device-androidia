@@ -322,7 +322,6 @@ endif
 ##############################################################
 PRODUCT_PACKAGES += \
     update_engine \
-    update_verifier \
     update_engine_sideload \
     libavb \
     bootctrl.avb \
