@@ -76,6 +76,11 @@ DEVICE_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/device-type/overlay-tablet
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/debugfs
 ##############################################################
+# Source: device/intel/mixins/groups/usb-gadget/g_ffs/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/usb
+
+##############################################################
 # Source: device/intel/mixins/groups/slot-ab/true/BoardConfig.mk
 ##############################################################
 AB_OTA_UPDATER := true
