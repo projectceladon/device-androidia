@@ -1,0 +1,40 @@
+# Rules for system/bin/dhcpd
+type hdcpd, domain;
+type hdcpd_exec, exec_type, file_type, vendor_file_type;
+init_daemon_domain(hdcpd);
+
+# need use vendor binder to access msync service
+vndbinder_use(hdcpd)
+not_full_treble(`
+  binder_call(hdcpd, surfaceflinger)
+
+  # Find hwc.info service from surfaceflinger
+  allow hdcpd surfaceflinger_service:service_manager find;
+')
+
+allow hdcpd hwc_info_service:service_manager find;
+binder_call(hdcpd, hal_graphics_composer_default)
+
+allow hdcpd self:netlink_kobject_uevent_socket create_socket_perms;
+allowxperm hdcpd self:netlink_kobject_uevent_socket ioctl SIOCETHTOOL;
+
+# sysfs access
+allow hdcpd sysfs:dir r_dir_perms;
+allow hdcpd sysfs:file r_file_perms;
+
+# gpu_device
+allow hdcpd gpu_device:dir r_dir_perms;
+allow hdcpd gpu_device:chr_file rw_file_perms;
+
+# self generated /data/hdcp
+allow hdcpd system_data_file:dir ra_dir_perms;
+type_transition hdcpd system_data_file:dir hdcpd_data_file;
+allow hdcpd hdcpd_data_file:dir create_dir_perms;
+allow hdcpd hdcpd_data_file:{ file sock_file } create_file_perms;
+
+# tmpfs
+allow hdcpd tmpfs:dir w_dir_perms;
+allow hdcpd hdcpd_tmpfs:file create_file_perms;
+
+allow hdcpd proc_graphics:file r_file_perms;
+

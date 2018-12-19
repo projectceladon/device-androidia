@@ -1,0 +1,11 @@
+typeattribute hdcpd data_between_core_and_vendor_violators;
+
+#FAILED: out/target/product/gordon_peak/obj/ETC/sepolicy_tests_intermediates/sepolicy_tests
+#The following types in proc must be associated with the "proc_type" attribute: proc_graphics
+typeattribute proc_graphics proc_type;
+
+#make sepolicy_tests error:
+#The following types on /data/ must be associated with the "core_data_file_type" attribute: hdcpd_data_file
+typeattribute hdcpd_data_file core_data_file_type;
+
+typeattribute vendor_init data_between_core_and_vendor_violators;
