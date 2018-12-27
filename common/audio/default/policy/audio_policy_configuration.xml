@@ -32,6 +32,14 @@
                     <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
                              samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
                 </mixPort>
+                <mixPort name="primary_output" role="source" flags="AUDIO_OUTPUT_FLAG_PRIMARY"
+                         card="Dummy" device="0"
+                         requirePreEnable="0" requirePostDisable="0" silencePrologMs="0"
+                         periodSize="240" periodCount="2"
+                         startThreshold="239" stopThreshold="480" silenceThreshold="0" availMin="240">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                </mixPort>
                 <mixPort name="hdmi_stereo" role="source" flags="AUDIO_OUTPUT_FLAG_PRIMARY"
                          card="PCH" device="3"
                          requirePreEnable="0" requirePostDisable="0" silencePrologMs="0"
