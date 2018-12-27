@@ -43,9 +43,9 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/graphics/project-ce
 
 
 BOARD_USES_DRM_HWCOMPOSER := false
-BOARD_USES_IA_HWCOMPOSER := true
+BOARD_USES_IA_HWCOMPOSER := false
 
-DISABLE_MEDIA_COMPOSITOR := true
+DISABLE_MEDIA_COMPOSITOR := false
 
 BOARD_USES_MINIGBM := true
 BOARD_ENABLE_EXPLICIT_SYNC := true
