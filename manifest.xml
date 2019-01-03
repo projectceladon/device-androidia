@@ -1,4 +1,7 @@
 <manifest version="1.0" type="device">
+    <sepolicy>
+        <version>27.0</version>
+    </sepolicy>
     <hal format="hidl">
         <name>android.hardware.audio</name>
         <transport arch="32+64">passthrough</transport>
