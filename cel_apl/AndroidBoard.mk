@@ -6,17 +6,6 @@
 droid: flashfiles
 	-$(hide) $(ACP) $(out_flashfiles) $(DIST_DIR)
 ##############################################################
-# Source: device/intel/mixins/groups/slot-ab/true/AndroidBoard.mk
-##############################################################
-
-make_dir_slot_ab:
-	@mkdir -p $(PRODUCT_OUT)/root/boot
-	@mkdir -p $(PRODUCT_OUT)/root/misc
-	@mkdir -p $(PRODUCT_OUT)/root/persistent
-	@mkdir -p $(PRODUCT_OUT)/root/metadata
-
-$(PRODUCT_OUT)/ramdisk.img: make_dir_slot_ab
-##############################################################
 # Source: device/intel/mixins/groups/kernel/project-celadon/AndroidBoard.mk
 ##############################################################
 ifneq ($(TARGET_PREBUILT_KERNEL),)
@@ -119,10 +108,6 @@ selinux_fc :=
 .PHONY: factoryimage
 factoryimage: $(INSTALLED_FACTORYIMAGE_TARGET)
 
-make_dir_ab_factory:
-	@mkdir -p $(PRODUCT_OUT)/root/factory
-
-$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_factory
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/AndroidBoard.mk
 ##############################################################
@@ -131,10 +116,6 @@ $(PRODUCT_OUT)/ramdisk.img: make_dir_ab_factory
 # vendor.img is generated.
 $(PRODUCT_OUT)/vendor.img : $(KERNEL_MODULES_INSTALL)
 
-make_dir_ab_vendor:
-	@mkdir -p $(PRODUCT_OUT)/root/vendor
-
-$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_vendor
 ##############################################################
 # Source: device/intel/mixins/groups/config-partition/enabled/AndroidBoard.mk
 ##############################################################
@@ -163,10 +144,6 @@ selinux_fc :=
 .PHONY: configimage
 configimage: $(INSTALLED_CONFIGIMAGE_TARGET)
 
-make_dir_ab_config:
-	@mkdir -p $(PRODUCT_OUT)/vendor/oem_config
-
-$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_config
 ##############################################################
 # Source: device/intel/mixins/groups/variants/default/AndroidBoard.mk
 ##############################################################
@@ -436,55 +413,6 @@ $(provdata_zip): $(provdata_zip_deps) | $(ACP)
 INSTALLED_RADIOIMAGE_TARGET += $(provdata_zip)
 
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/AndroidBoard.mk
-##############################################################
-TOS_IMAGE_TARGET := $(TRUSTY_BUILDROOT)/evmm_lk_pkg.bin
-
-INTERNAL_PLATFORM := ikgt
-LOCAL_MAKE := make
-
-# Build the evmm_pkg.bin and lk.bin
-.PHONY: $(TOS_IMAGE_TARGET)
-$(TOS_IMAGE_TARGET):
-	@echo "making lk.bin.."
-	$(hide) (cd $(TOPDIR)trusty && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE) sand-x86-64)
-	@echo "making tos image.."
-	$(hide) (cd $(TOPDIR)vendor/intel/fw/evmm/$(INTERNAL_PLATFORM) && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE))
-
-#tos partition is assigned for trusty
-INSTALLED_TOS_IMAGE_TARGET := $(PRODUCT_OUT)/tos.img
-TOS_SIGNING_KEY := $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_VERITY_SIGNING_KEY).pk8
-TOS_SIGNING_CERT := $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_VERITY_SIGNING_KEY).x509.pem
-
-.PHONY: tosimage
-tosimage: $(INSTALLED_TOS_IMAGE_TARGET)
-
-ifeq (true,$(BOARD_AVB_ENABLE)) # BOARD_AVB_ENABLE == true
-$(INSTALLED_TOS_IMAGE_TARGET): $(TOS_IMAGE_TARGET) $(MKBOOTIMG) $(AVBTOOL)
-	@echo "mkbootimg to create boot image for TOS file: $@"
-	$(hide) $(MKBOOTIMG) --kernel $(TOS_IMAGE_TARGET) --output $@
-	$(hide) $(AVBTOOL) add_hash_footer \
-		--image $@ \
-		--partition_size $(BOARD_TOSIMAGE_PARTITION_SIZE) \
-		--partition_name tos $(INTERNAL_AVB_SIGNING_ARGS)
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --include_descriptors_from_image $(INSTALLED_TOS_IMAGE_TARGET)
-$(PRODUCT_OUT)/vbmeta.img: $(INSTALLED_TOS_IMAGE_TARGET)
-else
-$(INSTALLED_TOS_IMAGE_TARGET): $(TOS_IMAGE_TARGET) $(MKBOOTIMG) $(BOOT_SIGNER)
-	@echo "mkbootimg to create boot image for TOS file: $@"
-	$(hide) $(MKBOOTIMG) --kernel $(TOS_IMAGE_TARGET) --output $@
-	$(if $(filter true,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_SUPPORTS_BOOT_SIGNER)),\
-		@echo "sign prebuilt TOS file: $@" &&\
-		$(BOOT_SIGNER) /tos $@ $(TOS_SIGNING_KEY) $(TOS_SIGNING_CERT) $@)
-endif
-
-INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_TOS_IMAGE_TARGET)
-
-make_dir_ab_tos:
-	@mkdir -p $(PRODUCT_OUT)/root/tos
-
-$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_tos
-##############################################################
 # Source: device/intel/mixins/groups/gptbuild/true/AndroidBoard.mk
 ##############################################################
 gptimage_size ?= 14G
@@ -527,8 +455,9 @@ endif
 $(GPTIMAGE_BIN): \
 	bootloader \
 	bootimage \
+	recoveryimage \
+	cacheimage \
 	systemimage \
-	vbmetaimage \
 	vendorimage \
 	$(SIMG2IMG) \
 	$(raw_config) \
@@ -536,8 +465,10 @@ $(GPTIMAGE_BIN): \
 
 	$(hide) rm -f $(INSTALLED_SYSTEMIMAGE).raw
 	$(hide) rm -f $(INSTALLED_USERDATAIMAGE_TARGET).raw
+	$(hide) rm -f $(INSTALLED_CACHEIMAGE_TARGET).raw
 
 	$(SIMG2IMG) $(INSTALLED_SYSTEMIMAGE) $(INSTALLED_SYSTEMIMAGE).raw
+	$(SIMG2IMG) $(INSTALLED_CACHEIMAGE_TARGET) $(INSTALLED_CACHEIMAGE_TARGET).raw
 	$(SIMG2IMG) $(INSTALLED_VENDORIMAGE_TARGET) $(INSTALLED_VENDORIMAGE_TARGET).raw
 
 	$(INTEL_PATH_BUILD)/create_gpt_image.py \
@@ -550,7 +481,8 @@ $(GPTIMAGE_BIN): \
 		--tos $(tos_bin) \
 		--multiboot $(multiboot_bin) \
 		--boot $(INSTALLED_BOOTIMAGE_TARGET) \
-		--vbmeta $(INSTALLED_VBMETAIMAGE_TARGET) \
+		--recovery $(INSTALLED_RECOVERYIMAGE_TARGET) \
+		--cache $(INSTALLED_CACHEIMAGE_TARGET).raw \
 		--system $(INSTALLED_SYSTEMIMAGE).raw \
 		--vendor $(INSTALLED_VENDORIMAGE_TARGET).raw \
 		--config $(raw_config) \

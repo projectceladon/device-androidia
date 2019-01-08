@@ -77,17 +77,6 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/debugfs
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/usb
 
 ##############################################################
-# Source: device/intel/mixins/groups/slot-ab/true/BoardConfig.mk
-##############################################################
-AB_OTA_UPDATER := true
-AB_OTA_PARTITIONS := \
-    boot \
-    system
-BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
-TARGET_NO_RECOVERY := true
-BOARD_USES_RECOVERY_AS_BOOT := true
-BOARD_SLOT_AB_ENABLE := true
-##############################################################
 # Source: device/intel/mixins/groups/kernel/project-celadon/BoardConfig.mk
 ##############################################################
 TARGET_USES_64_BIT_BINDER := true
@@ -101,6 +90,8 @@ TARGET_NO_KERNEL ?= false
 KERNEL_LOGLEVEL ?= 3
 SERIAL_PARAMETER ?= console=tty0 console=ttyS0,115200n8
 
+# If enable A/B, then the root should be system partition at last.
+BOARD_KERNEL_CMDLINE += root=/dev/ram0
 
 BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL) loop.max_part=7
 
@@ -135,18 +126,6 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/factory-partition
 BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
 ##############################################################
-# Source: device/intel/mixins/groups/avb/true/BoardConfig.mk
-##############################################################
-BOARD_AVB_ENABLE := true
-
-KERNELFLINGER_AVB_CMDLINE := true
-
-BOARD_VBMETAIMAGE_PARTITION_SIZE := 2097152
-BOARD_FLASHFILES += $(PRODUCT_OUT)/vbmeta.img
-
-# Now use AVB to support A/B slot
-PRODUCT_STATIC_BOOT_CONTROL_HAL := bootctrl.avb libavb_user
-##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/BoardConfig.mk
 ##############################################################
 # Those 3 lines are required to enable vendor image generation.
@@ -159,7 +138,6 @@ else
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := squashfs
 endif
 BOARD_FLASHFILES += $(PRODUCT_OUT)/vendor.img
-AB_OTA_PARTITIONS += vendor
 ##############################################################
 # Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
 ##############################################################
@@ -183,6 +161,8 @@ INTERNAL_USERIMAGES_EXT_VARIANT := ext4
 endif
 
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 576716800
+BOARD_CACHEIMAGE_PARTITION_SIZE := 69206016
+BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 512
 
 BOARD_BOOTIMAGE_PARTITION_SIZE := 31457280
@@ -236,6 +216,8 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/unlock_device.nsh
 BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/efivar_oemlock
 BOARD_FLASHFILES += $(PRODUCT_OUT)/bootloader
 BOARD_FLASHFILES += $(PRODUCT_OUT)/fastboot-usb.img
+BOARD_FLASHFILES += $(PRODUCT_OUT)/recovery.img
+BOARD_FLASHFILES += $(PRODUCT_OUT)/cache.img
 
 # -- OTA RELATED DEFINES --
 # tell build system where to get the recovery.fstab.
@@ -243,6 +225,15 @@ TARGET_RECOVERY_FSTAB ?= $(TARGET_DEVICE_DIR)/fstab.recovery
 # Used by ota_from_target_files to add platform-specific directives
 # to the OTA updater scripts
 TARGET_RELEASETOOLS_EXTENSIONS ?= device/intel/common/recovery
+# Adds edify commands swap_entries and copy_partition for robust
+# update of the EFI system partition
+TARGET_RECOVERY_UPDATER_LIBS := libupdater_esp
+# Extra libraries needed to be rolled into recovery updater
+# libgpt_static and libefivar are needed by libupdater_esp
+TARGET_RECOVERY_UPDATER_EXTRA_LIBS := libcommon_recovery libgpt_static
+ifeq ($(TARGET_SUPPORT_BOOT_OPTION),true)
+TARGET_RECOVERY_UPDATER_EXTRA_LIBS += libefivar
+endif
 # By default recovery minui expects RGBA framebuffer
 TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 
@@ -253,14 +244,6 @@ KERNELFLINGER_ASSUME_BIOS_SECURE_BOOT := true
 
 KERNELFLINGER_USE_RPMB_SIMULATE := true
 
-AB_OTA_PARTITIONS += vbmeta
-AB_OTA_PARTITIONS += tos
-
-AB_OTA_POSTINSTALL_CONFIG += \
-    RUN_POSTINSTALL_vendor=true \
-    POSTINSTALL_PATH_vendor=bin/updater_ab_esp \
-    FILESYSTEM_TYPE_vendor=ext4 \
-    POSTINSTALL_OPTIONAL_vendor=true
 
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/BoardConfig.mk
@@ -377,33 +360,6 @@ WITH_DEXPREOPT_PIC := true
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal/thermal-daemon
 ##############################################################
-# Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk.1
-##############################################################
-BOARD_KERNEL_CMDLINE += pstore.backend=ramoops
-##############################################################
-# Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk.2
-##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/sepolicy/pstore
-##############################################################
-# Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk
-##############################################################
-BOARD_KERNEL_CMDLINE += \
-	memmap=0x400000\$$0x50000000 \
-	ramoops.mem_address=0x50000000 \
-	ramoops.mem_size=0x400000
-BOARD_KERNEL_CMDLINE += \
-	ramoops.record_size=0x4000
-
-BOARD_KERNEL_CMDLINE += \
-	ramoops.console_size=0x200000
-
-BOARD_KERNEL_CMDLINE += \
-	ramoops.ftrace_size=0x2000
-
-BOARD_KERNEL_CMDLINE += \
-	ramoops.dump_oops=1
-
-##############################################################
 # Source: device/intel/mixins/groups/debug-phonedoctor/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_M4DEFS += module_debug_phonedoctor=true
@@ -416,49 +372,6 @@ USE_INTEL_FLASHFILES := true
 VARIANT_SPECIFIC_FLASHFILES ?= false
 FAST_FLASHFILES := true
 
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/BoardConfig.mk
-##############################################################
-TARGET_USE_TRUSTY := true
-
-KM_VERSION := 2
-ifeq ($(KM_VERSION),1)
-BOARD_USES_TRUSTY := true
-BOARD_USES_KEYMASTER1 := true
-endif
-
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/trusty
-BOARD_SEPOLICY_M4DEFS += module_trusty=true
-
-LK_PRODUCT := project-celadon_64
-
-LKBUILD_TOOLCHAIN_ROOT = $(PWD)/vendor/intel/external/prebuilts/elf/
-LKBUILD_X86_TOOLCHAIN =
-LKBUILD_X64_TOOLCHAIN = $(LKBUILD_TOOLCHAIN_ROOT)x86_64-elf-4.9.1-Linux-x86_64/bin
-EVMMBUILD_TOOLCHAIN ?= x86_64-linux-android-
-TRUSTY_BUILDROOT = $(PWD)/$(PRODUCT_OUT)/obj/trusty/
-
-TRUSTY_ENV_VAR += LK_CORE_NUM=1
-TRUSTY_ENV_VAR += TRUSTY_REF_TARGET=project-celadon_64
-
-#for trusty lk
-TRUSTY_ENV_VAR += BUILDROOT=$(TRUSTY_BUILDROOT)
-TRUSTY_ENV_VAR += PATH=$$PATH:$(LKBUILD_X86_TOOLCHAIN):$(LKBUILD_X64_TOOLCHAIN)
-TRUSTY_ENV_VAR += CLANG_BINDIR=$(PWD)/$(LLVM_PREBUILTS_PATH)
-TRUSTY_ENV_VAR += ARCH_x86_64_TOOLCHAIN_PREFIX=${PWD}/prebuilts/gcc/linux-x86/x86/x86_64-linux-android-${TARGET_GCC_VERSION}/bin/x86_64-linux-android-
-
-#for trusty vmm
-# use same toolchain as android kernel
-TRUSTY_ENV_VAR += COMPILE_TOOLCHAIN=$(EVMMBUILD_TOOLCHAIN)
-
-# output build dir to android out folder
-TRUSTY_ENV_VAR += BUILD_DIR=$(TRUSTY_BUILDROOT)
-TRUSTY_ENV_VAR += LKBIN_DIR=$(TRUSTY_BUILDROOT)/build-sand-x86-64/
-
-#Workaround CPU lost issue on SIMICS, will remove this line below after PO.
-BOARD_KERNEL_CMDLINE += cpu_init_udelay=500000
-
-BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
 ##############################################################
 # Source: device/intel/mixins/groups/camera-ext/ext-camera-only/BoardConfig.mk
 ##############################################################

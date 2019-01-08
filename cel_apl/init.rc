@@ -512,7 +512,7 @@ on post-fs
 ##############################################################
 # Enable SELinux labeling
 on post-fs
-    restorecon_recursive /vendor/oem_config
+    restorecon_recursive /oem_config
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/init.rc
 ##############################################################
@@ -629,25 +629,6 @@ on post-fs-data
     start thermal-daemon
 
 ##############################################################
-# Source: device/intel/mixins/groups/pstore/ram_dummy/init.rc
-##############################################################
-on fs
-    mkdir /dev/pstore 0700 5001 root
-    mount pstore pstore /dev/pstore
-
-on post-fs-data
-   mkdir /data/dontpanic 0770 root log
-
-service pstore-clean /system/vendor/bin/pstore-clean
-    user 5001
-    group root log
-    class late_start
-    oneshot
-
-on property:init.svc.pstore-clean=stopped
-    umount /dev/pstore
-    rmdir /dev/pstore
-##############################################################
 # Source: device/intel/mixins/groups/debug-logs/true/init.rc
 ##############################################################
 import /init.logs.rc
@@ -678,25 +659,6 @@ on property:sys.usb.config=midi,adb
     write /sys/class/android_usb/android0/enable 1
     start adbd
     setprop sys.usb.state ${sys.usb.config}
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/init.rc
-##############################################################
-on fs
-    # Update device node r/w attribute
-    chown system system /dev/trusty-ipc-dev0
-    chmod 666 /dev/trusty-ipc-dev0
-
-on post-fs-data
-    mkdir /data/vendor/securestorage 0700 system system
-    chmod 666 /dev/rpmb0
-
-on early-boot
-    start storageproxyd
-
-service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/vendor/securestorage -r /dev/rpmb0
-    user system
-    group system
-
 ##############################################################
 # Source: device/intel/mixins/groups/swap/zram/init.rc
 ##############################################################
