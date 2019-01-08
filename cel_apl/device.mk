@@ -328,26 +328,6 @@ ifeq ($(TARGET_BUILD_VARIANT),user)
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.adb.secure=1
 endif
 ##############################################################
-# Source: device/intel/mixins/groups/slot-ab/true/product.mk
-##############################################################
-PRODUCT_PACKAGES += \
-    update_engine \
-    update_verifier \
-    update_engine_sideload \
-    libavb \
-    bootctrl.avb \
-    bootctrl.intel \
-    bootctrl.intel.static \
-    android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-service
-
-PRODUCT_PACKAGES_DEBUG += \
-    update_engine_client \
-    bootctl
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.bootctrl=intel
-##############################################################
 # Source: device/intel/mixins/groups/kernel/project-celadon/product.mk
 ##############################################################
 TARGET_KERNEL_ARCH := x86_64
@@ -387,10 +367,13 @@ PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-car
 # create primary storage symlink dynamically
 PRODUCT_PACKAGES += set_storage
 ##############################################################
-# Source: device/intel/mixins/groups/avb/true/product.mk
+# Source: device/intel/mixins/groups/avb/false/product.mk
 ##############################################################
 
-PRODUCT_PACKAGES += avbctl
+# Use GVB (Google Verify Boot)
+$(call inherit-product,build/target/product/verity.mk)
+
+
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
@@ -410,7 +393,6 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 
 endif
 
-PRODUCT_PACKAGES += updater_ab_esp
 
 # Allow Kernelflinger to ignore the RSCI reset source "not_applicable"
 # when setting the bootreason
@@ -572,11 +554,6 @@ PRODUCT_COPY_FILES += \
 	device/intel/project-celadon/common/thermal/thermal-conf.xml:/vendor/etc/thermal-daemon/thermal-conf.xml \
 	device/intel/project-celadon/common/thermal/thermal-cpu-cdev-order.xml:/vendor/etc/thermal-daemon/thermal-cpu-cdev-order.xml
 ##############################################################
-# Source: device/intel/mixins/groups/pstore/ram_dummy/product.mk
-##############################################################
-PRODUCT_PACKAGES += \
-    pstore-clean
-##############################################################
 # Source: device/intel/mixins/groups/debug-logs/true/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)
@@ -661,36 +638,6 @@ PRODUCT_PACKAGES_DEBUG += \
 # MIDI support
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:vendor/etc/permissions/android.software.midi.xml
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/product.mk
-##############################################################
-
-KM_VERSION := 2
-
-ifeq ($(KM_VERSION),2)
-PRODUCT_PACKAGES += \
-	keystore.trusty
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.keystore=trusty
-endif
-
-ifeq ($(KM_VERSION),1)
-PRODUCT_PACKAGES += \
-	keystore.project-celadon
-endif
-
-PRODUCT_PACKAGES += \
-	libtrusty \
-	storageproxyd \
-	libtrustystorage \
-	libtrustystorageinterface \
-	gatekeeper.trusty \
-	android.hardware.gatekeeper@1.0-impl \
-	android.hardware.gatekeeper@1.0-service
-
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.gatekeeper=trusty
-
 ##############################################################
 # Source: device/intel/mixins/groups/camera-ext/ext-camera-only/product.mk
 ##############################################################
