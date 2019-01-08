@@ -140,8 +140,8 @@ PRODUCT_PACKAGES += \
 
 # Power HAL
 PRODUCT_PACKAGES += \
-    android.hardware.power@1.0-impl \
-    android.hardware.power@1.0-service
+    android.hardware.power@1.2-impl \
+    android.hardware.power@1.2-service
 
 # DumpState HAL
 PRODUCT_PACKAGES += \
@@ -716,6 +716,12 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += health
 PRODUCT_PACKAGES += health.$(TARGET_BOARD_PLATFORM) \
 					android.hardware.health@2.0-service.celadon
+##############################################################
+# Source: device/intel/mixins/groups/power/true/product.mk
+##############################################################
+PRODUCT_PACKAGES += power
+PRODUCT_PACKAGES += power.$(TARGET_BOARD_PLATFORM) \
+					android.hardware.power@1.2-service.celadon
 ##############################################################
 # Source: device/intel/mixins/groups/art-config/default/product.mk
 ##############################################################
