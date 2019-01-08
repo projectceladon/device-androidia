@@ -1,0 +1,10 @@
+type hal_power_service, domain;
+hal_server_domain(hal_power_service, hal_power)
+
+type hal_power_service_exec, exec_type, vendor_file_type, file_type;
+init_daemon_domain(hal_power_service)
+
+allow hal_power_service cgroup:file rw_file_perms;
+allow hal_power_service sysfs_app_readable:file rw_file_perms;
+allow hal_power_service sysfs_devices_system_cpu:file rw_file_perms;
+

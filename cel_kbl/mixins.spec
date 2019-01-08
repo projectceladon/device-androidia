@@ -53,3 +53,4 @@ art-config: default
 gptbuild: true(size=14G)
 device-type: car
 swap:zram(size=1073741824,swappiness=false,hardware=cel_kbl)
+power: true
