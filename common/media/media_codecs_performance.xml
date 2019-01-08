@@ -65,13 +65,13 @@
             <Limit name="measured-frame-rate-320x180" range="5800-6800" />
             <Limit name="measured-frame-rate-640x360" range="4000-5000" />
             <Limit name="measured-frame-rate-1280x720" range="1000-1600" />
-            <Limit name="measured-frame-rate-1920x1080" range="270-330" />
+            <Limit name="measured-frame-rate-1920x1080" range="700-800" />
         </MediaCodec>
         <MediaCodec name="OMX.Intel.hw_vd.vp9" type="video/x-vnd.on2.vp9" update="true">
             <Limit name="measured-frame-rate-320x180" range="6000-7000" />
             <Limit name="measured-frame-rate-640x360" range="3800-4700" />
             <Limit name="measured-frame-rate-1280x720" range="1000-1500" />
-            <Limit name="measured-frame-rate-1920x1080" range="350-420" />
+            <Limit name="measured-frame-rate-1920x1080" range="900-1000" />
             <Limit name="measured-frame-rate-3840x2160" range="100-130" />
         </MediaCodec>
     </Decoders>
