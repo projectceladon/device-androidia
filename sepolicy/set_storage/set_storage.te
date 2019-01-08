@@ -2,7 +2,17 @@
 # set_storage - set symlink on /dev/block/by-name
 #
 
-type set_storage, domain, coredomain;
+type set_storage, domain;
+type set_storage_exec, file_type, exec_type, vendor_file_type;
+
+not_full_treble(`
+  typeattribute set_storage coredomain;
+  domain_trans(init, rootfs, set_storage)
+')
+
+full_treble_only(`
+  init_daemon_domain(set_storage)
+')
 
 allow set_storage self:capability { fsetid };
 
@@ -17,3 +27,5 @@ allow set_storage block_device:blk_file { getattr setattr };
 
 # chmod to system partition owner, see set_storage.c
 # allow set_storage frp_block_device:blk_file setattr;
+
+allow set_storage set_storage:capability { fowner chown };
