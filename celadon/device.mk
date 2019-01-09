@@ -46,11 +46,10 @@ $(call inherit-product-if-exists,vendor/vendor.mk)
 
 #Product Characteristics
 PRODUCT_COPY_FILES += \
-    $(if $(wildcard $(PRODUCT_DIR)fstab.$(TARGET_PRODUCT)),$(PRODUCT_DIR)fstab.$(TARGET_PRODUCT),$(LOCAL_PATH)/fstab):root/fstab.$(TARGET_PRODUCT) \
-    $(if $(wildcard $(PRODUCT_DIR)init.$(TARGET_PRODUCT).rc),$(PRODUCT_DIR)init.$(TARGET_PRODUCT).rc,$(LOCAL_PATH)/init.rc):root/init.$(TARGET_PRODUCT).rc \
-    $(if $(wildcard $(PRODUCT_DIR)ueventd.$(TARGET_PRODUCT).rc),$(PRODUCT_DIR)ueventd.$(TARGET_PRODUCT).rc,$(LOCAL_PATH)/ueventd.rc):root/ueventd.$(TARGET_PRODUCT).rc \
     $(LOCAL_PATH)/gpt.ini:root/gpt.$(TARGET_PRODUCT).ini \
     $(LOCAL_PATH)/init.recovery.rc:root/init.recovery.$(TARGET_PRODUCT).rc \
+    $(LOCAL_PATH)/init.rc:root/init.$(TARGET_PRODUCT).rc \
+    $(LOCAL_PATH)/ueventd.rc:root/ueventd.$(TARGET_PRODUCT).rc
 
 # Voip
 PRODUCT_COPY_FILES += \
@@ -368,11 +367,6 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-tablet
 ##############################################################
-# Source: device/intel/mixins/groups/disk-bus/auto/product.mk
-##############################################################
-# create primary storage symlink dynamically
-PRODUCT_PACKAGES += set_storage
-##############################################################
 # Source: device/intel/mixins/groups/avb/true/product.mk
 ##############################################################
 
@@ -381,6 +375,11 @@ PRODUCT_PACKAGES += avbctl
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
 PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/by-name/vendor
+##############################################################
+# Source: device/intel/mixins/groups/disk-bus/auto/product.mk
+##############################################################
+# create primary storage symlink dynamically
+PRODUCT_PACKAGES += set_storage
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/product.mk
 ##############################################################
@@ -450,6 +449,10 @@ endif
 
 
 KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := true
+
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/fstab:root/fstab.$(TARGET_PRODUCT)
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/product.mk
 ##############################################################

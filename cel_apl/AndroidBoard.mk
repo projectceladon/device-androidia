@@ -95,35 +95,6 @@ installclean: FILES += $(KERNEL_OUT) $(PRODUCT_OUT)/kernel
 .PHONY: kernel
 kernel: $(PRODUCT_OUT)/kernel
 ##############################################################
-# Source: device/intel/mixins/groups/factory-partition/true/AndroidBoard.mk
-##############################################################
-INSTALLED_FACTORYIMAGE_TARGET := $(PRODUCT_OUT)/factory.img
-selinux_fc := $(TARGET_ROOT_OUT)/file_contexts.bin
-
-$(INSTALLED_FACTORYIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
-$(INSTALLED_FACTORYIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
-	$(call pretty,"Target factory fs image: $(INSTALLED_FACTORYIMAGE_TARGET)")
-	@mkdir -p $(PRODUCT_OUT)/factory
-	$(hide)	$(MKEXTUSERIMG) -s \
-		$(PRODUCT_OUT)/factory \
-		$(PRODUCT_OUT)/factory.img \
-		ext4 \
-		factory \
-		$(BOARD_FACTORYIMAGE_PARTITION_SIZE) \
-		$(PRIVATE_SELINUX_FC)
-
-INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_FACTORYIMAGE_TARGET)
-
-selinux_fc :=
-
-.PHONY: factoryimage
-factoryimage: $(INSTALLED_FACTORYIMAGE_TARGET)
-
-make_dir_ab_factory:
-	@mkdir -p $(PRODUCT_OUT)/root/factory
-
-$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_factory
-##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/AndroidBoard.mk
 ##############################################################
 
@@ -167,6 +138,35 @@ make_dir_ab_config:
 	@mkdir -p $(PRODUCT_OUT)/vendor/oem_config
 
 $(PRODUCT_OUT)/ramdisk.img: make_dir_ab_config
+##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/AndroidBoard.mk
+##############################################################
+INSTALLED_FACTORYIMAGE_TARGET := $(PRODUCT_OUT)/factory.img
+selinux_fc := $(TARGET_ROOT_OUT)/file_contexts.bin
+
+$(INSTALLED_FACTORYIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
+$(INSTALLED_FACTORYIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
+	$(call pretty,"Target factory fs image: $(INSTALLED_FACTORYIMAGE_TARGET)")
+	@mkdir -p $(PRODUCT_OUT)/factory
+	$(hide)	$(MKEXTUSERIMG) -s \
+		$(PRODUCT_OUT)/factory \
+		$(PRODUCT_OUT)/factory.img \
+		ext4 \
+		factory \
+		$(BOARD_FACTORYIMAGE_PARTITION_SIZE) \
+		$(PRIVATE_SELINUX_FC)
+
+INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_FACTORYIMAGE_TARGET)
+
+selinux_fc :=
+
+.PHONY: factoryimage
+factoryimage: $(INSTALLED_FACTORYIMAGE_TARGET)
+
+make_dir_ab_factory:
+	@mkdir -p $(PRODUCT_OUT)/root/factory
+
+$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_factory
 ##############################################################
 # Source: device/intel/mixins/groups/variants/default/AndroidBoard.mk
 ##############################################################
