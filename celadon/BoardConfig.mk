@@ -127,18 +127,6 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/bluetooth/common
 
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/intel/tablet/
 ##############################################################
-# Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
-##############################################################
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/set_storage
-BOARD_DISK_BUS = ff.ff
-##############################################################
-# Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
-##############################################################
-BOARD_FACTORYIMAGE_PARTITION_SIZE := 10485760
-BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/factory-partition
-BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
-##############################################################
 # Source: device/intel/mixins/groups/avb/true/BoardConfig.mk
 ##############################################################
 BOARD_AVB_ENABLE := true
@@ -171,6 +159,18 @@ BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
 BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
 BOARD_SEPOLICY_M4DEFS += module_config_partition=true
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/config-partition
+##############################################################
+# Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/set_storage
+BOARD_DISK_BUS = ff.ff
+##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
+##############################################################
+BOARD_FACTORYIMAGE_PARTITION_SIZE := 10485760
+BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/factory-partition
+BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/BoardConfig.mk
 ##############################################################
