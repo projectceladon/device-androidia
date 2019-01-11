@@ -23,7 +23,7 @@
 ##############################################################
 # Source: device/intel/mixins/groups/factory-partition/true/fstab
 ##############################################################
-/dev/block/by-name/factory      /factory        ext4    rw,noatime                                                  wait
+/dev/block/by-name/factory      /vendor/factory ext4    rw,noatime                                                  wait
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/fstab
 ##############################################################
