@@ -511,6 +511,12 @@ on post-fs
     restorecon_recursive /factory
     trigger post-fs-factory
 ##############################################################
+# Source: device/intel/mixins/groups/audio/project-celadon/init.rc
+##############################################################
+on post-fs
+    insmod /vendor/lib/modules/kernel/sound/drivers/snd-dummy.ko
+
+##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/init.rc
 ##############################################################
 on post-fs-data
