@@ -483,12 +483,6 @@ on post-fs
     insmod /vendor/lib/modules/kernel/drivers/bluetooth/btrtl.ko
     insmod /vendor/lib/modules/kernel/drivers/bluetooth/btusb.ko
 ##############################################################
-# Source: device/intel/mixins/groups/config-partition/enabled/init.rc
-##############################################################
-# Enable SELinux labeling
-on post-fs
-    restorecon_recursive /vendor/oem_config
-##############################################################
 # Source: device/intel/mixins/groups/disk-bus/auto/init.rc
 ##############################################################
 on init
@@ -497,6 +491,12 @@ on init
     # can be associated with the correct disk. Create a shortcut to
     # /dev/block/by-name so that we can use the same fstabs everywhere.
     exec u:r:set_storage:s0 root root -- /sbin/set_storage
+##############################################################
+# Source: device/intel/mixins/groups/config-partition/enabled/init.rc
+##############################################################
+# Enable SELinux labeling
+on post-fs
+    restorecon_recursive /vendor/oem_config
 ##############################################################
 # Source: device/intel/mixins/groups/factory-partition/true/init.rc
 ##############################################################
@@ -510,12 +510,6 @@ on init
 on post-fs
     restorecon_recursive /factory
     trigger post-fs-factory
-##############################################################
-# Source: device/intel/mixins/groups/audio/project-celadon/init.rc
-##############################################################
-on post-fs
-    insmod /vendor/lib/modules/kernel/sound/drivers/snd-dummy.ko
-
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/init.rc
 ##############################################################
