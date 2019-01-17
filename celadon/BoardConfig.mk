@@ -489,4 +489,9 @@ CRAFFIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT)_gptimage.craff
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/swap
 BOARD_SEPOLICY_M4DEFS += module_swap=true
+##############################################################
+# Source: device/intel/mixins/groups/power/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/power
+
 # ------------------ END MIX-IN DEFINITIONS ------------------
