@@ -8,3 +8,6 @@
 /sys/devices/pci0000:00/0000:00:02.0/subsystem_vendor u:object_r:sysfs_app_readable:s0
 /sys/devices/pci0000:00/0000:00:02.0/subsystem_device u:object_r:sysfs_app_readable:s0
 /sys/devices/pci0000:00/0000:00:02.0/uevent u:object_r:sysfs_app_readable:s0
+/(vendor|system/vendor)/lib(64)?/libglapi\.so u:object_r:same_process_hal_file:s0
+/(vendor|system/vendor)/lib(64)?/libdrm_pri\.so u:object_r:same_process_hal_file:s0
+/(vendor|system/vendor)/lib(64)?/gralloc\.project-celadon\.so u:object_r:same_process_hal_file:s0
