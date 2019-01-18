@@ -31,6 +31,10 @@
                     <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
                              samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
                 </mixPort>
+                <mixPort name="primary_output" role="source" flags="AUDIO_OUTPUT_FLAG_PRIMARY">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                </mixPort>
                 <mixPort name="hdmi_stereo" role="source" flags="AUDIO_OUTPUT_FLAG_PRIMARY">
                     <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
                              samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
@@ -41,8 +45,8 @@
                 </mixPort>
                 <mixPort name="primary_input" role="sink" flags="AUDIO_INPUT_FLAG_PRIMARY">
                     <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
-                             samplingRates="48000"
-                             channelMasks="AUDIO_CHANNEL_IN_STEREO"/>
+                             samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000"
+                             channelMasks="AUDIO_CHANNEL_IN_MONO,AUDIO_CHANNEL_IN_STEREO"/>
                 </mixPort>
             </mixPorts>
 
@@ -85,11 +89,13 @@
                        sources="primary_output"/>
                 <route type="mix" sink="Wired Headphones"
                        sources="primary_output"/>
-                <route type="mix" sink="Speaker"
+		<route type="mix" sink="Speaker"
                        sources="primary_output"/>
-                <route type="mix" sink="HDMI"
-                       sources="hdmi_stereo,hdmi_multi"/>
-                <route type="mix" sink="primary_input"
+		
+                 <route type="mix" sink="HDMI"
+			sources="hdmi_stereo,hdmi_multi"/>
+		 
+		 <route type="mix" sink="primary_input"
                        sources="Wired Headset Mic,Built-In Mic"/>
             </routes>
 
@@ -113,4 +119,10 @@
     <xi:include href="default_volume_tables.xml"/>
 
     <!-- End of Volume section -->
+
+    <!--Audio HAL Custom section -->
+    <xi:include href="audio_criteria.xml"/>
+    <xi:include href="audio_criterion_types.xml"/>
+    <!--End of Audio HAL Custom section -->
+
 </audioPolicyConfiguration>
