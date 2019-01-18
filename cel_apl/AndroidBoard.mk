@@ -566,6 +566,13 @@ gptimage: $(GPTIMAGE_BIN)
 #KERNEL_CAR_DIFFCONFIG = $(wildcard $(KERNEL_CONFIG_PATH)/car_diffconfig)
 #KERNEL_DIFFCONFIG += $(KERNEL_CAR_DIFFCONFIG)
 ##############################################################
+# Source: device/intel/mixins/groups/firststage-mount/true/AndroidBoard.mk
+##############################################################
+FIRST_STAGE_MOUNT_CFG_FILE := $(TARGET_DEVICE_DIR)/config.asl
+
+$(FIRSTSTAGE_MOUNT_SSDT): $(FIRST_STAGE_MOUNT_CFG_FILE) $(IASL)
+	$(hide) $(IASL) -p $(@:.aml=) $(FIRST_STAGE_MOUNT_CFG_FILE);
+##############################################################
 # Source: device/intel/mixins/groups/vndk/default/AndroidBoard.mk
 ##############################################################
 define define-vndk-sp-lib
