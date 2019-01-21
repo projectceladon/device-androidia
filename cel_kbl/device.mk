@@ -371,6 +371,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-car
 
 ##############################################################
+# Source: device/intel/mixins/groups/disk-bus/auto/product.mk
+##############################################################
+# create primary storage symlink dynamically
+PRODUCT_PACKAGES += set_storage
+##############################################################
 # Source: device/intel/mixins/groups/avb/true/product.mk
 ##############################################################
 
@@ -379,11 +384,6 @@ PRODUCT_PACKAGES += avbctl
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
 PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/by-name/vendor
-##############################################################
-# Source: device/intel/mixins/groups/disk-bus/auto/product.mk
-##############################################################
-# create primary storage symlink dynamically
-PRODUCT_PACKAGES += set_storage
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/product.mk
 ##############################################################

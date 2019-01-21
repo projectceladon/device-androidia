@@ -16,7 +16,8 @@
 # Following line is required if you use a vendor image.
 # If the vendor image is not used,
 # following line should be commented with the related ones in BoardConfig.mk
-/dev/block/by-name/vendor	    /vendor         ext4    ro                                                          wait,slotselect
+
+/dev/block/by-name/vendor       /vendor         ext4    ro                                         wait,slotselect
 ##############################################################
 # Source: device/intel/mixins/groups/config-partition/enabled/fstab.recovery
 ##############################################################
@@ -24,7 +25,7 @@
 ##############################################################
 # Source: device/intel/mixins/groups/factory-partition/true/fstab.recovery
 ##############################################################
-/dev/block/by-name/factory      /factory        ext4    rw,noatime                                                  wait
+/dev/block/by-name/factory      /vendor/factory ext4    rw,noatime                                                  wait
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/fstab.recovery
 ##############################################################
