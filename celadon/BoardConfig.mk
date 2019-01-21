@@ -413,14 +413,6 @@ BOARD_KERNEL_CMDLINE += \
 BOARD_SEPOLICY_M4DEFS += module_debug_phonedoctor=true
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/debug-phonedoctor
 ##############################################################
-# Source: device/intel/mixins/groups/flashfiles/ini/BoardConfig.mk
-##############################################################
-FLASHFILES_CONFIG ?= $(TARGET_DEVICE_DIR)/flashfiles.ini
-USE_INTEL_FLASHFILES := true
-VARIANT_SPECIFIC_FLASHFILES ?= false
-FAST_FLASHFILES := true
-
-##############################################################
 # Source: device/intel/mixins/groups/trusty/true/BoardConfig.mk
 ##############################################################
 TARGET_USE_TRUSTY := true
@@ -463,6 +455,14 @@ TRUSTY_ENV_VAR += LKBIN_DIR=$(TRUSTY_BUILDROOT)/build-sand-x86-64/
 BOARD_KERNEL_CMDLINE += cpu_init_udelay=500000
 
 BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
+##############################################################
+# Source: device/intel/mixins/groups/flashfiles/ini/BoardConfig.mk
+##############################################################
+FLASHFILES_CONFIG ?= $(TARGET_DEVICE_DIR)/flashfiles.ini
+USE_INTEL_FLASHFILES := true
+VARIANT_SPECIFIC_FLASHFILES ?= false
+FAST_FLASHFILES := true
+
 ##############################################################
 # Source: device/intel/mixins/groups/camera-ext/ext-camera-only/BoardConfig.mk
 ##############################################################

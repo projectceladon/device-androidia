@@ -645,12 +645,6 @@ PRODUCT_PACKAGES_DEBUG += \
     lspci \
     llvm-symbolizer
 ##############################################################
-# Source: device/intel/mixins/groups/midi/true/product.mk
-##############################################################
-# MIDI support
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.software.midi.xml:vendor/etc/permissions/android.software.midi.xml
-##############################################################
 # Source: device/intel/mixins/groups/trusty/true/product.mk
 ##############################################################
 
@@ -680,6 +674,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.hardware.gatekeeper=trusty
 
+##############################################################
+# Source: device/intel/mixins/groups/midi/true/product.mk
+##############################################################
+# MIDI support
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.software.midi.xml:vendor/etc/permissions/android.software.midi.xml
 ##############################################################
 # Source: device/intel/mixins/groups/camera-ext/ext-camera-only/product.mk
 ##############################################################
