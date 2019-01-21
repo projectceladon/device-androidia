@@ -507,6 +507,17 @@ on post-fs
     restorecon_recursive /vendor/factory
     trigger post-fs-factory
 ##############################################################
+# Source: device/intel/mixins/groups/boot-arch/project-celadon/init.rc
+##############################################################
+service watchdogd /sbin/watchdogd
+    user root
+    class core
+    oneshot
+    seclabel u:r:watchdogd:s0
+
+on charger
+    start watchdogd
+##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/init.rc
 ##############################################################
 on post-fs
