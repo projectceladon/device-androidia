@@ -40,7 +40,7 @@ debug-phonedoctor: true
 debug-tools: true
 flashfiles: ini(oemvars=false,version=3.0,fastboot_min_battery_level=false,installer=true,timeout=1200000)
 midi: true
-trusty: true(enable_hw_sec=true,enable_storage_proxyd=true,ref_target=project-celadon_64)
+trusty: true(enable_hw_sec=true,enable_storage_proxyd=true,ref_target=project-celadon_apl)
 slcan: default
 ioc-slcan-reboot: false
 camera-ext: ext-camera-only
