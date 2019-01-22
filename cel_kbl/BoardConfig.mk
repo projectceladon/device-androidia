@@ -359,6 +359,7 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/wlan/iwlwifi
 ifeq ($(BOARD_USE_64BIT_USERSPACE),true)
 # 64b-specific items:
 TARGET_ARCH := x86_64
+TARGET_ARCH_VARIANT := kabylake
 TARGET_CPU_ABI := x86_64
 TARGET_2ND_CPU_ABI := x86
 TARGET_2ND_ARCH := x86
@@ -367,6 +368,7 @@ TARGET_2ND_CPU_VARIANT := x86
 else
 # 32b-specific items:
 TARGET_ARCH := x86
+TARGET_ARCH_VARIANT := kabylake
 TARGET_CPU_ABI := x86
 endif
 ##############################################################
