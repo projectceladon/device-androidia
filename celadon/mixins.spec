@@ -49,7 +49,7 @@ memtrack: true
 touch: galax7200
 avb: true
 health: true
-slot-ab: true
+slot-ab: true(bootloader_slot_ab=true)
 art-config: default
 gptbuild: true(size=14G)
 swap:zram(size=1073741824,swappiness=false,hardware=celadon)
