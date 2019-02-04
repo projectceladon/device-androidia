@@ -4,7 +4,7 @@
 # Source: device/intel/mixins/groups/2ndstage/oemvars/BoardConfig.mk
 ##############################################################
 TARGET_BOOTLOADER_IS_2ND := true
-BOARD_OEM_VARS += $(TARGET_DEVICE_DIR)/oemvars.txt
+BOARD_OEM_VARS += $(TARGET_DEVICE_DIR)/extra_files/2ndstage/oemvars.txt
 ##############################################################
 # Source: device/intel/mixins/groups/project-celadon/default/BoardConfig.mk
 ##############################################################
