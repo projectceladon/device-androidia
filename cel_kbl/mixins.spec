@@ -5,6 +5,7 @@ mixinsdir: device/intel/mixins/groups
 product.mk: device.mk
 
 [groups]
+device-specific: cel_kbl
 2ndstage: oemvars
 project-celadon: default
 sepolicy: enforcing
