@@ -25,7 +25,6 @@ LOCAL_FIRMWARE_SRC := \
     iwlwifi-9260-th-b0-jf-b0-38.ucode \
     iwlwifi-9260-th-b0-jf-b0-34.ucode
 
-
 ## List of complete Firmware folders to be copied
 
 LOCAL_FIRMWARE_DIR := \
