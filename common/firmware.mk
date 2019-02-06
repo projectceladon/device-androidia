@@ -21,7 +21,9 @@ LOCAL_FIRMWARE_SRC := \
     i2400m-fw-usb-1.4.sbcf \
     i2400m-fw-usb-1.5.sbcf \
     iwlwifi-3168-29.ucode \
-    iwlwifi-8265-31.ucode
+    iwlwifi-8265-31.ucode \
+    iwlwifi-9260-th-b0-jf-b0-38.ucode \
+    iwlwifi-9260-th-b0-jf-b0-34.ucode
 
 ## List of complete Firmware folders to be copied
 
