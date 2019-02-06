@@ -525,7 +525,7 @@ PRODUCT_PACKAGES += \
     config_cpuset.sh
 
 PRODUCT_COPY_FILES += \
-    device/intel/project-celadon/$(TARGET_PRODUCT)/config_cpuset.sh:vendor/bin/config_cpuset.sh
+    $(LOCAL_PATH)/extra_files/cpuset/config_cpuset.sh:vendor/bin/config_cpuset.sh
 ##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/product.mk
 ##############################################################
@@ -577,7 +577,7 @@ MIXIN_DEBUG_LOGS := true
 endif
 
 ifeq ($(MIXIN_DEBUG_LOGS),true)
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/init.logs.rc:root/init.logs.rc
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/debug-logs/init.logs.rc:root/init.logs.rc
 PRODUCT_PACKAGES += \
     elogs.sh \
     start_log_srv.sh \
@@ -598,9 +598,9 @@ endif
 ##############################################################
 ifeq ($(MIXIN_DEBUG_LOGS),true)
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/init.crashlogd.rc:root/init.crashlogd.rc \
-	$(call add-to-product-copy-files-if-exists,$(LOCAL_PATH)/ingredients.conf:$(TARGET_COPY_OUT_VENDOR)/etc/ingredients.conf) \
-	$(call add-to-product-copy-files-if-exists,$(LOCAL_PATH)/crashlog.conf:$(TARGET_COPY_OUT_VENDOR)/etc/crashlog.conf)
+	$(LOCAL_PATH)/extra_files/debug-crashlogd/init.crashlogd.rc:root/init.crashlogd.rc \
+	$(call add-to-product-copy-files-if-exists,$(LOCAL_PATH)/extra_files/debug-crashlogd/ingredients.conf:$(TARGET_COPY_OUT_VENDOR)/etc/ingredients.conf) \
+	$(call add-to-product-copy-files-if-exists,$(LOCAL_PATH)/extra_files/debug-crashlogd/crashlog.conf:$(TARGET_COPY_OUT_VENDOR)/etc/crashlog.conf)
 PRODUCT_PACKAGES += crashlogd \
 	dumpstate_dropbox.sh
 endif
@@ -619,7 +619,7 @@ endif
 # Source: device/intel/mixins/groups/debug-coredump/true/product.mk
 ##############################################################
 ifeq ($(MIXIN_DEBUG_LOGS),true)
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/init.coredump.rc:root/init.coredump.rc
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/debug-coredump/init.coredump.rc:root/init.coredump.rc
 endif
 
 ifeq ($(MIXIN_DEBUG_LOGS),true)
@@ -764,7 +764,7 @@ VEHICLE_HAL_PROTO_TYPE := google-emulator
 # Source: device/intel/mixins/groups/debug-kernel/default/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/init.kernel.rc:root/init.kernel.rc
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/debug-kernel/init.kernel.rc:root/init.kernel.rc
 endif
 ##############################################################
 # Source: device/intel/mixins/groups/debug-unresponsive/default/product.mk
