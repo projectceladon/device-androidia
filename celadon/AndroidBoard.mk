@@ -206,12 +206,12 @@ out_flashfiles := $(PRODUCT_OUT)/$(TARGET_PRODUCT).flashfiles.$(TARGET_BUILD_VAR
 endif
 
 
-$(PRODUCT_OUT)/efi/startup.nsh: $(TARGET_DEVICE_DIR)/$(@F)
-	$(ACP) $(TARGET_DEVICE_DIR)/$(@F) $@
+$(PRODUCT_OUT)/efi/startup.nsh: $(TARGET_DEVICE_DIR)/extra_files/boot-arch/$(@F)
+	$(ACP) $(TARGET_DEVICE_DIR)/extra_files/boot-arch/$(@F) $@
 	sed -i '/#/d' $@
 
-$(PRODUCT_OUT)/efi/unlock_device.nsh: $(TARGET_DEVICE_DIR)/$(@F)
-	$(ACP) $(TARGET_DEVICE_DIR)/$(@F) $@
+$(PRODUCT_OUT)/efi/unlock_device.nsh: $(TARGET_DEVICE_DIR)/extra_files/boot-arch/$(@F)
+	$(ACP) $(TARGET_DEVICE_DIR)/extra_files/boot-arch/$(@F) $@
 	sed -i '/#/d' $@
 
 $(PRODUCT_OUT)/efi/efivar_oemlock: $(TARGET_DEVICE_DIR)/$(@F)
