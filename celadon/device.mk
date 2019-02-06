@@ -3,6 +3,8 @@
 ##############################################################
 # Source: device/intel/mixins/groups/project-celadon/default/product.mk
 ##############################################################
+TARGET_BOARD_PLATFORM := project-celadon
+
 #Product Characteristics
 PRODUCT_DIR := $(dir $(lastword $(filter-out device/common/%,$(filter device/%,$(ALL_PRODUCTS)))))
 
@@ -12,8 +14,6 @@ INTEL_PATH_SEPOLICY := device/intel/project-celadon/sepolicy
 INTEL_PATH_BUILD := device/intel/build
 INTEL_PATH_HARDWARE := hardware/intel
 INTEL_PATH_VENDOR := vendor/intel
-
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.dalvik.vm.native.bridge=libhoudini.so
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
@@ -46,11 +46,10 @@ $(call inherit-product-if-exists,vendor/vendor.mk)
 
 #Product Characteristics
 PRODUCT_COPY_FILES += \
-    $(if $(wildcard $(PRODUCT_DIR)fstab.$(TARGET_PRODUCT)),$(PRODUCT_DIR)fstab.$(TARGET_PRODUCT),$(LOCAL_PATH)/fstab):root/fstab.$(TARGET_PRODUCT) \
-    $(if $(wildcard $(PRODUCT_DIR)init.$(TARGET_PRODUCT).rc),$(PRODUCT_DIR)init.$(TARGET_PRODUCT).rc,$(LOCAL_PATH)/init.rc):root/init.$(TARGET_PRODUCT).rc \
-    $(if $(wildcard $(PRODUCT_DIR)ueventd.$(TARGET_PRODUCT).rc),$(PRODUCT_DIR)ueventd.$(TARGET_PRODUCT).rc,$(LOCAL_PATH)/ueventd.rc):root/ueventd.$(TARGET_PRODUCT).rc \
     $(LOCAL_PATH)/gpt.ini:root/gpt.$(TARGET_PRODUCT).ini \
     $(LOCAL_PATH)/init.recovery.rc:root/init.recovery.$(TARGET_PRODUCT).rc \
+    $(LOCAL_PATH)/init.rc:root/init.$(TARGET_PRODUCT).rc \
+    $(LOCAL_PATH)/ueventd.rc:root/ueventd.$(TARGET_PRODUCT).rc
 
 # Voip
 PRODUCT_COPY_FILES += \
@@ -79,6 +78,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.hwui.text_large_cache_width=2048 \
     ro.hwui.text_large_cache_height=512
 
+# Set filenames_mode to cts, for heh is not available
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.crypto.volume.filenames_mode=aes-256-cts
+
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.rtc_local_time=1 \
 
@@ -97,10 +100,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Input resampling configuration
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.input.noresample=1
-
-# set default USB configuration
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp
 
 # AOSP Packages
 PRODUCT_PACKAGES += \
@@ -140,8 +139,8 @@ PRODUCT_PACKAGES += \
 
 # Power HAL
 PRODUCT_PACKAGES += \
-    android.hardware.power@1.0-impl \
-    android.hardware.power@1.0-service
+    android.hardware.power@1.2-impl \
+    android.hardware.power@1.2-service
 
 # DumpState HAL
 PRODUCT_PACKAGES += \
@@ -240,11 +239,16 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
     libmfxhw32 \
     libmfxhw64 \
-    libmfx_hevce_hw32 \
-    libmfx_hevce_hw64 \
     libmfx_omx_core \
     libmfx_omx_components_hw \
     libstagefrighthw
+
+
+# Enable Open source hdcp
+PRODUCT_PACKAGES += libhdcpsdk
+PRODUCT_PACKAGES += lihdcpcommon
+# hdcp daemon
+PRODUCT_PACKAGES += hdcpd
 
 PRODUCT_COPY_FILES += \
     device/intel/project-celadon/common/media/mfx_omxil_core.conf:vendor/etc/mfx_omxil_core.conf
@@ -256,8 +260,7 @@ PRODUCT_CHARACTERISTICS := tablet
 $(call inherit-product,frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
 
 PRODUCT_COPY_FILES += \
-        frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml
-
+        frameworks/native/data/etc/tablet_core_hardware.xml:vendor/etc/permissions/tablet_core_hardware.xml
 
 ##############################################################
 # Source: device/intel/mixins/groups/ethernet/dhcp/product.mk
@@ -270,6 +273,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
    net.eth0.startonboot=1
 
 ##############################################################
+# Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/product.mk
+##############################################################
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += support.sdcardfs.mode=y
+##############################################################
 # Source: device/intel/mixins/groups/display-density/default/product.mk
 ##############################################################
 PRODUCT_AAPT_CONFIG := normal large mdpi
@@ -280,20 +288,14 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.sf.lcd_density=160
 # Source: device/intel/mixins/groups/usb-gadget/g_ffs/product.mk
 ##############################################################
 # Set default USB interface
-USB_CONFIG := mtp
-
 ifeq ($(TARGET_BUILD_VARIANT),user)
 # Enable Secure Debugging
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.adb.secure=1
 ifeq ($(BUILD_FOR_CTS_AUTOMATION),true)
 # Build for automated CTS
-ifneq ($(USB_CONFIG), adb)
-USB_CONFIG := $(USB_CONFIG),adb
-endif
 PRODUCT_COPY_FILES += $(INTEL_PATH_COMMON)/usb-gadget/adb_keys:root/adb_keys
 endif #BUILD_FOR_CTS_AUTOMATION == true
 endif #TARGET_BUILD_VARIANT == user
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.sys.usb.config=$(USB_CONFIG)
 
 # Add Intel adb keys for userdebug/eng builds
 ifneq ($(TARGET_BUILD_VARIANT),user)
@@ -354,16 +356,16 @@ PRODUCT_PACKAGES += \
     audio.a2dp.default \
     ath3k-1.fw
 
-PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
-		frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml
+PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.bluetooth.xml:vendor/etc/permissions/android.hardware.bluetooth.xml \
+		frameworks/native/data/etc/android.hardware.bluetooth_le.xml:vendor/etc/permissions/android.hardware.bluetooth_le.xml
 
 # Bluetooth HAL
 PRODUCT_PACKAGES += \
-  android.hardware.bluetooth@1.0-impl \
-  android.hardware.bluetooth@1.0-service \
+  android.hardware.bluetooth@1.0-service.vbt \
   libbt-vendor
 
-PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-car-disablehfp
+
+PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-tablet
 ##############################################################
 # Source: device/intel/mixins/groups/disk-bus/auto/product.mk
 ##############################################################
@@ -395,6 +397,9 @@ endif
 
 PRODUCT_PACKAGES += updater_ab_esp
 
+# Allow Kernelflinger to ignore the RSCI reset source "not_applicable"
+# when setting the bootreason
+KERNELFLINGER_IGNORE_NOT_APPLICABLE_RESET := true
 
 
 ifneq (0x0,static)
@@ -442,6 +447,12 @@ ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),static ex
 endif
 
 
+
+KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := true
+
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/fstab:root/fstab.$(TARGET_PRODUCT)
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/product.mk
 ##############################################################
@@ -460,8 +471,8 @@ PRODUCT_PACKAGES += \
 
 # Audio HAL
 PRODUCT_PACKAGES += \
-    android.hardware.audio.effect@2.0-impl \
-    android.hardware.audio@2.0-impl \
+    android.hardware.audio.effect@4.0-impl \
+    android.hardware.audio@4.0-impl \
     android.hardware.audio@2.0-service
 
 PRODUCT_PROPERTY_OVERRIDES += audio.safemedia.bypass=true
@@ -488,10 +499,9 @@ PRODUCT_PACKAGES += \
 
 #copy iwlwifi wpa config files
 PRODUCT_COPY_FILES += \
-        device/intel/common/wlan/wpa_supplicant-common.conf:system/etc/wifi/wpa_supplicant.conf \
-        device/intel/common/wlan/iwlwifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
-        frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
-        frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml
+        device/intel/common/wlan/wpa_supplicant-common.conf:vendor/etc/wifi/wpa_supplicant.conf \
+        device/intel/common/wlan/iwlwifi/wpa_supplicant_overlay_no_tdls.conf:vendor/etc/wifi/wpa_supplicant_overlay.conf \
+        frameworks/native/data/etc/android.hardware.wifi.xml:vendor/etc/permissions/android.hardware.wifi.xml
 
 
 
@@ -505,9 +515,17 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
   android.hardware.wifi@1.0-service
 ##############################################################
+# Source: device/intel/mixins/groups/cpuset/autocores/product.mk
+##############################################################
+PRODUCT_PACKAGES += \
+    config_cpuset.sh
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/extra_files/cpuset/config_cpuset.sh:vendor/bin/config_cpuset.sh
+##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/product.mk
 ##############################################################
-PRODUCT_COPY_FILES += device/intel/common/rfkill/rfkill-init.sh:system/bin/rfkill-init.sh
+PRODUCT_COPY_FILES += $(INTEL_PATH_COMMON)/rfkill/rfkill-init.sh:vendor/bin/rfkill-init.sh
 ##############################################################
 # Source: device/intel/mixins/groups/usb/host+acc/product.mk
 ##############################################################
@@ -528,31 +546,20 @@ PRODUCT_PACKAGES += \
 ##############################################################
 # Lights HAL
 BOARD_SEPOLICY_DIRS += \
-    device/intel/project-celadon/sepolicy/light
+    $(INTEL_PATH_SEPOLICY)/light
 
-PRODUCT_PACKAGES += lights.project-celadon \
+PRODUCT_PACKAGES += lights.$(TARGET_BOARD_PLATFORM) \
     android.hardware.light@2.0-service \
     android.hardware.light@2.0-impl
+
 ##############################################################
-# Source: device/intel/mixins/groups/thermal/dptf/product.mk
+# Source: device/intel/mixins/groups/thermal/thermal-daemon/product.mk
 ##############################################################
-# DPTF
-INTEL_MODEM_CTL := true
-PRODUCT_PACKAGES += esif_ufd \
-    dsp.dv \
-    dptf.dv \
-    libc++_shared.so \
-    Dptf \
-    DptfPolicyActive \
-    DptfPolicyAdaptivePerformance \
-    DptfPolicyConditionalLogicLib \
-    DptfPolicyCritical \
-    DptfPolicyEmergencyCallMode \
-    DptfPolicyPassive \
-    DptfPolicyVirtualSensor \
-    upe_java \
-    jhs
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/dptf.dv:/system/etc/dptf/dv/dptf.dv
+# thermal-daemon
+PRODUCT_PACKAGES += thermal-daemon
+PRODUCT_COPY_FILES += \
+	device/intel/project-celadon/common/thermal/thermal-conf.xml:/vendor/etc/thermal-daemon/thermal-conf.xml \
+	device/intel/project-celadon/common/thermal/thermal-cpu-cdev-order.xml:/vendor/etc/thermal-daemon/thermal-cpu-cdev-order.xml
 ##############################################################
 # Source: device/intel/mixins/groups/pstore/ram_dummy/product.mk
 ##############################################################
@@ -566,7 +573,7 @@ MIXIN_DEBUG_LOGS := true
 endif
 
 ifeq ($(MIXIN_DEBUG_LOGS),true)
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/init.logs.rc:root/init.logs.rc
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/debug-logs/init.logs.rc:root/init.logs.rc
 PRODUCT_PACKAGES += \
     elogs.sh \
     start_log_srv.sh \
@@ -579,7 +586,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.intel.logger=/system/bin/logcat
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += logd.kernel.raw_message=False
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.intel.logger.rot_cnt=20
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.intel.logger.rot_size=5000
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/debug-logs
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/debug-logs
 BOARD_SEPOLICY_M4DEFS += module_debug_logs=true
 endif
 ##############################################################
@@ -587,9 +594,9 @@ endif
 ##############################################################
 ifeq ($(MIXIN_DEBUG_LOGS),true)
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/init.crashlogd.rc:root/init.crashlogd.rc \
-	$(call add-to-product-copy-files-if-exists,$(LOCAL_PATH)/ingredients.conf:$(TARGET_COPY_OUT_VENDOR)/etc/ingredients.conf) \
-	$(call add-to-product-copy-files-if-exists,$(LOCAL_PATH)/crashlog.conf:$(TARGET_COPY_OUT_VENDOR)/etc/crashlog.conf)
+	$(LOCAL_PATH)/extra_files/debug-crashlogd/init.crashlogd.rc:root/init.crashlogd.rc \
+	$(call add-to-product-copy-files-if-exists,$(LOCAL_PATH)/extra_files/debug-crashlogd/ingredients.conf:$(TARGET_COPY_OUT_VENDOR)/etc/ingredients.conf) \
+	$(call add-to-product-copy-files-if-exists,$(LOCAL_PATH)/extra_files/debug-crashlogd/crashlog.conf:$(TARGET_COPY_OUT_VENDOR)/etc/crashlog.conf)
 PRODUCT_PACKAGES += crashlogd \
 	dumpstate_dropbox.sh
 endif
@@ -608,11 +615,11 @@ endif
 # Source: device/intel/mixins/groups/debug-coredump/true/product.mk
 ##############################################################
 ifeq ($(MIXIN_DEBUG_LOGS),true)
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/init.coredump.rc:root/init.coredump.rc
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/debug-coredump/init.coredump.rc:root/init.coredump.rc
 endif
 
 ifeq ($(MIXIN_DEBUG_LOGS),true)
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/coredump
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/coredump
 # Enable core dump for eng builds
 ifeq ($(TARGET_BUILD_VARIANT),eng)
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.core.enabled=1
@@ -635,13 +642,8 @@ PRODUCT_PACKAGES_DEBUG += \
     libjackpal-androidterm4 \
     peeknpoke \
     pytimechart-record \
-    lspci
-##############################################################
-# Source: device/intel/mixins/groups/midi/true/product.mk
-##############################################################
-# MIDI support
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
+    lspci \
+    llvm-symbolizer
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/true/product.mk
 ##############################################################
@@ -673,11 +675,32 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.hardware.gatekeeper=trusty
 
 ##############################################################
+# Source: device/intel/mixins/groups/midi/true/product.mk
+##############################################################
+# MIDI support
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.software.midi.xml:vendor/etc/permissions/android.software.midi.xml
+##############################################################
+# Source: device/intel/mixins/groups/camera-ext/ext-camera-only/product.mk
+##############################################################
+# Camera: Device-specific configuration files. Supports only External USB camera, no CSI support
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.camera.external.xml:vendor/etc/permissions/android.hardware.camera.external.xml \
+    device/intel/project-celadon/common/camera-ext/external_camera_config.xml:vendor/etc/external_camera_config.xml
+
+# External camera service
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-external-service \
+                    android.hardware.camera.provider@2.4-impl
+
+# Only include test apps in eng or userdebug builds.
+PRODUCT_PACKAGES_DEBUG += TestingCamera \
+                          MultiCameraApp
+##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/product.mk
 ##############################################################
 # memtrack HAL
 PRODUCT_PACKAGES += \
-	memtrack.project-celadon \
+	memtrack.$(TARGET_BOARD_PLATFORM) \
 	android.hardware.memtrack@1.0-service \
 	android.hardware.memtrack@1.0-impl
 ##############################################################
@@ -685,7 +708,13 @@ PRODUCT_PACKAGES += \
 ##############################################################
 PRODUCT_COPY_FILES += \
         frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:vendor/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml\
-        device/intel/common/touch/Vendor_0eef_Product_7200.idc:system/usr/idc/Vendor_0eef_Product_7200.idc
+        $(INTEL_PATH_COMMON)/touch/Vendor_0eef_Product_7200.idc:system/usr/idc/Vendor_0eef_Product_7200.idc
+##############################################################
+# Source: device/intel/mixins/groups/health/true/product.mk
+##############################################################
+PRODUCT_PACKAGES += health
+PRODUCT_PACKAGES += health.$(TARGET_BOARD_PLATFORM) \
+					android.hardware.health@2.0-service.celadon
 ##############################################################
 # Source: device/intel/mixins/groups/art-config/default/product.mk
 ##############################################################
@@ -701,7 +730,7 @@ PRODUCT_PACKAGES_TESTS += \
 # Source: device/intel/mixins/groups/debug-kernel/default/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/init.kernel.rc:root/init.kernel.rc
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/debug-kernel/init.kernel.rc:root/init.kernel.rc
 endif
 ##############################################################
 # Source: device/intel/mixins/groups/debug-unresponsive/default/product.mk
@@ -719,26 +748,5 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += sys.dump.stacks_timeout=1500
 
 endif
 # ------------------ END MIX-IN DEFINITIONS ------------------
-PRODUCT_PACKAGES += libhoudini houdini
-PRODUCT_PROPERTY_OVERRIDES += ro.dalvik.vm.isa.arm=x86 ro.enable.native.bridge.exec=1
-
-ENABLE_NATIVEBRIDGE_64BIT := false
-ifeq ($(BOARD_USE_64BIT_USERSPACE),true)
-  ENABLE_NATIVEBRIDGE_64BIT = true
-else
-  ifeq ($(TARGET_SUPPORTS_64_BIT_APPS),true)
-    ENABLE_NATIVEBRIDGE_64BIT = true
-  endif
-endif
-ifeq ($(ENABLE_NATIVEBRIDGE_64BIT),true)
-  PRODUCT_PACKAGES += houdini64
-  PRODUCT_PROPERTY_OVERRIDES += ro.dalvik.vm.isa.arm64=x86_64 ro.enable.native.bridge.exec64=1
-endif
-##############################################################
-# Source: device/intel/mixins/groups/debug-phonedoctor/true/product.mk
-##############################################################
-ifeq ($(MIXIN_DEBUG_LOGS),true)
-PRODUCT_PACKAGES += crash_package
-endif
 
 

@@ -1,0 +1,7 @@
+userdebug_or_eng(`
+  # used for parameter framework (PFW) tuning and debug
+  allow netd hal_audio_default:fd use;
+  allow netd hal_audio_default:tcp_socket { getopt read setopt write };
+  allow netd audioserver:fd use;
+  allow netd audioserver:tcp_socket { getopt read setopt write };
+')

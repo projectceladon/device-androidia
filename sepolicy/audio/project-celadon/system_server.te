@@ -1,0 +1,6 @@
+#
+# system_server
+#
+
+allow system_server hal_audio_default:file write;
+allow system_server audioserver:file w_file_perms;

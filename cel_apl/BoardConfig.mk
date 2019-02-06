@@ -4,7 +4,7 @@
 # Source: device/intel/mixins/groups/2ndstage/oemvars/BoardConfig.mk
 ##############################################################
 TARGET_BOOTLOADER_IS_2ND := true
-BOARD_OEM_VARS += $(TARGET_DEVICE_DIR)/oemvars.txt
+BOARD_OEM_VARS += $(TARGET_DEVICE_DIR)/extra_files/2ndstage/oemvars.txt
 ##############################################################
 # Source: device/intel/mixins/groups/project-celadon/default/BoardConfig.mk
 ##############################################################
@@ -68,19 +68,14 @@ USE_MEDIASDK := true
 
 BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
 ##############################################################
-# Source: device/intel/mixins/groups/device-type/car/BoardConfig.mk
-##############################################################
-
-BOARD_SEPOLICY_DIRS += \
-    packages/services/Car/car_product/sepolicy \
-    device/generic/car/common/sepolicy \
-    device/intel/project-celadon/sepolicy/car
-
-TARGET_USES_CAR_FUTURE_FEATURES := true
-##############################################################
 # Source: device/intel/mixins/groups/debugfs/default/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/debugfs
+##############################################################
+# Source: device/intel/mixins/groups/usb-gadget/g_ffs/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/usb
+
 ##############################################################
 # Source: device/intel/mixins/groups/slot-ab/true/BoardConfig.mk
 ##############################################################
@@ -104,10 +99,10 @@ TARGET_PRELINK_MODULE := false
 TARGET_NO_KERNEL ?= false
 
 KERNEL_LOGLEVEL ?= 3
-SERIAL_PARAMETER := console=tty0 console=ttyS2,115200n8
+SERIAL_PARAMETER ?= console=tty0 console=ttyS0,115200n8
 
 
-BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL)
+BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL) loop.max_part=7
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 ifeq ($(SPARSE_IMG),true)
@@ -121,31 +116,17 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/kernel
 ##############################################################
 # Source: device/intel/mixins/groups/bluetooth/btusb/BoardConfig.mk
 ##############################################################
-BOARD_HAVE_BLUETOOTH := true
-BOARD_HAVE_BLUETOOTH_LINUX := true
+BOARD_HAVE_BLUETOOTH_LINUX_PRI := true
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/bluetooth/overlay-bt-pan
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/bluetooth/common \
-                       device/intel/project-celadon/sepolicy/bluetooth/intel
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/bluetooth/common
+
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/intel/car/
 
 ##############################################################
 # Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/set_storage
-##############################################################
-# Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
-##############################################################
-BOARD_FACTORYIMAGE_PARTITION_SIZE := 10485760
-BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/factory-partition
-BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
-##############################################################
-# Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
-##############################################################
-BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
-BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
-BOARD_SEPOLICY_M4DEFS += module_config_partition=true
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/config-partition
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/set_storage
+BOARD_DISK_BUS = ff.ff
 ##############################################################
 # Source: device/intel/mixins/groups/avb/true/BoardConfig.mk
 ##############################################################
@@ -158,15 +139,13 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/vbmeta.img
 
 # Now use AVB to support A/B slot
 PRODUCT_STATIC_BOOT_CONTROL_HAL := bootctrl.avb libavb_user
-
-AB_OTA_PARTITIONS += vbmeta
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/BoardConfig.mk
 ##############################################################
 # Those 3 lines are required to enable vendor image generation.
 # Remove them if vendor partition is not used.
 TARGET_COPY_OUT_VENDOR := vendor
-BOARD_VENDORIMAGE_PARTITION_SIZE := 1572864000
+BOARD_VENDORIMAGE_PARTITION_SIZE := 1887436800
 ifeq ($(SPARSE_IMG),true)
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 else
@@ -175,13 +154,34 @@ endif
 BOARD_FLASHFILES += $(PRODUCT_OUT)/vendor.img
 AB_OTA_PARTITIONS += vendor
 ##############################################################
+# Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
+##############################################################
+BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
+BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
+BOARD_SEPOLICY_M4DEFS += module_config_partition=true
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/config-partition
+##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
+##############################################################
+BOARD_FACTORYIMAGE_PARTITION_SIZE := 10485760
+BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/factory-partition
+BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
+##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/BoardConfig.mk
 ##############################################################
 #TARGET_NO_RECOVERY ?= false
 
-TARGET_BOARD_PLATFORM := project-celadon
-
+ifeq (False,true)
+TARGET_USERIMAGES_USE_F2FS := true
+BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
+INTERNAL_USERIMAGES_EXT_VARIANT := f2fs
+else
 TARGET_USERIMAGES_USE_EXT4 := true
+BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
+INTERNAL_USERIMAGES_EXT_VARIANT := ext4
+endif
+
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 576716800
 BOARD_FLASH_BLOCK_SIZE := 512
 
@@ -239,7 +239,7 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/fastboot-usb.img
 
 # -- OTA RELATED DEFINES --
 # tell build system where to get the recovery.fstab.
-TARGET_RECOVERY_FSTAB ?= $(TARGET_DEVICE_DIR)/fstab
+TARGET_RECOVERY_FSTAB ?= $(TARGET_DEVICE_DIR)/fstab.recovery
 # Used by ota_from_target_files to add platform-specific directives
 # to the OTA updater scripts
 TARGET_RELEASETOOLS_EXTENSIONS ?= device/intel/common/recovery
@@ -252,6 +252,9 @@ KERNELFLINGER_ASSUME_BIOS_SECURE_BOOT := true
 
 
 KERNELFLINGER_USE_RPMB_SIMULATE := true
+
+AB_OTA_PARTITIONS += vbmeta
+AB_OTA_PARTITIONS += tos
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_vendor=true \
@@ -278,6 +281,8 @@ endif
 USE_XML_AUDIO_POLICY_CONF ?= 1
 # Use configurable audio policy
 USE_CONFIGURABLE_AUDIO_POLICY ?= 1
+
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/audio/project-celadon
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/BoardConfig.mk
 ##############################################################
@@ -353,9 +358,13 @@ TARGET_ARCH := x86
 TARGET_CPU_ABI := x86
 endif
 ##############################################################
+# Source: device/intel/mixins/groups/cpuset/autocores/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/config_cpuset
+##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/rfkill
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/rfkill
 ##############################################################
 # Source: device/intel/mixins/groups/dexpreopt/enabled/BoardConfig.mk
 ##############################################################
@@ -363,11 +372,10 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/rfkill
 WITH_DEXPREOPT := true
 WITH_DEXPREOPT_PIC := true
 ##############################################################
-# Source: device/intel/mixins/groups/thermal/dptf/BoardConfig.mk
+# Source: device/intel/mixins/groups/thermal/thermal-daemon/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal/dptf
-BOARD_KERNEL_CMDLINE += thermal.off=1
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal/thermal-daemon
 ##############################################################
 # Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk.1
 ##############################################################
@@ -399,15 +407,7 @@ BOARD_KERNEL_CMDLINE += \
 # Source: device/intel/mixins/groups/debug-phonedoctor/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_M4DEFS += module_debug_phonedoctor=true
-BOARD_SEPOLICY_DIRS += device/intel/androidia/sepolicy/debug-phonedoctor
-##############################################################
-# Source: device/intel/mixins/groups/flashfiles/ini/BoardConfig.mk
-##############################################################
-FLASHFILES_CONFIG ?= $(TARGET_DEVICE_DIR)/flashfiles.ini
-USE_INTEL_FLASHFILES := true
-VARIANT_SPECIFIC_FLASHFILES ?= false
-FAST_FLASHFILES := true
-
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/debug-phonedoctor
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/true/BoardConfig.mk
 ##############################################################
@@ -431,7 +431,7 @@ EVMMBUILD_TOOLCHAIN ?= x86_64-linux-android-
 TRUSTY_BUILDROOT = $(PWD)/$(PRODUCT_OUT)/obj/trusty/
 
 TRUSTY_ENV_VAR += LK_CORE_NUM=1
-TRUSTY_ENV_VAR += TRUSTY_REF_TARGET=project-celadon_64
+TRUSTY_ENV_VAR += TRUSTY_REF_TARGET=project-celadon_apl
 
 #for trusty lk
 TRUSTY_ENV_VAR += BUILDROOT=$(TRUSTY_BUILDROOT)
@@ -452,47 +452,50 @@ BOARD_KERNEL_CMDLINE += cpu_init_udelay=500000
 
 BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
 ##############################################################
-# Source: device/intel/mixins/groups/camera/usbcamera/BoardConfig.mk
+# Source: device/intel/mixins/groups/flashfiles/ini/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/camera/usbcamera
+FLASHFILES_CONFIG ?= $(TARGET_DEVICE_DIR)/extra_files/flashfiles/flashfiles.ini
+USE_INTEL_FLASHFILES := true
+VARIANT_SPECIFIC_FLASHFILES ?= false
+FAST_FLASHFILES := true
+
+##############################################################
+# Source: device/intel/mixins/groups/camera-ext/ext-camera-only/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/camera-ext/ext-camera-only
 ##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/memtrack
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/memtrack
+##############################################################
+# Source: device/intel/mixins/groups/health/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/health_hal
+
+DEVICE_FRAMEWORK_MANIFEST_FILE += \
+				system/libhidl/vintfdata/manifest_healthd_exclude.xml
 ##############################################################
 # Source: device/intel/mixins/groups/gptbuild/true/BoardConfig.mk
 ##############################################################
 # can't use := here, as PRODUCT_OUT is not defined yet
 GPTIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT)_gptimage.img
-CRAFFIMAGE_BIN = $(PRODUCT_OUT)/$(TARGET_PRODUCT)_gptimage.craff
+##############################################################
+# Source: device/intel/mixins/groups/device-type/car/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += \
+    packages/services/Car/car_product/sepolicy \
+    device/generic/car/common/sepolicy \
+    $(INTEL_PATH_SEPOLICY)/car
+
+TARGET_USES_CAR_FUTURE_FEATURES := true
+##############################################################
+# Source: device/intel/mixins/groups/swap/zram/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/swap
+BOARD_SEPOLICY_M4DEFS += module_swap=true
+##############################################################
+# Source: device/intel/mixins/groups/power/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/power
+
 # ------------------ END MIX-IN DEFINITIONS ------------------
-
-# Install Native Bridge
-WITH_NATIVE_BRIDGE := true
-
-# Enable ARM codegen for x86 with Native Bridge
-BUILD_ARM_FOR_X86 := true
-
-# Native Bridge ABI List
-NB_ABI_LIST_32_BIT := armeabi-v7a armeabi
-NB_ABI_LIST_64_BIT := arm64-v8a
-
-# Support 64 Bit Apps
-ifeq ($(ENABLE_NATIVEBRIDGE_64BIT),true)
-  TARGET_CPU_ABI_LIST_64_BIT ?= $(TARGET_CPU_ABI) $(TARGET_CPU_ABI2)
-  TARGET_CPU_ABI_LIST_32_BIT ?= $(TARGET_2ND_CPU_ABI) $(TARGET_2ND_CPU_ABI2)
-  TARGET_CPU_ABI_LIST := \
-      $(TARGET_CPU_ABI_LIST_64_BIT) \
-      $(TARGET_CPU_ABI_LIST_32_BIT) \
-      $(NB_ABI_LIST_32_BIT) \
-      $(NB_ABI_LIST_64_BIT)
-  TARGET_CPU_ABI_LIST_32_BIT += $(NB_ABI_LIST_32_BIT)
-  TARGET_CPU_ABI_LIST_64_BIT += $(NB_ABI_LIST_64_BIT)
-else
-  TARGET_CPU_ABI_LIST_32_BIT ?= $(TARGET_CPU_ABI) $(TARGET_CPU_ABI2)
-  TARGET_CPU_ABI_LIST_32_BIT += $(NB_ABI_LIST_32_BIT)
-  TARGET_CPU_ABI_LIST := $(TARGET_CPU_ABI_LIST_32_BIT)
-endif
-
-BOARD_SEPOLICY_M4DEFS += module_houdini=true
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/houdini

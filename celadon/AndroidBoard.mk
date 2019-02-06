@@ -52,6 +52,10 @@ build_kernel := $(MAKE) -C $(TARGET_KERNEL_SRC) \
 
 KERNEL_CONFIG_FILE := device/intel/project-celadon/kernel_config/$(TARGET_KERNEL_CONFIG)
 
+ifneq ($(TARGET_BUILD_VARIANT), user)
+KERNEL_CONFIG_FILE += $(wildcard $(KERNEL_CONFIG_DIR)/debug_diffconfig)
+endif
+
 KERNEL_CONFIG := $(KERNEL_OUT)/.config
 $(KERNEL_CONFIG): $(KERNEL_CONFIG_FILE)
 	$(hide) mkdir -p $(@D) && cat $(wildcard $^) > $@
@@ -63,7 +67,9 @@ $(PRODUCT_OUT)/kernel: $(KERNEL_CONFIG) | $(ACP)
 	$(hide) $(ACP) -fp $(KERNEL_BIN) $@
 
 EXTMOD_SRC := ../../../../../..
-TARGET_EXTRA_KERNEL_MODULES :=
+
+TARGET_EXTRA_KERNEL_MODULES := $(EXTMOD_SRC)/kernel/modules/perftools-external/soc_perf_driver/src
+TARGET_EXTRA_KERNEL_MODULES += $(EXTMOD_SRC)/kernel/modules/perftools-external/socwatch_driver
 
 ALL_EXTRA_MODULES := $(patsubst %,$(TARGET_OUT_INTERMEDIATES)/kmodule/%,$(TARGET_EXTRA_KERNEL_MODULES))
 $(ALL_EXTRA_MODULES): $(TARGET_OUT_INTERMEDIATES)/kmodule/%: $(PRODUCT_OUT)/kernel
@@ -76,7 +82,7 @@ $(ALL_EXTRA_MODULES): $(TARGET_OUT_INTERMEDIATES)/kmodule/%: $(PRODUCT_OUT)/kern
 $(KERNEL_MODULES_INSTALL): $(PRODUCT_OUT)/kernel $(ALL_EXTRA_MODULES)
 	$(hide) rm -rf $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules
 	$(build_kernel) modules_install
-	$(hide) for kmod in "$(TARGET_EXTRA_KERNEL_MODULES)" ; do \
+	$(hide) for kmod in $(TARGET_EXTRA_KERNEL_MODULES) ; do \
 		echo Installing additional kernel module $${kmod} ; \
 		$(subst +,,$(subst $(hide),,$(build_kernel))) M=$(abspath $(TARGET_OUT_INTERMEDIATES))/kernel/$${kmod} modules_install ; \
 	done
@@ -93,34 +99,17 @@ installclean: FILES += $(KERNEL_OUT) $(PRODUCT_OUT)/kernel
 .PHONY: kernel
 kernel: $(PRODUCT_OUT)/kernel
 ##############################################################
-# Source: device/intel/mixins/groups/factory-partition/true/AndroidBoard.mk
+# Source: device/intel/mixins/groups/vendor-partition/true/AndroidBoard.mk
 ##############################################################
-INSTALLED_FACTORYIMAGE_TARGET := $(PRODUCT_OUT)/factory.img
-selinux_fc := $(TARGET_ROOT_OUT)/file_contexts.bin
 
-$(INSTALLED_FACTORYIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
-$(INSTALLED_FACTORYIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
-	$(call pretty,"Target factory fs image: $(INSTALLED_FACTORYIMAGE_TARGET)")
-	@mkdir -p $(PRODUCT_OUT)/factory
-	$(hide)	$(MKEXTUSERIMG) -s \
-		$(PRODUCT_OUT)/factory \
-		$(PRODUCT_OUT)/factory.img \
-		ext4 \
-		factory \
-		$(BOARD_FACTORYIMAGE_PARTITION_SIZE) \
-		$(PRIVATE_SELINUX_FC)
+# This is to ensure that kernel modules are installed before
+# vendor.img is generated.
+$(PRODUCT_OUT)/vendor.img : $(KERNEL_MODULES_INSTALL)
 
-INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_FACTORYIMAGE_TARGET)
+make_dir_ab_vendor:
+	@mkdir -p $(PRODUCT_OUT)/root/vendor
 
-selinux_fc :=
-
-.PHONY: factoryimage
-factoryimage: $(INSTALLED_FACTORYIMAGE_TARGET)
-
-make_dir_ab_factory:
-	@mkdir -p $(PRODUCT_OUT)/root/factory
-
-$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_factory
+$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_vendor
 ##############################################################
 # Source: device/intel/mixins/groups/config-partition/enabled/AndroidBoard.mk
 ##############################################################
@@ -150,9 +139,38 @@ selinux_fc :=
 configimage: $(INSTALLED_CONFIGIMAGE_TARGET)
 
 make_dir_ab_config:
-	@mkdir -p $(PRODUCT_OUT)/root/oem_config
+	@mkdir -p $(PRODUCT_OUT)/vendor/oem_config
 
 $(PRODUCT_OUT)/ramdisk.img: make_dir_ab_config
+##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/AndroidBoard.mk
+##############################################################
+INSTALLED_FACTORYIMAGE_TARGET := $(PRODUCT_OUT)/factory.img
+selinux_fc := $(TARGET_ROOT_OUT)/file_contexts.bin
+
+$(INSTALLED_FACTORYIMAGE_TARGET) : PRIVATE_SELINUX_FC := $(selinux_fc)
+$(INSTALLED_FACTORYIMAGE_TARGET) : $(MKEXTUSERIMG) $(MAKE_EXT4FS) $(E2FSCK) $(selinux_fc)
+	$(call pretty,"Target factory fs image: $(INSTALLED_FACTORYIMAGE_TARGET)")
+	@mkdir -p $(PRODUCT_OUT)/factory
+	$(hide)	$(MKEXTUSERIMG) -s \
+		$(PRODUCT_OUT)/factory \
+		$(PRODUCT_OUT)/factory.img \
+		ext4 \
+		factory \
+		$(BOARD_FACTORYIMAGE_PARTITION_SIZE) \
+		$(PRIVATE_SELINUX_FC)
+
+INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_FACTORYIMAGE_TARGET)
+
+selinux_fc :=
+
+.PHONY: factoryimage
+factoryimage: $(INSTALLED_FACTORYIMAGE_TARGET)
+
+make_dir_ab_factory:
+	@mkdir -p $(PRODUCT_OUT)/vendor/factory
+
+$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_factory
 ##############################################################
 # Source: device/intel/mixins/groups/variants/default/AndroidBoard.mk
 ##############################################################
@@ -171,18 +189,6 @@ $(if $(wildcard $(blob)), \
 endef
 
 ##############################################################
-# Source: device/intel/mixins/groups/vendor-partition/true/AndroidBoard.mk
-##############################################################
-
-# This is to ensure that kernel modules are installed before
-# vendor.img is generated.
-$(PRODUCT_OUT)/vendor.img : $(KERNEL_MODULES_INSTALL)
-
-make_dir_ab_vendor:
-	@mkdir -p $(PRODUCT_OUT)/root/vendor
-
-$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_vendor
-##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/AndroidBoard.mk
 ##############################################################
 src_loader_file := $(PRODUCT_OUT)/efi/kernelflinger.efi
@@ -200,12 +206,12 @@ out_flashfiles := $(PRODUCT_OUT)/$(TARGET_PRODUCT).flashfiles.$(TARGET_BUILD_VAR
 endif
 
 
-$(PRODUCT_OUT)/efi/startup.nsh: $(TARGET_DEVICE_DIR)/$(@F)
-	$(ACP) $(TARGET_DEVICE_DIR)/$(@F) $@
+$(PRODUCT_OUT)/efi/startup.nsh: $(TARGET_DEVICE_DIR)/extra_files/boot-arch/$(@F)
+	$(ACP) $(TARGET_DEVICE_DIR)/extra_files/boot-arch/$(@F) $@
 	sed -i '/#/d' $@
 
-$(PRODUCT_OUT)/efi/unlock_device.nsh: $(TARGET_DEVICE_DIR)/$(@F)
-	$(ACP) $(TARGET_DEVICE_DIR)/$(@F) $@
+$(PRODUCT_OUT)/efi/unlock_device.nsh: $(TARGET_DEVICE_DIR)/extra_files/boot-arch/$(@F)
+	$(ACP) $(TARGET_DEVICE_DIR)/extra_files/boot-arch/$(@F) $@
 	sed -i '/#/d' $@
 
 $(PRODUCT_OUT)/efi/efivar_oemlock: $(TARGET_DEVICE_DIR)/$(@F)
@@ -346,7 +352,7 @@ GEN_BLPOLICY_OEMVARS := device/intel/build/generate_blpolicy_oemvars
 TARGET_ODM_KEY_PAIR := device/intel/build/testkeys/odm
 TARGET_OAK_KEY_PAIR := device/intel/build/testkeys/OAK
 
-$(BOOTLOADER_POLICY_OEMVARS): sign-efi-sig-list
+$(BOOTLOADER_POLICY_OEMVARS):
 	$(GEN_BLPOLICY_OEMVARS) -K $(TARGET_ODM_KEY_PAIR) \
 		-O $(TARGET_OAK_KEY_PAIR).x509.pem -B $(TARGET_BOOTLOADER_POLICY) \
 		$(BOOTLOADER_POLICY_OEMVARS)
@@ -375,6 +381,55 @@ include device/intel/project-celadon/common/audio/AndroidBoard.mk
 ##############################################################
 #LOCAL_KERNEL_PATH := $(abspath $(PRODUCT_OUT)/obj/kernel) is not defined yet
 #$(abspath $(PRODUCT_OUT)/obj/kernel)/copy_modules: iwlwifi
+##############################################################
+# Source: device/intel/mixins/groups/trusty/true/AndroidBoard.mk
+##############################################################
+TOS_IMAGE_TARGET := $(TRUSTY_BUILDROOT)/evmm_lk_pkg.bin
+
+INTERNAL_PLATFORM := ikgt
+LOCAL_MAKE := make
+
+# Build the evmm_pkg.bin and lk.bin
+.PHONY: $(TOS_IMAGE_TARGET)
+$(TOS_IMAGE_TARGET):
+	@echo "making lk.bin.."
+	$(hide) (cd $(TOPDIR)trusty && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE) sand-x86-64)
+	@echo "making tos image.."
+	$(hide) (cd $(TOPDIR)vendor/intel/fw/evmm/$(INTERNAL_PLATFORM) && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE))
+
+#tos partition is assigned for trusty
+INSTALLED_TOS_IMAGE_TARGET := $(PRODUCT_OUT)/tos.img
+TOS_SIGNING_KEY := $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_VERITY_SIGNING_KEY).pk8
+TOS_SIGNING_CERT := $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_VERITY_SIGNING_KEY).x509.pem
+
+.PHONY: tosimage
+tosimage: $(INSTALLED_TOS_IMAGE_TARGET)
+
+ifeq (true,$(BOARD_AVB_ENABLE)) # BOARD_AVB_ENABLE == true
+$(INSTALLED_TOS_IMAGE_TARGET): $(TOS_IMAGE_TARGET) $(MKBOOTIMG) $(AVBTOOL)
+	@echo "mkbootimg to create boot image for TOS file: $@"
+	$(hide) $(MKBOOTIMG) --kernel $(TOS_IMAGE_TARGET) --output $@
+	$(hide) $(AVBTOOL) add_hash_footer \
+		--image $@ \
+		--partition_size $(BOARD_TOSIMAGE_PARTITION_SIZE) \
+		--partition_name tos $(INTERNAL_AVB_SIGNING_ARGS)
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --include_descriptors_from_image $(INSTALLED_TOS_IMAGE_TARGET)
+$(PRODUCT_OUT)/vbmeta.img: $(INSTALLED_TOS_IMAGE_TARGET)
+else
+$(INSTALLED_TOS_IMAGE_TARGET): $(TOS_IMAGE_TARGET) $(MKBOOTIMG) $(BOOT_SIGNER)
+	@echo "mkbootimg to create boot image for TOS file: $@"
+	$(hide) $(MKBOOTIMG) --kernel $(TOS_IMAGE_TARGET) --output $@
+	$(if $(filter true,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_SUPPORTS_BOOT_SIGNER)),\
+		@echo "sign prebuilt TOS file: $@" &&\
+		$(BOOT_SIGNER) /tos $@ $(TOS_SIGNING_KEY) $(TOS_SIGNING_CERT) $@)
+endif
+
+INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_TOS_IMAGE_TARGET)
+
+make_dir_ab_tos:
+	@mkdir -p $(PRODUCT_OUT)/root/tos
+
+$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_tos
 ##############################################################
 # Source: device/intel/mixins/groups/flashfiles/ini/AndroidBoard.mk
 ##############################################################
@@ -434,55 +489,6 @@ $(provdata_zip): $(provdata_zip_deps) | $(ACP)
 INSTALLED_RADIOIMAGE_TARGET += $(provdata_zip)
 
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/AndroidBoard.mk
-##############################################################
-TOS_IMAGE_TARGET := $(TRUSTY_BUILDROOT)/evmm_lk_pkg.bin
-
-INTERNAL_PLATFORM := ikgt
-LOCAL_MAKE := make
-
-# Build the evmm_pkg.bin and lk.bin
-.PHONY: $(TOS_IMAGE_TARGET)
-$(TOS_IMAGE_TARGET):
-	@echo "making lk.bin.."
-	$(hide) (cd $(TOPDIR)trusty && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE) sand-x86-64)
-	@echo "making tos image.."
-	$(hide) (cd $(TOPDIR)vendor/intel/fw/evmm/$(INTERNAL_PLATFORM) && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE))
-
-#tos partition is assigned for trusty
-INSTALLED_TOS_IMAGE_TARGET := $(PRODUCT_OUT)/tos.img
-TOS_SIGNING_KEY := $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_VERITY_SIGNING_KEY).pk8
-TOS_SIGNING_CERT := $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_VERITY_SIGNING_KEY).x509.pem
-
-.PHONY: tosimage
-tosimage: $(INSTALLED_TOS_IMAGE_TARGET)
-
-ifeq (true,$(BOARD_AVB_ENABLE)) # BOARD_AVB_ENABLE == true
-$(INSTALLED_TOS_IMAGE_TARGET): $(TOS_IMAGE_TARGET) $(MKBOOTIMG) $(AVBTOOL)
-	@echo "mkbootimg to create boot image for TOS file: $@"
-	$(hide) $(MKBOOTIMG) --kernel $(TOS_IMAGE_TARGET) --output $@
-	$(hide) $(AVBTOOL) add_hash_footer \
-		--image $@ \
-		--partition_size $(BOARD_TOSIMAGE_PARTITION_SIZE) \
-		--partition_name tos $(INTERNAL_AVB_SIGNING_ARGS)
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --include_descriptors_from_image $(INSTALLED_TOS_IMAGE_TARGET)
-$(PRODUCT_OUT)/vbmeta.img: $(INSTALLED_TOS_IMAGE_TARGET)
-else
-$(INSTALLED_TOS_IMAGE_TARGET): $(TOS_IMAGE_TARGET) $(MKBOOTIMG) $(BOOT_SIGNER)
-	@echo "mkbootimg to create boot image for TOS file: $@"
-	$(hide) $(MKBOOTIMG) --kernel $(TOS_IMAGE_TARGET) --output $@
-	$(if $(filter true,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_SUPPORTS_BOOT_SIGNER)),\
-		@echo "sign prebuilt TOS file: $@" &&\
-		$(BOOT_SIGNER) /tos $@ $(TOS_SIGNING_KEY) $(TOS_SIGNING_CERT) $@)
-endif
-
-INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_TOS_IMAGE_TARGET)
-
-make_dir_ab_tos:
-	@mkdir -p $(PRODUCT_OUT)/root/tos
-
-$(PRODUCT_OUT)/ramdisk.img: make_dir_ab_tos
-##############################################################
 # Source: device/intel/mixins/groups/gptbuild/true/AndroidBoard.mk
 ##############################################################
 gptimage_size ?= 14G
@@ -535,10 +541,6 @@ $(GPTIMAGE_BIN): \
 	$(hide) rm -f $(INSTALLED_SYSTEMIMAGE).raw
 	$(hide) rm -f $(INSTALLED_USERDATAIMAGE_TARGET).raw
 
-	$(MAKE_EXT4FS) \
-		-l $(BOARD_USERDATAIMAGE_PARTITION_SIZE) -L data \
-		$(PRODUCT_OUT)/userdata.dummy
-
 	$(SIMG2IMG) $(INSTALLED_SYSTEMIMAGE) $(INSTALLED_SYSTEMIMAGE).raw
 	$(SIMG2IMG) $(INSTALLED_VENDORIMAGE_TARGET) $(INSTALLED_VENDORIMAGE_TARGET).raw
 
@@ -555,11 +557,81 @@ $(GPTIMAGE_BIN): \
 		--vbmeta $(INSTALLED_VBMETAIMAGE_TARGET) \
 		--system $(INSTALLED_SYSTEMIMAGE).raw \
 		--vendor $(INSTALLED_VENDORIMAGE_TARGET).raw \
-		--data $(PRODUCT_OUT)/userdata.dummy \
 		--config $(raw_config) \
 		--factory $(raw_factory)
 
 
 .PHONY: gptimage
 gptimage: $(GPTIMAGE_BIN)
+##############################################################
+# Source: device/intel/mixins/groups/vndk/default/AndroidBoard.mk
+##############################################################
+define define-vndk-sp-lib
+include $$(CLEAR_VARS)
+LOCAL_MODULE := $1.vendor
+LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+LOCAL_PREBUILT_MODULE_FILE := $$(call intermediates-dir-for,SHARED_LIBRARIES,$1,,,,)/$1.so
+LOCAL_STRIP_MODULE := false
+LOCAL_MULTILIB := first
+LOCAL_MODULE_TAGS := optional
+LOCAL_INSTALLED_MODULE_STEM := $1.so
+LOCAL_MODULE_SUFFIX := .so
+LOCAL_MODULE_RELATIVE_PATH := vndk-sp
+include $$(BUILD_PREBUILT)
+
+ifneq ($$(TARGET_2ND_ARCH),)
+ifneq ($$(TARGET_TRANSLATE_2ND_ARCH),true)
+include $$(CLEAR_VARS)
+LOCAL_MODULE := $1.vendor
+LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+LOCAL_PREBUILT_MODULE_FILE := $$(call intermediates-dir-for,SHARED_LIBRARIES,$1,,,$$(TARGET_2ND_ARCH_VAR_PREFIX),)/$1.so
+LOCAL_STRIP_MODULE := false
+LOCAL_MULTILIB := 32
+LOCAL_MODULE_TAGS := optional
+LOCAL_INSTALLED_MODULE_STEM := $1.so
+LOCAL_MODULE_SUFFIX := .so
+LOCAL_MODULE_RELATIVE_PATH := vndk-sp
+include $$(BUILD_PREBUILT)
+endif # TARGET_TRANSLATE_2ND_ARCH is not true
+endif # TARGET_2ND_ARCH is not empty
+endef
+
+define define-vndk-lib
+ifeq ($$(filter libstagefright_soft_%,$1),)
+include $$(CLEAR_VARS)
+LOCAL_MODULE := $1.vendor
+LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+LOCAL_PREBUILT_MODULE_FILE := $$(call intermediates-dir-for,SHARED_LIBRARIES,$1,,,,)/$1.so
+LOCAL_STRIP_MODULE := false
+LOCAL_MULTILIB := first
+LOCAL_MODULE_TAGS := optional
+LOCAL_INSTALLED_MODULE_STEM := $1.so
+LOCAL_MODULE_SUFFIX := .so
+LOCAL_MODULE_RELATIVE_PATH := vndk
+include $$(BUILD_PREBUILT)
+endif
+
+ifneq ($$(TARGET_2ND_ARCH),)
+ifneq ($$(TARGET_TRANSLATE_2ND_ARCH),true)
+include $$(CLEAR_VARS)
+LOCAL_MODULE := $1.vendor
+LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+LOCAL_PREBUILT_MODULE_FILE := $$(call intermediates-dir-for,SHARED_LIBRARIES,$1,,,$$(TARGET_2ND_ARCH_VAR_PREFIX),)/$1.so
+LOCAL_STRIP_MODULE := false
+LOCAL_MULTILIB := 32
+LOCAL_MODULE_TAGS := optional
+LOCAL_INSTALLED_MODULE_STEM := $1.so
+LOCAL_MODULE_SUFFIX := .so
+LOCAL_MODULE_RELATIVE_PATH := vndk
+include $$(BUILD_PREBUILT)
+endif # TARGET_TRANSLATE_2ND_ARCH is not true
+endif # TARGET_2ND_ARCH is not empty
+endef
+
+$(foreach lib,$(VNDK_SAMEPROCESS_LIBRARIES),\
+    $(eval $(call define-vndk-sp-lib,$(lib))))
+
+$(foreach lib,$(VNDK_CORE_LIBRARIES),\
+    $(eval $(call define-vndk-lib,$(lib))))
+
 # ------------------ END MIX-IN DEFINITIONS ------------------

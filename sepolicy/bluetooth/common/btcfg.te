@@ -1,0 +1,32 @@
+type btcfg, domain;
+type btcfg_exec, exec_type, file_type, vendor_file_type;
+
+init_daemon_domain(btcfg)
+
+allow btcfg self:socket create_socket_perms;
+allowxperm btcfg self:socket ioctl {
+  unpriv_sock_ioctls
+  HCIGETDEVLIST
+  HCIGETDEVINFO
+};
+
+allow btcfg self:bluetooth_socket create_socket_perms;
+
+allowxperm btcfg self:bluetooth_socket ioctl {
+  unpriv_sock_ioctls
+  HCIGETDEVLIST
+  HCIGETDEVINFO
+};
+
+allow btcfg hci_attach_dev:chr_file rw_file_perms;
+allow btcfg kernel:system module_request;
+allow btcfg hci_attach_exec:file rx_file_perms;
+allow btcfg vendor_file:file rx_file_perms;
+
+not_full_treble(`
+  allow btcfg system_file:file rx_file_perms;
+  allow btcfg shell_exec:file rx_file_perms;
+')
+full_treble_only(`
+  allow btcfg vendor_shell_exec:file rx_file_perms;
+')

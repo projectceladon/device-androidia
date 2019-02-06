@@ -5,5 +5,4 @@ type sysfs_thermal_writable, fs_type, sysfs_type;
 type atvr_device, dev_type;
 type sysfs_coretemp, fs_type, sysfs_type;
 type gpu_pid_stats_file, fs_type, debugfs_type;
-type sysfs_socinfo, sysfs_type, fs_type;
 type debugfs_pstate, fs_type, debugfs_type;

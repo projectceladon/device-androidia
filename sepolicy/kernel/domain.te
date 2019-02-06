@@ -1,0 +1,22 @@
+dontaudit {
+	dnsmasq
+	dumpstate
+	init
+	installd
+	install_recovery
+	lmkd
+	netd
+	perfprofd
+	postinstall_dexopt
+	recovery
+	sdcardd
+	tee
+	ueventd
+	uncrypt
+	vendor_init
+	vold
+	vold_prepare_subdirs
+	zygote
+} self:capability dac_read_search;
+
+allow domain vendor_configs_file:file map;

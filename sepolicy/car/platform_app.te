@@ -1,1 +1,5 @@
 allow platform_app broadcastradio_service:service_manager find;
+
+#allow SystemUpdater app to call UpdateEngine
+allow platform_app update_engine:binder { call transfer };
+allow platform_app update_engine_service:service_manager find;

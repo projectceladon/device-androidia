@@ -1,0 +1,1 @@
+/dev/snd/.*                 u:object_r:audio_device:s0

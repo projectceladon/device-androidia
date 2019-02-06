@@ -1,2 +1,10 @@
 /system/etc/bluetooth(/.*)?           u:object_r:bluetooth_config_file:s0
+(/system)?/vendor/bin/bt_nvm_init.sh     u:object_r:init_bt_nvm_exec:s0
+/vendor/bin/hciattach       u:object_r:hci_attach_exec:s0
 /oem_config/bluetooth                  u:object_r:bluetooth_data_file:s0
+
+# setup by device/intel/common/bluetooth/rfkill/rfkill_bt.sh
+/sys/devices/pci0000:00/8086228A:00/.*/rfkill/rfkill[0-9]+/state        u:object_r:sysfs_bluetooth_writable:s0
+
+/vendor/bin/btcfg.sh u:object_r:btcfg_exec:s0
+/vendor/bin/hw/android\.hardware\.bluetooth@1\.0-service\.vbt u:object_r:hal_bluetooth_vbt_exec:s0

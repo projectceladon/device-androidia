@@ -1,0 +1,34 @@
+type init_bt_nvm, domain;
+type init_bt_nvm_exec, exec_type, file_type, vendor_file_type;
+
+init_daemon_domain(init_bt_nvm)
+
+allow init_bt_nvm bluetooth_config_file:dir r_dir_perms;
+allow init_bt_nvm bluetooth_config_file:file r_file_perms;
+
+allow init_bt_nvm efs_file:dir create_dir_perms;
+allow init_bt_nvm efs_file:file create_file_perms;
+
+allow init_bt_nvm bluetooth_efs_file:dir w_dir_perms;
+allow init_bt_nvm bluetooth_efs_file:file create_file_perms;
+
+allow init_bt_nvm init_bt_nvm_exec:file x_file_perms;
+
+module_only(`config_partition', `
+  allow init_bt_nvm config_file:dir r_dir_perms;
+  allow init_bt_nvm config_file:file r_file_perms;
+')
+
+userdebug_or_eng(`
+  allow init_bt_nvm configfs:dir r_dir_perms;
+')
+
+not_full_treble(`
+  allow init_bt_nvm shell_exec:file rx_file_perms;
+  allow init_bt_nvm toolbox_exec:file rx_file_perms;
+  allow init_bt_nvm system_file:file rx_file_perms;
+')
+full_treble_only(`
+  allow init_bt_nvm vendor_shell_exec:file rx_file_perms;
+  allow init_bt_nvm vendor_toolbox_exec:file rx_file_perms;
+')

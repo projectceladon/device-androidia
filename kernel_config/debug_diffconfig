@@ -1,0 +1,2 @@
+#Debug configuration options
+CONFIG_DEBUG_INFO=y

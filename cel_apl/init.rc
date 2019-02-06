@@ -113,7 +113,7 @@ on charger
     start watchdogd
 
 # bugreport is triggered by holding down volume down, volume up and power
-service bugreport /system/bin/dumpstate -d -p -B \
+service bugreport /system/bin/dumpstate -d -p -B -z \
 	-o /data/user_de/0/com.android.shell/files/bugreports/bugreport
     class main
     disabled
@@ -142,8 +142,17 @@ on boot
 ##############################################################
 # Source: device/intel/mixins/groups/media/project-celadon/init.rc
 ##############################################################
+# Note that this service must start as root to set up a mem-mapped region
+# and once that is set up it will drop all unnecessary capabilities and
+# will not show up as a root process in the steady state.
+service hdcpd /system/vendor/bin/hdcpd
+    class main
+    user media
+    group media shell
+    seclabel u:r:hdcpd:s0
+
 on post-fs-data
-    mkdir /data/hdcp 0770 media media
+    mkdir /data/hdcp 0770 media root
     mkdir /data/coreu 0770 media root
     mkdir /data/media 0770 media_rw media_rw
     chown media_rw media_rw /data/media
@@ -158,6 +167,8 @@ on post-fs
     insmod /vendor/lib/modules/kernel/drivers/media/v4l2-core/videobuf2-dma-contig.ko
     insmod /vendor/lib/modules/kernel/drivers/media/v4l2-core/videobuf2-vmalloc.ko
     insmod /vendor/lib/modules/kernel/drivers/media/usb/uvc/uvcvideo.ko
+
+    setprop media.settings.xml /vendor/etc/media_profiles.xml
 ##############################################################
 # Source: device/intel/mixins/groups/ethernet/dhcp/init.rc
 ##############################################################
@@ -254,6 +265,8 @@ on boot
     write /sys/devices/pci0000\:00/0000\:00\:15.1/dwc3.0.auto/power/control auto
     write /sys/devices/pci0000\:00/0000\:00\:15.1/dwc3.0.auto/gadget/power/control auto
     write /sys/devices/pci0000\:00/0000\:00\:15.1/dwc3.0.auto/udc/dwc3.0.auto/power/control auto
+    chown system system /sys/devices/pci0000:00/0000:00:14.0/intel_xhci_usb_sw/usb_role/intel_xhci_usb_sw-role-switch/role
+    chmod 0666 /sys/devices/pci0000:00/0000:00:14.0/intel_xhci_usb_sw/usb_role/intel_xhci_usb_sw-role-switch/role
 
 on property:sys.usb.config=none && property:sys.usb.configfs=1
     write /config/usb_gadget/g1/os_desc/use 0
@@ -264,9 +277,6 @@ on property:sys.usb.config=adb && property:sys.usb.configfs=1
     write /config/usb_gadget/g1/idVendor 0x8087
     write /config/usb_gadget/g1/idProduct 0x09ef
     write /sys/power/wake_lock mylock
-
-on property:init.svc.adbd=stopped
-    setprop sys.usb.ffs.ready 0
 
 on property:sys.usb.config=mtp && property:sys.usb.configfs=1
     write /config/usb_gadget/g1/functions/mtp.gs0/os_desc/interface.MTP/compatible_id "MTP"
@@ -473,24 +483,46 @@ on post-fs
     insmod /vendor/lib/modules/kernel/drivers/bluetooth/btrtl.ko
     insmod /vendor/lib/modules/kernel/drivers/bluetooth/btusb.ko
 ##############################################################
-# Source: device/intel/mixins/groups/factory-partition/true/init.rc
+# Source: device/intel/mixins/groups/disk-bus/auto/init.rc
 ##############################################################
-# init.rc for telephony services specific to flashless platforms using /factory partition
-
 on init
-# Used as mounting point for factory partition.
-# Calibration files configuring IMEI and RF calibration will also be stored on this partition.
-    mkdir /factory 0770 system system
-
-on post-fs
-    restorecon_recursive /factory
-    trigger post-fs-factory
+    # Android creates by-name disk links with the disk controller
+    # in the generated path, so that the names pulled out of the GPT
+    # can be associated with the correct disk. Create a shortcut to
+    # /dev/block/by-name so that we can use the same fstabs everywhere.
+    exec u:r:set_storage:s0 root root -- /sbin/set_storage
 ##############################################################
 # Source: device/intel/mixins/groups/config-partition/enabled/init.rc
 ##############################################################
 # Enable SELinux labeling
 on post-fs
-    restorecon_recursive /oem_config
+    restorecon_recursive /vendor/oem_config
+##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/init.rc
+##############################################################
+# init.rc for telephony services specific to flashless platforms using /vendor/factory partition
+
+
+on post-fs
+    restorecon_recursive /vendor/factory
+    trigger post-fs-factory
+##############################################################
+# Source: device/intel/mixins/groups/boot-arch/project-celadon/init.rc
+##############################################################
+service watchdogd /sbin/watchdogd 10 30
+    user root
+    class core
+    oneshot
+    seclabel u:r:watchdogd:s0
+
+on charger
+    start watchdogd
+##############################################################
+# Source: device/intel/mixins/groups/audio/project-celadon/init.rc
+##############################################################
+on post-fs
+    insmod /vendor/lib/modules/kernel/sound/drivers/snd-dummy.ko
+
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/init.rc
 ##############################################################
@@ -501,18 +533,11 @@ on post-fs-data
     # create config WiFi NVM folder
     mkdir /oem_config/wlan 0770 wifi system
 
-
-
-
 on zygote-start
     # Create the directories used by the Wireless subsystem
-    mkdir /data/misc/wifi 0770 wifi wifi
-    mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
     mkdir /data/vendor/wifi 0771 wifi wifi
     mkdir /data/vendor/wifi/wpa 0770 wifi wifi
     mkdir /data/vendor/wifi/wpa/sockets 0770 wifi wifi
-    mkdir /data/misc/dhcp 0770 dhcp dhcp
-    chown dhcp dhcp /data/misc/dhcp
 
 service wpa_supplicant /vendor/bin/hw/wpa_supplicant \
     -O/data/vendor/wifi/wpa/sockets -puse_p2p_group_interface=1 \
@@ -539,18 +564,6 @@ service iprenew_wlan0 /system/bin/dhcpcd -n
     disabled
     oneshot
 
-service p2p_supplicant /vendor/bin/hw/wpa_supplicant \
-   -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
-   -I/system/etc/wifi/wpa_supplicant_overlay.conf \
-   -m/data/misc/wifi/p2p_supplicant.conf \
-   -O/data/misc/wifi/sockets \
-   -e/data/misc/wifi/entropy.bin \
-   -dt -g@android:wpa_wlan0
-    class main
-    socket wpa_wlan0 dgram 660 wifi wifi
-    disabled
-    oneshot
-
 service dhcpcd_p2p /system/bin/dhcpcd -aABKL
     disabled
     oneshot
@@ -569,19 +582,18 @@ on post-fs
 ##############################################################
 # Source: device/intel/mixins/groups/cpuset/autocores/init.rc
 ##############################################################
-on late-init
-    copy /sys/devices/system/cpu/online /dev/cpuset/foreground/cpus
-    copy /sys/devices/system/cpu/online /dev/cpuset/background/cpus
-    copy /sys/devices/system/cpu/online /dev/cpuset/system-background/cpus
-    copy /sys/devices/system/cpu/online /dev/cpuset/top-app/cpus
-    copy /sys/devices/system/cpu/online /dev/cpuset/foreground/boost/cpus
+on early-boot
+    # execute script to set initial CPU settings
+    # don't run as a service to avoid race conditions
+    exec - root system -- /vendor/bin/config_cpuset.sh
 ##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/init.rc
 ##############################################################
 on boot
+    insmod ${ro.boot.moduleslocation}/rfkill-gpio.ko
     start rfkill-init
 
-service rfkill-init /system/bin/rfkill-init.sh
+service rfkill-init /vendor/bin/rfkill-init.sh 
     disabled
     user system
     group system
@@ -602,19 +614,12 @@ on post-fs
    insmod /vendor/lib/modules/kernel/drivers/usb/serial/pl2303.ko
    insmod /vendor/lib/modules/kernel/drivers/usb/serial/ftdi_sio.ko
 ##############################################################
-# Source: device/intel/mixins/groups/thermal/dptf/init.rc
+# Source: device/intel/mixins/groups/thermal/thermal-daemon/init.rc
 ##############################################################
-on post-fs
-    setprop persist.thermal.mode dptf
-
-service esif_ufd /system/vendor/bin/esif_ufd -n
+service thermal-daemon /system/vendor/bin/thermal-daemon --config-file /system/vendor/etc/thermal-daemon/thermal-conf.xml
+    class main
     user system
     group system
-    class main
-
-on post-fs-data
-    mkdir /data/misc/dptf 0770 system system
-    mkdir /data/misc/dptf/lock 0770 system system
 
 on boot
     chown system system /sys/devices/system/cpu/intel_pstate/max_perf_pct
@@ -622,7 +627,17 @@ on boot
     chown system system /sys/devices/system/cpu/intel_pstate/no_turbo
     chown system system /sys/class/powercap/intel-rapl:0/enabled
     chown system system /sys/class/powercap/intel-rapl:0/constraint_0_power_limit_uw
+    chown system system /sys/class/dmi/id/product_uuid
+    chown system system /sys/class/dmi/id/product_name
+    chown system system /system/vendor/etc/
+    chown system system /system/vendor/etc/thermal-daemon/thermal-conf.xml
     restorecon_recursive /sys/class/powercap
+
+on post-fs-data
+    setprop persist.thermal.mode thermal-daemon
+    mkdir /data/vendor/thermal-daemon 0660 system system
+    start thermal-daemon
+
 ##############################################################
 # Source: device/intel/mixins/groups/pstore/ram_dummy/init.rc
 ##############################################################
@@ -655,6 +670,25 @@ import /init.crashlogd.rc
 ##############################################################
 import /init.coredump.rc
 ##############################################################
+# Source: device/intel/mixins/groups/trusty/true/init.rc
+##############################################################
+on fs
+    # Update device node r/w attribute
+    chown system system /dev/trusty-ipc-dev0
+    chmod 666 /dev/trusty-ipc-dev0
+
+on post-fs-data
+    mkdir /data/vendor/securestorage 0700 system system
+    chmod 666 /dev/rpmb0
+
+on early-boot
+    start storageproxyd
+
+service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/vendor/securestorage -r /dev/rpmb0
+    user system
+    group system
+
+##############################################################
 # Source: device/intel/mixins/groups/midi/true/init.rc
 ##############################################################
 on property:sys.usb.config=midi
@@ -674,22 +708,16 @@ on property:sys.usb.config=midi,adb
     start adbd
     setprop sys.usb.state ${sys.usb.config}
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/init.rc
+# Source: device/intel/mixins/groups/swap/zram/init.rc
 ##############################################################
-on fs
-    # Update device node r/w attribute
-    chown system system /dev/trusty-ipc-dev0
-    chmod 666 /dev/trusty-ipc-dev0
+
+on boot
+    # Read one page at a time for swap (default is 8)
+    write /proc/sys/vm/page-cluster 0
 
 on post-fs-data
-    mkdir /data/vendor/securestorage 0700 system system
-    chmod 666 /dev/rpmb0
-
-service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/vendor/securestorage -r /dev/rpmb0
-    class late_start
-    user system
-    group system
-
+    # Enable swaps described in the fstab
+    swapon_all /fstab.${ro.hardware}
 ##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/init.rc
 ##############################################################

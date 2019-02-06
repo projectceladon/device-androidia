@@ -1,7 +1,0 @@
-#
-# init
-#
-
-not_full_treble(`
-	domain_trans(init, rootfs, set_storage)
-')

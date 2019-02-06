@@ -1,0 +1,8 @@
+# This section may appear empty if magic_key_timeout is false
+
+##########################
+GUID = 4a67b082-0a4c-41cf-b6c7-440b29bb8c4f
+
+# Maximum timeout to check for magic key at boot; loader GUID
+MagicKeyTimeout     80
+
