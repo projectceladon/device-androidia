@@ -55,3 +55,4 @@ gptbuild: true(size=14G,generate_craff=false)
 device-type: car
 swap:zram(size=1073741824,swappiness=false,hardware=cel_kbl)
 power: true
+firststage-mount: true
