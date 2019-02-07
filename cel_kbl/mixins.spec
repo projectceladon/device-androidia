@@ -6,6 +6,8 @@ product.mk: device.mk
 
 [groups]
 device-specific: cel_kbl
+treble: true
+vndk: true
 2ndstage: oemvars
 project-celadon: default
 sepolicy: enforcing
