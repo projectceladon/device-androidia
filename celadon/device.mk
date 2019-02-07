@@ -48,8 +48,8 @@ $(call inherit-product-if-exists,vendor/vendor.mk)
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/gpt.ini:root/gpt.$(TARGET_PRODUCT).ini \
     $(LOCAL_PATH)/init.recovery.rc:root/init.recovery.$(TARGET_PRODUCT).rc \
-    $(LOCAL_PATH)/init.rc:root/init.$(TARGET_PRODUCT).rc \
-    $(LOCAL_PATH)/ueventd.rc:root/ueventd.$(TARGET_PRODUCT).rc
+    $(LOCAL_PATH)/init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw//init.$(TARGET_PRODUCT).rc \
+    $(LOCAL_PATH)/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/ueventd.rc
 
 # Voip
 PRODUCT_COPY_FILES += \
@@ -371,6 +371,7 @@ PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-tablet
 ##############################################################
 # create primary storage symlink dynamically
 PRODUCT_PACKAGES += set_storage
+PRODUCT_PACKAGES += set_storage.vendor
 ##############################################################
 # Source: device/intel/mixins/groups/avb/true/product.mk
 ##############################################################
@@ -452,7 +453,7 @@ KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := true
 
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/fstab:root/fstab.$(TARGET_PRODUCT)
+    $(LOCAL_PATH)/fstab:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.$(TARGET_PRODUCT)
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/product.mk
 ##############################################################
