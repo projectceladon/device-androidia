@@ -1,4 +1,7 @@
 <manifest version="1.0" type="device">
+    <sepolicy>
+        <version>27.0</version>
+    </sepolicy>
     <hal format="hidl">
         <name>android.hardware.audio</name>
         <transport>hwbinder</transport>
@@ -95,6 +98,19 @@
         <version>1.2</version>
         <interface>
             <name>IPower</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>android.hardware.drm</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>ICryptoFactory</name>
+            <instance>default</instance>
+        </interface>
+        <interface>
+            <name>IDrmFactory</name>
             <instance>default</instance>
         </interface>
     </hal>
