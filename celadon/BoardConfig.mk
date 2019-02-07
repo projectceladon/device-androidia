@@ -144,6 +144,12 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/vbmeta.img
 # Now use AVB to support A/B slot
 PRODUCT_STATIC_BOOT_CONTROL_HAL := bootctrl.avb libavb_user
 ##############################################################
+# Source: device/intel/mixins/groups/firststage-mount/true/BoardConfig.mk
+##############################################################
+BOARD_FIRSTSTAGE_MOUNT_ENABLE := true
+BOARD_KERNEL_CMDLINE += androidboot.android_dt_dir=/sys/bus/platform/devices/ANDR0001:00/properties/android/
+FIRSTSTAGE_MOUNT_SSDT = $(PRODUCT_OUT)/firststage-mount.aml
+##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/BoardConfig.mk
 ##############################################################
 # Those 3 lines are required to enable vendor image generation.
@@ -204,6 +210,8 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3758096384
 BOARD_BOOTLOADER_PARTITION_SIZE ?= 62914560
 BOARD_BOOTLOADER_BLOCK_SIZE := 512
 TARGET_BOOTLOADER_BOARD_NAME := $(TARGET_DEVICE)
+
+TARGET_USES_MKE2FS := true
 
 # Kernel Flinger
 TARGET_UEFI_ARCH := x86_64
