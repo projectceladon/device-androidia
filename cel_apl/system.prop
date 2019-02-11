@@ -1,0 +1,5 @@
+#
+# system.prop for cel_apl
+#
+
+persist.bluetooth.enablenewavrcp=false
