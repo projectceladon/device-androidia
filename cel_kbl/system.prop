@@ -1,0 +1,5 @@
+#
+# system.prop for cel_kbl
+#
+
+persist.bluetooth.enablenewavrcp=false
