@@ -29,4 +29,4 @@ allow set_storage block_device:blk_file { getattr setattr };
 # allow set_storage frp_block_device:blk_file setattr;
 
 allow set_storage set_storage:capability { fowner chown };
-allow set_storage default_prop:file { getattr map open read setattr };
+allow set_storage default_prop:file { getattr map open read };
