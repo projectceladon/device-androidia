@@ -455,10 +455,6 @@ on property:sys.boot_completed=1
 ##############################################################
 # Source: device/intel/mixins/groups/bluetooth/btusb/init.rc
 ##############################################################
-on post-fs-data
-    # To store BT paired info
-    mkdir /data/misc/hcid 0770 bluetooth bluetooth
-
 on boot
     chmod 0644 /sys/kernel/debug/bluetooth/l2cap_le_max_credits
     chmod 0644 /sys/kernel/debug/bluetooth/l2cap_le_default_mps
@@ -474,7 +470,7 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
     disabled
     oneshot
 
-on post-fs
+on boot
     insmod /vendor/lib/modules/kernel/crypto/ecdh_generic.ko
     insmod /vendor/lib/modules/kernel/net/bluetooth/bluetooth.ko
     insmod /vendor/lib/modules/kernel/drivers/bluetooth/btintel.ko
@@ -526,9 +522,9 @@ on boot
 # Source: device/intel/mixins/groups/wlan/iwlwifi/init.rc
 ##############################################################
 on post-fs-data
-    chmod 0660 /data/misc/wifi/p2p_supplicant.conf
-	setprop wifi.interface wlan0
-	setprop wifi.direct.interface p2p0
+    setprop wifi.interface wlan0
+    setprop wifi.direct.interface p2p-dev-wlan0
+
     # create config WiFi NVM folder
     mkdir /oem_config/wlan 0770 wifi system
 
@@ -572,12 +568,11 @@ service iprenew_p2p /system/bin/dhcpcd -n
     oneshot
 
 
-on post-fs
+on boot
     insmod /vendor/lib/modules/kernel/net/wireless/cfg80211.ko
     insmod /vendor/lib/modules/kernel/net/mac80211/mac80211.ko
     insmod /vendor/lib/modules/kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
     insmod /vendor/lib/modules/kernel/drivers/net/wireless/intel/iwlwifi/mvm/iwlmvm.ko
-
 ##############################################################
 # Source: device/intel/mixins/groups/cpuset/autocores/init.rc
 ##############################################################
