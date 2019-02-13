@@ -5,6 +5,9 @@ cc_library_static {
     srcs: [
         "Health.cpp",
         "healthd_common.cpp",
+	"Storage.cpp",
+	"Storage_diskstats.cpp",
+	"Storage_info.cpp",
     ],
 
     cflags: ["-DHEALTHD_USE_HEALTH_2_0"],
