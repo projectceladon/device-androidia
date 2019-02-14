@@ -781,4 +781,5 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += sys.dump.stacks_timeout=1500
 endif
 # ------------------ END MIX-IN DEFINITIONS ------------------
 
-
+PRODUCT_PACKAGES += suspend_to_disk \
+                    resume_from_disk
