@@ -2,7 +2,7 @@
 # wlan_intel_restore - does what?
 #
 
-type wlan_intel_restore, coredomain;
+type wlan_intel_restore, domain;
 type wlan_intel_restore_exec, file_type, exec_type, vendor_file_type;
 
 init_daemon_domain(wlan_intel_restore)
@@ -18,6 +18,7 @@ module_only(`config_partition', `
 ')
 
 not_full_treble(`
+  typeattribute wlan_intel_restore coredomain;
   allow rfkill shell_exec:file rx_file_perms;
   allow rfkill toolbox_exec:file rx_file_perms;
 ')
