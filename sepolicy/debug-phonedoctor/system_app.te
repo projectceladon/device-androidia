@@ -1,6 +1,3 @@
-# setprop ctl.logconfig
-set_prop(system_app, ctl_logconfig_prop)
-
 allow system_app sysfs_devices_system_cpu:file rw_file_perms;
 
 # com.intel.crashreport which is part of the crash_package used by phonedoctor

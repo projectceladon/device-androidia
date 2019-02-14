@@ -1,7 +1,7 @@
 userdebug_or_eng(`
   # Rules for crashlogd
   type crashlogd, domain;
-  type crashlogd_exec, exec_type, file_type;
+  type crashlogd_exec, exec_type, file_type, vendor_file_type;
   init_daemon_domain(crashlogd)
   permissive crashlogd;
 
@@ -35,6 +35,5 @@ userdebug_or_eng(`
   dontaudit crashlogd property_type:file *;
   # dontaudit crashlogd domain:debuggerd *;
   dontaudit crashlogd service_manager_type:service_manager *;
-
-  binder_use(crashlogd);
+  dontaudit crashlogd servicemanager: binder *;
 ')
