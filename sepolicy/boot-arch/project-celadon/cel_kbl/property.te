@@ -1,1 +1,1 @@
-type ota_prop, property_type;
+type vendor_ota_prop, property_type;
