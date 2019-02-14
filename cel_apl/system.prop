@@ -2,4 +2,5 @@
 # system.prop for cel_apl
 #
 
-persist.bluetooth.enablenewavrcp=false
+audio.safemedia.bypass=true
+
