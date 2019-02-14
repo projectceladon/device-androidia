@@ -1,0 +1,2 @@
+allow adbd dbc_device:chr_file rw_file_perms;
+allow adbd dbc_device:chr_file ioctl;
