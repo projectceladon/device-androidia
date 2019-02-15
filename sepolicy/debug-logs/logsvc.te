@@ -1,13 +1,14 @@
 # Rules for debug-logs specific services
-type logsvc, domain;
-type logsvc_exec, exec_type, file_type;
+type logsvc, domain, data_between_core_and_vendor_violators;
+type logsvc_exec, exec_type, file_type, vendor_file_type;
 
 init_daemon_domain(logsvc);
 
-permissive logsvc;
+userdebug_or_eng(`
+  permissive logsvc;
+')
 
 allow logsvc system_file:file x_file_perms;
-allow logsvc shell_exec:file rx_file_perms;
 
 dontaudit logsvc self:capability { dac_override sys_nice };
 allow logsvc self:capability2 syslog;
@@ -21,16 +22,23 @@ allow logsvc logd:unix_stream_socket connectto;
 allow logsvc kmsg_device:chr_file { open read };
 allow logsvc kernel:system syslog_read;
 
-set_prop(logsvc, system_prop)
 set_prop(logsvc, ctl_default_prop)
 
 allow logsvc logsvc_exec:file execute_no_trans;
 
-allow logsvc logcat_exec:file execute_no_trans;
-allow logsvc logcat_exec:file rx_file_perms;
-
 # Execute toolbox/toybox commands
-allow logsvc toolbox_exec:file rx_file_perms;
  
 allow logsvc cache_file:dir r_dir_perms;
 allow logsvc cache_file:file r_file_perms;
+
+not_full_treble(`
+  allow logsvc toolbox_exec:file rx_file_perms;
+  allow logsvc system_file:file x_file_perms;
+  allow logsvc shell_exec:file rx_file_perms;
+')
+
+full_treble_only(`
+  allow logsvc vendor_toolbox_exec:file rx_file_perms;
+  allow logsvc vendor_shell_exec:file rx_file_perms;
+')
+
