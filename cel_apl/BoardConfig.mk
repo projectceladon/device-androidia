@@ -17,10 +17,8 @@ KERNEL_CROSS_COMPILE_WRAPPER := x86_64-linux-android-
 # Source: device/intel/mixins/groups/sepolicy/enforcing/BoardConfig.mk
 ##############################################################
 # SELinux Policy
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)
 
-# Pass device target to build
-BOARD_SEPOLICY_M4DEFS += board_sepolicy_target_product=$(TARGET_PRODUCT)
 ##############################################################
 # Source: device/intel/mixins/groups/graphics/project-celadon/BoardConfig.mk
 ##############################################################

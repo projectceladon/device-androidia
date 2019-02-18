@@ -155,6 +155,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     device/intel/project-celadon/manifest.xml:vendor/manifest.xml
 ##############################################################
+# Source: device/intel/mixins/groups/sepolicy/enforcing/product.mk
+##############################################################
+PRODUCT_PACKAGES += sepolicy-areq-checker
+##############################################################
 # Source: device/intel/mixins/groups/graphics/project-celadon/product.mk
 ##############################################################
 # Mesa
