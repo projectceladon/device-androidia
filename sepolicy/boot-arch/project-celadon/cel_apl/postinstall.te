@@ -1,11 +1,13 @@
-set_prop(postinstall, ota_prop)
+typeattribute postinstall system_writes_vendor_properties_violators;
+typeattribute postinstall system_executes_vendor_violators;
+
+set_prop(postinstall, vendor_ota_prop)
 recovery_only(`
   allow postinstall rootfs:file rx_file_perms;
 ')
 
 allow postinstall vendor_shell_exec:file rx_file_perms;
 allow postinstall vendor_toolbox_exec:file rx_file_perms;
-allow postinstall vendor_file:file rx_file_perms;
 allow postinstall rootfs:dir { write add_name create mounton };
 allow postinstall self:capability { sys_admin };
 allow postinstall vfat:filesystem { mount unmount };
