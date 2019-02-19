@@ -1,0 +1,4 @@
+allow system_server self:icmp_socket create_socket_perms_no_ioctl;
+
+dontaudit system_server self:capability sys_module;
+dontaudit system_server kernel:system syslog_read;
