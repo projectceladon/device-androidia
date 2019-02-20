@@ -20,34 +20,32 @@ KERNEL_CROSS_COMPILE_WRAPPER := x86_64-linux-android-
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)
 
 ##############################################################
-# Source: device/intel/mixins/groups/graphics/project-celadon/BoardConfig.mk
+# Source: device/intel/mixins/groups/graphics/mesa/BoardConfig.mk
 ##############################################################
+# Use external/drm-bxt
+TARGET_USE_PRIVATE_LIBDRM := true
+LIBDRM_VER ?= intel
+
 BOARD_KERNEL_CMDLINE += vga=current i915.modeset=1 drm.atomic=1 i915.nuclear_pageflip=1 drm.vblankoffdelay=1 i915.fastboot=1
 USE_OPENGL_RENDERER := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 USE_INTEL_UFO_DRIVER := false
-INTEL_VA := false
-BOARD_GRAPHIC_IS_GEN := true
 BOARD_GPU_DRIVERS := i965
-BOARD_USE_MESA := true
-LIBDRM_VER := intel
+BOARD_USE_CUSTOMIZED_MESA := true
 
 # System's VSYNC phase offsets in nanoseconds
 VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
-SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
+SF_VSYNC_EVENT_PHASE_OFFSET_NS := 3000000
 
 BOARD_GPU_DRIVERS ?= i965 swrast
 ifneq ($(strip $(BOARD_GPU_DRIVERS)),)
 TARGET_HARDWARE_3D := true
+TARGET_USES_HWC2 := true
 endif
-
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/graphics/project-celadon
 
 
 BOARD_USES_DRM_HWCOMPOSER := false
 BOARD_USES_IA_HWCOMPOSER := true
-
-DISABLE_MEDIA_COMPOSITOR := true
 
 BOARD_USES_MINIGBM := true
 BOARD_ENABLE_EXPLICIT_SYNC := true
@@ -57,7 +55,13 @@ INTEL_MINIGBM := external/minigbm
 BOARD_USES_GRALLOC1 := true
 
 
-TARGET_USES_HWC2 := true
+
+BOARD_CURSOR_WA := false
+
+BOARD_THREEDIS_UNDERRUN_WA := true
+
+
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/graphics/mesa
 
 ##############################################################
 # Source: device/intel/mixins/groups/media/project-celadon/BoardConfig.mk

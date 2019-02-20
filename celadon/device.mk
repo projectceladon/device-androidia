@@ -159,7 +159,7 @@ PRODUCT_COPY_FILES += \
 ##############################################################
 PRODUCT_PACKAGES += sepolicy-areq-checker
 ##############################################################
-# Source: device/intel/mixins/groups/graphics/project-celadon/product.mk
+# Source: device/intel/mixins/groups/graphics/mesa/product.mk
 ##############################################################
 # Mesa
 PRODUCT_PACKAGES += \
@@ -169,40 +169,64 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libdrm \
     libdrm_intel \
-    libsync
+    libsync \
+    libmd
+
+PRODUCT_PACKAGES += ufo_prebuilts
 
 PRODUCT_COPY_FILES += \
-    device/intel/project-celadon/common/graphics/drirc:system/etc/drirc
+    $(LOCAL_PATH)/extra_files/graphics/drirc:system/etc/drirc
 
 
 # HWComposer IA
 PRODUCT_PACKAGES += \
-    hwcomposer.project-celadon
+    hwcomposer.$(TARGET_BOARD_PLATFORM)
 
 PRODUCT_PROPERTY_OVERRIDES += \
-   hwc.drm.use_overlay_planes=1 \
-   ro.hardware.hwcomposer=project-celadon
+   ro.hardware.hwcomposer=$(TARGET_BOARD_PLATFORM)
+
+INTEL_HWC_CONFIG := $(INTEL_PATH_VENDOR)/external/project-celadon/hwcomposer
+
+ifeq ($(findstring _acrn,$(TARGET_PRODUCT)),_acrn)
+PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display_virt.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
+else
+PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
+endif
+
 
 # Mini gbm
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.gralloc=project-celadon
+    ro.hardware.gralloc=$(TARGET_BOARD_PLATFORM)
 
 PRODUCT_PACKAGES += \
-    gralloc.project-celadon
+    gralloc.$(TARGET_BOARD_PLATFORM)
 
 
 
 # Mesa
 PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.opengles.aep.xml:system/etc/permissions/android.hardware.opengles.aep.xml
+    frameworks/native/data/etc/android.hardware.opengles.aep.xml:vendor/etc/permissions/android.hardware.opengles.aep.xml
 
 # GLES version
 PRODUCT_PROPERTY_OVERRIDES += \
    ro.opengles.version=196610
 
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.vulkan.level-1.xml:vendor/etc/permissions/android.hardware.vulkan.level.xml
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.vulkan.compute-0.xml:vendor/etc/permissions/android.hardware.vulkan.compute.xml
 
 
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.vulkan.version-1_1.xml:vendor/etc/permissions/android.hardware.vulkan.version.xml
 
+PRODUCT_PACKAGES += \
+    vulkan.$(TARGET_BOARD_PLATFORM) \
+    libvulkan_intel
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hardware.vulkan=$(TARGET_BOARD_PLATFORM)
 # Graphics HAL
 PRODUCT_PACKAGES += \
    android.hardware.graphics.composer@2.1-impl \

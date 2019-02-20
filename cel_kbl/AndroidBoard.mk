@@ -23,6 +23,19 @@ LOCAL_POST_INSTALL_CMD := $(INTEL_PATH_SEPOLICY)/tools/capchecker $(LOCAL_USER_O
 
 include $(BUILD_PHONY_PACKAGE)
 ##############################################################
+# Source: device/intel/mixins/groups/graphics/mesa/AndroidBoard.mk
+##############################################################
+ifneq ($(TARGET_BOARD_PLATFORM),kabylake)
+I915_FW_PATH := ./$(INTEL_PATH_VENDOR)/ufo/gen9_dev/x86_64_media/vendor/firmware/i915
+else
+I915_FW_PATH := ./$(INTEL_PATH_VENDOR)/ufo/gen9_dev/x86_64_media_kbl/vendor/firmware/i915
+endif
+#list of i915/huc_xxx.bin i915/dmc_xxx.bin i915/guc_xxx.bin
+$(foreach t, $(patsubst $(I915_FW_PATH)/%,%,$(wildcard $(I915_FW_PATH)/*)) ,$(eval I915_FW += i915/$(t)) $(eval $(LOCAL_KERNEL) : $(PRODUCT_OUT)/vendor/firmware/i915/$(t)))
+
+_EXTRA_FW_ += $(I915_FW)
+
+##############################################################
 # Source: device/intel/mixins/groups/slot-ab/true/AndroidBoard.mk
 ##############################################################
 
