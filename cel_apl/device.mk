@@ -457,6 +457,10 @@ KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := true
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/fstab:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.$(TARGET_PRODUCT)
+
+# Add the feature of FEATURE_VERIFIED_BOOT
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.software.verified_boot.xml:vendor/etc/permissions/android.software.verified_boot.xml
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/product.mk
 ##############################################################
