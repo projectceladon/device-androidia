@@ -58,3 +58,4 @@ gptbuild: true(size=14G,generate_craff=false)
 swap:zram(size=1073741824,swappiness=false,hardware=celadon)
 power: true
 firststage-mount: true
+neuralnetworks: true
