@@ -1,3 +1,5 @@
+typeattribute hal_graphics_composer_default data_between_core_and_vendor_violators;
+
 vndbinder_use(hal_graphics_composer_default)
 
 binder_call(hal_graphics_composer_default, hal_graphics_allocator_default)
