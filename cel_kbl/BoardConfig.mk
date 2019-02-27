@@ -510,4 +510,8 @@ BOARD_SEPOLICY_M4DEFS += module_swap=true
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/power
 
+##############################################################
+# Source: device/intel/mixins/groups/default-drm/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/drm-default
 # ------------------ END MIX-IN DEFINITIONS ------------------
