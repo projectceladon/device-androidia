@@ -775,6 +775,14 @@ PRODUCT_PACKAGES += android.hardware.automotive.vehicle.intel@2.0-service \
 
 VEHICLE_HAL_PROTO_TYPE := google-emulator
 ##############################################################
+# Source: device/intel/mixins/groups/default-drm/true/product.mk
+##############################################################
+#only enable default drm service
+PRODUCT_PACKAGES += android.hardware.drm@1.0-service \
+                    android.hardware.drm@1.0-impl \
+                    android.hardware.drm@1.1-service.clearkey
+
+##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)
