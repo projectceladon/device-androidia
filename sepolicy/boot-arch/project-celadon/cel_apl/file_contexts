@@ -23,3 +23,5 @@
 /gpt.cel_apl.ini        u:object_r:rootfs:s0
 /persistent                  u:object_r:rootfs:s0
 /tos                         u:object_r:rootfs:s0
+/esp                         u:object_r:rootfs:s0
+/bootloader                  u:object_r:rootfs:s0
