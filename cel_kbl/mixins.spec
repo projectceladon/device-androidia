@@ -24,7 +24,7 @@ bluetooth: btusb (ivi=true)
 boot-arch: project-celadon(bootloader_policy=0x0,bootloader_len=60,magic_key_timeout=80,assume_bios_secure_boot=true,tos_partition=true,rpmb_simulate=true,disk_encryption=false,file_encryption=true,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true)
 audio: project-celadon
 wlan: iwlwifi
-cpu-arch: skl
+cpu-arch: kbl
 cpuset: autocores
 rfkill: true(force_disable=)
 dexpreopt: enabled
