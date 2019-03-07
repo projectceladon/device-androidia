@@ -3,3 +3,7 @@
 allow hal_health_default sysfs_health2_0_management:dir r_dir_perms;
 allow hal_health_default sysfs_health2_0_management:file rw_file_perms;
 allow hal_health_default sysfs_health2_0_management:lnk_file r_file_perms;
+
+# Health Hal to read /proc/cmdline
+#allow hal_health_default proc_cmdline:file r_file_perms;
+get_prop(hal_health_default, diskbus_prop);
