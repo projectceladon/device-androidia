@@ -53,6 +53,11 @@ allowxperm hal_bluetooth_vbt self:socket ioctl {
 
 allow hal_bluetooth_vbt self:bluetooth_socket create_socket_perms;
 
+allow hal_bluetooth_vbt device:dir read;
+allow hal_bluetooth_vbt usb_device:chr_file { ioctl open write };
+allow hal_bluetooth_vbt usb_device:dir { open read search};
+allow hal_bluetooth_vbt self:netlink_kobject_uevent_socket { create bind setopt read };
+
 allowxperm hal_bluetooth_vbt self:bluetooth_socket ioctl {
   unpriv_sock_ioctls
   HCIDEVDOWN
