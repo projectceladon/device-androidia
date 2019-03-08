@@ -9,7 +9,7 @@ init_daemon_domain(thermal-daemon)
 allow thermal-daemon sysfs:dir r_dir_perms;
 allow thermal-daemon sysfs_thermal_management:dir r_dir_perms;
 allow thermal-daemon sysfs_thermal_management:{ file lnk_file } rw_file_perms;
-allow thermal-daemon sysfs_thermal_management:{ file lnk_file } { setattr };
+allow thermal-daemon sysfs_thermal_management:{ file lnk_file } { getattr setattr };
 allow thermal-daemon sysfs_powercap:{ file lnk_file } rw_file_perms;
 allow thermal-daemon sysfs_powercap:dir r_dir_perms;
 allow thermal-daemon sysfs_thermal:dir r_dir_perms;
