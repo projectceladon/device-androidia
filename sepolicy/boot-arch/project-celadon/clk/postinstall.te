@@ -8,9 +8,6 @@ recovery_only(`
 
 allow postinstall vendor_shell_exec:file rx_file_perms;
 allow postinstall vendor_toolbox_exec:file rx_file_perms;
-allow postinstall rootfs:dir { write add_name create mounton };
-allow postinstall self:capability { sys_admin };
-allow postinstall vfat:filesystem { mount unmount };
-allow postinstall vfat:dir { write add_name search };
-allow postinstall vfat:file { create write open getattr };
-allow postinstall block_device:dir { search };
+allow postinstall vendor_default_prop:property_service set;
+allow postinstall tmpfs:dir create_dir_perms;
+allow postinstall tmpfs:file create_file_perms;
