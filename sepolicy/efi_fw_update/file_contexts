@@ -1,0 +1,3 @@
+(/system)?/vendor/bin/updater_ab_esp_static u:object_r:efi_fw_update_exec:s0
+(/system)?/vendor/bin/updater_ab_esp_vendor u:object_r:efi_fw_update_exec:s0
+
