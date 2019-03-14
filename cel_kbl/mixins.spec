@@ -59,3 +59,4 @@ swap:zram(size=1073741824,swappiness=false,hardware=cel_kbl)
 power: true
 firststage-mount: true
 default-drm: true
+serialport: ttyS0
