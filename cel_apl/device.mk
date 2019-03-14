@@ -774,9 +774,6 @@ PRODUCT_PACKAGES += android.hardware.automotive.vehicle.intel@2.0-service \
     android.hardware.automotive.vehicle@2.0-impl
 
 VEHICLE_HAL_PROTO_TYPE := google-emulator
-
-#We want to use default GC as GENCOPYING
-ART_DEFAULT_GC_TYPE?=GENCOPYING
 ##############################################################
 # Source: device/intel/mixins/groups/default-drm/true/product.mk
 ##############################################################
