@@ -1,0 +1,33 @@
+type load_modules, domain;
+type load_modules_exec, exec_type, file_type, vendor_file_type;
+
+init_daemon_domain(load_modules)
+
+set_prop(load_modules, vendor_modules_prop)
+dontaudit load_modules exported_system_radio_prop:file read;
+
+allow load_modules sysfs:file write;
+allow load_modules self:capability sys_module;
+allow load_modules {
+    rootfs
+    vendor_file
+}:system module_load;
+
+allow load_modules kernel:key search;
+allow load_modules self:key write;
+allow load_modules kernel:system module_request;
+allow load_modules rootfs:file r_file_perms;
+allow load_modules system_data_file:dir getattr;
+allow load_modules system_file:file rx_file_perms;
+allow load_modules vendor_file:file rx_file_perms;
+allow load_modules debugfs_wifi_tracing:dir search;
+
+not_full_treble(`
+    allow load_modules shell_exec:file rx_file_perms;
+    allow load_modules toolbox_exec:file rx_file_perms;
+')
+
+full_treble_only(`
+    allow load_modules vendor_shell_exec:file rx_file_perms;
+    allow load_modules vendor_toolbox_exec:file rx_file_perms;
+')
