@@ -112,7 +112,7 @@ TARGET_PRELINK_MODULE := false
 TARGET_NO_KERNEL ?= false
 
 KERNEL_LOGLEVEL ?= 3
-SERIAL_PARAMETER ?= console=tty0 console=ttyS0,115200n8
+SERIAL_PARAMETER ?= console=tty0
 
 
 BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL) loop.max_part=7
@@ -516,4 +516,10 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/power
 # Source: device/intel/mixins/groups/default-drm/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/drm-default
+##############################################################
+# Source: device/intel/mixins/groups/serialport/ttyS0/BoardConfig.mk
+##############################################################
+ifneq ($(TARGET_BUILD_VARIANT),user)
+BOARD_KERNEL_CMDLINE += console=ttyS0,115200n8
+endif
 # ------------------ END MIX-IN DEFINITIONS ------------------
