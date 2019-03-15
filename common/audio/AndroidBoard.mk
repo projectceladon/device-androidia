@@ -48,6 +48,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := audio_policy_configuration_files
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := \
+    hdmi_audio_policy_configuration.xml \
     a2dp_audio_policy_configuration.xml \
     r_submix_audio_policy_configuration.xml \
     usb_audio_policy_configuration.xml \
@@ -112,6 +113,15 @@ LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
+LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := hdmi_audio_policy_configuration.xml
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/etc/
 LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
