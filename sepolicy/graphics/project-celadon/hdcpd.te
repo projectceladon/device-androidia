@@ -1,0 +1,6 @@
+#
+# hdcpd
+#
+
+#gfx
+#allow hdcpd sysfs_gfx:file rw_file_perms;

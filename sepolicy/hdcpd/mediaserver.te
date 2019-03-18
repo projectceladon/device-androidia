@@ -1,0 +1,9 @@
+#
+# mediaserver
+#
+
+not_full_treble(`
+  allow mediaserver hdcpd:unix_stream_socket connectto;
+  allow mediaserver hdcpd_data_file:sock_file write;
+  allow mediaserver hdcpd_data_file:dir { search };
+')

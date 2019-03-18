@@ -1,0 +1,11 @@
+#
+# mediadrmserver
+#
+
+# breaks treble as mediadrmserver should be instrumented to a
+# vendor hal interface.
+not_full_treble(`
+  allow mediadrmserver hdcpd:unix_stream_socket connectto;
+  allow mediadrmserver hdcpd_data_file:dir search;
+  allow mediadrmserver hdcpd_data_file:sock_file write;
+')

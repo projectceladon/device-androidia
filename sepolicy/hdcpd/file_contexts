@@ -1,0 +1,6 @@
+# hdcpd
+(/system)?/vendor/bin/hdcpd    u:object_r:hdcpd_exec:s0
+
+# Even though hdcpd creates this itself, we keep a fc entry
+# incase we need to relabel existing nodes
+/data/hdcp(/.*)?            u:object_r:hdcpd_data_file:s0
