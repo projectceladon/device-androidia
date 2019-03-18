@@ -1,11 +1,11 @@
+/sys/class/thermal(/.*)?                                 u:object_r:sysfs_thermal:s0
+/sys/module/thermal(/.*)?                                u:object_r:sysfs_thermal:s0
+
 # USB Gadget Serial Devices
 /dev/ttyGS[0-9]*             u:object_r:serial_device:s0
 
 # Marvell wifi device socket
 /dev/socket/wpa_mlan[0-9] u:object_r:wpa_socket:s0
-
-/sys/class/thermal(/.*)?                                 u:object_r:sysfs_thermal:s0
-/sys/module/thermal(/.*)?                                u:object_r:sysfs_thermal:s0
 
 # slot-ab with ext4
 /file_contexts.bin           u:object_r:rootfs:s0
