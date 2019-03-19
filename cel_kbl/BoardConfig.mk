@@ -512,6 +512,7 @@ BOARD_SEPOLICY_M4DEFS += module_swap=true
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/power
 
+APP_LAUNCH_BOOST := true
 ##############################################################
 # Source: device/intel/mixins/groups/default-drm/true/BoardConfig.mk
 ##############################################################
