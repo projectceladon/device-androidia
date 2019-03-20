@@ -15,6 +15,7 @@ allow thermal-daemon sysfs_powercap:{ file lnk_file } rw_file_perms;
 allow thermal-daemon sysfs_powercap:dir r_dir_perms;
 allow thermal-daemon sysfs_thermal:dir r_dir_perms;
 allow thermal-daemon sysfs_thermal:file rw_file_perms;
+allow thermal-daemon sysfs_thermal:lnk_file read;
 allow thermal-daemon sysfs_leds:dir r_dir_perms;
 allow thermal-daemon sysfs_leds:file rw_file_perms;
 allow thermal-daemon sysfs_backlight_thermal:dir r_dir_perms;
