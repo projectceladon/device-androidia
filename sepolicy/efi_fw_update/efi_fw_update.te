@@ -1,0 +1,26 @@
+# seclabel is specified in init.rc
+type efi_fw_update, domain;
+type efi_fw_update_exec, exec_type, file_type, vendor_file_type;
+
+recovery_only(`
+  domain_trans(init, rootfs, efi_fw_update)
+  allow efi_fw_update rootfs:file rx_file_perms;
+')
+
+init_daemon_domain(efi_fw_update)
+
+not_full_treble(`
+  binder_use(efi_fw_update)
+  add_service(efi_fw_update, efi_fw_update_service)
+')
+
+allow efi_fw_update rootfs:dir { w_dir_perms mounton };
+allow efi_fw_update self:capability sys_admin;
+allow efi_fw_update vfat:filesystem { mount unmount };
+allow efi_fw_update vfat:dir w_dir_perms;
+allow efi_fw_update vfat:file create_file_perms;
+allow efi_fw_update block_device:dir search;
+allow efi_fw_update vfat:dir mounton;
+allow efi_fw_update tmpfs:dir search;
+allow efi_fw_update tmpfs:file r_file_perms;
+allow efi_fw_update efi_fw_update_tmpfs:file create_file_perms;
