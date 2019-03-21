@@ -59,3 +59,4 @@ swap:zram(size=1073741824,swappiness=false,hardware=celadon)
 power: true
 firststage-mount: true
 serialport: ttyS0
+default-drm: true
