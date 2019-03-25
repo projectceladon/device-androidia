@@ -394,6 +394,13 @@ PRODUCT_PACKAGES += avbctl
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
 PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/by-name/vendor
+
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/vendor-partition/sh_recovery:recovery/root/vendor/bin/sh
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/vendor-partition/mkshrc_recovery:recovery/root/vendor/etc/mkshrc
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/vendor-partition/toolbox_recovery:recovery/root/vendor/bin/toolbox_static
+PRODUCT_PACKAGES += \
+     toybox_static \
+     toybox_vendor \
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/product.mk
 ##############################################################
@@ -409,7 +416,8 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 
 endif
 
-PRODUCT_PACKAGES += updater_ab_esp
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:vendor/bin/update_ifwi_ab
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:recovery/root/vendor/bin/update_ifwi_ab
 
 # Allow Kernelflinger to ignore the RSCI reset source "not_applicable"
 # when setting the bootreason
