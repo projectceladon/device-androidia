@@ -1,0 +1,2 @@
+/sys/class/thermal(/.*)?                                 u:object_r:sysfs_thermal:s0
+/sys/module/thermal(/.*)?                                u:object_r:sysfs_thermal:s0

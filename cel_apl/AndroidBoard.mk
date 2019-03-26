@@ -23,6 +23,19 @@ LOCAL_POST_INSTALL_CMD := $(INTEL_PATH_SEPOLICY)/tools/capchecker $(LOCAL_USER_O
 
 include $(BUILD_PHONY_PACKAGE)
 ##############################################################
+# Source: device/intel/mixins/groups/graphics/mesa/AndroidBoard.mk
+##############################################################
+ifneq ($(TARGET_BOARD_PLATFORM),kabylake)
+I915_FW_PATH := ./$(INTEL_PATH_VENDOR)/ufo/gen9_dev/x86_64_media/vendor/firmware/i915
+else
+I915_FW_PATH := ./$(INTEL_PATH_VENDOR)/ufo/gen9_dev/x86_64_media_kbl/vendor/firmware/i915
+endif
+#list of i915/huc_xxx.bin i915/dmc_xxx.bin i915/guc_xxx.bin
+$(foreach t, $(patsubst $(I915_FW_PATH)/%,%,$(wildcard $(I915_FW_PATH)/*)) ,$(eval I915_FW += i915/$(t)) $(eval $(LOCAL_KERNEL) : $(PRODUCT_OUT)/vendor/firmware/i915/$(t)))
+
+_EXTRA_FW_ += $(I915_FW)
+
+##############################################################
 # Source: device/intel/mixins/groups/slot-ab/true/AndroidBoard.mk
 ##############################################################
 
@@ -125,6 +138,10 @@ $(FIRSTSTAGE_MOUNT_SSDT): $(FIRST_STAGE_MOUNT_CFG_FILE) $(IASL)
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/AndroidBoard.mk
 ##############################################################
+include $(CLEAR_VARS)
+LOCAL_MODULE := vendor-partition
+LOCAL_REQUIRED_MODULES := toybox_static
+include $(BUILD_PHONY_PACKAGE)
 
 # This is to ensure that kernel modules are installed before
 # vendor.img is generated.
@@ -134,6 +151,22 @@ make_dir_ab_vendor:
 	@mkdir -p $(PRODUCT_OUT)/root/vendor
 
 $(PRODUCT_OUT)/ramdisk.img: make_dir_ab_vendor
+
+RECOVERY_VENDOR_LINK_PAIRS := \
+	$(PRODUCT_OUT)/recovery/root/vendor/bin/getprop:toolbox_static \
+
+RECOVERY_VENDOR_LINKS := \
+	$(foreach item, $(RECOVERY_VENDOR_LINK_PAIRS), $(call word-colon, 1, $(item)))
+
+$(RECOVERY_VENDOR_LINKS):
+	$(hide) echo "Creating symbolic link on $(notdir $@)"
+	$(eval PRV_TARGET := $(call word-colon, 2, $(filter $@:%, $(RECOVERY_VENDOR_LINK_PAIRS))))
+	$(hide) mkdir -p $(dir $@)
+	$(hide) mkdir -p $(dir $(dir $@)$(PRV_TARGET))
+	$(hide) touch $(dir $@)$(PRV_TARGET)
+	$(hide) ln -sf $(PRV_TARGET) $@
+
+ALL_DEFAULT_INSTALLED_MODULES += $(RECOVERY_VENDOR_LINKS)
 ##############################################################
 # Source: device/intel/mixins/groups/config-partition/enabled/AndroidBoard.mk
 ##############################################################
@@ -389,10 +422,15 @@ $(BOARD_GPT_BIN): $(TARGET_DEVICE_DIR)/gpt.ini
 	$(hide) $(GPT_INI2BIN) $< > $@
 	$(hide) echo GEN $(notdir $@)
 
-# Use by updater_ab_esp
+# Used for efi update
 $(PRODUCT_OUT)/vendor.img: $(PRODUCT_OUT)/vendor/firmware/kernelflinger.efi
 $(PRODUCT_OUT)/vendor/firmware/kernelflinger.efi: $(PRODUCT_OUT)/efi/kernelflinger.efi
 	$(ACP) $(PRODUCT_OUT)/efi/kernelflinger.efi $@
+
+make_bootloader_dir:
+	@mkdir -p $(PRODUCT_OUT)/root/bootloader
+
+$(PRODUCT_OUT)/ramdisk.img: make_bootloader_dir
 
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/AndroidBoard.mk

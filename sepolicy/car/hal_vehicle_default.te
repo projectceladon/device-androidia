@@ -2,12 +2,6 @@
 # Default hal vehicle service
 # oao/hardware/interfaces/automotive/vehicle
 #
-binder_use(hal_vehicle_default)
-binder_call(hal_vehicle_default, audioserver)
-binder_call(audioserver, hal_vehicle_default)
-
-allow hal_vehicle_default audioserver_service:service_manager find;
-
 binder_call(hal_audio_default, hal_vehicle_default)
 binder_call(hal_vehicle_default, hal_audio_default)
 allow hal_vehicle_default hal_audio_hwservice:hwservice_manager find;
@@ -25,12 +19,3 @@ allowxperm hal_vehicle_default self:can_socket ioctl {
 };
 
 ignore_adb_debug(`hal_vehicle_default')
-
-#
-# configuration to allow Google emulator script connecting vehicle HAL
-# service through socket
-#
-
-userdebug_or_eng(`
-  unix_socket_connect(hal_vehicle_default, fwmarkd, netd)
-')

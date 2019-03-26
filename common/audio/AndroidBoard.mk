@@ -48,6 +48,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := audio_policy_configuration_files
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := \
+    hdmi_audio_policy_configuration.xml \
     a2dp_audio_policy_configuration.xml \
     r_submix_audio_policy_configuration.xml \
     usb_audio_policy_configuration.xml \
@@ -66,7 +67,7 @@ LOCAL_MODULE := audio_effects.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/etc/
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
 LOCAL_SRC_FILES := default/effect/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
@@ -75,7 +76,7 @@ LOCAL_MODULE := a2dp_audio_policy_configuration.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/etc/
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
 LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
@@ -84,7 +85,7 @@ LOCAL_MODULE := audio_policy_volumes.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/etc/
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
 LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
@@ -93,7 +94,7 @@ LOCAL_MODULE := default_volume_tables.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/etc/
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
 LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
@@ -102,12 +103,21 @@ LOCAL_MODULE := r_submix_audio_policy_configuration.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/etc/
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
 LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := usb_audio_policy_configuration.xml
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
+LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := hdmi_audio_policy_configuration.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
@@ -120,7 +130,7 @@ LOCAL_MODULE := stub_audio_policy_configuration.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/etc/
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
 LOCAL_SRC_FILES := default/policy/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
@@ -129,7 +139,7 @@ LOCAL_MODULE := audio_policy_configuration.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/etc/
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
 ifeq ($(INTEL_AUDIO_HAL),audio_pfw)
 LOCAL_SRC_FILES := $(AUDIO_HARDWARE)/policy/audio_policy_configuration_pfw.xml
 else
@@ -156,7 +166,7 @@ LOCAL_MODULE_STEM := audio_criteria.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/etc/
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
 LOCAL_SRC_FILES := default/route/$(LOCAL_MODULE_STEM)
 include $(BUILD_PREBUILT)
 
@@ -166,7 +176,7 @@ LOCAL_MODULE_STEM :=  audio_criterion_types.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR)/etc/
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
 LOCAL_SRC_FILES := default/route/$(LOCAL_MODULE_STEM)
 include $(BUILD_PREBUILT)
 ###########################################
@@ -192,7 +202,7 @@ LOCAL_MODULE := mixer_paths_0.xml
 LOCAL_MODULE_OWNER := intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_MODULE_PATH := $(TARGET_OUT_VENDOR_ETC)
 LOCAL_SRC_FILES := $(AUDIO_HARDWARE)/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 endif

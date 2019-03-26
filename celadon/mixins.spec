@@ -11,7 +11,7 @@ vndk: true
 2ndstage: oemvars
 project-celadon: default
 sepolicy: enforcing
-graphics: project-celadon(gen9+=true,hwc2=true,vulkan=false,drmhwc=false,minigbm=true,gralloc1=true)
+graphics: mesa(gralloc1=true,gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true)
 media: project-celadon(mediasdk=false,media_sdk_source=false)
 device-type: tablet
 ethernet: dhcp
@@ -58,4 +58,7 @@ gptbuild: true(size=14G,generate_craff=false)
 swap:zram(size=1073741824,swappiness=false,hardware=celadon)
 power: true
 firststage-mount: true
+serialport: ttyS0
+default-drm: true
 neuralnetworks: true
+

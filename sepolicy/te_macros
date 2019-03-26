@@ -39,3 +39,5 @@ define(`ignore_adb_debug', `
     permissive $1;
   ')
 ')
+
+define(`user_build_only', ifelse(target_build_variant, `user', $1, ))

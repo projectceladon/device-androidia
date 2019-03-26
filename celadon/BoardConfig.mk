@@ -10,9 +10,16 @@ BOARD_VNDK_VERSION := current
 TARGET_BOOTLOADER_IS_2ND := true
 BOARD_OEM_VARS += $(TARGET_DEVICE_DIR)/extra_files/2ndstage/oemvars.txt
 ##############################################################
+# Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/set_storage
+BOARD_DISK_BUS = ff.ff
+##############################################################
 # Source: device/intel/mixins/groups/project-celadon/default/BoardConfig.mk
 ##############################################################
 KERNEL_CROSS_COMPILE_WRAPPER := x86_64-linux-android-
+
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/vendor
 ##############################################################
 # Source: device/intel/mixins/groups/sepolicy/enforcing/BoardConfig.mk
 ##############################################################
@@ -20,34 +27,32 @@ KERNEL_CROSS_COMPILE_WRAPPER := x86_64-linux-android-
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)
 
 ##############################################################
-# Source: device/intel/mixins/groups/graphics/project-celadon/BoardConfig.mk
+# Source: device/intel/mixins/groups/graphics/mesa/BoardConfig.mk
 ##############################################################
+# Use external/drm-bxt
+TARGET_USE_PRIVATE_LIBDRM := true
+LIBDRM_VER ?= intel
+
 BOARD_KERNEL_CMDLINE += vga=current i915.modeset=1 drm.atomic=1 i915.nuclear_pageflip=1 drm.vblankoffdelay=1 i915.fastboot=1
 USE_OPENGL_RENDERER := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 USE_INTEL_UFO_DRIVER := false
-INTEL_VA := false
-BOARD_GRAPHIC_IS_GEN := true
 BOARD_GPU_DRIVERS := i965
-BOARD_USE_MESA := true
-LIBDRM_VER := intel
+BOARD_USE_CUSTOMIZED_MESA := true
 
 # System's VSYNC phase offsets in nanoseconds
 VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
-SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
+SF_VSYNC_EVENT_PHASE_OFFSET_NS := 3000000
 
 BOARD_GPU_DRIVERS ?= i965 swrast
 ifneq ($(strip $(BOARD_GPU_DRIVERS)),)
 TARGET_HARDWARE_3D := true
+TARGET_USES_HWC2 := true
 endif
-
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/graphics/project-celadon
 
 
 BOARD_USES_DRM_HWCOMPOSER := false
 BOARD_USES_IA_HWCOMPOSER := true
-
-DISABLE_MEDIA_COMPOSITOR := true
 
 BOARD_USES_MINIGBM := true
 BOARD_ENABLE_EXPLICIT_SYNC := true
@@ -57,7 +62,13 @@ INTEL_MINIGBM := external/minigbm
 BOARD_USES_GRALLOC1 := true
 
 
-TARGET_USES_HWC2 := true
+
+BOARD_CURSOR_WA := false
+
+BOARD_THREEDIS_UNDERRUN_WA := true
+
+
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/graphics/mesa
 
 ##############################################################
 # Source: device/intel/mixins/groups/media/project-celadon/BoardConfig.mk
@@ -105,7 +116,7 @@ TARGET_PRELINK_MODULE := false
 TARGET_NO_KERNEL ?= false
 
 KERNEL_LOGLEVEL ?= 3
-SERIAL_PARAMETER ?= console=tty0 console=ttyS0,115200n8
+SERIAL_PARAMETER ?= console=tty0
 
 
 BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL) loop.max_part=7
@@ -128,11 +139,6 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/bluetooth/common
 
 
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/intel/tablet/
-##############################################################
-# Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
-##############################################################
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/set_storage
-BOARD_DISK_BUS = ff.ff
 ##############################################################
 # Source: device/intel/mixins/groups/avb/true/BoardConfig.mk
 ##############################################################
@@ -273,7 +279,7 @@ AB_OTA_PARTITIONS += tos
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_vendor=true \
-    POSTINSTALL_PATH_vendor=bin/updater_ab_esp \
+    POSTINSTALL_PATH_vendor=bin/update_ifwi_ab \
     FILESYSTEM_TYPE_vendor=ext4 \
     POSTINSTALL_OPTIONAL_vendor=true
 
@@ -350,9 +356,6 @@ DEVICE_PACKAGE_OVERLAYS += device/intel/common/wlan/overlay-miracast-go
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/wlan/overlay-p2p-connected-stop-scan
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/wlan/overlay-miracast-force-single-ch
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/wlan/overlay-wifi-tethering
-
-#BOARD_SEPOLICY_DIRS += #device/intel/sepolicy/wlan/load_iwlwifi
-
 
 BOARD_SEPOLICY_M4DEFS += module_iwlwifi=true
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/wlan/iwlwifi
@@ -504,4 +507,14 @@ BOARD_SEPOLICY_M4DEFS += module_swap=true
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/power
 
+##############################################################
+# Source: device/intel/mixins/groups/serialport/ttyS0/BoardConfig.mk
+##############################################################
+ifneq ($(TARGET_BUILD_VARIANT),user)
+BOARD_KERNEL_CMDLINE += console=ttyS0,115200n8
+endif
+##############################################################
+# Source: device/intel/mixins/groups/default-drm/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/drm-default
 # ------------------ END MIX-IN DEFINITIONS ------------------
