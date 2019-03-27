@@ -24,6 +24,8 @@
             <attachedDevices>
                 <item>Speaker</item>
                 <item>Built-In Mic</item>
+                <item>Telephony Tx</item>
+                <item>Telephony Rx</item>
             </attachedDevices>
             <defaultOutputDevice>Speaker</defaultOutputDevice>
             <mixPorts>
@@ -35,6 +37,14 @@
                     <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
                              samplingRates="48000"
                              channelMasks="AUDIO_CHANNEL_IN_STEREO"/>
+                </mixPort>
+                <mixPort name="voice_rx" role="sink">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="8000,16000,48000" channelMasks="AUDIO_CHANNEL_IN_STEREO"/>
+                </mixPort>
+                <mixPort name="voice_tx" role="source">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="8000,16000,48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
                 </mixPort>
             </mixPorts>
 
@@ -63,7 +73,8 @@
                              samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000"
                              channelMasks="AUDIO_CHANNEL_IN_MONO,AUDIO_CHANNEL_IN_STEREO"/>
                 </devicePort>
-
+                <devicePort tagName="Telephony Tx" type="AUDIO_DEVICE_OUT_TELEPHONY_TX" role="sink"/>
+                <devicePort tagName="Telephony Rx" type="AUDIO_DEVICE_IN_TELEPHONY_RX" role="source"/>
             </devicePorts>
             <!-- route declaration, i.e. list all available sources for a given sink -->
             <routes>
@@ -75,6 +86,10 @@
                        sources="primary_output"/>
                 <route type="mix" sink="primary_input"
                        sources="Wired Headset Mic,Built-In Mic"/>
+                <route type="mix" sink="voice_rx"
+                       sources="Telephony Rx"/>
+                <route type="mix" sink="Telephony Tx"
+                       sources="voice_tx"/>
             </routes>
 
         </module>
