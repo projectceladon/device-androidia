@@ -502,6 +502,7 @@ PRODUCT_PACKAGES_DEBUG += \
 PRODUCT_PACKAGES += \
     audio.r_submix.default \
     audio.usb.default \
+    audio.hdmi.$(TARGET_BOARD_PLATFORM) \
     audio_policy.default.so \
     audio_configuration_files
 
