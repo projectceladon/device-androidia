@@ -60,3 +60,5 @@ power: true
 firststage-mount: true
 default-drm: true
 serialport: ttyUSB0
+neuralnetworks: true
+

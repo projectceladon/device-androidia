@@ -1,0 +1,2 @@
+/(vendor|system/vendor)/bin/hw/android\.hardware\.neuralnetworks@1.0-generic-service   u:object_r:hal_neuralnetworks_default_exec:s0
+/data/vendor/neuralnetworks(/.*)?    u:object_r:nn_vendor_data_file:s0

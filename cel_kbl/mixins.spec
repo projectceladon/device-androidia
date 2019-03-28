@@ -60,3 +60,5 @@ power: true(app_launch_boost=true)
 firststage-mount: true
 default-drm: true
 serialport: ttyS0
+neuralnetworks: true
+
