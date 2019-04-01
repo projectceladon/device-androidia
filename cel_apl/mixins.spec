@@ -31,7 +31,7 @@ dexpreopt: enabled
 disk-bus: auto
 usb: host+acc
 lights: true
-thermal: thermal-daemon
+thermal: none
 config-partition: enabled
 vendor-partition: true
 factory-partition: true
