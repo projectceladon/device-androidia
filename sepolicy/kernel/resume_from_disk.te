@@ -1,3 +1,6 @@
 type resume_from_disk, domain;
-type resume_from_disk_exec, exec_type, vendor_file_type, file_type;
+
+typeattribute resume_from_disk coredomain;
+type resume_from_disk_exec, exec_type, file_type;
+
 init_daemon_domain(resume_from_disk)
