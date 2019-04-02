@@ -1,0 +1,2 @@
+# resume_from_disk
+/system/bin/resume_from_disk     u:object_r:resume_from_disk_exec:s0
