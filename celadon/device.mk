@@ -772,6 +772,24 @@ PRODUCT_PACKAGES += android.hardware.drm@1.0-service \
                     android.hardware.drm@1.1-service.clearkey
 
 ##############################################################
+# Source: device/intel/mixins/groups/neuralnetworks/true/product.mk
+##############################################################
+# neuralnetworks HAL
+PRODUCT_PACKAGES += \
+    android.hardware.neuralnetworks@1.0-generic-service \
+    android.hardware.neuralnetworks@1.0-generic-impl
+
+PRODUCT_PACKAGES += \
+    libinference_engine
+
+PRODUCT_PACKAGES += \
+    libMKLDNNPlugin\
+    libmkldnn
+
+PRODUCT_PACKAGES += \
+    graphtest_cpu
+
+##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)
