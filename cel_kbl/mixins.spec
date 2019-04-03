@@ -10,7 +10,7 @@ treble: true
 vndk: true
 2ndstage: oemvars
 project-celadon: default
-sepolicy: enforcing
+sepolicy: permissive
 graphics: mesa(gralloc1=true,gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true)
 media: project-celadon(mediasdk=false,media_sdk_source=false)
 ethernet: dhcp
