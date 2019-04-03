@@ -193,13 +193,14 @@
         </interface>
     </hal>
     <hal format="hidl">
-          <name>android.hardware.neuralnetworks</name>
-          <transport>hwbinder</transport>
-          <version>1.1</version>
-          <interface>
-              <name>IDevice</name>
-              <instance>CPU</instance>
-          </interface>
+        <name>android.hardware.neuralnetworks</name>
+        <transport>hwbinder</transport>
+        <version>1.1</version>
+        <interface>
+            <name>IDevice</name>
+            <instance>CPU</instance>
+            <instance>gpgpu</instance>
+        </interface>
     </hal>
     <hal format="hidl">
         <name>android.hardware.health</name>
