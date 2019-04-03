@@ -1,2 +1,5 @@
 #Debug configuration options
 CONFIG_DEBUG_INFO=y
+CONFIG_IP_PNP=y
+CONFIG_IP_PNP_DHCP=y
+
