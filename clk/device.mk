@@ -772,6 +772,13 @@ PRODUCT_PACKAGES += android.hardware.drm@1.0-service \
                     android.hardware.drm@1.1-service.clearkey
 
 ##############################################################
+# Source: ./mixins/groups/neuralnetworks/true/product.mk
+##############################################################
+# neuralnetworks HAL
+PRODUCT_PACKAGES += \
+    android.hardware.neuralnetworks@1.0-service-gpgpu
+
+##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)

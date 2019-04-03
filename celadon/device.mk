@@ -752,6 +752,14 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += health
 PRODUCT_PACKAGES += health.$(TARGET_BOARD_PLATFORM) \
 					android.hardware.health@2.0-service.celadon
+
+##############################################################
+# Source: ./mixins/groups/neuralnetworks/true/product.mk
+##############################################################
+# neuralnetworks HAL
+PRODUCT_PACKAGES += \
+    android.hardware.neuralnetworks@1.0-service-gpgpu
+
 ##############################################################
 # Source: device/intel/mixins/groups/art-config/default/product.mk
 ##############################################################
