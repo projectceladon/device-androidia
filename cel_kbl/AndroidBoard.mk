@@ -106,6 +106,10 @@ $(ALL_EXTRA_MODULES): $(TARGET_OUT_INTERMEDIATES)/kmodule/%: $(PRODUCT_OUT)/kern
 	@echo Building additional kernel module $*
 	$(build_kernel) M=$(abspath $@) modules
 
+# This is to ensure that kernel modules are installed before
+# vendor.img is generated.
+$(PRODUCT_OUT)/vendor.img : $(KERNEL_MODULES_INSTALL)
+
 # Copy modules in directory pointed by $(KERNEL_MODULES_ROOT)
 # First copy modules keeping directory hierarchy lib/modules/`uname-r`for libkmod
 # Second, create flat hierarchy for insmod linking to previous hierarchy
@@ -142,10 +146,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := vendor-partition
 LOCAL_REQUIRED_MODULES := toybox_static
 include $(BUILD_PHONY_PACKAGE)
-
-# This is to ensure that kernel modules are installed before
-# vendor.img is generated.
-$(PRODUCT_OUT)/vendor.img : $(KERNEL_MODULES_INSTALL)
 
 make_dir_ab_vendor:
 	@mkdir -p $(PRODUCT_OUT)/root/vendor

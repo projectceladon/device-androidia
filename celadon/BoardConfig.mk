@@ -517,4 +517,8 @@ endif
 # Source: device/intel/mixins/groups/default-drm/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/drm-default
+##############################################################
+# Source: device/intel/mixins/groups/neuralnetworks/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/neuralnetworks
 # ------------------ END MIX-IN DEFINITIONS ------------------
