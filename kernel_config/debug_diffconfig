@@ -1,2 +1,4 @@
 #Debug configuration options
 CONFIG_DEBUG_INFO=y
+CONFIG_MEDIA_RADIO_SUPPORT=y
+
