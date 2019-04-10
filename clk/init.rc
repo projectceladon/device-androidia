@@ -745,7 +745,7 @@ on boot
 
 on post-fs-data
     # Enable swaps described in the fstab
-    swapon_all /fstab.${ro.hardware}
+    swapon_all /vendor/etc/fstab.${ro.hardware}
 ##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/init.rc
 ##############################################################
