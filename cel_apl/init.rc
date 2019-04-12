@@ -11,6 +11,59 @@ on init
     mkdir /dev/block 0755 root root
     exec u:r:set_storage:s0 root root -- /vendor/bin/set_storage.vendor
 ##############################################################
+# Source: device/intel/mixins/groups/config-partition/enabled/init.rc
+##############################################################
+# Enable SELinux labeling
+on post-fs
+    restorecon_recursive /vendor/oem_config
+##############################################################
+# Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/init.rc
+##############################################################
+on init
+    # Support legacy paths
+    symlink /sdcard /mnt/sdcard
+    symlink /sdcard /storage/sdcard0
+
+##############################################################
+# Source: device/intel/mixins/groups/factory-partition/true/init.rc
+##############################################################
+# init.rc for telephony services specific to flashless platforms using /vendor/factory partition
+
+
+on post-fs
+    restorecon_recursive /vendor/factory
+    trigger post-fs-factory
+##############################################################
+# Source: device/intel/mixins/groups/boot-arch/project-celadon/init.rc
+##############################################################
+service watchdogd /sbin/watchdogd 10 30
+    user root
+    class core
+    oneshot
+    seclabel u:r:watchdogd:s0
+
+on charger
+    start watchdogd
+##############################################################
+# Source: device/intel/mixins/groups/trusty/true/init.rc
+##############################################################
+on fs
+    # Update device node r/w attribute
+    chown system system /dev/trusty-ipc-dev0
+    chmod 666 /dev/trusty-ipc-dev0
+
+on post-fs-data
+    mkdir /data/vendor/securestorage 0700 system system
+    chmod 666 /dev/rpmb0
+
+on early-boot
+    start storageproxyd
+
+service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/vendor/securestorage -r /dev/rpmb0
+    user system
+    group system
+
+##############################################################
 # Source: device/intel/mixins/groups/project-celadon/default/init.rc
 ##############################################################
 
@@ -255,14 +308,6 @@ on early-boot
     chmod 0222 /sys/kernel/debug/tracing/trace_marker
     # tracefs is mounted after 1st access to it
     chmod 0755 /sys/kernel/debug/tracing
-##############################################################
-# Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/init.rc
-##############################################################
-on init
-    # Support legacy paths
-    symlink /sdcard /mnt/sdcard
-    symlink /sdcard /storage/sdcard0
-
 ##############################################################
 # Source: device/intel/mixins/groups/usb-gadget/g_ffs/init.rc
 ##############################################################
@@ -523,32 +568,6 @@ on boot
     insmod /vendor/lib/modules/kernel/drivers/bluetooth/btrtl.ko
     insmod /vendor/lib/modules/kernel/drivers/bluetooth/btusb.ko
 ##############################################################
-# Source: device/intel/mixins/groups/config-partition/enabled/init.rc
-##############################################################
-# Enable SELinux labeling
-on post-fs
-    restorecon_recursive /vendor/oem_config
-##############################################################
-# Source: device/intel/mixins/groups/factory-partition/true/init.rc
-##############################################################
-# init.rc for telephony services specific to flashless platforms using /vendor/factory partition
-
-
-on post-fs
-    restorecon_recursive /vendor/factory
-    trigger post-fs-factory
-##############################################################
-# Source: device/intel/mixins/groups/boot-arch/project-celadon/init.rc
-##############################################################
-service watchdogd /sbin/watchdogd 10 30
-    user root
-    class core
-    oneshot
-    seclabel u:r:watchdogd:s0
-
-on charger
-    start watchdogd
-##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/init.rc
 ##############################################################
 on boot
@@ -697,25 +716,6 @@ import /init.crashlogd.rc
 # Source: device/intel/mixins/groups/debug-coredump/true/init.rc
 ##############################################################
 import /init.coredump.rc
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/init.rc
-##############################################################
-on fs
-    # Update device node r/w attribute
-    chown system system /dev/trusty-ipc-dev0
-    chmod 666 /dev/trusty-ipc-dev0
-
-on post-fs-data
-    mkdir /data/vendor/securestorage 0700 system system
-    chmod 666 /dev/rpmb0
-
-on early-boot
-    start storageproxyd
-
-service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/vendor/securestorage -r /dev/rpmb0
-    user system
-    group system
-
 ##############################################################
 # Source: device/intel/mixins/groups/midi/true/init.rc
 ##############################################################
