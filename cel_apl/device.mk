@@ -797,7 +797,8 @@ PRODUCT_PACKAGES += android.hardware.drm@1.0-service \
 # neuralnetworks HAL
 PRODUCT_PACKAGES += \
     android.hardware.neuralnetworks@1.0-generic-service \
-    android.hardware.neuralnetworks@1.0-generic-impl
+    android.hardware.neuralnetworks@1.0-generic-impl \
+    android.hardware.neuralnetworks@1.0-service-gpgpu
 
 PRODUCT_PACKAGES += \
     libinference_engine
