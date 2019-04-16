@@ -8,8 +8,6 @@ userdebug_or_eng(`
   permissive logsvc;
 ')
 
-allow logsvc system_file:file x_file_perms;
-
 dontaudit logsvc self:capability { dac_override sys_nice };
 allow logsvc self:capability2 syslog;
 
@@ -33,7 +31,6 @@ allow logsvc cache_file:file r_file_perms;
 
 not_full_treble(`
   allow logsvc toolbox_exec:file rx_file_perms;
-  allow logsvc system_file:file x_file_perms;
   allow logsvc shell_exec:file rx_file_perms;
 ')
 
