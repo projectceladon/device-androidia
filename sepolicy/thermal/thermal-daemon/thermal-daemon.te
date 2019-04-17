@@ -2,7 +2,7 @@
 # thermal-daemon
 #
 
-type thermal-daemon, domain, data_between_core_and_vendor_violators;
+type thermal-daemon, domain;
 type thermal-daemon_exec, exec_type, file_type, vendor_file_type;
 init_daemon_domain(thermal-daemon)
 
