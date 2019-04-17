@@ -1,5 +1,3 @@
 dontaudit netd kernel:system module_request;
 dontaudit netd self:capability sys_module;
 dontaudit netd system_file:dir write;
-
-allow netd system_server:icmp_socket { read write };
