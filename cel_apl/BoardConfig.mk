@@ -286,7 +286,7 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/debugfs
 # Source: device/intel/mixins/groups/usb-gadget/g_ffs/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/usb
-
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/usb-gadget
 ##############################################################
 # Source: device/intel/mixins/groups/kernel/project-celadon/BoardConfig.mk
 ##############################################################
