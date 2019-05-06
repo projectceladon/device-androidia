@@ -15,7 +15,7 @@ on init
 ##############################################################
 # Enable SELinux labeling
 on post-fs
-    restorecon_recursive /vendor/oem_config
+    restorecon_recursive /mnt/vendor/oem_config
 ##############################################################
 # Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/init.rc
 ##############################################################
