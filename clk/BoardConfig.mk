@@ -11,6 +11,8 @@ BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 TARGET_NO_RECOVERY := true
 BOARD_USES_RECOVERY_AS_BOOT := true
 BOARD_SLOT_AB_ENABLE := true
+PRODUCT_STATIC_BOOT_CONTROL_HAL := bootctrl.intel.static
+BOARD_KERNEL_CMDLINE += rootfstype=ext4
 ##############################################################
 # Source: device/intel/mixins/groups/disk-bus/auto/BoardConfig.mk
 ##############################################################
@@ -20,14 +22,6 @@ BOARD_DISK_BUS = ff.ff
 # Source: device/intel/mixins/groups/avb/true/BoardConfig.mk
 ##############################################################
 BOARD_AVB_ENABLE := true
-
-KERNELFLINGER_AVB_CMDLINE := true
-
-BOARD_VBMETAIMAGE_PARTITION_SIZE := 2097152
-BOARD_FLASHFILES += $(PRODUCT_OUT)/vbmeta.img
-
-# Now use AVB to support A/B slot
-PRODUCT_STATIC_BOOT_CONTROL_HAL := bootctrl.avb libavb_user
 ##############################################################
 # Source: device/intel/mixins/groups/firststage-mount/true/BoardConfig.mk
 ##############################################################
@@ -40,30 +34,25 @@ FIRSTSTAGE_MOUNT_SSDT = $(PRODUCT_OUT)/firststage-mount.aml
 # Those 3 lines are required to enable vendor image generation.
 # Remove them if vendor partition is not used.
 TARGET_COPY_OUT_VENDOR := vendor
-BOARD_VENDORIMAGE_PARTITION_SIZE := 1887436800
-ifeq ($(SPARSE_IMG),true)
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-else
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := squashfs
-endif
-BOARD_FLASHFILES += $(PRODUCT_OUT)/vendor.img
+BOARD_VENDORIMAGE_PARTITION_SIZE := $(shell echo 1800*1048576 | bc)
 AB_OTA_PARTITIONS += vendor
 ##############################################################
 # Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
 ##############################################################
 BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
-BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
 BOARD_SEPOLICY_M4DEFS += module_config_partition=true
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/config-partition
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/config-partition
+BOARD_FLASHFILES += $(PRODUCT_OUT)/config.img
 ##############################################################
 # Source: device/intel/mixins/groups/factory-partition/true/BoardConfig.mk
 ##############################################################
 BOARD_FACTORYIMAGE_PARTITION_SIZE := 10485760
 BOARD_FLASHFILES += $(PRODUCT_OUT)/factory.img
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/factory-partition
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/factory-partition
 BOARD_SEPOLICY_M4DEFS += module_factory_partition=true
 ##############################################################
-# Source: device/intel/mixins/groups/boot-arch/project-celadon/BoardConfig.mk
+# Source: device/intel/mixins/groups/boot-arch/project-celadon/BoardConfig.mk.1
 ##############################################################
 #TARGET_NO_RECOVERY ?= false
 
@@ -80,8 +69,6 @@ endif
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 576716800
 BOARD_FLASH_BLOCK_SIZE := 512
 
-BOARD_BOOTIMAGE_PARTITION_SIZE := 31457280
-
 ifeq ($(SPARSE_IMG),true)
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -90,27 +77,13 @@ TARGET_USERIMAGES_SPARSE_EXT_DISABLED := true
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := squashfs
 endif
 
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3758096384
+#BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3758096384
 
-BOARD_BOOTLOADER_PARTITION_SIZE ?= 62914560
+#BOARD_BOOTLOADER_PARTITION_SIZE ?= 62914560
 BOARD_BOOTLOADER_BLOCK_SIZE := 512
 TARGET_BOOTLOADER_BOARD_NAME := $(TARGET_DEVICE)
 
 TARGET_USES_MKE2FS := true
-
-# Kernel Flinger
-TARGET_UEFI_ARCH := x86_64
-# Kernelflinger won't check the ACPI table oem_id, oem_table_id and
-# revision fields
-KERNELFLINGER_ALLOW_UNSUPPORTED_ACPI_TABLE := true
-# Allow Kernelflinger to start watchdog prior to boot the kernel
-KERNELFLINGER_USE_WATCHDOG := true
-# Tell Kernelflinger to ignore ACPI RSCI table
-KERNELFLINGER_IGNORE_RSCI := true
-#KERNELFLINGER_SSL_LIBRARY := boringssl
-KERNELFLINGER_SSL_LIBRARY := openssl
-# Specify system verity partition
-#PRODUCT_SYSTEM_VERITY_PARTITION := /dev/block/by-name/system
 
 # Avoid Watchdog truggered reboot
 BOARD_KERNEL_CMDLINE += iTCO_wdt.force_no_reboot=1
@@ -134,31 +107,115 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/efivar_oemlock
 BOARD_FLASHFILES += $(PRODUCT_OUT)/bootloader
 BOARD_FLASHFILES += $(PRODUCT_OUT)/fastboot-usb.img
 
-# -- OTA RELATED DEFINES --
-# tell build system where to get the recovery.fstab.
-TARGET_RECOVERY_FSTAB ?= $(TARGET_DEVICE_DIR)/fstab.recovery
-# Used by ota_from_target_files to add platform-specific directives
-# to the OTA updater scripts
-TARGET_RELEASETOOLS_EXTENSIONS ?= device/intel/common/recovery
-#
-# By default recovery minui expects RGBA framebuffer
-TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 
 # Kernelfligner will assume the BIOS support secure boot. Not check the EFI variable SecureBoot
 # It is useful when the BIOS does not support secure boot.
 KERNELFLINGER_ASSUME_BIOS_SECURE_BOOT := true
+##############################################################
+# Source: device/intel/mixins/groups/boot-arch/project-celadon/BoardConfig.mk.2
+##############################################################
+#
+##############################################################
+# Source: device/intel/mixins/groups/boot-arch/project-celadon/BoardConfig.mk
+##############################################################
+#
+# -- OTA RELATED DEFINES --
+#
+
+# tell build system where to get the recovery.fstab.
+TARGET_RECOVERY_FSTAB ?= $(TARGET_DEVICE_DIR)/fstab.recovery
+
+# Used by ota_from_target_files to add platform-specific directives
+# to the OTA updater scripts
+TARGET_RELEASETOOLS_EXTENSIONS ?= $(INTEL_PATH_BUILD)/test
+#TARGET_RELEASETOOLS_EXTENSIONS ?= device/intel/common/recovery
+# By default recovery minui expects RGBA framebuffer
+TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
+
+
+#
+# FILESYSTEMS
+#
+
+# NOTE: These values must be kept in sync with BOARD_GPT_INI
+BOARD_BOOTIMAGE_PARTITION_SIZE ?= 31457280
+BOARD_SYSTEMIMAGE_PARTITION_SIZE ?= $$((2560 * 1024 * 1024))
+BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
+BOARD_BOOTLOADER_PARTITION_SIZE ?= $$((60 * 1024 * 1024))
+BOARD_BOOTLOADER_BLOCK_SIZE := 512
+BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
+DATA_USE_F2FS := False
+
+ifeq ($(DATA_USE_F2FS), true)
+TARGET_USERIMAGES_USE_F2FS := true
+BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
+else
+TARGET_USERIMAGES_USE_EXT4 := true
+BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
+INTERNAL_USERIMAGES_EXT_VARIANT := ext4
+endif
+
+
+TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
+
+ifeq ($(BOARD_FLASH_UFS), 1)
+BOARD_FLASH_BLOCK_SIZE = 4096
+else
+BOARD_FLASH_BLOCK_SIZE := 512
+endif
+
+# Partition table configuration file
+#BOARD_GPT_INI ?= $(TARGET_DEVICE_DIR)/gpt.ini
+
+TARGET_BOOTLOADER_BOARD_NAME := $(TARGET_DEVICE)
+
+#
+#kernel always use primary gpt without command line option "gpt",
+#the label let kernel use the alternate GPT if primary GPT is corrupted.
+#
+BOARD_KERNEL_CMDLINE += gpt
+
+#
+# Trusted Factory Reset - persistent partition
+#
+DEVICE_PACKAGE_OVERLAYS += $(INTEL_PATH_HARDWARE)/bootctrl/boot/overlay
+
+#can't use := here, as PRODUCT_OUT is not defined yet
+BOARD_GPT_BIN = $(PRODUCT_OUT)/gpt.bin
+BOARD_FLASHFILES += $(BOARD_GPT_BIN):gpt.bin
+INSTALLED_RADIOIMAGE_TARGET += $(BOARD_GPT_BIN)
+
+# We offer the possibility to flash from a USB storage device using
+# the "installer" EFI application
+BOARD_FLASHFILES += $(PRODUCT_OUT)/efi/installer.efi
+#BOARD_FLASHFILES += $(INTEL_PATH_HARDWARE)/bootctrl/boot/startup.nsh
+
+ifneq (0x0,static)
+BOOTLOADER_POLICY_OEMVARS = $(PRODUCT_OUT)/bootloader_policy-oemvars.txt
+BOARD_FLASHFILES += $(BOOTLOADER_POLICY_OEMVARS):bootloader_policy-oemvars.txt
+BOARD_OEM_VARS += $(BOOTLOADER_POLICY_OEMVARS)
+endif
+
+
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/boot-arch/generic
 
 
 KERNELFLINGER_USE_RPMB_SIMULATE := true
-
-AB_OTA_PARTITIONS += vbmeta
-AB_OTA_PARTITIONS += tos
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_vendor=true \
     POSTINSTALL_PATH_vendor=bin/update_ifwi_ab \
     FILESYSTEM_TYPE_vendor=ext4 \
     POSTINSTALL_OPTIONAL_vendor=true
+
+BOARD_AVB_ENABLE := true
+KERNELFLINGER_AVB_CMDLINE := true
+BOARD_VBMETAIMAGE_PARTITION_SIZE := 2097152
+BOARD_FLASHFILES += $(PRODUCT_OUT)/vbmeta.img
+
+AB_OTA_PARTITIONS += vbmeta
+AB_OTA_PARTITIONS += tos
+
 
 ##############################################################
 # Source: device/intel/mixins/groups/sepolicy/enforcing/BoardConfig.mk
@@ -475,11 +532,10 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/debug-phonedoctor
 ##############################################################
 # Source: device/intel/mixins/groups/flashfiles/ini/BoardConfig.mk
 ##############################################################
-FLASHFILES_CONFIG ?= $(TARGET_DEVICE_DIR)/extra_files/flashfiles/flashfiles.ini
+FLASHFILES_CONFIG ?= $(TARGET_DEVICE_DIR)/flashfiles.ini
 USE_INTEL_FLASHFILES := true
 VARIANT_SPECIFIC_FLASHFILES ?= false
 FAST_FLASHFILES := true
-
 ##############################################################
 # Source: device/intel/mixins/groups/camera-ext/ext-camera-only/BoardConfig.mk
 ##############################################################

@@ -5,21 +5,22 @@
 ##############################################################
 PRODUCT_PACKAGES += \
     update_engine \
+    update_engine_client \
     update_verifier \
-    update_engine_sideload \
     libavb \
     bootctrl.avb \
     bootctrl.intel \
     bootctrl.intel.static \
+    update_engine_sideload \
+    avbctl \
     android.hardware.boot@1.0-impl \
     android.hardware.boot@1.0-service
 
-PRODUCT_PACKAGES_DEBUG += \
-    update_engine_client \
-    bootctl
-
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.bootctrl=intel
+
+PRODUCT_PACKAGES_DEBUG += \
+	bootctl
 ##############################################################
 # Source: device/intel/mixins/groups/disk-bus/auto/product.mk
 ##############################################################
@@ -27,14 +28,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += set_storage
 PRODUCT_PACKAGES += set_storage.vendor
 ##############################################################
-# Source: device/intel/mixins/groups/avb/true/product.mk
-##############################################################
-
-PRODUCT_PACKAGES += avbctl
-##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
-PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/by-name/vendor
 
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/vendor-partition/sh_recovery:recovery/root/vendor/bin/sh
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/vendor-partition/mkshrc_recovery:recovery/root/vendor/etc/mkshrc
@@ -48,34 +43,32 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += support.sdcardfs.mode=y
 ##############################################################
-# Source: device/intel/mixins/groups/boot-arch/project-celadon/product.mk
+# Source: device/intel/mixins/groups/boot-arch/project-celadon/product.mk.1
 ##############################################################
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/persistent
-
-ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),0x0 0x2 0x4 0x6))
-# OEM Unlock reporting 1
-#ADDITIONAL_DEFAULT_PROPERTIES += \
-        ro.oem_unlock_supported=1
-
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-        ro.oem_unlock_supported=1
-
-endif
-
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:vendor/bin/update_ifwi_ab
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:recovery/root/vendor/bin/update_ifwi_ab
-
-# Allow Kernelflinger to ignore the RSCI reset source "not_applicable"
-# when setting the bootreason
-KERNELFLINGER_IGNORE_NOT_APPLICABLE_RESET := true
-
 
 ifneq (0x0,static)
 BOOTLOADER_POLICY_OEMVARS = $(PRODUCT_OUT)/bootloader_policy-oemvars.txt
 BOARD_FLASHFILES += $(BOOTLOADER_POLICY_OEMVARS)
 BOARD_OEM_VARS += $(BOOTLOADER_POLICY_OEMVARS)
 endif
+##############################################################
+# Source: device/intel/mixins/groups/boot-arch/project-celadon/product.mk
+##############################################################
+TARGET_UEFI_ARCH := x86_64
+BIOS_VARIANT := release
 
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/fstab:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.$(TARGET_PRODUCT)
+
+PRODUCT_COPY_FILES += \
+	frameworks/native/data/etc/android.software.verified_boot.xml:vendor/etc/permissions/android.software.verified_boot.xml
+
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:vendor/bin/update_ifwi_ab
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:recovery/root/vendor/bin/update_ifwi_ab
+
+# Allow Kernelflinger to start watchdog prior to boot the kernel
+KERNELFLINGER_USE_WATCHDOG := true
 # It activates the Bootloader policy and RMA refurbishing
 # features. TARGET_BOOTLOADER_POLICY is the desired bitmask for this
 # device.
@@ -100,31 +93,29 @@ TARGET_BOOTLOADER_POLICY := 0x0
 # variables to store the BPM and OAK values.  The BPM value is defined
 # compilation time by the TARGET_BOOTLOADER_POLICY variable.
 TARGET_BOOTLOADER_POLICY_USE_EFI_VAR := true
-#ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),0x0 0x2 0x4 0x6))
-# OEM Unlock reporting 1
-PRODUCT_PROPERTY_OVERRIDES += \
+ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),0x0 0x2 0x4 0x6))
+# OEM Unlock reporting
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	ro.oem_unlock_supported=1
-#endif
+endif
 ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),static external))
 # The bootloader policy is not generated build time but is supplied
 # statically in the repository or in $(PRODUCT_OUT)/.  If your
 # bootloader policy allows the device to be unlocked, uncomment the
 # following lines:
-#PRODUCT_PROPERTY_OVERRIDES += \
-	ro.oem_unlock_supported=1
+# PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+# 	ro.oem_unlock_supported=1
 endif
-
-
+# Allow Kernelflinger to ignore the RSCI reset source "not_applicable"
+# when setting the bootreason
+KERNELFLINGER_IGNORE_NOT_APPLICABLE_RESET := true
+# Android Kernelflinger uses the OpenSSL library to support the
+# bootloader policy
+KERNELFLINGER_SSL_LIBRARY := openssl
 
 KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := true
 
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/fstab:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.$(TARGET_PRODUCT)
-
-# Add the feature of FEATURE_VERIFIED_BOOT
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.software.verified_boot.xml:vendor/etc/permissions/android.software.verified_boot.xml
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/persistent
 ##############################################################
 # Source: device/intel/mixins/groups/sepolicy/enforcing/product.mk
 ##############################################################
