@@ -288,6 +288,10 @@ BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/debugfs
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/usb
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/usb-gadget
 ##############################################################
+# Source: device/intel/mixins/groups/serialport/ttyS0/BoardConfig.mk
+##############################################################
+SERIAL_PARAMETER ?= console=ttyS0,115200n8
+##############################################################
 # Source: device/intel/mixins/groups/kernel/project-celadon/BoardConfig.mk
 ##############################################################
 TARGET_USES_64_BIT_BINDER := true
@@ -299,14 +303,13 @@ TARGET_PRELINK_MODULE := false
 TARGET_NO_KERNEL ?= false
 
 KERNEL_LOGLEVEL ?= 3
-SERIAL_PARAMETER ?= console=tty0
 
 
 BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL) loop.max_part=7
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 ifeq ($(SPARSE_IMG),true)
-BOARD_KERNEL_CMDLINE += $(SERIAL_PARAMETER)
+BOARD_KERNEL_CMDLINE += console=tty0 $(SERIAL_PARAMETER)
 endif
 endif
 
@@ -517,12 +520,6 @@ APP_LAUNCH_BOOST := true
 # Source: device/intel/mixins/groups/default-drm/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/drm-default
-##############################################################
-# Source: device/intel/mixins/groups/serialport/ttyS0/BoardConfig.mk
-##############################################################
-ifneq ($(TARGET_BUILD_VARIANT),user)
-BOARD_KERNEL_CMDLINE += console=ttyS0,115200n8
-endif
 ##############################################################
 # Source: device/intel/mixins/groups/neuralnetworks/true/BoardConfig.mk
 ##############################################################
