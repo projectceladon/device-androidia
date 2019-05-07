@@ -38,7 +38,7 @@ $(RECOVERY_VENDOR_LINKS):
 
 ALL_DEFAULT_INSTALLED_MODULES += $(RECOVERY_VENDOR_LINKS)
 ##############################################################
-# Source: device/intel/mixins/groups/config-partition/enabled/AndroidBoard.mk
+# Source: device/intel/mixins/groups/config-partition/true/AndroidBoard.mk
 ##############################################################
 INSTALLED_CONFIGIMAGE_TARGET := $(PRODUCT_OUT)/config.img
 

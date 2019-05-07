@@ -11,7 +11,7 @@ on init
     mkdir /dev/block 0755 root root
     exec u:r:set_storage:s0 root root -- /vendor/bin/set_storage.vendor
 ##############################################################
-# Source: device/intel/mixins/groups/config-partition/enabled/init.rc
+# Source: device/intel/mixins/groups/config-partition/true/init.rc
 ##############################################################
 # Enable SELinux labeling
 on post-fs

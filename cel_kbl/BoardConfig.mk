@@ -38,7 +38,7 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_VENDORIMAGE_PARTITION_SIZE := $(shell echo 1800*1048576 | bc)
 AB_OTA_PARTITIONS += vendor
 ##############################################################
-# Source: device/intel/mixins/groups/config-partition/enabled/BoardConfig.mk
+# Source: device/intel/mixins/groups/config-partition/true/BoardConfig.mk
 ##############################################################
 BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
 BOARD_SEPOLICY_M4DEFS += module_config_partition=true
@@ -139,7 +139,7 @@ TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 
 # NOTE: These values must be kept in sync with BOARD_GPT_INI
 BOARD_BOOTIMAGE_PARTITION_SIZE ?= 31457280
-BOARD_SYSTEMIMAGE_PARTITION_SIZE ?= $$((2560 * 1024 * 1024))
+BOARD_SYSTEMIMAGE_PARTITION_SIZE ?= $$((3584 * 1024 * 1024))
 BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
 BOARD_BOOTLOADER_PARTITION_SIZE ?= $$((60 * 1024 * 1024))
 BOARD_BOOTLOADER_BLOCK_SIZE := 512
