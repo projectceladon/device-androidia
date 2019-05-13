@@ -199,6 +199,7 @@
         <interface>
             <name>IDevice</name>
             <instance>CPU</instance>
+            <instance>gpgpu</instance>
         </interface>
     </hal>
     <hal format="hidl">
