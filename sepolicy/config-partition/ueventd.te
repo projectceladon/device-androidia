@@ -1,6 +1,0 @@
-#
-# ueventd
-#
-typeattribute ueventd data_between_core_and_vendor_violators;
-allow ueventd config_file:dir search;
-allow ueventd config_file:file r_file_perms;

@@ -11,6 +11,23 @@ on init
     exec u:r:set_storage:s0 root root -- /sbin/set_storage
     symlink /dev/block/pci/pci0000:00/0000:00:1c.0/by-name /dev/block/by-name
 ##############################################################
+# Source: device/intel/mixins/groups/vendor-partition/true/init.recovery.rc
+##############################################################
+on boot
+    symlink /sbin/toybox_static /vendor/bin/ifconfig
+##############################################################
+# Source: device/intel/mixins/groups/boot-arch/project-celadon/init.recovery.rc
+##############################################################
+service watchdogd /sbin/watchdogd
+    user root
+    class core
+    oneshot
+    seclabel u:r:watchdogd:s0
+
+on boot
+    start watchdogd
+    write /proc/sys/kernel/hung_task_timeout_secs 120
+##############################################################
 # Source: device/intel/mixins/groups/ethernet/dhcp/init.recovery.rc
 ##############################################################
 
@@ -68,15 +85,4 @@ on property:sys.usb.ffs.ready=1
     write /config/usb_gadget/g1/configs/b.1/strings/0x409/configuration "adb"
     symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f1
     write /config/usb_gadget/g1/UDC dwc3.0.auto
-##############################################################
-# Source: device/intel/mixins/groups/boot-arch/project-celadon/init.recovery.rc
-##############################################################
-service watchdogd /sbin/watchdogd
-    user root
-    class core
-    oneshot
-    seclabel u:r:watchdogd:s0
-
-on boot
-    start watchdogd
 # ------------------ END MIX-IN DEFINITIONS ------------------
