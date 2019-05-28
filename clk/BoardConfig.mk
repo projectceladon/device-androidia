@@ -282,59 +282,25 @@ KERNEL_CROSS_COMPILE_WRAPPER := x86_64-linux-android-
 
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/vendor
 ##############################################################
-# Source: device/intel/mixins/groups/graphics/mesa/BoardConfig.mk
+# Source: device/intel/mixins/groups/graphics/software/BoardConfig.mk
 ##############################################################
-# Use external/drm-bxt
-TARGET_USE_PRIVATE_LIBDRM := true
-LIBDRM_VER ?= intel
-
-BOARD_KERNEL_CMDLINE += vga=current i915.modeset=1 drm.atomic=1 i915.nuclear_pageflip=1 drm.vblankoffdelay=1 i915.fastboot=1
+BOARD_KERNEL_CMDLINE += vga=current nomodeset
 USE_OPENGL_RENDERER := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 USE_INTEL_UFO_DRIVER := false
-BOARD_GPU_DRIVERS := i965
-BOARD_USE_CUSTOMIZED_MESA := true
+INTEL_VA := false
 
 # System's VSYNC phase offsets in nanoseconds
 VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
-SF_VSYNC_EVENT_PHASE_OFFSET_NS := 3000000
+SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
 
-BOARD_GPU_DRIVERS ?= i965 swrast
-ifneq ($(strip $(BOARD_GPU_DRIVERS)),)
-TARGET_HARDWARE_3D := true
-TARGET_USES_HWC2 := true
-endif
+# Allow HWC to perform a final CSC on virtual displays
+TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/graphics/software
 
-BOARD_USES_DRM_HWCOMPOSER := false
-BOARD_USES_IA_HWCOMPOSER := true
-
-BOARD_USES_MINIGBM := true
-BOARD_ENABLE_EXPLICIT_SYNC := true
+# Not use, but need include
 INTEL_MINIGBM := external/minigbm
-
-
-BOARD_USES_GRALLOC1 := true
-
-
-
-BOARD_CURSOR_WA := false
-
-BOARD_THREEDIS_UNDERRUN_WA := true
-
-
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/graphics/mesa
-
-##############################################################
-# Source: device/intel/mixins/groups/media/project-celadon/BoardConfig.mk
-##############################################################
-INTEL_STAGEFRIGHT := true
-
-# Settings for the Media SDK library and plug-ins:
-# - USE_MEDIASDK: use Media SDK support or not
-USE_MEDIASDK := true
-
-BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
 ##############################################################
 # Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
 ##############################################################
@@ -363,7 +329,7 @@ TARGET_SUPPORTS_64_BIT_APPS := true
 TARGET_PRELINK_MODULE := false
 TARGET_NO_KERNEL ?= false
 
-KERNEL_LOGLEVEL ?= 3
+KERNEL_LOGLEVEL ?= 7
 
 
 BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL) loop.max_part=7

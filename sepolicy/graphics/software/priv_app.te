@@ -1,0 +1,1 @@
+allow priv_app graphics_device:dir search;

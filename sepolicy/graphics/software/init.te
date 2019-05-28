@@ -1,0 +1,8 @@
+allow init proc:file { setattr write };
+allow init pstorefs:dir mounton;
+allow init sysfs:file read;
+
+allow init proc:file open;
+allow init sysfs:file open;
+
+set_prop(init, exported_system_prop)

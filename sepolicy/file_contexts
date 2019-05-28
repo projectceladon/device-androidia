@@ -13,7 +13,6 @@
 /hwc.lock                    u:object_r:rootfs:s0
 /ioc-slcan-reboot-timestamp  u:object_r:rootfs:s0
 /ioc-cbc-reboot-timestamp    u:object_r:rootfs:s0
-/metadata                    u:object_r:rootfs:s0
 /oem_config                  u:object_r:config_file:s0
 /preload_module              u:object_r:rootfs:s0
 /splash                      u:object_r:rootfs:s0
