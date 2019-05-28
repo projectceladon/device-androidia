@@ -1,0 +1,11 @@
+allow vold mnt_vendor_file:dir search;
+allow vold sysfs_health2_0_management:file write;
+
+allow vold mnt_vendor_file:dir read;
+allow vold vendor_file:dir read;
+
+allow vold mnt_vendor_file:dir { ioctl open };
+allow vold vendor_file:dir open;
+
+allow vold vendor_file:dir ioctl;
+

@@ -1,0 +1,2 @@
+allow zygote property_socket:sock_file write;
+allow zygote init:unix_stream_socket connectto;
