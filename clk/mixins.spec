@@ -8,7 +8,7 @@ product.mk: device.mk
 device-specific: clk
 treble: true
 vndk: true
-2ndstage: oemvars
+2ndstage: oemvars(magic_key_timeout = 80)
 project-celadon: default
 sepolicy: enforcing
 graphics: mesa(gralloc1=true,gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true)
@@ -53,6 +53,7 @@ touch: galax7200
 avb: true
 health: true
 slot-ab: true
+abota-fw: true
 art-config: default
 gptbuild: true(size=14G,generate_craff=false)
 swap:zram(size=1073741824,swappiness=false,hardware=celadon)
