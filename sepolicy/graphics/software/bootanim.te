@@ -1,0 +1,7 @@
+allow bootanim graphics_device:dir search;
+allow bootanim property_socket:sock_file rw_file_perms;
+allow bootanim self:process execmem;
+
+allow bootanim graphics_device:chr_file rw_file_perms;
+allow bootanim init:unix_stream_socket connectto;
+allow platform_app graphics_device:dir search;

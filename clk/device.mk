@@ -309,127 +309,20 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/manifest.xml:vendor/manifest.xml
 ##############################################################
-# Source: device/intel/mixins/groups/graphics/mesa/product.mk
+# Source: device/intel/mixins/groups/graphics/software/product.mk
 ##############################################################
-# Mesa
 PRODUCT_PACKAGES += \
-    libGLES_mesa \
-    libGLES_android
+	libEGL_swiftshader \
+	libGLESv1_CM_swiftshader \
+	libGLESv2_swiftshader \
 
-PRODUCT_PACKAGES += \
-    libdrm \
-    libdrm_intel \
-    libsync \
-    libmd
+PRODUCT_PACKAGES += android.hardware.graphics.mapper@2.0-impl \
+                    android.hardware.graphics.allocator@2.0-impl \
+                    android.hardware.graphics.allocator@2.0-service \
+                    android.hardware.renderscript@1.0-impl \
+                    android.hardware.graphics.composer@2.1-impl \
+                    android.hardware.graphics.composer@2.1-service
 
-PRODUCT_PACKAGES += ufo_prebuilts
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/extra_files/graphics/drirc:system/etc/drirc
-
-
-# HWComposer IA
-PRODUCT_PACKAGES += \
-    hwcomposer.$(TARGET_BOARD_PLATFORM)
-
-PRODUCT_PROPERTY_OVERRIDES += \
-   ro.hardware.hwcomposer=$(TARGET_BOARD_PLATFORM)
-
-INTEL_HWC_CONFIG := $(INTEL_PATH_VENDOR)/external/project-celadon/hwcomposer
-
-ifeq ($(findstring _acrn,$(TARGET_PRODUCT)),_acrn)
-PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display_virt.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
-else
-PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
-endif
-
-
-# Mini gbm
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.gralloc=$(TARGET_BOARD_PLATFORM)
-
-PRODUCT_PACKAGES += \
-    gralloc.$(TARGET_BOARD_PLATFORM)
-
-
-
-# Mesa
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.opengles.aep.xml:vendor/etc/permissions/android.hardware.opengles.aep.xml
-
-# GLES version
-PRODUCT_PROPERTY_OVERRIDES += \
-   ro.opengles.version=196610
-
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.vulkan.level-1.xml:vendor/etc/permissions/android.hardware.vulkan.level.xml
-
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.vulkan.compute-0.xml:vendor/etc/permissions/android.hardware.vulkan.compute.xml
-
-
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.vulkan.version-1_1.xml:vendor/etc/permissions/android.hardware.vulkan.version.xml
-
-PRODUCT_PACKAGES += \
-    vulkan.$(TARGET_BOARD_PLATFORM) \
-    libvulkan_intel
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.vulkan=$(TARGET_BOARD_PLATFORM)
-# Graphics HAL
-PRODUCT_PACKAGES += \
-   android.hardware.graphics.composer@2.1-impl \
-   android.hardware.graphics.composer@2.1-service
-
-# Gralloc HAL
-PRODUCT_PACKAGES += \
-   android.hardware.graphics.allocator@2.0-impl \
-   android.hardware.graphics.allocator@2.0-service \
-   android.hardware.graphics.mapper@2.0-impl
-##############################################################
-# Source: device/intel/mixins/groups/media/project-celadon/product.mk
-##############################################################
-# libva, vaapi
-PRODUCT_PACKAGES += \
-    libva \
-    libva-android \
-    i965_drv_video
-
-PRODUCT_PACKAGES += libpciaccess
-
-# Audio/video codec support.
-PRODUCT_COPY_FILES += \
-    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:vendor/etc/media_codecs_google_audio.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:vendor/etc/media_codecs_google_video.xml \
-    device/intel/project-celadon/common/media/media_profiles.xml:vendor/etc/media_profiles.xml \
-    device/intel/project-celadon/common/media/media_codecs.xml:vendor/etc/media_codecs.xml \
-    device/intel/project-celadon/common/media/media_codecs_performance.xml:vendor/etc/media_codecs_performance.xml
-
-#Enable deep buffer for video playback
-PRODUCT_PROPERTY_OVERRIDES += media.stagefright.audio.deep=true
-
-# Enable AAC 5.1 output
-PRODUCT_PROPERTY_OVERRIDES += \
-    media.aac_51_output_enabled=true
-
-# Enable Media Sdk
-PRODUCT_PACKAGES += \
-    libmfxhw32 \
-    libmfxhw64 \
-    libmfx_omx_core \
-    libmfx_omx_components_hw \
-    libstagefrighthw
-
-
-# Enable Open source hdcp
-PRODUCT_PACKAGES += libhdcpsdk
-PRODUCT_PACKAGES += lihdcpcommon
-# hdcp daemon
-PRODUCT_PACKAGES += hdcpd
-
-PRODUCT_COPY_FILES += \
-    device/intel/project-celadon/common/media/mfx_omxil_core.conf:vendor/etc/mfx_omxil_core.conf
 ##############################################################
 # Source: device/intel/mixins/groups/device-type/tablet/product.mk
 ##############################################################

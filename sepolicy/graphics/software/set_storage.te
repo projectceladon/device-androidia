@@ -1,0 +1,1 @@
+allow set_storage frp_block_device:blk_file setattr;
