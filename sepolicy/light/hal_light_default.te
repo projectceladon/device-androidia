@@ -1,0 +1,2 @@
+# allow hal_light_default set brightness for light module
+allow hal_light_default sysfs_backlight:file rw_file_perms;
