@@ -60,3 +60,4 @@ power: true
 firststage-mount: true
 serialport: ttyS0
 default-drm: true
+load_modules: true

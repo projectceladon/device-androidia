@@ -1,0 +1,2 @@
+/vendor/bin/load_modules.sh u:object_r:load_modules_exec:s0
+
