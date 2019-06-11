@@ -61,3 +61,4 @@ firststage-mount: true
 serialport: ttyS0
 default-drm: true
 neuralnetworks: true
+load_modules: true
