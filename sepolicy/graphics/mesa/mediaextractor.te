@@ -1,1 +1,2 @@
 allow mediaextractor fuse:file r_file_perms;
+allow mediaextractor vfat:file { read getattr };
