@@ -16,6 +16,8 @@ PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-impl \
     android.hardware.boot@1.0-service
 
+PRODUCT_PACKAGES += mkf2fsuserimg.sh
+
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.bootctrl=intel
 
