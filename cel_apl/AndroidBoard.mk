@@ -442,104 +442,246 @@ $(foreach t, $(patsubst $(I915_FW_PATH)/%,%,$(wildcard $(I915_FW_PATH)/*)) ,$(ev
 _EXTRA_FW_ += $(I915_FW)
 
 ##############################################################
-# Source: device/intel/mixins/groups/kernel/project-celadon/AndroidBoard.mk
+# Source: device/intel/mixins/groups/wlan/iwlwifi/AndroidBoard.mk
 ##############################################################
-ifneq ($(TARGET_PREBUILT_KERNEL),)
-$(error TARGET_PREBUILT_KERNEL defined but AndroidIA kernels build from source)
+#LOCAL_KERNEL_PATH := $(abspath $(PRODUCT_OUT)/obj/kernel) is not defined yet
+#$(abspath $(PRODUCT_OUT)/obj/kernel)/copy_modules: iwlwifi
+##############################################################
+# Source: device/intel/mixins/groups/kernel/gmin64/AndroidBoard.mk.1
+##############################################################
+LOAD_MODULES_IN += $(TARGET_DEVICE_DIR)/extra_files/kernel/load_kernel_modules.in
+##############################################################
+# Source: device/intel/mixins/groups/kernel/gmin64/AndroidBoard.mk
+##############################################################
+ifneq ($(wildcard $(INTEL_PATH_PREKERNEL)/$(TARGET_KERNEL_ARCH)/kernel), )
+TARGET_PREBUILT_KERNEL := $(INTEL_PATH_PREKERNEL)/$(TARGET_KERNEL_ARCH)/kernel
 endif
 
-TARGET_KERNEL_SRC ?= kernel/project-celadon
+ifneq ($(TARGET_PREBUILT_KERNEL), )
 
-TARGET_KERNEL_ARCH := x86_64
-TARGET_KERNEL_CONFIG ?= kernel_64_defconfig
+TARGET_PREBUILT_KERNEL_MODULE := $(INTEL_PATH_PREKERNEL)/modules
+LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 
-KERNEL_CONFIG_DIR := device/intel/project-celadon/kernel_config
+$(PRODUCT_OUT)/kernel: $(LOCAL_KERNEL) $(wildcard $(TARGET_PREBUILT_KERNEL_MODULE)/*)
+	  $(hide) echo "Copy prebuilt kernel from $(LOCAL_KERNEL) into $@"
+	  $(hide) cp $(LOCAL_KERNEL) $@
+	  $(hide) echo "Copy modules from $(TARGET_PREBUILT_KERNEL_MODULE) into $(PRODUCT_OUT)/$(KERNEL_MODULES_ROOT)"
+	  $(hide) mkdir -p $(PRODUCT_OUT)/$(KERNEL_MODULES_ROOT)
+	  $(hide) cp -r $(TARGET_PREBUILT_KERNEL_MODULE)/* $(PRODUCT_OUT)/$(KERNEL_MODULES_ROOT)/
 
-KERNEL_NAME := bzImage
+# kernel modules must be copied before ramdisk is generated
+$(PRODUCT_OUT)/ramdisk.img: $(PRODUCT_OUT)/kernel
 
-# Set the output for the kernel build products.
-KERNEL_OUT := $(abspath $(TARGET_OUT_INTERMEDIATES)/kernel)
-KERNEL_BIN := $(KERNEL_OUT)/arch/$(TARGET_KERNEL_ARCH)/boot/$(KERNEL_NAME)
-KERNEL_MODULES_INSTALL := $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules
+.PHONY: kernel
+kernel: $(PRODUCT_OUT)/kernel
 
-KERNELRELEASE = $(shell cat $(KERNEL_OUT)/include/config/kernel.release)
-
-KMOD_OUT := $(shell readlink -f "$(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)")
-
-build_kernel := $(MAKE) -C $(TARGET_KERNEL_SRC) \
-		O=$(KERNEL_OUT) \
-		ARCH=$(TARGET_KERNEL_ARCH) \
-		CROSS_COMPILE="$(KERNEL_CROSS_COMPILE_WRAPPER)" \
-		KCFLAGS="$(KERNEL_CFLAGS)" \
-		KAFLAGS="$(KERNEL_AFLAGS)" \
-		$(if $(SHOW_COMMANDS),V=1) \
-		INSTALL_MOD_PATH=$(KMOD_OUT)
-
-KERNEL_CONFIG_FILE := device/intel/project-celadon/kernel_config/$(TARGET_KERNEL_CONFIG)
-
-ifneq ($(TARGET_BUILD_VARIANT), user)
-KERNEL_CONFIG_FILE += $(wildcard $(KERNEL_CONFIG_DIR)/debug_diffconfig)
 else
-KERNEL_CONFIG_FILE += $(wildcard $(KERNEL_CONFIG_DIR)/user_debug_diffconfig)
+
+LOCAL_KERNEL_PATH := $(PRODUCT_OUT)/obj/kernel
+KERNEL_INSTALL_MOD_PATH := .
+LOCAL_KERNEL := $(LOCAL_KERNEL_PATH)/arch/x86/boot/bzImage
+LOCAL_KERNEL_MODULE_TREE_PATH := $(LOCAL_KERNEL_PATH)/lib/modules
+KERNELRELEASE := $(shell cat $(LOCAL_KERNEL_PATH)/include/config/kernel.release)
+
+KERNEL_CCACHE := $(realpath $(CC_WRAPPER))
+
+#remove time_macros from ccache options, it breaks signing process
+KERNEL_CCSLOP := $(filter-out time_macros,$(subst $(comma), ,$(CCACHE_SLOPPINESS)))
+KERNEL_CCSLOP := $(subst $(space),$(comma),$(KERNEL_CCSLOP))
+
+
+ifeq ($(DEV_BKC_KERNEL), true)
+  LOCAL_KERNEL_SRC := 
+  KERNEL_CONFIG_PATH := 
+  EXT_MODULES := 
+  DEBUG_MODULES := 
+
+else ifeq ($(MLT_KERNEL), true)
+  LOCAL_KERNEL_SRC := 
+  KERNEL_CONFIG_PATH := 
+  EXT_MODULES := 
+  DEBUG_MODULES := 
+
+else
+  LOCAL_KERNEL_SRC := kernel/lts2018
+  EXT_MODULES := 
+  DEBUG_MODULES := 
+  KERNEL_CONFIG_PATH := kernel/project-celadon/config/celadon/android/non-embargoed
 endif
 
-KERNEL_CONFIG := $(KERNEL_OUT)/.config
-$(KERNEL_CONFIG): $(KERNEL_CONFIG_FILE)
-	$(hide) mkdir -p $(@D) && cat $(wildcard $^) > $@
-	$(build_kernel) oldnoconfig
+EXTMOD_SRC := ../modules
+EXTERNAL_MODULES := $(EXT_MODULES)
 
-# Produces the actual kernel image!
-$(PRODUCT_OUT)/kernel: $(KERNEL_CONFIG) | $(ACP)
-	$(build_kernel) $(KERNEL_NAME) modules
-	$(hide) $(ACP) -fp $(KERNEL_BIN) $@
+KERNEL_DEFCONFIG := $(KERNEL_CONFIG_PATH)/$(TARGET_KERNEL_ARCH)_defconfig
+ifneq ($(TARGET_BUILD_VARIANT), user)
+  KERNEL_DEBUG_DIFFCONFIG += $(wildcard $(KERNEL_CONFIG_PATH)/debug_diffconfig)
+  ifneq ($(KERNEL_DEBUG_DIFFCONFIG),)
+    KERNEL_DIFFCONFIG += $(KERNEL_DEBUG_DIFFCONFIG)
+  else
+    KERNEL_DEFCONFIG := $(LOCAL_KERNEL_SRC)/arch/x86/configs/$(TARGET_KERNEL_ARCH)_debug_defconfig
+  endif
+  EXTERNAL_MODULES := $(EXT_MODULES) $(DEBUG_MODULES)
+endif # variant not eq user
 
-EXTMOD_SRC := ../../../../../..
+KERNEL_CONFIG := $(LOCAL_KERNEL_PATH)/.config
 
-TARGET_EXTRA_KERNEL_MODULES := $(EXTMOD_SRC)/kernel/modules/perftools-external/soc_perf_driver/src
-TARGET_EXTRA_KERNEL_MODULES += $(EXTMOD_SRC)/kernel/modules/perftools-external/socwatch_driver
+ifeq ($(TARGET_BUILD_VARIANT), eng)
+  KERNEL_ENG_DIFFCONFIG := $(wildcard $(KERNEL_CONFIG_PATH)/eng_diffconfig)
+  ifneq ($(KERNEL_ENG_DIFFCONFIG),)
+    KERNEL_DIFFCONFIG += $(KERNEL_ENG_DIFFCONFIG)
+  endif
+endif
 
-ALL_EXTRA_MODULES := $(patsubst %,$(TARGET_OUT_INTERMEDIATES)/kmodule/%,$(TARGET_EXTRA_KERNEL_MODULES))
-$(ALL_EXTRA_MODULES): $(TARGET_OUT_INTERMEDIATES)/kmodule/%: $(PRODUCT_OUT)/kernel
-	@echo Building additional kernel module $*
-	$(build_kernel) M=$(abspath $@) modules
+KERNEL_MAKE_OPTIONS = \
+    SHELL=/bin/bash \
+    -C $(LOCAL_KERNEL_SRC) \
+    O=$(abspath $(LOCAL_KERNEL_PATH)) \
+    ARCH=$(TARGET_KERNEL_ARCH) \
+    INSTALL_MOD_PATH=$(KERNEL_INSTALL_MOD_PATH) \
+    CROSS_COMPILE="$(KERNEL_CCACHE) $(YOCTO_CROSSCOMPILE)" \
+    CCACHE_SLOPPINESS=$(KERNEL_CCSLOP)
 
-# This is to ensure that kernel modules are installed before
-# vendor.img is generated.
-$(PRODUCT_OUT)/vendor.img : $(KERNEL_MODULES_INSTALL)
+KERNEL_MAKE_OPTIONS += \
+    EXTRA_FW="$(_EXTRA_FW_)" \
+    EXTRA_FW_DIR="$(abspath $(PRODUCT_OUT)/vendor/firmware)"
+
+KERNEL_CONFIG_DEPS = $(strip $(KERNEL_DEFCONFIG) $(KERNEL_DIFFCONFIG))
+
+CHECK_CONFIG_SCRIPT := $(LOCAL_KERNEL_SRC)/scripts/diffconfig
+CHECK_CONFIG_LOG :=  $(LOCAL_KERNEL_PATH)/.config.check
+
+KERNEL_DEPS := $(shell find $(LOCAL_KERNEL_SRC) \( -name *.git -prune \) -o -print )
+
+# Before building final defconfig with debug diffconfigs
+# Check that base defconfig is correct. Check is performed
+# by comparing generated .config with .config.old if it exists.
+# On incremental build, remove the old .config.old before checking.
+# If differences are observed, display a help message
+# and stop kernel build.
+# If a .config is already present, save it before processing
+# the check and restore it at the end
+$(CHECK_CONFIG_LOG): $(KERNEL_DEFCONFIG) $(KERNEL_DEPS) | yoctotoolchain
+	$(hide) mkdir -p $(@D)
+	-$(hide) [[ -e $(KERNEL_CONFIG) ]] && mv -f $(KERNEL_CONFIG) $(KERNEL_CONFIG).save
+	$(hide) rm -f $(KERNEL_CONFIG).old
+	$(hide) cat $< > $(KERNEL_CONFIG)
+	$(hide) $(MAKE) $(KERNEL_MAKE_OPTIONS) olddefconfig
+	$(hide) if [[ -e  $(KERNEL_CONFIG).old ]] ; then \
+	  $(CHECK_CONFIG_SCRIPT) $(KERNEL_CONFIG).old $(KERNEL_CONFIG) > $@ ;  fi;
+	-$(hide) [[ -e $(KERNEL_CONFIG).save ]] && mv -f $(KERNEL_CONFIG).save $(KERNEL_CONFIG)
+	$(hide) if [[ -s $@ ]] ; then \
+	  echo "CHECK KERNEL DEFCONFIG FATAL ERROR :" ; \
+	  echo "Kernel config copied from $(KERNEL_DEFCONFIG) has some config issue." ; \
+	  echo "Final '.config' and '.config.old' differ. This should never happen." ; \
+	  echo "Observed diffs are :" ; \
+	  cat $@ ; \
+	  echo "Root cause is probably that a dependancy declared in Kconfig is not respected" ; \
+	  echo "or config was added in Kconfig but value not explicitly added to defconfig." ; \
+	  echo "Recommanded method to generate defconfig is menuconfig tool instead of manual edit." ; \
+	  exit 1;  fi;
+
+.PHONY: menuconfig xconfig gconfig
+
+menuconfig xconfig gconfig: $(CHECK_CONFIG_LOG)
+	$(hide) xterm -e $(MAKE) $(KERNEL_MAKE_OPTIONS) $@
+	$(hide) cp -f $(KERNEL_CONFIG) $(KERNEL_DEFCONFIG)
+	@echo ===========
+	@echo $(KERNEL_DEFCONFIG) has been modified !
+	@echo ===========
+
+$(KERNEL_CONFIG): $(KERNEL_CONFIG_DEPS) | yoctotoolchain $(CHECK_CONFIG_LOG)
+	$(hide) cat $(KERNEL_CONFIG_DEPS) > $@
+	@echo "Generating Kernel configuration, using $(KERNEL_CONFIG_DEPS)"
+	$(hide) $(MAKE) $(KERNEL_MAKE_OPTIONS) olddefconfig </dev/null
+
+$(PRODUCT_OUT)/kernel: $(LOCAL_KERNEL) $(LOCAL_KERNEL_PATH)/copy_modules
+	$(hide) cp $(LOCAL_KERNEL) $@
+
+# kernel modules must be copied before vendorimage is generated
+$(PRODUCT_OUT)/vendor.img: $(LOCAL_KERNEL_PATH)/copy_modules
 
 # Copy modules in directory pointed by $(KERNEL_MODULES_ROOT)
 # First copy modules keeping directory hierarchy lib/modules/`uname-r`for libkmod
 # Second, create flat hierarchy for insmod linking to previous hierarchy
-$(KERNEL_MODULES_INSTALL): $(PRODUCT_OUT)/kernel $(ALL_EXTRA_MODULES)
-	$(hide) rm -rf $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules
-	$(build_kernel) modules_install
-	$(hide) for kmod in $(TARGET_EXTRA_KERNEL_MODULES) ; do \
-		echo Installing additional kernel module $${kmod} ; \
-		$(subst +,,$(subst $(hide),,$(build_kernel))) M=$(abspath $(TARGET_OUT_INTERMEDIATES))/kernel/$${kmod} modules_install ; \
-	done
-	$(hide) rm -f $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules/*/{build,source}
-	$(hide) mv $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules/$(KERNELRELEASE)/* $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules
-	$(hide) rm -rf $(PRODUCT_OUT)/$(TARGET_COPY_OUT_VENDOR)/lib/modules/$(KERNELRELEASE)
+$(LOCAL_KERNEL_PATH)/copy_modules: $(LOCAL_KERNEL)
+	@echo Copy modules from $(LOCAL_KERNEL_PATH)/lib/modules/$(KERNELRELEASE) into $(PRODUCT_OUT)/$(KERNEL_MODULES_ROOT)
+	$(hide) rm -rf $(PRODUCT_OUT)/$(KERNEL_MODULES_ROOT)
+	$(hide) rm -rf $(TARGET_RECOVERY_ROOT_OUT)/$(KERNEL_MODULES_ROOT)
+	$(hide) mkdir -p $(PRODUCT_OUT)/$(KERNEL_MODULES_ROOT)
+	$(hide) cd $(LOCAL_KERNEL_PATH)/lib/modules/$(KERNELRELEASE) && for f in `find . -name '*.ko' -or -name 'modules.*'`; do \
+		cp $$f $(PWD)/$(PRODUCT_OUT)/$(KERNEL_MODULES_ROOT)/$$(basename $$f) || exit 1; \
+		mkdir -p $(PWD)/$(PRODUCT_OUT)/$(KERNEL_MODULES_ROOT)/$(KERNELRELEASE)/$$(dirname $$f) ; \
+		ln -s /$(KERNEL_MODULES_ROOT_PATH)/$$(basename $$f) $(PWD)/$(PRODUCT_OUT)/$(KERNEL_MODULES_ROOT)/$(KERNELRELEASE)/$$f || exit 1; \
+		done
 	$(hide) touch $@
+#usb-init for recovery
+	$(hide) mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/$(KERNEL_MODULES_ROOT)
+	$(hide) for f in dwc3.ko dwc3-pci.ko xhci-hcd.ko xhci-pci.ko; do \
+		find $(LOCAL_KERNEL_PATH)/lib/modules/ -name $$f -exec cp {} $(TARGET_RECOVERY_ROOT_OUT)/$(KERNEL_MODULES_ROOT)/ \; ;\
+		done
+#mei for recovery
+	$(hide) for f in mei.ko mei-me.ko; do \
+		find $(LOCAL_KERNEL_PATH)/lib/modules/ -name $$f -exec cp {} $(TARGET_RECOVERY_ROOT_OUT)/$(KERNEL_MODULES_ROOT)/ \; ;\
+		done
 
-# Makes sure any built modules will be included in the system image build.
-ALL_DEFAULT_INSTALLED_MODULES += $(KERNEL_MODULES_INSTALL)
+ifeq ($(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_SUPPORTS_VERITY), true)
+DM_VERITY_CERT := $(LOCAL_KERNEL_PATH)/verity.x509
+$(DM_VERITY_CERT): $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_VERITY_SIGNING_KEY).x509.pem $(OPENSSL)
+	$(transform-pem-cert-to-der-cert)
+$(LOCAL_KERNEL): $(DM_VERITY_CERT)
+endif
 
-installclean: FILES += $(KERNEL_OUT) $(PRODUCT_OUT)/kernel
+$(LOCAL_KERNEL): $(MINIGZIP) $(KERNEL_CONFIG) $(BOARD_DTB) $(KERNEL_DEPS) | yoctotoolchain
+	$(MAKE) $(KERNEL_MAKE_OPTIONS)
+	$(MAKE) $(KERNEL_MAKE_OPTIONS) modules
+	$(MAKE) $(KERNEL_MAKE_OPTIONS) INSTALL_MOD_STRIP=1 modules_install
 
+
+# disable the modules built in parallel due to some modules symbols has dependency,
+# and module install depmod need they be installed one at a time.
+
+PREVIOUS_KERNEL_MODULE := $(LOCAL_KERNEL)
+
+define bld_external_module
+
+$(eval MODULE_DEPS_$(2) := $(shell find kernel/modules/$(1) \( -name *.git -prune \) -o -print ))
+
+$(LOCAL_KERNEL_PATH)/build_$(2): $(LOCAL_KERNEL) $(MODULE_DEPS_$(2)) $(PREVIOUS_KERNEL_MODULE)
+	@echo BUILDING $(1)
+	@mkdir -p $(LOCAL_KERNEL_PATH)/../modules/$(1)
+	$(hide) $(MAKE) $$(KERNEL_MAKE_OPTIONS) M=$(EXTMOD_SRC)/$(1) V=1 $(ADDITIONAL_ARGS_$(subst /,_,$(1))) modules
+	@touch $$(@)
+
+$(LOCAL_KERNEL_PATH)/install_$(2): $(LOCAL_KERNEL_PATH)/build_$(2) $(PREVIOUS_KERNEL_MODULE)
+	@echo INSTALLING $(1)
+	$(hide) $(MAKE) $$(KERNEL_MAKE_OPTIONS) M=$(EXTMOD_SRC)/$(1) INSTALL_MOD_STRIP=1 modules_install
+	@touch $$(@)
+
+$(LOCAL_KERNEL_PATH)/copy_modules: $(LOCAL_KERNEL_PATH)/install_$(2)
+
+$(eval PREVIOUS_KERNEL_MODULE := $(LOCAL_KERNEL_PATH)/install_$(2))
+endef
+
+
+# Check external module path
+$(foreach m,$(EXTERNAL_MODULES),$(if $(findstring .., $(m)), $(error $(m): All external kernel modules should be put under kernel/modules folder)))
+
+$(foreach m,$(EXTERNAL_MODULES),$(eval $(call bld_external_module,$(m),$(subst /,_,$(m)))))
+
+
+
+# Add a kernel target, so "make kernel" will build the kernel
 .PHONY: kernel
-kernel: $(PRODUCT_OUT)/kernel
+kernel: $(LOCAL_KERNEL_PATH)/copy_modules $(PRODUCT_OUT)/kernel
+
+endif
+
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/AndroidBoard.mk
 ##############################################################
 pfw_rebuild_settings := true
 # Target specific audio configuration files
-include device/intel/project-celadon/common/audio/AndroidBoard.mk
-##############################################################
-# Source: device/intel/mixins/groups/wlan/iwlwifi/AndroidBoard.mk
-##############################################################
-#LOCAL_KERNEL_PATH := $(abspath $(PRODUCT_OUT)/obj/kernel) is not defined yet
-#$(abspath $(PRODUCT_OUT)/obj/kernel)/copy_modules: iwlwifi
+include $(INTEL_PATH_COMMON)/audio/AndroidBoard.mk
 ##############################################################
 # Source: device/intel/mixins/groups/flashfiles/ini/AndroidBoard.mk
 ##############################################################

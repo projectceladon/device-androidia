@@ -1,8 +1,0 @@
-#
-# system_app
-#
-
-get_prop(system_app, vendor_crashlogd_prop)
-
-allow system_app debugfs:dir r_dir_perms;
-

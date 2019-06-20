@@ -1,1 +1,0 @@
-allow domain system_file:dir r_dir_perms;

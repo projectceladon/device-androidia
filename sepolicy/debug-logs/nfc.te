@@ -1,5 +1,0 @@
-#
-# nfc
-#
-
-allow nfc log_file:file write;

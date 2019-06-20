@@ -1,3 +1,0 @@
-userdebug_or_eng(`
-  allow platform_app crashreport_app_data_file:dir getattr;
-')

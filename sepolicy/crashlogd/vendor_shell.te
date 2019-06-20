@@ -1,5 +1,0 @@
-# enable the change of crashlog properties
-userdebug_or_eng(`
-  set_prop(vendor_shell, vendor_crashlogd_prop)
-')
-

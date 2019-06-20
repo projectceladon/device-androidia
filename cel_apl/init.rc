@@ -446,141 +446,6 @@ service setconsole /system/bin/setconsole -g
     oneshot
 
 ##############################################################
-# Source: device/intel/mixins/groups/kernel/project-celadon/init.rc
-##############################################################
-on boot
-	write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
-	write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
-	write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
-	write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
-	chown system system /sys/devices/system/cpu/cpufreq/interactive/touchboostpulse
-
-	chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
-	chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_rate
-	chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_slack
-	chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_slack
-	chown system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-	chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-	chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-	chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-	chown system system /sys/devices/system/cpu/cpufreq/interactive/target_loads
-	chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/target_loads
-	chown system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-	chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-	chown system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-	chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-	chown system system /sys/devices/system/cpu/cpufreq/interactive/boost
-	chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boost
-	chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse
-	chown system system /sys/devices/system/cpu/cpufreq/interactive/input_boost
-	chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/input_boost
-	chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
-	chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
-	chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-	chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-	# Assume SMP uses shared cpufreq policy for all CPUs
-	chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-	chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-        #Give permission to system to use i915_videostatus sysfs interface
-        chown system system /sys/class/drm/card0/power/i915_videostatus
-
-on property:sys.boot_completed=1
-	write /sys/devices/system/cpu/cpufreq/interactive/boost 0
-	write /sys/devices/system/cpu/cpufreq/interactive/irq_load_threshold 2
-
-on early-init
-	write /sys/devices/system/cpu/cpu0/cpuidle/state1/disable 1
-	write /sys/devices/system/cpu/cpu0/cpuidle/state2/disable 1
-	write /sys/devices/system/cpu/cpu0/cpuidle/state3/disable 1
-	write /sys/devices/system/cpu/cpu0/cpuidle/state4/disable 1
-	write /sys/devices/system/cpu/cpu0/cpuidle/state5/disable 1
-	write /sys/devices/system/cpu/cpu0/cpuidle/state6/disable 1
-	write /sys/devices/system/cpu/cpu0/cpuidle/state7/disable 1
-	write /sys/devices/system/cpu/cpu1/cpuidle/state1/disable 1
-	write /sys/devices/system/cpu/cpu1/cpuidle/state2/disable 1
-	write /sys/devices/system/cpu/cpu1/cpuidle/state3/disable 1
-	write /sys/devices/system/cpu/cpu1/cpuidle/state4/disable 1
-	write /sys/devices/system/cpu/cpu1/cpuidle/state5/disable 1
-	write /sys/devices/system/cpu/cpu1/cpuidle/state6/disable 1
-	write /sys/devices/system/cpu/cpu1/cpuidle/state7/disable 1
-	write /sys/devices/system/cpu/cpu2/cpuidle/state1/disable 1
-	write /sys/devices/system/cpu/cpu2/cpuidle/state2/disable 1
-	write /sys/devices/system/cpu/cpu2/cpuidle/state3/disable 1
-	write /sys/devices/system/cpu/cpu2/cpuidle/state4/disable 1
-	write /sys/devices/system/cpu/cpu2/cpuidle/state5/disable 1
-	write /sys/devices/system/cpu/cpu2/cpuidle/state6/disable 1
-	write /sys/devices/system/cpu/cpu2/cpuidle/state7/disable 1
-	write /sys/devices/system/cpu/cpu3/cpuidle/state1/disable 1
-	write /sys/devices/system/cpu/cpu3/cpuidle/state2/disable 1
-	write /sys/devices/system/cpu/cpu3/cpuidle/state3/disable 1
-	write /sys/devices/system/cpu/cpu3/cpuidle/state4/disable 1
-	write /sys/devices/system/cpu/cpu3/cpuidle/state5/disable 1
-	write /sys/devices/system/cpu/cpu3/cpuidle/state6/disable 1
-	write /sys/devices/system/cpu/cpu3/cpuidle/state7/disable 1
-
-on property:sys.boot_completed=1
-	write /sys/devices/system/cpu/cpu0/cpuidle/state1/disable 0
-	write /sys/devices/system/cpu/cpu0/cpuidle/state2/disable 0
-	write /sys/devices/system/cpu/cpu0/cpuidle/state3/disable 0
-	write /sys/devices/system/cpu/cpu0/cpuidle/state4/disable 0
-	write /sys/devices/system/cpu/cpu0/cpuidle/state5/disable 0
-	write /sys/devices/system/cpu/cpu0/cpuidle/state6/disable 0
-	write /sys/devices/system/cpu/cpu0/cpuidle/state7/disable 0
-	write /sys/devices/system/cpu/cpu1/cpuidle/state1/disable 0
-	write /sys/devices/system/cpu/cpu1/cpuidle/state2/disable 0
-	write /sys/devices/system/cpu/cpu1/cpuidle/state3/disable 0
-	write /sys/devices/system/cpu/cpu1/cpuidle/state4/disable 0
-	write /sys/devices/system/cpu/cpu1/cpuidle/state5/disable 0
-	write /sys/devices/system/cpu/cpu1/cpuidle/state6/disable 0
-	write /sys/devices/system/cpu/cpu1/cpuidle/state7/disable 0
-	write /sys/devices/system/cpu/cpu2/cpuidle/state1/disable 0
-	write /sys/devices/system/cpu/cpu2/cpuidle/state2/disable 0
-	write /sys/devices/system/cpu/cpu2/cpuidle/state3/disable 0
-	write /sys/devices/system/cpu/cpu2/cpuidle/state4/disable 0
-	write /sys/devices/system/cpu/cpu2/cpuidle/state5/disable 0
-	write /sys/devices/system/cpu/cpu2/cpuidle/state6/disable 0
-	write /sys/devices/system/cpu/cpu2/cpuidle/state7/disable 0
-	write /sys/devices/system/cpu/cpu3/cpuidle/state1/disable 0
-	write /sys/devices/system/cpu/cpu3/cpuidle/state2/disable 0
-	write /sys/devices/system/cpu/cpu3/cpuidle/state3/disable 0
-	write /sys/devices/system/cpu/cpu3/cpuidle/state4/disable 0
-	write /sys/devices/system/cpu/cpu3/cpuidle/state5/disable 0
-	write /sys/devices/system/cpu/cpu3/cpuidle/state6/disable 0
-	write /sys/devices/system/cpu/cpu3/cpuidle/state7/disable 0
-
-##############################################################
-# Source: device/intel/mixins/groups/bluetooth/btusb/init.rc
-##############################################################
-on boot
-    chmod 0644 /sys/kernel/debug/bluetooth/l2cap_le_max_credits
-    chmod 0644 /sys/kernel/debug/bluetooth/l2cap_le_default_mps
-
-on post-fs-data
-    mkdir /data/misc/dhcp 0770 dhcp system
-
-service dhcpcd_bt-pan /system/bin/dhcpcd -ABKL
-    disabled
-    oneshot
-
-service iprenew_bt-pan /system/bin/dhcpcd -n
-    disabled
-    oneshot
-
-on boot
-    insmod /vendor/lib/modules/kernel/crypto/ecdh_generic.ko
-    insmod /vendor/lib/modules/kernel/net/bluetooth/bluetooth.ko
-    insmod /vendor/lib/modules/kernel/drivers/bluetooth/btintel.ko
-    insmod /vendor/lib/modules/kernel/drivers/bluetooth/btbcm.ko
-    insmod /vendor/lib/modules/kernel/drivers/bluetooth/btrtl.ko
-    insmod /vendor/lib/modules/kernel/drivers/bluetooth/btusb.ko
-    insmod /vendor/lib/modules/kernel/sound/usb/btusb/btusb_sco_snd_card.ko
-##############################################################
-# Source: device/intel/mixins/groups/audio/project-celadon/init.rc
-##############################################################
-on boot
-    insmod /vendor/lib/modules/kernel/sound/drivers/snd-dummy.ko
-
-##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/init.rc
 ##############################################################
 on post-fs-data
@@ -634,6 +499,81 @@ on boot
     insmod /vendor/lib/modules/kernel/net/mac80211/mac80211.ko
     insmod /vendor/lib/modules/kernel/drivers/net/wireless/intel/iwlwifi/iwlwifi.ko
     insmod /vendor/lib/modules/kernel/drivers/net/wireless/intel/iwlwifi/mvm/iwlmvm.ko
+##############################################################
+# Source: device/intel/mixins/groups/kernel/gmin64/init.rc
+##############################################################
+
+on boot
+	chown system system /sys/devices/system/cpu/intel_pstate/min_perf_pct
+	chmod 0660 /sys/devices/system/cpu/intel_pstate/min_perf_pct
+	chown system system /sys/devices/system/cpu/intel_pstate/max_perf_pct
+	chmod 0660 /sys/devices/system/cpu/intel_pstate/max_perf_pct
+	write /sys/kernel/debug/pstate_snb/setpoint 75
+
+
+on early-init
+	write /sys/devices/system/cpu/cpu0/cpuidle/state1/disable 1
+	write /sys/devices/system/cpu/cpu0/cpuidle/state2/disable 1
+	write /sys/devices/system/cpu/cpu0/cpuidle/state3/disable 1
+	write /sys/devices/system/cpu/cpu1/cpuidle/state1/disable 1
+	write /sys/devices/system/cpu/cpu1/cpuidle/state2/disable 1
+	write /sys/devices/system/cpu/cpu1/cpuidle/state3/disable 1
+	write /sys/devices/system/cpu/cpu2/cpuidle/state1/disable 1
+	write /sys/devices/system/cpu/cpu2/cpuidle/state2/disable 1
+	write /sys/devices/system/cpu/cpu2/cpuidle/state3/disable 1
+	write /sys/devices/system/cpu/cpu3/cpuidle/state1/disable 1
+	write /sys/devices/system/cpu/cpu3/cpuidle/state2/disable 1
+	write /sys/devices/system/cpu/cpu3/cpuidle/state3/disable 1
+
+on property:sys.boot_completed=1
+	write /sys/devices/system/cpu/cpu0/cpuidle/state1/disable 0
+	write /sys/devices/system/cpu/cpu0/cpuidle/state2/disable 0
+	write /sys/devices/system/cpu/cpu0/cpuidle/state3/disable 0
+	write /sys/devices/system/cpu/cpu1/cpuidle/state1/disable 0
+	write /sys/devices/system/cpu/cpu1/cpuidle/state2/disable 0
+	write /sys/devices/system/cpu/cpu1/cpuidle/state3/disable 0
+	write /sys/devices/system/cpu/cpu2/cpuidle/state1/disable 0
+	write /sys/devices/system/cpu/cpu2/cpuidle/state2/disable 0
+	write /sys/devices/system/cpu/cpu2/cpuidle/state3/disable 0
+	write /sys/devices/system/cpu/cpu3/cpuidle/state1/disable 0
+	write /sys/devices/system/cpu/cpu3/cpuidle/state2/disable 0
+	write /sys/devices/system/cpu/cpu3/cpuidle/state3/disable 0
+
+
+on boot
+	setrlimit 8 8388608 8388608
+##############################################################
+# Source: device/intel/mixins/groups/bluetooth/btusb/init.rc
+##############################################################
+on boot
+    chmod 0644 /sys/kernel/debug/bluetooth/l2cap_le_max_credits
+    chmod 0644 /sys/kernel/debug/bluetooth/l2cap_le_default_mps
+
+on post-fs-data
+    mkdir /data/misc/dhcp 0770 dhcp system
+
+service dhcpcd_bt-pan /system/bin/dhcpcd -ABKL
+    disabled
+    oneshot
+
+service iprenew_bt-pan /system/bin/dhcpcd -n
+    disabled
+    oneshot
+
+on boot
+    insmod /vendor/lib/modules/kernel/crypto/ecdh_generic.ko
+    insmod /vendor/lib/modules/kernel/net/bluetooth/bluetooth.ko
+    insmod /vendor/lib/modules/kernel/drivers/bluetooth/btintel.ko
+    insmod /vendor/lib/modules/kernel/drivers/bluetooth/btbcm.ko
+    insmod /vendor/lib/modules/kernel/drivers/bluetooth/btrtl.ko
+    insmod /vendor/lib/modules/kernel/drivers/bluetooth/btusb.ko
+    insmod /vendor/lib/modules/kernel/sound/usb/btusb/btusb_sco_snd_card.ko
+##############################################################
+# Source: device/intel/mixins/groups/audio/project-celadon/init.rc
+##############################################################
+on boot
+    insmod /vendor/lib/modules/kernel/sound/drivers/snd-dummy.ko
+
 ##############################################################
 # Source: device/intel/mixins/groups/cpuset/autocores/init.rc
 ##############################################################

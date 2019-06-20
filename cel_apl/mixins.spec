@@ -19,7 +19,7 @@ storage: sdcard-mmc0-usb-sd(adoptablesd=false,adoptableusb=false)
 display-density: default
 usb-gadget: g_ffs
 adb_net: true
-kernel: project-celadon(loglevel=3, disable_cpuidle_on_boot=true, external_modules=perftools-external/soc_perf_driver/src perftools-external/socwatch_driver)
+kernel: gmin64(disable_cpuidle_on_boot=true, useprebuilt=false,src_path=kernel/lts2018, loglevel=7, interactive_governor=false, relative_sleepstates=false, modules_in_bootimg=false, external_modules=,debug_modules=, use_bcmdhd=false, use_iwlwifi=false, iwl_defconfig=, cfg_path=kernel/project-celadon/config/celadon/android/non-embargoed)
 bluetooth: btusb (ivi=true)
 boot-arch: project-celadon(bootloader_policy=0x0,bootloader_len=60,magic_key_timeout=80,assume_bios_secure_boot=true,rpmb_simulate=true,disk_encryption=false,file_encryption=true,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true,watchdog_parameters=10 30,system_partition_size=3584)
 audio: project-celadon

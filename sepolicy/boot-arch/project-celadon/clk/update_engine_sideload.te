@@ -1,3 +1,0 @@
-type update_engine_sideload, domain;
-
-allow update_engine_sideload recovery:capability { sys_rawio };

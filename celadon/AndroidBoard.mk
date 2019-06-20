@@ -534,7 +534,7 @@ kernel: $(PRODUCT_OUT)/kernel
 ##############################################################
 pfw_rebuild_settings := true
 # Target specific audio configuration files
-include device/intel/project-celadon/common/audio/AndroidBoard.mk
+include $(INTEL_PATH_COMMON)/audio/AndroidBoard.mk
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/AndroidBoard.mk
 ##############################################################

@@ -1,4 +1,0 @@
-type thermal-daemon_data_file, vendor_file_type, file_type;
-type sysfs_dmi_id, fs_type, sysfs_type;
-type sysfs_backlight_thermal, fs_type, sysfs_type;
-type thermal-daemon_run_dir, file_type, data_file_type;

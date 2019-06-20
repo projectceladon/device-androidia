@@ -1,3 +1,0 @@
-add_lunch_combo cel_kbl-eng
-add_lunch_combo cel_kbl-userdebug
-add_lunch_combo cel_kbl-user

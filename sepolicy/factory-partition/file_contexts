@@ -1,1 +1,0 @@
-/factory(/.*)?                  u:object_r:factory_file:s0

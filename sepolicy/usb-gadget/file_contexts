@@ -1,7 +1,0 @@
-/dev/dbc_raw0	u:object_r:dbc_device:s0
-/sys/devices/pci0000:00/0000:00:14.0/dbc	u:object_r:dbc_sysfs:s0
-/sys/bus/pci/devices/0000:00:14.0/dbc		u:object_r:dbc_sysfs:s0
-/sys/devices/pci0000:00/0000:00:15.0/dbc	u:object_r:dbc_sysfs:s0
-/sys/bus/pci/devices/0000:00:15.0/dbc		u:object_r:dbc_sysfs:s0
-/sys/devices/pci0000:00/0000:39:00.0/dbc	u:object_r:dbc_sysfs:s0
-/sys/bus/pci/devices/0000:39:00.0/dbc		u:object_r:dbc_sysfs:s0

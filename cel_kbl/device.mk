@@ -160,14 +160,14 @@ PRODUCT_DIR := $(dir $(lastword $(filter-out device/common/%,$(filter device/%,$
 
 INTEL_PATH_DEVICE := device/intel/project-celadon
 INTEL_PATH_COMMON := device/intel/common
-INTEL_PATH_SEPOLICY := device/intel/project-celadon/sepolicy
+INTEL_PATH_SEPOLICY := device/intel/sepolicy
 INTEL_PATH_BUILD := device/intel/build
 INTEL_PATH_HARDWARE := hardware/intel
 INTEL_PATH_VENDOR := vendor/intel
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
-DEVICE_PACKAGE_OVERLAYS += device/intel/project-celadon/common/overlay
+DEVICE_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/overlay
 
 PRODUCT_PACKAGES += $(THIRD_PARTY_APPS)
 
@@ -402,9 +402,9 @@ PRODUCT_PACKAGES += libpciaccess
 PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:vendor/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:vendor/etc/media_codecs_google_video.xml \
-    device/intel/project-celadon/common/media/media_profiles.xml:vendor/etc/media_profiles.xml \
-    device/intel/project-celadon/common/media/media_codecs.xml:vendor/etc/media_codecs.xml \
-    device/intel/project-celadon/common/media/media_codecs_performance.xml:vendor/etc/media_codecs_performance.xml
+    $(INTEL_PATH_COMMON)/media/media_profiles.xml:vendor/etc/media_profiles.xml \
+    $(INTEL_PATH_COMMON)/media/media_codecs.xml:vendor/etc/media_codecs.xml \
+    $(INTEL_PATH_COMMON)/media/media_codecs_performance.xml:vendor/etc/media_codecs_performance.xml
 
 #Enable deep buffer for video playback
 PRODUCT_PROPERTY_OVERRIDES += media.stagefright.audio.deep=true
@@ -429,7 +429,7 @@ PRODUCT_PACKAGES += lihdcpcommon
 PRODUCT_PACKAGES += hdcpd
 
 PRODUCT_COPY_FILES += \
-    device/intel/project-celadon/common/media/mfx_omxil_core.conf:vendor/etc/mfx_omxil_core.conf
+    $(INTEL_PATH_COMMON)/media/mfx_omxil_core.conf:vendor/etc/mfx_omxil_core.conf
 ##############################################################
 # Source: device/intel/mixins/groups/ethernet/dhcp/product.mk
 ##############################################################
@@ -486,7 +486,7 @@ FIRMWARES_DIR ?= vendor/linux/firmware
 FIRMWARE_FILTERS ?= .git/% %.mk
 
 # Firmware
-$(call inherit-product,device/intel/project-celadon/common/firmware.mk)
+$(call inherit-product,$(INTEL_PATH_COMMON)/firmware.mk)
 ##############################################################
 # Source: device/intel/mixins/groups/bluetooth/btusb/product.mk
 ##############################################################
@@ -610,8 +610,8 @@ PRODUCT_PACKAGES += lights.$(TARGET_BOARD_PLATFORM) \
 # thermal-daemon
 PRODUCT_PACKAGES += thermal-daemon
 PRODUCT_COPY_FILES += \
-	device/intel/project-celadon/common/thermal/thermal-conf.xml:/vendor/etc/thermal-daemon/thermal-conf.xml \
-	device/intel/project-celadon/common/thermal/thermal-cpu-cdev-order.xml:/vendor/etc/thermal-daemon/thermal-cpu-cdev-order.xml
+	$(INTEL_PATH_COMMON)/thermal/thermal-conf.xml:/vendor/etc/thermal-daemon/thermal-conf.xml \
+	$(INTEL_PATH_COMMON)/thermal/thermal-cpu-cdev-order.xml:/vendor/etc/thermal-daemon/thermal-cpu-cdev-order.xml
 ##############################################################
 # Source: device/intel/mixins/groups/pstore/ram_dummy/product.mk
 ##############################################################
@@ -655,7 +655,7 @@ endif
 
 ifeq ($(MIXIN_DEBUG_LOGS),true)
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.vendor.crashlogd.data_quota=50
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/crashlogd
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/crashlogd
 
 CRASHLOGD_LOGS_PATH := "/data/logs"
 CRASHLOGD_APLOG := true
@@ -708,7 +708,7 @@ PRODUCT_COPY_FILES += \
 # Camera: Device-specific configuration files. Supports only External USB camera, no CSI support
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.external.xml:vendor/etc/permissions/android.hardware.camera.external.xml \
-    device/intel/project-celadon/common/camera-ext/external_camera_config.xml:vendor/etc/external_camera_config.xml
+    $(INTEL_PATH_COMMON)/camera-ext/external_camera_config.xml:vendor/etc/external_camera_config.xml
 
 # External camera service
 PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-external-service \

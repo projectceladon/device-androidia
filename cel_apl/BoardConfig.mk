@@ -88,7 +88,7 @@ TARGET_USES_MKE2FS := true
 # Avoid Watchdog truggered reboot
 BOARD_KERNEL_CMDLINE += iTCO_wdt.force_no_reboot=1
 
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/boot-arch/project-celadon/$(TARGET_PRODUCT)
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/boot-arch/project-celadon/$(TARGET_PRODUCT)
 
 # Show the "OEM unlocking" option in Android "Developer options"
 #PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/android_persistent
@@ -234,7 +234,7 @@ BOARD_USES_TRUSTY := true
 BOARD_USES_KEYMASTER1 := true
 endif
 
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/trusty
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/trusty
 BOARD_SEPOLICY_M4DEFS += module_trusty=true
 
 LK_PRODUCT := project-celadon_64
@@ -338,71 +338,12 @@ BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
 ##############################################################
 # Source: device/intel/mixins/groups/debugfs/default/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/debugfs
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/debugfs
 ##############################################################
 # Source: device/intel/mixins/groups/usb-gadget/g_ffs/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/usb
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/usb
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/usb-gadget
-##############################################################
-# Source: device/intel/mixins/groups/serialport/ttyUSB0/BoardConfig.mk
-##############################################################
-SERIAL_PARAMETER ?= console=ttyUSB0,115200n8
-##############################################################
-# Source: device/intel/mixins/groups/kernel/project-celadon/BoardConfig.mk
-##############################################################
-TARGET_USES_64_BIT_BINDER := true
-BOARD_USE_64BIT_USERSPACE := true
-TARGET_SUPPORTS_64_BIT_APPS := true
-
-
-TARGET_PRELINK_MODULE := false
-TARGET_NO_KERNEL ?= false
-
-KERNEL_LOGLEVEL ?= 3
-
-
-BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_PRODUCT) firmware_class.path=/vendor/firmware loglevel=$(KERNEL_LOGLEVEL) loop.max_part=7
-
-ifneq ($(TARGET_BUILD_VARIANT),user)
-ifeq ($(SPARSE_IMG),true)
-BOARD_KERNEL_CMDLINE += console=tty0 $(SERIAL_PARAMETER)
-endif
-endif
-
-
-BOARD_SEPOLICY_M4DEFS += module_kernel=true
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/kernel
-##############################################################
-# Source: device/intel/mixins/groups/bluetooth/btusb/BoardConfig.mk
-##############################################################
-BOARD_HAVE_BLUETOOTH_INTEL_ICNV := true
-DEVICE_PACKAGE_OVERLAYS += device/intel/common/bluetooth/overlay-bt-pan
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/bluetooth/common
-
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/intel/car/
-
-##############################################################
-# Source: device/intel/mixins/groups/audio/project-celadon/BoardConfig.mk
-##############################################################
-BOARD_USES_ALSA_AUDIO := true
-BOARD_USES_TINY_ALSA_AUDIO := true
-BOARD_USES_GENERIC_AUDIO ?= false
-ifneq ($(BOARD_USES_GENERIC_AUDIO), true)
-# Audio HAL selection Flag default setting.
-#  INTEL_AUDIO_HAL:= audio     -> baseline HAL
-#  INTEL_AUDIO_HAL:= audio_pfw -> PFW-based HAL
-INTEL_AUDIO_HAL := audio
-else
-INTEL_AUDIO_HAL := stub
-endif
-
-# Use XML audio policy configuration file
-USE_XML_AUDIO_POLICY_CONF ?= 1
-# Use configurable audio policy
-USE_CONFIGURABLE_AUDIO_POLICY ?= 1
-
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/audio/project-celadon
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/BoardConfig.mk
 ##############################################################
@@ -458,7 +399,72 @@ DEVICE_PACKAGE_OVERLAYS += device/intel/common/wlan/overlay-miracast-force-singl
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/wlan/overlay-wifi-tethering
 
 BOARD_SEPOLICY_M4DEFS += module_iwlwifi=true
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/wlan/iwlwifi
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/wlan/iwlwifi
+##############################################################
+# Source: device/intel/mixins/groups/serialport/ttyUSB0/BoardConfig.mk
+##############################################################
+SERIAL_PARAMETER ?= console=ttyUSB0,115200n8
+##############################################################
+# Source: device/intel/mixins/groups/kernel/gmin64/BoardConfig.mk.1
+##############################################################
+TARGET_USES_64_BIT_BINDER := true
+##############################################################
+# Source: device/intel/mixins/groups/kernel/gmin64/BoardConfig.mk
+##############################################################
+# Specify location of board-specific kernel headers
+TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2018/kernel-headers
+
+ifneq ($(TARGET_BUILD_VARIANT),user)
+KERNEL_LOGLEVEL ?= 7
+else
+KERNEL_LOGLEVEL ?= 2
+endif
+
+ifeq ($(TARGET_BUILD_VARIANT),user)
+BOARD_KERNEL_CMDLINE += console=tty0
+endif
+
+BOARD_KERNEL_CMDLINE += \
+        loglevel=$(KERNEL_LOGLEVEL) \
+        androidboot.hardware=$(TARGET_DEVICE)\
+        firmware_class.path=/vendor/firmware
+
+
+BOARD_KERNEL_CMDLINE += \
+       intel_pstate=passive
+
+BOARD_SEPOLICY_M4DEFS += module_kernel=true
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/kernel
+##############################################################
+# Source: device/intel/mixins/groups/bluetooth/btusb/BoardConfig.mk
+##############################################################
+BOARD_HAVE_BLUETOOTH_INTEL_ICNV := true
+DEVICE_PACKAGE_OVERLAYS += device/intel/common/bluetooth/overlay-bt-pan
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/bluetooth/common
+
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/common/bluetooth/intel/car/
+
+##############################################################
+# Source: device/intel/mixins/groups/audio/project-celadon/BoardConfig.mk
+##############################################################
+BOARD_USES_ALSA_AUDIO := true
+BOARD_USES_TINY_ALSA_AUDIO := true
+BOARD_USES_GENERIC_AUDIO ?= false
+ifneq ($(BOARD_USES_GENERIC_AUDIO), true)
+# Audio HAL selection Flag default setting.
+#  INTEL_AUDIO_HAL:= audio     -> baseline HAL
+#  INTEL_AUDIO_HAL:= audio_pfw -> PFW-based HAL
+INTEL_AUDIO_HAL := audio
+else
+INTEL_AUDIO_HAL := stub
+endif
+
+# Use XML audio policy configuration file
+USE_XML_AUDIO_POLICY_CONF ?= 1
+# Use configurable audio policy
+USE_CONFIGURABLE_AUDIO_POLICY ?= 1
+
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/audio/project-celadon
 ##############################################################
 # Source: device/intel/mixins/groups/cpu-arch/skl/BoardConfig.mk
 ##############################################################
@@ -492,8 +498,8 @@ WITH_DEXPREOPT_PIC := true
 ##############################################################
 # Source: device/intel/mixins/groups/thermal/thermal-daemon/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/thermal/thermal-daemon
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/thermal
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/thermal/thermal-daemon
 ##############################################################
 # Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk.1
 ##############################################################
@@ -536,7 +542,7 @@ FAST_FLASHFILES := true
 ##############################################################
 # Source: device/intel/mixins/groups/camera-ext/ext-camera-only/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/camera-ext/ext-camera-only
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/camera-ext/ext-camera-only
 ##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/BoardConfig.mk
 ##############################################################
@@ -544,7 +550,7 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/memtrack
 ##############################################################
 # Source: device/intel/mixins/groups/health/true/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/health_hal
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/health_hal
 
 DEVICE_FRAMEWORK_MANIFEST_FILE += \
 				system/libhidl/vintfdata/manifest_healthd_exclude.xml
@@ -570,14 +576,14 @@ BOARD_SEPOLICY_M4DEFS += module_swap=true
 ##############################################################
 # Source: device/intel/mixins/groups/power/true/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/power
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/power
 
 ##############################################################
 # Source: device/intel/mixins/groups/default-drm/true/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/drm-default
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/drm-default
 ##############################################################
 # Source: device/intel/mixins/groups/neuralnetworks/true/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/neuralnetworks
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/neuralnetworks
 # ------------------ END MIX-IN DEFINITIONS ------------------

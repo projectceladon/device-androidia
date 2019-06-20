@@ -1,4 +1,0 @@
-# permission needed for sensor service to access thermal sensors
-allow system_server sysfs_thermal_management:dir rw_dir_perms;
-allow system_server sysfs_thermal_management:file rw_file_perms;
-#for last_reboot_reason

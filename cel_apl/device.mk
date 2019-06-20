@@ -160,14 +160,14 @@ PRODUCT_DIR := $(dir $(lastword $(filter-out device/common/%,$(filter device/%,$
 
 INTEL_PATH_DEVICE := device/intel/project-celadon
 INTEL_PATH_COMMON := device/intel/common
-INTEL_PATH_SEPOLICY := device/intel/project-celadon/sepolicy
+INTEL_PATH_SEPOLICY := device/intel/sepolicy
 INTEL_PATH_BUILD := device/intel/build
 INTEL_PATH_HARDWARE := hardware/intel
 INTEL_PATH_VENDOR := vendor/intel
 
 PRODUCT_TAGS += dalvik.gc.type-precise
 
-DEVICE_PACKAGE_OVERLAYS += device/intel/project-celadon/common/overlay
+DEVICE_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/overlay
 
 PRODUCT_PACKAGES += $(THIRD_PARTY_APPS)
 
@@ -402,9 +402,9 @@ PRODUCT_PACKAGES += libpciaccess
 PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:vendor/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:vendor/etc/media_codecs_google_video.xml \
-    device/intel/project-celadon/common/media/media_profiles.xml:vendor/etc/media_profiles.xml \
-    device/intel/project-celadon/common/media/media_codecs.xml:vendor/etc/media_codecs.xml \
-    device/intel/project-celadon/common/media/media_codecs_performance.xml:vendor/etc/media_codecs_performance.xml
+    $(INTEL_PATH_COMMON)/media/media_profiles.xml:vendor/etc/media_profiles.xml \
+    $(INTEL_PATH_COMMON)/media/media_codecs.xml:vendor/etc/media_codecs.xml \
+    $(INTEL_PATH_COMMON)/media/media_codecs_performance.xml:vendor/etc/media_codecs_performance.xml
 
 #Enable deep buffer for video playback
 PRODUCT_PROPERTY_OVERRIDES += media.stagefright.audio.deep=true
@@ -429,7 +429,7 @@ PRODUCT_PACKAGES += lihdcpcommon
 PRODUCT_PACKAGES += hdcpd
 
 PRODUCT_COPY_FILES += \
-    device/intel/project-celadon/common/media/mfx_omxil_core.conf:vendor/etc/mfx_omxil_core.conf
+    $(INTEL_PATH_COMMON)/media/mfx_omxil_core.conf:vendor/etc/mfx_omxil_core.conf
 ##############################################################
 # Source: device/intel/mixins/groups/ethernet/dhcp/product.mk
 ##############################################################
@@ -471,22 +471,55 @@ ifeq ($(TARGET_BUILD_VARIANT),user)
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.adb.secure=1
 endif
 ##############################################################
-# Source: device/intel/mixins/groups/kernel/project-celadon/product.mk
+# Source: device/intel/mixins/groups/wlan/iwlwifi/product.mk
+##############################################################
+PRODUCT_PACKAGES += \
+    hostapd \
+    hostapd_cli \
+    wificond \
+    wifilogd \
+    wpa_supplicant \
+    wpa_cli \
+    iw
+   
+# FW and PNVM
+PRODUCT_PACKAGES += \
+    iwl-fw          \
+    iwl-nvm
+
+# iwlwifi USC
+PRODUCT_PACKAGES += \
+    wifi_intel_usc
+
+#copy iwlwifi wpa config files
+PRODUCT_COPY_FILES += \
+        device/intel/common/wlan/wpa_supplicant-common.conf:vendor/etc/wifi/wpa_supplicant.conf \
+        device/intel/common/wlan/iwlwifi/wpa_supplicant_overlay.conf:vendor/etc/wifi/wpa_supplicant_overlay.conf \
+        device/intel/common/wlan/iwlwifi/p2p_supplicant_overlay.conf:vendor/etc/wifi/p2p_supplicant_overlay.conf \
+        frameworks/native/data/etc/android.hardware.wifi.xml:vendor/etc/permissions/android.hardware.wifi.xml \
+        frameworks/native/data/etc/android.hardware.wifi.direct.xml:vendor/etc/permissions/android.hardware.wifi.direct.xml
+
+# Wifi configuration
+BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+BOARD_WLAN_DEVICE := iwlwifi
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.wifi.softap_dualband_allow=false
+
+PRODUCT_PACKAGES += \
+  android.hardware.wifi@1.0-service
+##############################################################
+# Source: device/intel/mixins/groups/kernel/gmin64/product.mk.1
 ##############################################################
 TARGET_KERNEL_ARCH := x86_64
-BOARD_USE_64BIT_KERNEL := true
 
+##############################################################
+# Source: device/intel/mixins/groups/kernel/gmin64/product.mk
+##############################################################
 
-KERNEL_MODULES_ROOT_PATH ?= /vendor/lib/modules
+KERNEL_MODULES_ROOT_PATH ?= vendor/lib/modules
 KERNEL_MODULES_ROOT ?= $(KERNEL_MODULES_ROOT_PATH)
-
-FIRMWARES_DIR ?= vendor/linux/firmware
-
-# Include common settings.
-FIRMWARE_FILTERS ?= .git/% %.mk
-
-# Firmware
-$(call inherit-product,device/intel/project-celadon/common/firmware.mk)
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.vendor.boot.moduleslocation=/$(KERNEL_MODULES_ROOT_PATH)
 ##############################################################
 # Source: device/intel/mixins/groups/bluetooth/btusb/product.mk
 ##############################################################
@@ -528,44 +561,6 @@ PRODUCT_PACKAGES += \
     android.hardware.audio@2.0-service
 
 PRODUCT_PROPERTY_OVERRIDES += audio.safemedia.bypass=true
-##############################################################
-# Source: device/intel/mixins/groups/wlan/iwlwifi/product.mk
-##############################################################
-PRODUCT_PACKAGES += \
-    hostapd \
-    hostapd_cli \
-    wificond \
-    wifilogd \
-    wpa_supplicant \
-    wpa_cli \
-    iw
-   
-# FW and PNVM
-PRODUCT_PACKAGES += \
-    iwl-fw          \
-    iwl-nvm
-
-# iwlwifi USC
-PRODUCT_PACKAGES += \
-    wifi_intel_usc
-
-#copy iwlwifi wpa config files
-PRODUCT_COPY_FILES += \
-        device/intel/common/wlan/wpa_supplicant-common.conf:vendor/etc/wifi/wpa_supplicant.conf \
-        device/intel/common/wlan/iwlwifi/wpa_supplicant_overlay.conf:vendor/etc/wifi/wpa_supplicant_overlay.conf \
-        device/intel/common/wlan/iwlwifi/p2p_supplicant_overlay.conf:vendor/etc/wifi/p2p_supplicant_overlay.conf \
-        frameworks/native/data/etc/android.hardware.wifi.xml:vendor/etc/permissions/android.hardware.wifi.xml \
-        frameworks/native/data/etc/android.hardware.wifi.direct.xml:vendor/etc/permissions/android.hardware.wifi.direct.xml
-
-# Wifi configuration
-BOARD_WPA_SUPPLICANT_DRIVER := NL80211
-BOARD_WLAN_DEVICE := iwlwifi
-
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    ro.wifi.softap_dualband_allow=false
-
-PRODUCT_PACKAGES += \
-  android.hardware.wifi@1.0-service
 ##############################################################
 # Source: device/intel/mixins/groups/cpuset/autocores/product.mk
 ##############################################################
@@ -610,8 +605,8 @@ PRODUCT_PACKAGES += lights.$(TARGET_BOARD_PLATFORM) \
 # thermal-daemon
 PRODUCT_PACKAGES += thermal-daemon
 PRODUCT_COPY_FILES += \
-	device/intel/project-celadon/common/thermal/thermal-conf.xml:/vendor/etc/thermal-daemon/thermal-conf.xml \
-	device/intel/project-celadon/common/thermal/thermal-cpu-cdev-order.xml:/vendor/etc/thermal-daemon/thermal-cpu-cdev-order.xml
+	$(INTEL_PATH_COMMON)/thermal/thermal-conf.xml:/vendor/etc/thermal-daemon/thermal-conf.xml \
+	$(INTEL_PATH_COMMON)/thermal/thermal-cpu-cdev-order.xml:/vendor/etc/thermal-daemon/thermal-cpu-cdev-order.xml
 ##############################################################
 # Source: device/intel/mixins/groups/pstore/ram_dummy/product.mk
 ##############################################################
@@ -655,7 +650,7 @@ endif
 
 ifeq ($(MIXIN_DEBUG_LOGS),true)
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.vendor.crashlogd.data_quota=50
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/sepolicy/crashlogd
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/crashlogd
 
 CRASHLOGD_LOGS_PATH := "/data/logs"
 CRASHLOGD_APLOG := true
@@ -708,7 +703,7 @@ PRODUCT_COPY_FILES += \
 # Camera: Device-specific configuration files. Supports only External USB camera, no CSI support
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.external.xml:vendor/etc/permissions/android.hardware.camera.external.xml \
-    device/intel/project-celadon/common/camera-ext/external_camera_config.xml:vendor/etc/external_camera_config.xml
+    $(INTEL_PATH_COMMON)/camera-ext/external_camera_config.xml:vendor/etc/external_camera_config.xml
 
 # External camera service
 PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-external-service \

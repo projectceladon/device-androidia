@@ -1,2 +1,0 @@
-# user changable crashlogd properties
-persist.vendor.crashlogd.          u:object_r:vendor_crashlogd_prop:s0

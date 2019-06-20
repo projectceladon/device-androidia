@@ -1,3 +1,0 @@
-genfscon sysfs /devices/virtual/dmi/id/product_name u:object_r:sysfs_dmi_id:s0
-genfscon sysfs /devices/virtual/dmi/id/product_uuid u:object_r:sysfs_dmi_id:s0
-genfscon sysfs /class/backlight	u:object_r:sysfs_backlight_thermal:s0

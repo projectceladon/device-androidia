@@ -1,4 +1,0 @@
-#
-# nfc
-#
-allow nfc config_file:dir search;

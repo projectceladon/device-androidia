@@ -55,6 +55,11 @@
 /dev/media*       0660  media  system
 /dev/video*       0660  media  system
 ##############################################################
+# Source: device/intel/mixins/groups/wlan/iwlwifi/ueventd.rc
+##############################################################
+# WLAN GPT factory partition block device
+/dev/block/*/*/*/by-name/wlan_nvm 0660 wifi system
+##############################################################
 # Source: device/intel/mixins/groups/bluetooth/btusb/ueventd.rc
 ##############################################################
 
@@ -64,11 +69,6 @@
 /sys/devices/pci*/0000:00:*/usb*/*/*/*/bluetooth/hci0/rfkill* state  0660 bluetooth bluetooth
 /sys/devices/pci*/0000:00:*/usb*/*/*/*/bluetooth/hci0/rfkill* type   0440 bluetooth bluetooth
 /dev/rfkill                   0660   root       bluetooth
-##############################################################
-# Source: device/intel/mixins/groups/wlan/iwlwifi/ueventd.rc
-##############################################################
-# WLAN GPT factory partition block device
-/dev/block/*/*/*/by-name/wlan_nvm 0660 wifi system
 ##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/ueventd.rc
 ##############################################################

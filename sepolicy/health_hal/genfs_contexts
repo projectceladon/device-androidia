@@ -1,9 +1,0 @@
-genfscon sysfs /devices/pci0000:00/0000:00:1c.0/mmc_host/mmc1/mmc1:0001 u:object_r:sysfs_health2_0_management:s0
-
-genfscon sysfs /devices/pci0000:00/0000:00:03.0/virtio0/block/vda u:object_r:sysfs_health2_0_management:s0
-
-genfscon sysfs /devices/pci0000:00/0000:00:17.0/ata1/host0/target0:0:0/0:0:0:0/block/sda u:object_r:sysfs_health2_0_management:s0
-
-genfscon sysfs /devices/pci0000:00/0000:00:17.0/ata3/host2/target2:0:0/2:0:0:0/block/sda u:object_r:sysfs_health2_0_management:s0
-
-genfscon sysfs /devices/pci0000:00/0000:00:1d.0/0000:3c:00.0/nvme/nvme0/nvme0n1 u:object_r:sysfs_health2_0_management:s0

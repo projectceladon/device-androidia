@@ -1,3 +1,0 @@
-allow dumpstate block_device:blk_file getattr;
-allow dumpstate debugfs_graphics_sync:dir r_dir_perms;
-allow dumpstate self:netlink_xfrm_socket create;

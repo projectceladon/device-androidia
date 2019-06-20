@@ -1,8 +1,0 @@
-allow vendor_init sysfs_powercap:dir r_dir_perms;
-allow vendor_init sysfs_powercap:file { read setattr };
-allow vendor_init thermal-daemon_data_file: dir r_dir_perms;
-allow vendor_init thermal-daemon_data_file: file { read };
-allow vendor_init thermal-daemon_run_dir: dir create_dir_perms;
-allow vendor_init thermal-daemon_run_dir: file { create read write setattr };
-allow vendor_init sysfs_dmi_id: file { read setattr };
-allow vendor_init sysfs_backlight_thermal: file { read write setattr };
