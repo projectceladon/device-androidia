@@ -18,6 +18,8 @@ allow hal_neuralnetworks_default usb_device:chr_file rw_file_perms;
 allow hal_neuralnetworks_default self:netlink_kobject_uevent_socket { read bind create setopt };
 
 dontaudit hal_neuralnetworks_default self:capability { dac_read_search dac_override };
+
+get_prop(hal_neuralnetworks_default, vendor_nnhal_prop)
 allow hal_neuralnetworks_default sysfs:dir r_dir_perms;
 allow hal_neuralnetworks_default sysfs:file rw_file_perms;
 allow hal_neuralnetworks_default nn_vendor_data_file:dir rw_dir_perms;
