@@ -5,10 +5,6 @@
 ##############################################################
 /dev/block/*/*/*/by-name/persistent   0660 system system
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/ueventd.rc
-##############################################################
-/dev/block/pci/pci0000:00/0000:00:*.0/by-name/teedata      0660 system system
-##############################################################
 # Source: device/intel/mixins/groups/project-celadon/default/ueventd.rc
 ##############################################################
 /sys/devices/system/cpu/cpu*     online     0664   system     system
