@@ -116,6 +116,7 @@ KERNELFLINGER_SSL_LIBRARY := openssl
 KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := true
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/persistent
+
 ##############################################################
 # Source: device/intel/mixins/groups/sepolicy/enforcing/product.mk
 ##############################################################
