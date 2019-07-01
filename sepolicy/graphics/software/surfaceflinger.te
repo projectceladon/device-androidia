@@ -1,0 +1,2 @@
+set_prop(surfaceflinger, exported_system_prop)
+allow surfaceflinger self:process execmem;

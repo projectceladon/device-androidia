@@ -193,91 +193,21 @@ on property:persist.vendor.sys.usb.adbover=dbc
     stop adbd
     start adbd
 ##############################################################
-# Source: device/intel/mixins/groups/graphics/mesa/init.rc.1
+# Source: device/intel/mixins/groups/graphics/software/init.rc
 ##############################################################
-# for hardware accelerated graphics
-service msync /system/vendor/bin/msync
-    class main
-    user media
-    group media
-
-service coreu /system/vendor/bin/coreu
-    class main
-    user media
-    group media shell
-
-# Note that this service must start as root to set up a mem-mapped region
-# and once that is set up it will drop all unnecessary capabilities and
-# will not show up as a root process in the steady state.
-service hdcpd /system/vendor/bin/hdcpd
-    class main
-    user media
-    group media shell
-    seclabel u:r:hdcpd:s0
-
-on post-fs-data
-    # Change ownership of pci syfs file to 'media', as hdcpd runs as 'media'
-    chown media media /sys/devices/pci0000\:00/0000\:00\:02.0/resource0
-    mkdir /data/system 0770 system system
-    mkdir /data/vendor/coreu 0770 media root
-    mkdir /data/hdcp 0770 media root
-on boot
-    #Give permission to system to use i915_videostatus sysfs interface
-    chown system system /sys/class/drm/card0/power/i915_videostatus
-    chown media media /sys/kernel/debug/tracing/events/drm/drm_vblank_event/enable
-    chown media media /sys/kernel/debug/tracing/events/i915/i915_flip_complete/enable
-    chown media media /sys/kernel/debug/tracing/events/i915/i915_flip_request/enable
-    chown media media /sys/kernel/debug/tracing/events/i915/i915_gem_ring_dispatch/enable
-    chown media media /sys/kernel/debug/tracing/events/i915/i915_gem_request_complete/enable
-    chown media media /sys/kernel/debug/tracing/events/i915/i915_gem_request_retire/enable
-    chown media media /sys/kernel/debug/tracing/events/i915/i915_gem_request_wait_begin/enable
-    chown media media /sys/kernel/debug/tracing/events/i915/i915_gem_request_wait_end/enable
-    chown media media /sys/kernel/debug/tracing/events/i915/i915_ring_wait_begin/enable
-    chown media media /sys/kernel/debug/tracing/events/i915/i915_ring_wait_end/enable
-    chown media media /sys/devices/pci0000:00/0000:00:02.0/drm/card0/gt_max_freq_mhz
-    chown media media /sys/devices/pci0000:00/0000:00:02.0/drm/card0/gt_min_freq_mhz
-##############################################################
-# Source: device/intel/mixins/groups/graphics/mesa/init.rc
-##############################################################
-on init
-    chown system system /sys/class/backlight/intel_backlight/brightness
-    chown system system /sys/class/backlight/acpi_video0/brightness
-    export INTEL_DEBUG heur32
-
-on post-fs-data
-   #setprop debug.sf.nobootanimation 1
-   mkdir /data/system 0770 system system
-
-on boot
-   chown system graphics /sys/kernel/debug/sync/sw_sync
-   symlink /sys/kernel/debug/sync/sw_sync /dev/sw_sync
-##############################################################
-# Source: device/intel/mixins/groups/media/project-celadon/init.rc
-##############################################################
-# Note that this service must start as root to set up a mem-mapped region
-# and once that is set up it will drop all unnecessary capabilities and
-# will not show up as a root process in the steady state.
-service hdcpd /system/vendor/bin/hdcpd
-    class main
-    user media
-    group media shell
-    seclabel u:r:hdcpd:s0
-
-on post-fs-data
-    mkdir /data/hdcp 0770 media root
-    mkdir /data/coreu 0770 media root
-    mkdir /data/media 0770 media_rw media_rw
-    chown media_rw media_rw /data/media
-
 on post-fs
-    insmod /vendor/lib/modules/kernel/drivers/media/v4l2-core/videobuf2-core.ko
-    insmod /vendor/lib/modules/kernel/drivers/media/v4l2-core/videobuf2-v4l2.ko
-    insmod /vendor/lib/modules/kernel/drivers/media/v4l2-core/videobuf2-memops.ko
-    insmod /vendor/lib/modules/kernel/drivers/media/v4l2-core/videobuf2-dma-contig.ko
-    insmod /vendor/lib/modules/kernel/drivers/media/v4l2-core/videobuf2-vmalloc.ko
-    insmod /vendor/lib/modules/kernel/drivers/media/usb/uvc/uvcvideo.ko
+    # If android believes it is running in the emulator without support for
+    # GPU acceleration it will disable GLES2 usage in canvas allowing Android
+    # to boot to homescreen using only a software GLES1 implementation.
 
-    setprop media.settings.xml /vendor/etc/media_profiles.xml
+    setprop ro.kernel.qemu.gles 2
+    setprop ro.kernel.qemu 1
+
+service setconsole /system/bin/setconsole -g
+    class main
+    user root
+    oneshot
+
 ##############################################################
 # Source: device/intel/mixins/groups/ethernet/dhcp/init.rc
 ##############################################################
