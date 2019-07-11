@@ -23,7 +23,7 @@ adb_net: true
 kernel: project-celadon(loglevel=3, disable_cpuidle_on_boot=true, external_modules=perftools-external/soc_perf_driver/src perftools-external/socwatch_driver)
 bluetooth: btusb
 boot-arch: project-celadon(bootloader_policy=0x0,bootloader_len=60,magic_key_timeout=80,assume_bios_secure_boot=true,rpmb_simulate=true,disk_encryption=false,file_encryption=true,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true,system_partition_size=3584)
-audio: project-celadon
+audio: project-celadon(clk_audio=true)
 wlan: iwlwifi
 cpu-arch: skl
 cpuset: autocores
