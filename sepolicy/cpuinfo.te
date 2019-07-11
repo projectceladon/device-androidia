@@ -1,0 +1,57 @@
+# cpuinfo service
+type cpuinfo, domain;
+type cpuinfo_exec, exec_type, file_type, vendor_file_type;
+
+init_daemon_domain(cpuinfo)
+
+#============= fsck ==============
+allow fsck block_device:blk_file { open read write };
+
+#============= hal_audio_default ==============
+allow hal_audio_default vendor_shell_exec:file execute_no_trans;
+allow hal_audio_default vendor_toolbox_exec:file execute_no_trans;
+
+#============= hal_graphics_composer_default ==============
+allow hal_graphics_composer_default default_prop:file { getattr map open read };
+allow hal_graphics_composer_default hal_configstore_ISurfaceFlingerConfigs:hwservice_manager find;
+allow hal_graphics_composer_default hal_configstore_default:binder call;
+
+#============= hal_health_default ==============
+allow hal_health_default sysfs:file { getattr open read };
+
+#============= hal_light_default ==============
+allow hal_light_default sysfs:file { read write };
+allow hal_light_default sysfs_backlight_thermal:dir search;
+
+#============= hwservicemanager ==============
+allow hwservicemanager runtime_event_log_tags_file:file map;
+
+#============= init ==============
+allow init proc:file { open write };
+allow init sysfs:file { open read };
+
+#============= proc_net ==============
+allow proc_net proc:filesystem associate;
+
+#============= rfkill ==============
+allow rfkill shell_exec:file map;
+
+#============= set_storage ==============
+allow set_storage frp_block_device:blk_file setattr;
+
+#============= system_server ==============
+allow system_server sysfs:file { getattr open read };
+
+#============= update_engine ==============
+allow update_engine runtime_event_log_tags_file:file map;
+
+#============= vendor_init ==============
+allow vendor_init default_prop:file { getattr map open read };
+allow vendor_init dhcp_data_file:dir setattr;
+allow vendor_init kernel:system module_request;
+allow vendor_init media_rw_data_file:dir setattr;
+allow vendor_init self:key write;
+allow vendor_init system_data_file:dir { ioctl open read setattr };
+
+#============= webview_zygote ==============
+allow webview_zygote zygote:unix_dgram_socket write;
