@@ -1,2 +1,3 @@
 #Debug configuration options
+CONFIG_X86_MSR=y
 CONFIG_DEBUG_INFO=y
