@@ -793,20 +793,27 @@ PRODUCT_PACKAGES += android.hardware.drm@1.0-service \
 ##############################################################
 # neuralnetworks HAL
 PRODUCT_PACKAGES += \
+<<<<<<< HEAD
     android.hardware.neuralnetworks@1.0-generic-service \
     android.hardware.neuralnetworks@1.0-generic-impl \
     android.hardware.neuralnetworks@1.0-service-gpgpu
+=======
+    android.hardware.neuralnetworks@1.0-service-gpgpu \
+    android.hardware.neuralnetworks@1.0-mkldnn-service
+>>>>>>> 1be3d10... NNhal 1.0 with MKLDNN and without openvino
 
 PRODUCT_PACKAGES += \
     libinference_engine
 
 PRODUCT_PACKAGES += \
-    libMKLDNNPlugin\
     libmkldnn
 
 PRODUCT_PACKAGES += \
     graphtest_cpu
 
+PRODUCT_PROPERTY_OVERRIDES += debug.nn.vlog=0
+PRODUCT_PROPERTY_OVERRIDES += debug.nn.cpuonly=0
+PRODUCT_PROPERTY_OVERRIDES += debug.nn.partition=1
 ##############################################################
 # Source: device/intel/mixins/groups/debug-kernel/default/product.mk
 ##############################################################
