@@ -63,6 +63,13 @@
                              samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
                 </devicePort>
 
+                <devicePort tagName="BT SCO" type="AUDIO_DEVICE_OUT_BLUETOOTH_SCO" role="sink">
+                </devicePort>
+                <devicePort tagName="BT SCO Headset" type="AUDIO_DEVICE_OUT_BLUETOOTH_SCO_HEADSET" role="sink">
+                </devicePort>
+                <devicePort tagName="BT SCO Headset Mic" type="AUDIO_DEVICE_IN_BLUETOOTH_SCO_HEADSET" role="source">
+                </devicePort>
+
                 <devicePort tagName="Built-In Mic" type="AUDIO_DEVICE_IN_BUILTIN_MIC" role="source">
                     <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
                              samplingRates="8000,11025,12000,16000,22050,24000,32000,44100,48000"
@@ -85,11 +92,15 @@
                 <route type="mix" sink="Speaker"
                        sources="primary_output"/>
                 <route type="mix" sink="primary_input"
-                       sources="Wired Headset Mic,Built-In Mic"/>
+                       sources="Wired Headset Mic,Built-In Mic,BT SCO Headset Mic"/>
                 <route type="mix" sink="voice_rx"
                        sources="Telephony Rx"/>
                 <route type="mix" sink="Telephony Tx"
                        sources="voice_tx"/>
+                <route type="mix" sink="BT SCO"
+                       sources="primary_output"/>
+                <route type="mix" sink="BT SCO Headset"
+                       sources="primary_output"/>
             </routes>
 
         </module>
