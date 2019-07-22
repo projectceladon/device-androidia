@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86_64 4.19.55 Kernel Configuration
+# Linux/x86_64 4.19.57 Kernel Configuration
 #
 
 #
@@ -1556,7 +1556,7 @@ CONFIG_MISC_RTSX=y
 CONFIG_UID_SYS_STATS=y
 # CONFIG_UID_SYS_STATS_DEBUG is not set
 # CONFIG_C2PORT is not set
-
+CONFIG_BT_SCOHCI=m
 #
 # EEPROM support
 #
