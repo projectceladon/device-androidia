@@ -64,6 +64,11 @@ service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data
     group system
 
 ##############################################################
+# Source: device/intel/mixins/groups/device-specific/clk/init.rc
+##############################################################
+on early-init
+	write /sys/devices/system/cpu/intel_pstate/max_perf_pct 80
+##############################################################
 # Source: device/intel/mixins/groups/project-celadon/default/init.rc
 ##############################################################
 
