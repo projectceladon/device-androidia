@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86_64 4.19.57 Kernel Configuration
+# Linux/x86_64 4.19.59 Kernel Configuration
 #
 
 #
@@ -1556,7 +1556,7 @@ CONFIG_MISC_RTSX=y
 CONFIG_UID_SYS_STATS=y
 # CONFIG_UID_SYS_STATS_DEBUG is not set
 # CONFIG_C2PORT is not set
-CONFIG_BT_SCOHCI=m
+
 #
 # EEPROM support
 #
@@ -2136,7 +2136,7 @@ CONFIG_SWPHY=y
 #
 CONFIG_AMD_PHY=m
 # CONFIG_AQUANTIA_PHY is not set
-# CONFIG_ASIX_PHY is not set
+# CONFIG_AX88796B_PHY is not set
 CONFIG_AT803X_PHY=m
 CONFIG_BCM7XXX_PHY=m
 CONFIG_BCM87XX_PHY=m
@@ -4211,6 +4211,7 @@ CONFIG_SND_USB_HIFACE=m
 # CONFIG_SND_USB_PODHD is not set
 # CONFIG_SND_USB_TONEPORT is not set
 # CONFIG_SND_USB_VARIAX is not set
+CONFIG_BT_SCOHCI=m
 CONFIG_SND_SOC=y
 CONFIG_SND_SOC_AC97_BUS=y
 # CONFIG_SND_SOC_AMD_ACP is not set
