@@ -8,7 +8,7 @@ product.mk: device.mk
 device-specific: cel_apl
 treble: true
 vndk: true
-2ndstage: oemvars
+2ndstage: oemvars(magic_key_timeout = 80)
 project-celadon: default
 sepolicy: enforcing
 graphics: mesa(gralloc1=true,gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true)
