@@ -1,2 +1,3 @@
 # sysfs
+genfscon sysfs /devices/pnp0/00:03/rtc   u:object_r:sysfs_rtc:s0
 genfscon sysfs /devices/pnp0/00:04/rtc   u:object_r:sysfs_rtc:s0
