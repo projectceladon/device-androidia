@@ -1,0 +1,16 @@
+#
+# nativetouch_hal
+#
+
+# Rules for hardware/intel/nativetouch/helper
+type nativetouch_hal_helper, domain;
+type nativetouch_hal_helper_exec, exec_type, file_type, vendor_file_type;
+init_daemon_domain(nativetouch_hal_helper)
+
+# no need to complain about denied access
+# as it will clutter the log when probing
+# all /proc/<pid> where it cannot search/open/read
+dontaudit nativetouch_hal_helper domain:dir search;
+
+# allow to set property ctl.nativetouch_hal.*
+set_prop(nativetouch_hal_helper, vendor_nativetouch_hal_prop)

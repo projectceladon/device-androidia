@@ -1,0 +1,16 @@
+# HwBinder IPC from client to server, and callbacks
+binder_call(hal_nativetouch_client, hal_nativetouch_server)
+binder_call(hal_nativetouch_server, hal_nativetouch_client)
+
+add_hwservice(hal_nativetouch_server, hal_nativetouch_hwservice)
+# add_hwservice(hal_nativetouch_server, hal_nativetouch_service)
+allow hal_nativetouch_client hal_nativetouch_hwservice:hwservice_manager find;
+
+allow hal_nativetouch sysfs:file rw_file_perms;
+allow hal_nativetouch sysfs_devices_system_cpu:file rw_file_perms;
+
+allow hal_nativetouch sysfs_nativetouch1_0_management:file rw_file_perms;
+allow hal_nativetouch sysfs_nativetouch1_0_management:dir r_dir_perms;
+
+
+neverallow { hal_nativetouch_server -halserverdomain } domain:process fork;
