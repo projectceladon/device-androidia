@@ -1,0 +1,8 @@
+attribute hal_nativetouch;
+expandattribute hal_nativetouch true;
+
+attribute hal_nativetouch_client;
+expandattribute hal_nativetouch_client true;
+
+attribute hal_nativetouch_server;
+expandattribute hal_nativetouch_server false;

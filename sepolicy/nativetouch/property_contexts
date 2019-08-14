@@ -1,0 +1,10 @@
+# property for nativetouch HAL
+#vendor.nativetouch_hal. u:object_r:vendor_nativetouch_hal_prop:s0
+
+#persist.sys.touch.mosaic.num           u:object_r:exported_system_prop:s0
+#persist.sys.touch.mosaic.mode          u:object_r:exported_system_prop:s0
+#persist.sys.touch.mosaic.0          u:object_r:exported_system_prop:s0
+#persist.sys.touch.mosaic.1          u:object_r:exported_system_prop:s0
+#persist.sys.touch.mosaic.2          u:object_r:exported_system_prop:s0
+#persist.sys.touch.mosaic.configured          u:object_r:exported_system_prop:s0
+

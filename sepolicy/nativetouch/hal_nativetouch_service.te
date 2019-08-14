@@ -1,0 +1,12 @@
+type hal_nativetouch_service, domain;
+hal_server_domain(hal_nativetouch_service, hal_nativetouch)
+
+type hal_nativetouch_service_exec, exec_type, vendor_file_type, file_type;
+init_daemon_domain(hal_nativetouch_service)
+
+allow hal_nativetouch_service sysfs:dir r_dir_perms;
+allow hal_nativetouch_service sysfs:file r_file_perms;
+
+allow hal_nativetouch_service sysfs_nativetouch1_0_management:dir r_dir_perms;
+allow hal_nativetouch_service sysfs_nativetouch1_0_management:file rw_file_perms;
+allow hal_nativetouch_service sysfs_nativetouch1_0_management:lnk_file r_file_perms;

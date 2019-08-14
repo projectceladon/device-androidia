@@ -1,0 +1,2 @@
+# nativetouch_hal files
+type sysfs_nativetouch1_0_management, fs_type, sysfs_type;

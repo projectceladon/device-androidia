@@ -1,0 +1,6 @@
+# NATIVETOUCH HAL service
+/(vendor|system/vendor)/bin/hw/android\.hardware\.nativetouch@[0-9]+.?[0-9]*-service   u:object_r:hal_nativetouch_service_exec:s0
+# NATIVETOUCH HAL helper
+(/system)?/vendor/bin/nativetouch_hal_helper u:object_r:nativetouch_hal_helper_exec:s0
+# NATIVETOUCH HAL test-app
+/vendor/bin/test_nativetouchhal u:object_r:test_nativetouchhal_exec:s0
