@@ -12,7 +12,7 @@ vndk: true
 project-celadon: default
 sepolicy: enforcing
 graphics: mesa(gralloc1=true,gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true)
-media: project-celadon(mediasdk=false,media_sdk_source=false)
+ media: project-celadon(mediasdk=false,media_sdk_source=false,add_sw_msdk=false,opensource_msdk=true,opensource_msdk_omx_il=true)
 ethernet: dhcp
 debugfs: default
 storage: sdcard-mmc0-usb-sd(adoptablesd=false,adoptableusb=false)
