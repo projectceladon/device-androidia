@@ -17,7 +17,7 @@ on init
 on post-fs
     restorecon_recursive /mnt/vendor/oem_config
 ##############################################################
-# Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/init.rc
+# Source: device/intel/mixins/groups/storage/sdcard-mmcblk1/init.rc
 ##############################################################
 on init
     # Support legacy paths
