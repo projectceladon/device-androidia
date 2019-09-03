@@ -38,11 +38,6 @@ PRODUCT_PACKAGES += \
      toybox_static \
      toybox_vendor \
 ##############################################################
-# Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/product.mk
-##############################################################
-
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += support.sdcardfs.mode=y
-##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/product.mk.1
 ##############################################################
 
