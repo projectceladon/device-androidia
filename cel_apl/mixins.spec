@@ -54,7 +54,7 @@ health: true
 slot-ab: true
 art-config: default
 gptbuild: true(size=14G,generate_craff=false)
-device-type: car
+device-type: tablet
 swap:zram(size=1073741824,swappiness=false,hardware=cel_apl)
 power: true
 firststage-mount: true
