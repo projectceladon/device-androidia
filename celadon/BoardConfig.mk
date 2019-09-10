@@ -335,6 +335,8 @@ INTEL_STAGEFRIGHT := true
 USE_MEDIASDK := true
 
 BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
+
+BOARD_HAVE_OMX_SRC := true
 ##############################################################
 # Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
 ##############################################################
