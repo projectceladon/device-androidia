@@ -38,11 +38,6 @@ PRODUCT_PACKAGES += \
      toybox_static \
      toybox_vendor \
 ##############################################################
-# Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/product.mk
-##############################################################
-
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += support.sdcardfs.mode=y
-##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/product.mk.1
 ##############################################################
 
@@ -116,6 +111,7 @@ KERNELFLINGER_SSL_LIBRARY := openssl
 KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := true
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/persistent
+
 ##############################################################
 # Source: device/intel/mixins/groups/sepolicy/enforcing/product.mk
 ##############################################################
@@ -509,6 +505,7 @@ PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.bluetooth.xml:
 
 # Bluetooth HAL
 PRODUCT_PACKAGES += \
+  android.hardware.bluetooth@1.0-impl.vbt \
   android.hardware.bluetooth@1.0-service.vbt \
   libbt-vendor
 
@@ -527,6 +524,7 @@ PRODUCT_PACKAGES_DEBUG += \
 PRODUCT_PACKAGES += \
     audio.r_submix.default \
     audio.usb.default \
+    audio.usb.$(TARGET_BOARD_PLATFORM) \
     audio.hdmi.$(TARGET_BOARD_PLATFORM) \
     audio_policy.default.so \
     audio_configuration_files

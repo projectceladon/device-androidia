@@ -246,7 +246,7 @@ EVMMBUILD_TOOLCHAIN ?= x86_64-linux-android-
 TRUSTY_BUILDROOT = $(PWD)/$(PRODUCT_OUT)/obj/trusty/
 
 TRUSTY_ENV_VAR += LK_CORE_NUM=1
-TRUSTY_ENV_VAR += TRUSTY_REF_TARGET=project-celadon_64
+TRUSTY_ENV_VAR += TRUSTY_REF_TARGET=celadon_64
 
 #for trusty lk
 TRUSTY_ENV_VAR += BUILDROOT=$(TRUSTY_BUILDROOT)
@@ -335,6 +335,8 @@ INTEL_STAGEFRIGHT := true
 USE_MEDIASDK := true
 
 BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
+
+BOARD_HAVE_OMX_SRC := true
 ##############################################################
 # Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
 ##############################################################

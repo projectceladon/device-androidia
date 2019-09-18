@@ -16,7 +16,7 @@ media: project-celadon(mediasdk=false,media_sdk_source=false)
 device-type: tablet
 ethernet: dhcp
 debugfs: default
-storage: sdcard-mmc0-usb-sd(adoptablesd=false,adoptableusb=true)
+storage: sdcard-mmcblk1(adoptablesd=false,adoptableusb=true)
 display-density: default
 usb-gadget: g_ffs
 adb_net: true
@@ -42,7 +42,7 @@ debug-logs: true
 debug-coredump: true
 debug-phonedoctor: true
 debug-tools: true
-flashfiles: ini(oemvars=false,version=3.0,fastboot_min_battery_level=false,installer=true)
+flashfiles: ini(oemvars=false,version=3.0,fastboot_min_battery_level=false,installer=true,timeout=7200000)
 midi: true
 trusty: false
 slcan: default

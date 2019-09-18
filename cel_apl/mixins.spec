@@ -41,7 +41,7 @@ debug-logs: true
 debug-coredump: true
 debug-phonedoctor: true
 debug-tools: true
-flashfiles: ini(oemvars=false,version=3.0,fastboot_min_battery_level=false,installer=true,timeout=1200000)
+flashfiles: ini(oemvars=false,version=3.0,fastboot_min_battery_level=false,installer=true,timeout=7200000)
 midi: true
 trusty: false
 slcan: default
