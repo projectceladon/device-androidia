@@ -403,7 +403,7 @@ PRODUCT_PACKAGES += libpciaccess
 PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:vendor/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:vendor/etc/media_codecs_google_video.xml \
-    device/intel/project-celadon/common/media/media_profiles.xml:vendor/etc/media_profiles.xml \
+    device/intel/project-celadon/common/media/media_profiles_1080p.xml:vendor/etc/media_profiles.xml \
     device/intel/project-celadon/common/media/media_codecs.xml:vendor/etc/media_codecs.xml \
     device/intel/project-celadon/common/media/media_codecs_performance.xml:vendor/etc/media_codecs_performance.xml
 
@@ -728,8 +728,9 @@ PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-external-service \
                     android.hardware.camera.provider@2.4-impl
 
 # Only include test apps in eng or userdebug builds.
-PRODUCT_PACKAGES_DEBUG += TestingCamera \
-                          MultiCameraApp
+PRODUCT_PACKAGES_DEBUG += TestingCamera
+
+PRODUCT_PACKAGES += MultiCameraApp
 ##############################################################
 # Source: device/intel/mixins/groups/memtrack/true/product.mk
 ##############################################################
