@@ -12,7 +12,7 @@ vndk: true
 project-celadon: default
 sepolicy: enforcing
 graphics: mesa(gralloc1=true,gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true)
-media: project-celadon(mediasdk=false,media_sdk_source=false)
+media: project-celadon(mediasdk=false,media_sdk_source=false,profile_file=media_profiles_1080p.xml)
 device-type: tablet
 ethernet: dhcp
 debugfs: default
