@@ -17,7 +17,7 @@ vendor-partition: true(partition_size=600,partition_name=vendor)
 config-partition: true
 display-density: medium
 dalvik-heap: tablet-10in-xhdpi-2048
-cpu-arch: slm
+cpu-arch: x86
 allow-missing-dependencies: true
 dexpreopt: true
 pstore: false
