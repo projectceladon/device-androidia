@@ -6,6 +6,8 @@ $(call inherit-product,device/intel/project-celadon/celadon/device.mk)
 include build/make/target/product/treble_common.mk
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += debug.sf.nobootanimation=1
+
 # Include GMS application
 FLAG_GMS_MINIMAL := true
 FLAG_GMS_AVAILABLE := true
