@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86_64 4.19.62 Kernel Configuration
+# Linux/x86_64 4.19.73 Kernel Configuration
 #
 
 #
@@ -627,7 +627,7 @@ CONFIG_DCDBAS=y
 CONFIG_DMIID=y
 CONFIG_DMI_SYSFS=y
 CONFIG_DMI_SCAN_MACHINE_NON_EFI_FALLBACK=y
-# CONFIG_ISCSI_IBFT_FIND is not set
+# CONFIG_ISCSI_IBFT is not set
 # CONFIG_FW_CFG_SYSFS is not set
 # CONFIG_GOOGLE_FIRMWARE is not set
 
