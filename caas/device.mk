@@ -450,6 +450,13 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.vulkan=$(TARGET_BOARD_PLATFORM)
+
+PRODUCT_PACKAGES += libigdrcl \
+    libOpenCL \
+    libcommon_clang \
+    libigc \
+    libigdfcl
+
 ##############################################################
 # Source: device/intel/mixins/groups/ethernet/dhcp/product.mk
 ##############################################################
@@ -662,7 +669,9 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += \
     libMKLDNNPlugin\
-    libmkldnn
+    libmkldnn \
+    libclDNNPlugin \
+    libclDNN64
 
 PRODUCT_PACKAGES += \
     graphtest_cpu
