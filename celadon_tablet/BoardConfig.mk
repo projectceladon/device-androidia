@@ -126,8 +126,8 @@ endif
 
 
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/boot-arch/generic
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/boot-arch/slotab_ota/generic
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/boot-arch/slotab_ota/efi
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/abota/generic
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/abota/efi
 
 
 KERNELFLINGER_USE_RPMB_SIMULATE := true
@@ -148,6 +148,11 @@ AB_OTA_PARTITIONS += vbmeta
 AB_OTA_PARTITIONS += tos
 
 
+KERNELFLINGER_SUPPORT_USB_STORAGE ?= true
+
+KERNELFLINGER_SUPPORT_LIVE_BOOT ?= true
+
+ENABLE_GRUB_INSTALLER ?= true
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/BoardConfig.mk
 ##############################################################
@@ -157,6 +162,8 @@ BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 WPA_SUPPLICANT_VERSION := VER_2_1_DEVEL
 # required for wifi HAL support
 BOARD_WLAN_DEVICE := iwlwifi
+
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB ?= lib_driver_cmd_intc
 
 # Enabling iwlwifi
 BOARD_USING_INTEL_IWL := true
@@ -383,28 +390,28 @@ BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
 BOARD_SEPOLICY_M4DEFS += module_config_partition=true
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/config-partition
 ##############################################################
-# Source: device/intel/mixins/groups/cpu-arch/slm/BoardConfig.mk.1
+# Source: device/intel/mixins/groups/cpu-arch/x86/BoardConfig.mk
 ##############################################################
+BUILD_CPU_ARCH ?= silvermont
+
+# Items that are common between slm 32b and 64b:
+TARGET_CPU_ABI_LIST_32_BIT := x86
+TARGET_ARCH_VARIANT := $(if $(BUILD_CPU_ARCH),$(BUILD_CPU_ARCH),x86)
+TARGET_CPU_SMP := true
+
 ifeq ($(BOARD_USE_64BIT_USERSPACE),true)
 # 64b-specific items:
 TARGET_ARCH := x86_64
 TARGET_CPU_ABI := x86_64
 TARGET_2ND_CPU_ABI := x86
 TARGET_2ND_ARCH := x86
-TARGET_2ND_ARCH_VARIANT := silvermont
-TARGET_2ND_CPU_VARIANT := silvermont
+TARGET_2ND_ARCH_VARIANT := $(if $(BUILD_CPU_ARCH),$(BUILD_CPU_ARCH))
+TARGET_2ND_CPU_VARIANT := $(if $(BUILD_CPU_ARCH),$(BUILD_CPU_ARCH))
 else
 # 32b-specific items:
 TARGET_ARCH := x86
 TARGET_CPU_ABI := x86
 endif
-##############################################################
-# Source: device/intel/mixins/groups/cpu-arch/slm/BoardConfig.mk
-##############################################################
-# Items that are common between slm 32b and 64b:
-TARGET_CPU_ABI_LIST_32_BIT := x86
-TARGET_ARCH_VARIANT := silvermont
-TARGET_CPU_SMP := true
 ##############################################################
 # Source: device/intel/mixins/groups/allow-missing-dependencies/true/BoardConfig.mk
 ##############################################################
@@ -492,6 +499,10 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/graphics/mesa
 
 
 BOARD_SEPOLICY_M4DEFS += module_hwc_info_service=true
+##############################################################
+# Source: device/intel/mixins/groups/ethernet/dhcp/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/ethernet/common
 ##############################################################
 # Source: device/intel/mixins/groups/camera-ext/ext-camera-only/BoardConfig.mk
 ##############################################################

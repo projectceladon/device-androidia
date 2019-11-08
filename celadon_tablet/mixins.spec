@@ -9,7 +9,7 @@ product.mk: device.mk
 [groups]
 kernel: gmin64(useprebuilt=false,src_path=kernel/lts2018, loglevel=7, interactive_governor=false, relative_sleepstates=false, modules_in_bootimg=false, external_modules=,debug_modules=, use_bcmdhd=false, use_iwlwifi=false, extmod_platform=bxt, iwl_defconfig=, cfg_path=config-lts/lts2018/bxt/android/non-embargoed)
 disk-bus: auto
-boot-arch: project-celadon(uefi_arch=x86_64,fastboot=efi,ignore_rsci=true,disable_watchdog=true,watchdog_parameters=10 30,verity_warning=false,txe_bind_root_of_trust=false,bootloader_block_size=4096,verity_mode=false,disk_encryption=false,file_encryption=true,target=celadon_tablet,rpmb_simulate=true,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true,bootloader_policy=0x0)
+boot-arch: project-celadon(uefi_arch=x86_64,fastboot=efi,ignore_rsci=true,disable_watchdog=true,watchdog_parameters=10 30,verity_warning=false,txe_bind_root_of_trust=false,bootloader_block_size=4096,verity_mode=false,disk_encryption=false,file_encryption=true,target=celadon_tablet,rpmb_simulate=true,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true,bootloader_policy=0x0,grub_installer=true,live_boot=true,usb_storage=true)
 sepolicy: enforcing
 bluetooth: btusb(ivi=true)
 audio: project-celadon
@@ -18,7 +18,7 @@ acpio-partition: true(partition_size=2)
 config-partition: true
 display-density: medium
 dalvik-heap: tablet-10in-xhdpi-2048
-cpu-arch: slm
+cpu-arch: x86
 allow-missing-dependencies: true
 dexpreopt: true
 pstore: ram_dummy(address=0x50000000,size=0x400000,record_size=0x4000,console_size=0x200000,ftrace_size=0x2000,dump_oops=1)

@@ -99,6 +99,9 @@ on boot
 on post-fs-data
     mkdir /data/misc/dhcp 0770 dhcp system
 
+on property:vendor.boot_completed=1
+	exec u:r:init:s0 -- /system/bin/logwrapper /system/bin/sh /vendor/bin/bluetooth_auto_detection.sh
+
 service dhcpcd_bt-pan /system/bin/dhcpcd -ABKL
     disabled
     oneshot
@@ -167,15 +170,6 @@ on post-fs-data
 on early-boot
     start storageproxyd
 
-on property:ro.vendor.copy.ss=1
-    copy /data/misc/securestorage/0 /data/vendor/securestorage/0
-    restart storageproxyd
-
-service cp_securestorage /vendor/bin/cp_ss
-    user system
-    group system
-    oneshot
-
 service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/vendor/securestorage -r /dev/rpmb0
     user system
     group system
@@ -194,10 +188,10 @@ on post-fs
 # Source: device/intel/mixins/groups/pstore/ram_dummy/init.rc
 ##############################################################
 on fs
-    mkdir /dev/pstore 0700 5001 root
+    mkdir /dev/pstore 0550 system log
     mount pstore pstore /dev/pstore
-    chown 5001 root /dev/pstore
-    chmod 0700 /dev/pstore
+    chown system log /dev/pstore
+    chmod 0550 /dev/pstore
 
 on post-fs-data
    mkdir /data/dontpanic 0770 root log
@@ -315,7 +309,6 @@ service rfkill-init /vendor/bin/rfkill-init.sh
 on post-fs
     chmod 0664 /dev/ion
     chown system system /dev/ion
-    setprop debug.stagefright.ccodec 0
 ##############################################################
 # Source: device/intel/mixins/groups/usb/host/init.rc
 ##############################################################

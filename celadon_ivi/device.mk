@@ -45,6 +45,11 @@ PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/slot-ab/postinstall.sh:recovery/
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/product.mk
 ##############################################################
 TARGET_UEFI_ARCH := x86_64
+
+# Android Kernelflinger uses the OpenSSL library to support the
+# bootloader policy
+KERNELFLINGER_SSL_LIBRARY := openssl
+
 BIOS_VARIANT := release
 
 
@@ -64,9 +69,6 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # Allow Kernelflinger to ignore the RSCI reset source "not_applicable"
 # when setting the bootreason
 KERNELFLINGER_IGNORE_NOT_APPLICABLE_RESET := true
-# Android Kernelflinger uses the OpenSSL library to support the
-# bootloader policy
-KERNELFLINGER_SSL_LIBRARY := openssl
 
 KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := true
 
@@ -117,6 +119,8 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.wifi.softap_dualband_allow=false
+
+PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/wlan/overlay-disable_keepalive_offload
 ##############################################################
 # Source: device/intel/mixins/groups/kernel/gmin64/product.mk.1
 ##############################################################
@@ -157,6 +161,9 @@ PRODUCT_COPY_FILES += \
     vendor/linux/firmware/intel/ibt-12-16.sfi:$(TARGET_COPY_OUT_VENDOR)/firmware/intel/ibt-12-16.sfi \
     vendor/linux/firmware/intel/ibt-hw-37.8.10-fw-22.50.19.14.f.bseq:$(TARGET_COPY_OUT_VENDOR)/firmware/intel/ibt-hw-37.8.10-fw-22.50.19.14.f.bseq
 
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/extra_files/bluetooth/bluetooth_auto_detection.sh:vendor/bin/bluetooth_auto_detection.sh
+
 PRODUCT_PROPERTY_OVERRIDES += bluetooth.rfkill=1
 
 PRODUCT_PACKAGES += \
@@ -196,6 +203,7 @@ PRODUCT_PACKAGES += \
     audio.r_submix.default \
     audio.usb.default \
     audio.usb.$(TARGET_BOARD_PLATFORM) \
+    audio.hdmi.$(TARGET_BOARD_PLATFORM) \
     audio_policy.default.so \
     audio_configuration_files
 
@@ -219,6 +227,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/default/policy/a2dp_audio_policy_configuration.xml:vendor/etc/a2dp_audio_policy_configuration.xml \
     $(LOCAL_PATH)/audio/default/policy/r_submix_audio_policy_configuration.xml:vendor/etc/r_submix_audio_policy_configuration.xml \
     $(LOCAL_PATH)/audio/default/policy/usb_audio_policy_configuration.xml:vendor/etc/usb_audio_policy_configuration.xml \
+    $(LOCAL_PATH)/audio/default/policy/hdmi_audio_policy_configuration.xml:vendor/etc/hdmi_audio_policy_configuration.xml \
     $(LOCAL_PATH)/audio/default/policy/audio_policy_volumes.xml:vendor/etc/audio_policy_volumes.xml \
     $(LOCAL_PATH)/audio/default/policy/default_volume_tables.xml:vendor/etc/default_volume_tables.xml \
     $(LOCAL_PATH)/audio/default/effect/audio_effects.xml:vendor/etc/audio_effects.xml \
@@ -284,10 +293,7 @@ PRODUCT_PACKAGES += android.hardware.keymaster@3.0-impl \
                     android.hardware.usb@1.0-service \
                     android.hardware.dumpstate@1.0-impl \
                     android.hardware.dumpstate@1.0-service \
-                    camera.device@1.0-impl \
-                    android.hardware.camera.provider@2.4-impl \
-                    android.hardware.camera.provider@2.4-service \
-                    android.hardware.graphics.mapper@2.0-impl \
+                     android.hardware.graphics.mapper@2.0-impl-2.1  \
                     android.hardware.graphics.allocator@2.0-impl \
                     android.hardware.graphics.allocator@2.0-service \
                     android.hardware.renderscript@1.0-impl \
@@ -295,6 +301,8 @@ PRODUCT_PACKAGES += android.hardware.keymaster@3.0-impl \
                     libbt-vendor
 
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/manifest.xml:vendor/manifest.xml
+
+PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/true/product.mk
 ##############################################################
@@ -316,7 +324,6 @@ endif
 PRODUCT_PACKAGES += \
 	libtrusty \
 	storageproxyd \
-	cp_ss \
 	libinteltrustystorage \
 	libinteltrustystorageinterface \
 	gatekeeper.trusty \
@@ -480,6 +487,8 @@ PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-external-service \
 
 # Only include test apps in eng or userdebug builds.
 PRODUCT_PACKAGES_DEBUG += TestingCamera
+
+PRODUCT_PACKAGES += MultiCameraApp
 ##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/product.mk
 ##############################################################
@@ -493,7 +502,7 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:vendor/etc/media_codecs_google_video.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs.xml:vendor/etc/media_codecs.xml \
     $(LOCAL_PATH)/extra_files/codecs/mfx_omxil_core.conf:vendor/etc/mfx_omxil_core.conf \
-    $(LOCAL_PATH)/extra_files/codecs/media_profiles_1080p.xml:vendor/etc/media_profiles.xml
+    $(LOCAL_PATH)/extra_files/codecs/media_profiles_1080p.xml:vendor/etc/media_profiles_V1_0.xml
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_bxt.xml:vendor/etc/media_codecs_performance.xml
@@ -658,7 +667,8 @@ PRODUCT_PACKAGES += hdcpd
 # neuralnetworks HAL
 PRODUCT_PACKAGES += \
     android.hardware.neuralnetworks@1.1-generic-service \
-    android.hardware.neuralnetworks@1.1-generic-impl
+    android.hardware.neuralnetworks@1.1-generic-impl \
+    android.hardware.neuralnetworks@1.2-service-gpgpu
 
 PRODUCT_PACKAGES += \
     libinference_engine
@@ -714,6 +724,7 @@ PRODUCT_PACKAGES += \
 # Source: device/intel/mixins/groups/firmware/true/product.mk
 ##############################################################
 FIRMWARES_DIR ?= vendor/linux/firmware
+
 $(call inherit-product,device/intel/common/firmware.mk)
 ##############################################################
 # Source: device/intel/mixins/groups/evs/true/product.mk
@@ -721,6 +732,14 @@ $(call inherit-product,device/intel/common/firmware.mk)
 PRODUCT_PACKAGES += android.hardware.automotive.evs@1.0-sample \
                     evs_app \
                     evs_app_default_resources
+##############################################################
+# Source: device/intel/mixins/groups/default-drm/true/product.mk
+##############################################################
+#only enable default drm service
+PRODUCT_PACKAGES += android.hardware.drm@1.0-service \
+                    android.hardware.drm@1.0-impl \
+                    android.hardware.drm@1.2-service.clearkey
+
 ##############################################################
 # Source: device/intel/mixins/groups/debug-unresponsive/default/product.mk
 ##############################################################
