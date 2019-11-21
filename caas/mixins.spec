@@ -23,7 +23,7 @@ allow-missing-dependencies: true
 dexpreopt: true
 pstore: false
 media: auto(add_sw_msdk=false, opensource_msdk=true)
-graphics: auto(gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true,gralloc1=true,enable_guc=false)
+graphics: auto(gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true,gralloc1=true,enable_guc=true)
 storage: sdcard-mmc0-usb-sd(adoptablesd=true,adoptableusb=true)
 ethernet: dhcp
 camera-ext: ext-camera-only
