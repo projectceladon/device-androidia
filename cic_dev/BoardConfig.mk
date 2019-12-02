@@ -168,4 +168,8 @@ else
   TARGET_CPU_ABI_LIST := $(TARGET_CPU_ABI_LIST_32_BIT)
 endif
 
+##############################################################
+# Source: device/intel/mixins/groups/usb-gadget/cic-configfs/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/usb-gadget/configfs
 # ------------------ END MIX-IN DEFINITIONS ------------------
