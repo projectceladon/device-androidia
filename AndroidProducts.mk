@@ -15,7 +15,7 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/cic/cic_dev.mk
+    $(LOCAL_DIR)/cic_dev/cic_dev.mk
 
 COMMON_LUNCH_CHOICES += \
     cic_dev-userdebug
