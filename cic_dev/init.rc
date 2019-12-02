@@ -3,37 +3,6 @@
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/init.rc
 ##############################################################
-on fs
-    # ro.boot.hardware = TARGET_PRODUCT (set in kernel command line
-    # as androidboot.hardware). Mount all the filesystems as specified
-    # in the fstab.
-    mount_all /fstab.${ro.hardware}
-
-service watchdogd /system/bin/watchdogd
-    user root
-    class core
-    oneshot
-    seclabel u:r:watchdogd:s0
-
-on charger
-    start watchdogd
-
-on init
-   # Load persistent dm-verity state and detect if a restart was
-   # triggered after dm-verity detected a corrupted block
-   verity_load_state
-
-on early-boot
-     chmod 0440 /sys/firmware/dmi/entries/148-0/raw
-     chmod 0440 /sys/firmware/dmi/entries/0-0/raw
-
-on fs
-   # Update dm-verity persistent state and set partition.*.verified
-   # properties
-   verity_update_state
-
-on verity-logging
-    exec u:r:slideshow:s0 -- /sbin/slideshow -t 30000 -p warning/verity_red_1 warning/verity_red_2
 ##############################################################
 # Source: device/intel/mixins/groups/device-specific/cic_dev/init.rc
 ##############################################################
@@ -109,4 +78,21 @@ service wpa_supplicant /vendor/bin/hw/wpa_supplicant -Dnl80211 -iwlan0 -c/vendor
     group system wifi inet
     oneshot
     disabled
+##############################################################
+# Source: device/intel/mixins/groups/houdini/true/init.rc
+##############################################################
+import /init.houdini.rc
+
+#houdini releated patch start
+on early-init
+    mount binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
+
+on property:ro.enable.native.bridge.exec=1
+    copy /system/etc/binfmt_misc/arm_exe /proc/sys/fs/binfmt_misc/register
+    copy /system/etc/binfmt_misc/arm_dyn /proc/sys/fs/binfmt_misc/register
+
+on property:ro.enable.native.bridge.exec64=1
+    copy /system/etc/binfmt_misc/arm64_exe /proc/sys/fs/binfmt_misc/register
+    copy /system/setc/binfmt_misc/arm64_dyn /proc/sys/fs/binfmt_misc/register
+#houdini releated patch end
 # ------------------ END MIX-IN DEFINITIONS ------------------

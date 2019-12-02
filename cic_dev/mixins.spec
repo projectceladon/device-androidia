@@ -17,3 +17,4 @@ device-specific: cic_dev
 graphics: aic_mdc
 usb: acc
 wlan: mac80211_hwsim
+houdini: true
