@@ -199,4 +199,12 @@ INTEL_STAGEFRIGHT := true
 # Settings for the Media SDK library and plug-ins:
 # - USE_MEDIASDK: use Media SDK support or not
 USE_MEDIASDK := true
+##############################################################
+# Source: device/intel/mixins/groups/camera-ext/ext-camera-only/BoardConfig.mk
+##############################################################
+# Enable only USB camera and disable all CSI Cameras
+BOARD_CAMERA_USB_STANDALONE = true
+
+# SELinux support for USB camera
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/camera-ext/ext-camera-only
 # ------------------ END MIX-IN DEFINITIONS ------------------

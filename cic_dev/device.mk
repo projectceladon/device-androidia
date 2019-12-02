@@ -247,6 +247,22 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_bxt.xml:vendor/etc/media_codecs_performance.xml
 ##############################################################
+# Source: device/intel/mixins/groups/camera-ext/ext-camera-only/product.mk
+##############################################################
+# Camera: Device-specific configuration files. Supports only External USB camera, no CSI support
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.camera.external.xml:vendor/etc/permissions/android.hardware.camera.external.xml \
+    $(LOCAL_PATH)/extra_files/camera-ext/external_camera_config.xml:vendor/etc/external_camera_config.xml
+
+# External camera service
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-external-service \
+                    android.hardware.camera.provider@2.4-impl
+
+# Only include test apps in eng or userdebug builds.
+PRODUCT_PACKAGES_DEBUG += TestingCamera
+
+PRODUCT_PACKAGES += MultiCameraApp
+##############################################################
 # Source: device/intel/mixins/groups/bluetooth/default/product.mk
 ##############################################################
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += config.disable_bluetooth=true

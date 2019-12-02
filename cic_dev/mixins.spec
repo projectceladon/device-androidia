@@ -22,3 +22,4 @@ usb-gadget: cic-configfs
 media: mesa(add_sw_msdk=false, opensource_msdk=true)
 codecs: configurable(hw_ve_h265=true, hw_vd_vp9=true, hw_vd_mp2=true, hw_vd_vc1=false, platform=bxt,profile_file=media_profiles_1080p.xml)
 codec2: true
+camera-ext: ext-camera-only
