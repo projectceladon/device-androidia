@@ -172,4 +172,12 @@ endif
 # Source: device/intel/mixins/groups/usb-gadget/cic-configfs/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/usb-gadget/configfs
+##############################################################
+# Source: device/intel/mixins/groups/media/mesa/BoardConfig.mk
+##############################################################
+INTEL_STAGEFRIGHT := true
+
+# Settings for the Media SDK library and plug-ins:
+# - USE_MEDIASDK: use Media SDK support or not
+USE_MEDIASDK := true
 # ------------------ END MIX-IN DEFINITIONS ------------------

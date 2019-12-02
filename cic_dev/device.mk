@@ -150,6 +150,50 @@ ifeq ($(ENABLE_NATIVEBRIDGE_64BIT),true)
 endif
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.dalvik.vm.native.bridge=libhoudini.so
 ##############################################################
+# Source: device/intel/mixins/groups/media/mesa/product.mk
+##############################################################
+# libstagefrighthw
+PRODUCT_PACKAGES += \
+    libstagefrighthw
+
+# Media SDK and OMX IL components
+PRODUCT_PACKAGES += \
+    libmfxhw32 \
+    libmfx_omx_core \
+    libmfx_omx_components_hw
+
+# Open source media_driver
+PRODUCT_PACKAGES += i965_drv_video
+PRODUCT_PACKAGES += libigfxcmrt
+
+# Open source hdcp
+PRODUCT_PACKAGES += libhdcpsdk
+PRODUCT_PACKAGES += lihdcpcommon
+
+ifeq ($(BOARD_USE_64BIT_USERSPACE),true)
+PRODUCT_PACKAGES += \
+    libmfxhw64
+endif
+
+
+BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
+
+PRODUCT_PACKAGES += \
+    libpciaccess
+##############################################################
+# Source: device/intel/mixins/groups/codecs/configurable/product.mk
+##############################################################
+# Audio/video codec support.
+PRODUCT_COPY_FILES += \
+    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:vendor/etc/media_codecs_google_audio.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:vendor/etc/media_codecs_google_video.xml \
+    $(LOCAL_PATH)/extra_files/codecs/media_codecs.xml:vendor/etc/media_codecs.xml \
+    $(LOCAL_PATH)/extra_files/codecs/mfx_omxil_core.conf:vendor/etc/mfx_omxil_core.conf \
+    $(LOCAL_PATH)/extra_files/codecs/media_profiles_1080p.xml:vendor/etc/media_profiles_V1_0.xml
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_bxt.xml:vendor/etc/media_codecs_performance.xml
+##############################################################
 # Source: device/intel/mixins/groups/bluetooth/default/product.mk
 ##############################################################
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += config.disable_bluetooth=true
