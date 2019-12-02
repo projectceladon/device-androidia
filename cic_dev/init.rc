@@ -4,6 +4,11 @@
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/init.rc
 ##############################################################
 ##############################################################
+# Source: device/intel/mixins/groups/audio/project-celadon/init.rc
+##############################################################
+on boot
+    insmod /vendor/lib/modules/snd-dummy.ko
+##############################################################
 # Source: device/intel/mixins/groups/device-specific/cic_dev/init.rc
 ##############################################################
 on early-init
