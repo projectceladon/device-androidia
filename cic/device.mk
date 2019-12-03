@@ -84,7 +84,8 @@ PRODUCT_PACKAGES += \
     libdrm \
     libdrm_intel \
     libsync \
-    Browser2
+    Browser2 \
+	ServiceAgent
 
 ifeq ($(TARGET_USE_GRALLOC_VHAL), true)
 PRODUCT_PACKAGES += gralloc_imp.intel
