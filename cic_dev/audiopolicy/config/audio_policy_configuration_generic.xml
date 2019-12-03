@@ -25,7 +25,7 @@
         <xi:include href="primary_audio_policy_configuration.xml"/>
 
         <!-- Remote Submix Audio HAL -->
-        <xi:include href="r_submix_audio_policy_configuration.xml"/>
+        <xi:include href="r_submix_audio_policy_configuration_re.xml"/>
 
     </modules>
     <!-- End of Modules section -->
@@ -36,9 +36,15 @@
                         Engine will fallback on these files if none are provided by engine.
      -->
 
-    <xi:include href="audio_policy_volumes.xml"/>
-    <xi:include href="default_volume_tables.xml"/>
+    <xi:include href="audio_policy_volumes_re.xml"/>
+    <xi:include href="default_volume_tables_re.xml"/>
 
     <!-- End of Volume section -->
+
+    <!-- Surround Sound configuration -->
+
+    <xi:include href="surround_sound_configuration_5_0.xml"/>
+
+    <!-- End of Surround Sound configuration -->
 
 </audioPolicyConfiguration>

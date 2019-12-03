@@ -37,13 +37,6 @@ LOADER_TYPE := linux-x86_64
 endif
 
 ##############################################################
-# Source: device/intel/mixins/groups/audio/project-celadon/AndroidBoard.mk
-##############################################################
-pfw_rebuild_settings := true
-# Target specific audio configuration files
-include $(TARGET_DEVICE_DIR)/audio/AndroidBoard.mk
-
-##############################################################
 # Source: device/intel/mixins/groups/device-specific/cic_dev/AndroidBoard.mk
 ##############################################################
 .PHONY: multidroid
