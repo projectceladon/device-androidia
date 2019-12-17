@@ -28,6 +28,8 @@ common_options="\
  -machine kernel_irqchip=off \
  -global PIIX4_PM.disable_s3=1 -global PIIX4_PM.disable_s4=1 \
  -cpu host \
+ -fsdev local,security_model=none,id=fsdev0,path=./share_folder \
+ -device virtio-9p-pci,fsdev=fsdev0,mount_tag=hostshare \
  -device qemu-xhci,id=xhci,addr=0x8 \
  -device usb-host,vendorid=0x046d,productid=0x082d \
  -device usb-host,vendorid=0x046d,productid=0x085c \
