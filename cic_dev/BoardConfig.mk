@@ -76,6 +76,10 @@ BOARD_CACHEIMAGE_PARTITION_SIZE := 69206016
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 512
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := true
+
+BOARD_SEPOLICY_DIRS += device/intel/cic/common/sepolicy
+BOARD_SEPOLICY_DIRS += device/intel/cic/common/sepolicy/bluetooth
+BOARD_SEPOLICY_DIRS += device/intel/cic/common/sepolicy/camera-ext
 ##############################################################
 # Source: device/intel/mixins/groups/graphics/aic_mdc/BoardConfig.mk
 ##############################################################
@@ -95,8 +99,8 @@ TARGET_USE_INTEL_GRALLOC	:= true
 TARGET_USE_INTEL_HWCOMPOSER	:= false
 
 # multidroid vhal switches
-TARGET_USE_GRALLOC_VHAL		:= true
-TARGET_USE_HWCOMPOSER_VHAL	:= false
+TARGET_USE_GRALLOC_VHAL		:= false
+TARGET_USE_HWCOMPOSER_VHAL	:= true
 
 # components specific switches
 ifeq ($(TARGET_USE_INTEL_LIBDRM), true)
@@ -107,12 +111,10 @@ TARGET_USE_PRIVATE_LIBDRM := false
 endif
 
 BOARD_USE_MESA := true
-BOARD_USE_CUSTOMIZED_MESA := true
 BOARD_GPU_DRIVERS := i965
-
 BOARD_USES_MINIGBM := true
+INTEL_MINIGBM := external/minigbm-intel
 BOARD_USES_GRALLOC1 := true
-NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 
 ifeq ($(TARGET_USE_INTEL_HWCOMPOSER), true)
 BOARD_USES_IA_HWCOMPOSER := true
@@ -128,6 +130,7 @@ TARGET_DONT_USE_NATIVE_FENCE := true
 
 VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
 SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/mac80211_hwsim/BoardConfig.mk
 ##############################################################

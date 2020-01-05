@@ -17,7 +17,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/board/generic_x86_64/device.mk)
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
 
-TARGET_USE_GRALLOC_VHAL := true
+TARGET_USE_GRALLOC_VHAL := false
+TARGET_USE_HWCOMPOSER_VHAL := true
 TARGET_AIC_DEVICE_INPUT_FILTER := true
 TARGET_AIC_PERF := true
 
@@ -38,6 +39,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/android-removed-permissions.xml:system/etc/permissions/android-removed-permissions.xml \
     $(LOCAL_PATH)/fstab:root/fstab.$(TARGET_PRODUCT) \
     $(LOCAL_PATH)/init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.$(TARGET_PRODUCT).rc \
+    $(LOCAL_PATH)/init.rc:root/init.$(TARGET_PRODUCT).rc \
     $(LOCAL_PATH)/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/ueventd.rc \
     $(LOCAL_PATH)/manifest.xml:$(TARGET_COPY_OUT_VENDOR)/manifest.xml \
     out/target/product/$(TARGET_PRODUCT)/system/bin/sdcard-fuse:system/bin/sdcard \
