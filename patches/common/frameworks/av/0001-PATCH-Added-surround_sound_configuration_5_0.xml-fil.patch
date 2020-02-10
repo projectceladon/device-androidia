@@ -1,9 +1,8 @@
-From cf7170b69d81015d0b51b89d44ee6149c78f2811 Mon Sep 17 00:00:00 2001
+From e7620eff7489a933f25f8fb64dd9fe118583c710 Mon Sep 17 00:00:00 2001
 From: sgnanase <sundar.gnanasekaran@intel.com>
 Date: Wed, 4 Dec 2019 14:00:22 +0530
 Subject: [PATCH] [PATCH] Added surround_sound_configuration_5_0.xml file
 
-Change-Id: Ia3d4aea63eaa26bc1ec1f267a2c9607a6554974d
 ---
  .../surround_sound_configuration_5_0.xml      | 31 +++++++++++++++++++
  1 file changed, 31 insertions(+)
