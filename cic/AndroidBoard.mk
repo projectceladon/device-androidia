@@ -37,7 +37,7 @@ LOADER_TYPE := linux-x86_64
 endif
 
 ##############################################################
-# Source: device/intel/mixins/groups/device-specific/cic_dev/AndroidBoard.mk
+# Source: device/intel/mixins/groups/device-specific/cic/AndroidBoard.mk
 ##############################################################
 .PHONY: multidroid
 multidroid: droid addon
