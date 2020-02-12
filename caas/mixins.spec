@@ -37,6 +37,7 @@ midi: true
 touch: cvt0f21
 navigationbar: true
 device-type: tablet
+googleservice: gms
 debug-tools: true
 fota: true
 thermal: thermal-daemon
