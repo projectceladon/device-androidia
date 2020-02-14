@@ -5,4 +5,4 @@ file: ../cic_dev/mixins.spec
 mixinsctl: true
 
 [groups]
-device-specific: cic
+device-specific: cic(file_encryption=true)
