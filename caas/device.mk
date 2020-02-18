@@ -595,6 +595,13 @@ PRODUCT_COPY_FILES += \
         $(INTEL_PATH_COMMON)/touch/Vendor_2386_Product_3115.idc:system/usr/idc/Vendor_2386_Product_3115.idc\
         $(INTEL_PATH_COMMON)/touch/Vendor_056a_Product_489c.idc:system/usr/idc/Vendor_056a_Product_489c.idc
 ##############################################################
+# Source: device/intel/mixins/groups/googleservice/gms/product.mk
+##############################################################
+FLAG_GMS_AVAILABLE ?= true
+ifeq ($(FLAG_GMS_AVAILABLE),true)
+$(call inherit-product-if-exists, vendor/google/gms/products/gms.mk)
+endif
+##############################################################
 # Source: device/intel/mixins/groups/debug-tools/true/product.mk
 ##############################################################
 PRODUCT_PACKAGES_DEBUG += \
