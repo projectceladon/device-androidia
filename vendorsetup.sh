@@ -32,4 +32,3 @@ function lunch {
 }
 
 add_lunch_combo cic-userdebug
-add_lunch_combo cic_dev-userdebug
