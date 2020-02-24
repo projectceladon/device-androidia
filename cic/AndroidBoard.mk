@@ -40,7 +40,7 @@ endif
 # Source: device/intel/mixins/groups/device-specific/cic/AndroidBoard.mk
 ##############################################################
 .PHONY: multidroid
-multidroid: droid addon
+multidroid: droid addon kf4cic-$(TARGET_BUILD_VARIANT)
 	@echo Make multidroid image...
 	$(hide) rm -rf $(PRODUCT_OUT)/docker
 	$(hide) mkdir -p $(PRODUCT_OUT)/docker/android/root
@@ -51,6 +51,7 @@ multidroid: droid addon
 	$(hide) cp -r $(TOP)/$(INTEL_PATH_VENDOR_CIC)/host/docker/android $(PRODUCT_OUT)/docker
 	$(hide) cp -r $(TOP)/$(INTEL_PATH_VENDOR_CIC)/host/docker/update $(PRODUCT_OUT)/docker
 	$(hide) cp $(TOP)/$(INTEL_PATH_VENDOR_CIC)/host/docker/scripts/aic $(PRODUCT_OUT)
+	$(hide) cp -r $(PRODUCT_OUT)/efi/kf4cic.efi $(PRODUCT_OUT)/kf4cic.efi
 ifneq ($(TARGET_LOOP_MOUNT_SYSTEM_IMAGES), true)
 	$(hide) cp -r $(PRODUCT_OUT)/system $(PRODUCT_OUT)/docker/android/root
 	$(hide) cp -r $(PRODUCT_OUT)/root/* $(PRODUCT_OUT)/docker/android/root
@@ -81,7 +82,7 @@ endif
 
 .PHONY: aic
 aic: .KATI_NINJA_POOL := console
-aic: multidroid
+aic: multidroid tosimage
 	@echo Make AIC docker images...
 ifneq ($(TARGET_LOOP_MOUNT_SYSTEM_IMAGES), true)
 	$(HOST_OUT_EXECUTABLES)/aic-build -b $(BUILD_NUMBER)
@@ -89,7 +90,7 @@ else
 	BUILD_VARIANT=loop_mount $(HOST_OUT_EXECUTABLES)/aic-build -b $(BUILD_NUMBER)
 endif
 ifneq (,$(filter cic cic_dev,$(TARGET_PRODUCT)))
-	tar cvzf $(PRODUCT_OUT)/$(TARGET_AIC_FILE_NAME) -C $(PRODUCT_OUT) aic android.tar.gz aic-manager.tar.gz cfc pre-requisites README-CIC cic.sh setup-aic -C docker update
+	tar cvzf $(PRODUCT_OUT)/$(TARGET_AIC_FILE_NAME) -C $(PRODUCT_OUT) aic android.tar.gz aic-manager.tar.gz cfc pre-requisites README-CIC cic.sh setup-aic tos.img kf4cic.efi -C docker update
 	@echo Make debian binaries...
 	$(hide) (rm -rf $(PRODUCT_OUT)/cic && mkdir -p $(PRODUCT_OUT)/cic/opt/cic && mkdir -p $(PRODUCT_OUT)/cic/etc/profile.d)
 	$(hide) (cd $(PRODUCT_OUT)/cic/opt/cic && tar xvf ../../../$(TARGET_AIC_FILE_NAME) aic android.tar.gz aic-manager.tar.gz cic.sh cfc update)
@@ -119,6 +120,28 @@ publish: aic
 	@echo Publish AIC docker images...
 	$(hide) mkdir -p $(TOP)/pub/$(TARGET_PRODUCT)/$(TARGET_BUILD_VARIANT)
 	$(hide) cp $(PRODUCT_OUT)/$(TARGET_AIC_FILE_NAME) $(TOP)/pub/$(TARGET_PRODUCT)/$(TARGET_BUILD_VARIANT)
+##############################################################
+# Source: device/intel/mixins/groups/trusty/true/AndroidBoard.mk
+##############################################################
+.PHONY: tosimage multiboot
+
+EVMM_PKG := $(TOP)/$(PRODUCT_OUT)/obj/trusty/evmm_pkg.bin
+EVMM_LK_PKG := $(TOP)/$(PRODUCT_OUT)/obj/trusty/evmm_lk_pkg.bin
+
+LOCAL_MAKE := make
+
+$(EVMM_PKG):
+	@echo "making evmm.."
+	$(hide) (cd $(TOPDIR)$(INTEL_PATH_VENDOR)/fw/evmm && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE))
+
+$(EVMM_LK_PKG):
+	@echo "making evmm(packing with lk.bin).."
+	$(hide) (cd $(TOPDIR)$(INTEL_PATH_VENDOR)/fw/evmm && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE))
+
+# include sub-makefile according to boot_arch
+include $(TARGET_DEVICE_DIR)/extra_files/trusty/trusty_project-celadon.mk
+
+LOAD_MODULES_H_IN += $(TARGET_DEVICE_DIR)/extra_files/trusty/load_trusty_modules.in
 ##############################################################
 # Source: device/intel/mixins/groups/vndk/default/AndroidBoard.mk
 ##############################################################
