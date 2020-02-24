@@ -24,3 +24,4 @@ codecs: configurable(hw_ve_h265=true, hw_vd_vp9=true, hw_vd_mp2=true, hw_vd_vc1=
 codec2: true
 camera-ext: ext-camera-only
 bluetooth: cic
+trusty: true(ref_target=celadon_64)
