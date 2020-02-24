@@ -14,6 +14,7 @@ cpu-arch: x86_64
 debug-unresponsive: false
 dexpreopt: true
 device-specific: cic(file_encryption=true)
+trusty: true(ref_target=celadon_64)
 graphics: aic_mdc
 usb: acc
 wlan: mac80211_hwsim
