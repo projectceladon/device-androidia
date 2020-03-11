@@ -77,7 +77,6 @@ Only the three quirks included above are recognized at this point:
 <MediaCodecs>
     <Decoders>
 
-
         <MediaCodec name="OMX.Intel.hw_vd.h264" type="video/avc" >
             <!-- profiles and levels:  ProfileBaseline : Level51 -->
             <Limit name="size" min="64x64" max="3840x2160" />
@@ -87,7 +86,6 @@ Only the three quirks included above are recognized at this point:
             <Limit name="bitrate" range="1-40000000" />
             <Feature name="adaptive-playback" />
         </MediaCodec>
-
 
         <MediaCodec name="OMX.Intel.hw_vd.vp8" type="video/x-vnd.on2.vp8" >
             <Limit name="size" min="64x64" max="3840x2160" />
@@ -116,16 +114,8 @@ Only the three quirks included above are recognized at this point:
             <Feature name="adaptive-playback" />
         </MediaCodec>
 
-
-        <MediaCodec name="OMX.Intel.hw_vd.mp2" type="video/mpeg2" >
-            <Limit name="size" min="64x64" max="3840x2160" />
-            <Limit name="alignment" value="2x2" />
-            <Limit name="block-size" value="16x16" />
-            <Limit name="blocks-per-second" range="1-972000" />
-            <Limit name="bitrate" range="1-40000000" />
-            <Feature name="adaptive-playback" />
-        </MediaCodec>
     </Decoders>
+
 
     <Encoders>
         <MediaCodec name="OMX.Intel.hw_ve.h264" type="video/avc" >
