@@ -145,6 +145,10 @@ BOARD_ENABLE_EXPLICIT_SYNC := false
 BOARD_CURSOR_WA := false
 endif
 
+ifeq ($(TARGET_USE_INTEL_HWCOMPOSER), true)
+  PRODUCT_PACKAGES += libva
+endif
+
 TARGET_DONT_USE_NATIVE_FENCE := true
 
 VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
@@ -197,11 +201,13 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/usb-gadget/configfs
 ##############################################################
 # Source: device/intel/mixins/groups/media/mesa/BoardConfig.mk
 ##############################################################
+INTEL_VA := true
 INTEL_STAGEFRIGHT := true
 
 # Settings for the Media SDK library and plug-ins:
 # - USE_MEDIASDK: use Media SDK support or not
 USE_MEDIASDK := true
+BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
 ##############################################################
 # Source: device/intel/mixins/groups/camera-ext/ext-camera-only/BoardConfig.mk
 ##############################################################
@@ -210,6 +216,7 @@ BOARD_CAMERA_USB_STANDALONE = true
 
 # SELinux support for USB camera
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/camera-ext/ext-camera-only
+BOARD_SEPOLICY_DIRS += device/intel/project-celadon/cic/sepolicy/camera-ext/ext-camera-only
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/true/BoardConfig.mk
 ##############################################################
