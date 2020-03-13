@@ -106,7 +106,7 @@ endif
 KERNELFLINGER_IGNORE_NOT_APPLICABLE_RESET := true
 # Android Kernelflinger uses the OpenSSL library to support the
 # bootloader policy
-KERNELFLINGER_SSL_LIBRARY := openssl
+KERNELFLINGER_SSL_LIBRARY := boringssl
 
 KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := true
 
