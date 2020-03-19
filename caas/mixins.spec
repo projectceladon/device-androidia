@@ -14,6 +14,7 @@ sepolicy: enforcing
 bluetooth: auto(ivi=false)
 audio: project-celadon
 vendor-partition: true(partition_size=600,partition_name=vendor)
+product-partition: true(partition_size=400)
 acpio-partition: true(partition_size=2)
 config-partition: true
 display-density: medium
