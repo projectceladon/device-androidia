@@ -25,3 +25,4 @@ codec2: true
 camera-ext: ext-camera-only
 bluetooth: cic
 trusty: true(ref_target=celadon_64)
+storage: sdcard-mmc0-usb-sd(adoptablesd=false,adoptableusb=false)
