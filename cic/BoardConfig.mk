@@ -96,9 +96,7 @@ BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 512
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := true
 
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/common/sepolicy
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/common/sepolicy/bluetooth
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/common/sepolicy/camera-ext
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_DEVICE_CIC)/sepolicy
 ##############################################################
 # Source: device/intel/mixins/groups/graphics/aic_mdc/BoardConfig.mk
 ##############################################################
@@ -195,7 +193,7 @@ endif
 ##############################################################
 # Source: device/intel/mixins/groups/usb-gadget/cic-configfs/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/usb-gadget/configfs
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_DEVICE_CIC)/sepolicy/usb-gadget/configfs
 ##############################################################
 # Source: device/intel/mixins/groups/media/mesa/BoardConfig.mk
 ##############################################################
@@ -213,8 +211,17 @@ BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
 BOARD_CAMERA_USB_STANDALONE = true
 
 # SELinux support for USB camera
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/camera-ext/ext-camera-only
-BOARD_SEPOLICY_DIRS += device/intel/project-celadon/cic/sepolicy/camera-ext/ext-camera-only
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_DEVICE_CIC)/sepolicy/camera-ext
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_DEVICE_CIC)/sepolicy/camera-ext/ext-camera-only
+##############################################################
+# Source: device/intel/mixins/groups/bluetooth/cic/BoardConfig.mk
+##############################################################
+BOARD_HAVE_BLUETOOTH_INTEL_ICNV := true
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/intel/project-celadon/$(TARGET_PRODUCT)/bluetooth/tablet/
+DEVICE_PACKAGE_OVERLAYS += device/intel/project-celadon/$(TARGET_PRODUCT)/bluetooth/tablet/overlay
+
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_DEVICE_CIC)/sepolicy/bluetooth
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_DEVICE_CIC)/sepolicy/bluetooth/common
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/true/BoardConfig.mk
 ##############################################################
@@ -226,7 +233,7 @@ endif
 
 BOARD_USES_TRUSTY := true
 BOARD_USES_KEYMASTER1 := true
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/trusty
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_DEVICE_CIC)/sepolicy/trusty
 BOARD_SEPOLICY_M4DEFS += module_trusty=true
 
 TRUSTY_BUILDROOT = $(PWD)/$(PRODUCT_OUT)/obj/trusty/
