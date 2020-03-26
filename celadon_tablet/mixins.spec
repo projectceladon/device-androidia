@@ -79,4 +79,4 @@ gptbuild: true(size=16G,generate_craff=false,compress_gptimage=true)
 dynamic-partitions: true(super_img_in_flashzip=true)
 dbc: true
 atrace: true
-firmware: true
+firmware: true(all_firmwares=true)
