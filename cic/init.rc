@@ -222,4 +222,11 @@ service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data
 on post-fs
     # Update device node r/w attribute
     chmod 666 /dev/trusty-ipc-dev0
+##############################################################
+# Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/init.rc
+##############################################################
+on init
+    # Support legacy paths
+    symlink /sdcard /mnt/sdcard
+    symlink /sdcard /storage/sdcard0
 # ------------------ END MIX-IN DEFINITIONS ------------------
