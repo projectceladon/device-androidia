@@ -40,7 +40,7 @@ device-type: tablet
 debug-tools: true
 fota: true
 thermal: thermal-daemon
-serialport: ttyS0
+serialport: ttyUSB0
 flashfiles: ini(fast_flashfiles=false, oemvars=false,installer=true,flash_dnx_os=false,blank_no_fw=true,version=3.0)
 net: common
 debug-crashlogd: true
