@@ -95,7 +95,7 @@ TARGET_USE_INTEL_GRALLOC	:= true
 TARGET_USE_INTEL_HWCOMPOSER	:= false
 
 # multidroid vhal switches
-TARGET_USE_GRALLOC_VHAL		:= true
+TARGET_USE_GRALLOC_VHAL		:= false
 TARGET_USE_HWCOMPOSER_VHAL	:= false
 
 # components specific switches

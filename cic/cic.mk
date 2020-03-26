@@ -17,7 +17,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/board/generic_x86_64/device.mk)
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
 
-TARGET_USE_GRALLOC_VHAL := true
+TARGET_USE_GRALLOC_VHAL := false
 TARGET_AIC_DEVICE_INPUT_FILTER := true
 TARGET_AIC_PERF := true
 
