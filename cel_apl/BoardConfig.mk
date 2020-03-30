@@ -281,6 +281,7 @@ BOARD_OEM_VARS += $(TARGET_DEVICE_DIR)/extra_files/2ndstage/oemvars.txt
 KERNEL_CROSS_COMPILE_WRAPPER := x86_64-linux-android-
 
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/vendor
+BOARD_FLASHFILES += $(PRODUCT_OUT)/LICENSE
 ##############################################################
 # Source: device/intel/mixins/groups/graphics/mesa/BoardConfig.mk
 ##############################################################
