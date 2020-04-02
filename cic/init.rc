@@ -218,6 +218,7 @@ on early-boot
 service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/vendor/securestorage -r /dev/rpmb0
     user system
     group system
+    oneshot
 
 on post-fs
     # Update device node r/w attribute
