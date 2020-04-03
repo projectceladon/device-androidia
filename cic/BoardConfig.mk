@@ -238,7 +238,7 @@ BOARD_SEPOLICY_M4DEFS += module_trusty=true
 
 TRUSTY_BUILDROOT = $(PWD)/$(PRODUCT_OUT)/obj/trusty/
 
-TRUSTY_ENV_VAR += TRUSTY_REF_TARGET=celadon_64
+TRUSTY_ENV_VAR += TRUSTY_REF_TARGET=cic
 
 #for trusty vmm
 # use same toolchain as android kernel
