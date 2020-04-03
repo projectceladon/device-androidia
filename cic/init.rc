@@ -4,6 +4,11 @@
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/init.rc
 ##############################################################
 ##############################################################
+# Source: device/intel/mixins/groups/audio/aic/init.rc
+##############################################################
+on boot
+    setprop ro.config.media_vol_default 8
+##############################################################
 # Source: device/intel/mixins/groups/device-specific/cic/init.rc
 ##############################################################
 on early-init
