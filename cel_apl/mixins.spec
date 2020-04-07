@@ -59,5 +59,5 @@ swap:zram(size=1073741824,swappiness=false,hardware=cel_apl)
 power: true
 firststage-mount: true
 default-drm: true
-serialport: ttyUSB0
+serialport: ttyS0
 neuralnetworks: true
