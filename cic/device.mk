@@ -105,6 +105,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.gralloc_imp=intel \
     ro.hardware.hwcomposer_imp=intel \
     ro.opengles.version=196610 \
+
 ##############################################################
 # Source: device/intel/mixins/groups/usb/acc/product.mk
 ##############################################################
