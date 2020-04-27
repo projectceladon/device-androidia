@@ -20,8 +20,15 @@ BOARD_RECOVERYIMAGE_PARTITION_SIZE ?= 31457280
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_CACHEIMAGE_PARTITION_SIZE ?= 104857600
 ##############################################################
+# Source: device/intel/mixins/groups/avb/true/BoardConfig.mk
+##############################################################
+BOARD_AVB_ENABLE := true
+##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/BoardConfig.mk
 ##############################################################
+BOARD_BOOTIMAGE_PARTITION_SIZE ?= 31457280
+BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
+
 
 
 KERNELFLINGER_USE_RPMB_SIMULATE := true
