@@ -27,3 +27,5 @@ bluetooth: cic
 trusty: true(ref_target=cic)
 storage: sdcard-mmc0-usb-sd(adoptablesd=false,adoptableusb=false)
 avb: true
+sepolicy: enforcing
+loop-mount: true
