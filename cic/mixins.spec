@@ -9,6 +9,8 @@ product.mk: device.mk
 [groups]
 boot-arch: project-celadon(uefi_arch=x86_64,rpmb_simulate=true,use_cic=true)
 allow-missing-dependencies: true
+sepolicy: enforcing
+loop-mount: true
 audio: aic
 cpu-arch: x86_64
 debug-unresponsive: false
