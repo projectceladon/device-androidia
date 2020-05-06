@@ -189,6 +189,12 @@ ifeq ($(ENABLE_NATIVEBRIDGE_64BIT),true)
 endif
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.dalvik.vm.native.bridge=libhoudini.so
 ##############################################################
+# Source: device/intel/mixins/groups/usb-gadget/cic-configfs/product.mk
+##############################################################
+PRODUCT_COPY_FILES += \
+    $(INTEL_PATH_COMMON)/usb-gadget/uvc-gadget:system/vendor/bin/uvc-gadget \
+    $(INTEL_PATH_COMMON)/usb-gadget/1080p.txt:system/vendor/etc/1080p.txt
+##############################################################
 # Source: device/intel/mixins/groups/media/mesa/product.mk
 ##############################################################
 # libstagefrighthw
