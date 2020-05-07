@@ -7,7 +7,7 @@ mixinsrel: false
 product.mk: device.mk
 
 [groups]
-boot-arch: project-celadon(uefi_arch=x86_64,rpmb_simulate=true,use_cic=true)
+boot-arch: project-celadon(uefi_arch=x86_64,use_cic=true)
 allow-missing-dependencies: true
 audio: aic
 cpu-arch: x86_64
@@ -24,6 +24,4 @@ codecs: configurable(hw_ve_h265=true, hw_vd_vp9=true, hw_vd_mp2=true, hw_vd_vc1=
 codec2: true
 camera-ext: ext-camera-only
 bluetooth: cic
-trusty: true(ref_target=cic)
 storage: sdcard-mmc0-usb-sd(adoptablesd=false,adoptableusb=false)
-avb: true
