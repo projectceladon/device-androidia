@@ -20,10 +20,6 @@ BOARD_RECOVERYIMAGE_PARTITION_SIZE ?= 31457280
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_CACHEIMAGE_PARTITION_SIZE ?= 104857600
 ##############################################################
-# Source: device/intel/mixins/groups/avb/true/BoardConfig.mk
-##############################################################
-BOARD_AVB_ENABLE := true
-##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/BoardConfig.mk
 ##############################################################
 BOARD_BOOTIMAGE_PARTITION_SIZE ?= 31457280
@@ -162,7 +158,9 @@ NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/mac80211_hwsim/BoardConfig.mk
 ##############################################################
+BOARD_WLAN_DEVICE           := emulator
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_simulated
 WPA_SUPPLICANT_VERSION      := VER_0_8_X
 WIFI_DRIVER_FW_PATH_PARAM   := "/dev/null"
 WIFI_DRIVER_FW_PATH_STA     := "/dev/null"
@@ -229,43 +227,4 @@ DEVICE_PACKAGE_OVERLAYS += device/intel/project-celadon/$(TARGET_PRODUCT)/blueto
 
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_DEVICE_CIC)/sepolicy/bluetooth
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_DEVICE_CIC)/sepolicy/bluetooth/common
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/BoardConfig.mk
-##############################################################
-TARGET_USE_TRUSTY := true
-
-ifneq (, $(filter abl sbl, project-celadon))
-TARGET_USE_MULTIBOOT := true
-endif
-
-BOARD_USES_TRUSTY := true
-BOARD_USES_KEYMASTER1 := true
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_DEVICE_CIC)/sepolicy/trusty
-BOARD_SEPOLICY_M4DEFS += module_trusty=true
-
-TRUSTY_BUILDROOT = $(PWD)/$(PRODUCT_OUT)/obj/trusty/
-
-TRUSTY_ENV_VAR += TRUSTY_REF_TARGET=cic
-
-#for trusty vmm
-# use same toolchain as android kernel
-TRUSTY_ENV_VAR += CLANG_BINDIR=$(PWD)/$(LLVM_PREBUILTS_PATH)
-TRUSTY_ENV_VAR += COMPILE_TOOLCHAIN=$(YOCTO_CROSSCOMPILE)
-TRUSTY_ENV_VAR += TARGET_BUILD_VARIANT=$(TARGET_BUILD_VARIANT)
-TRUSTY_ENV_VAR += BOOT_ARCH=project-celadon
-
-# output build dir to android out folder
-TRUSTY_ENV_VAR += BUILD_DIR=$(TRUSTY_BUILDROOT)
-TRUSTY_ENV_VAR += LKBIN_DIR=$(PWD)/vendor/intel/fw/trusty-release-binaries/
-
-#Fix the cpu hotplug fail due to the trusty.
-#Trusty will introduce some delay for cpu_up().
-#Experiment show need wait at least 60us after
-#apic_icr_write(APIC_DM_STARTUP | (start_eip >> 12), phys_apicid);
-#So here override the cpu_init_udelay to have the cpu wait for 300us
-#to guarantee the cpu_up success.
-BOARD_KERNEL_CMDLINE += cpu_init_udelay=10
-
-#TOS_PREBUILT := $(PWD)/$(INTEL_PATH_VENDOR)/fw/evmm/tos.img
-#EVMM_PREBUILT := $(PWD)/$(INTEL_PATH_VENDOR)/fw/evmm/multiboot.img
 # ------------------ END MIX-IN DEFINITIONS ------------------
