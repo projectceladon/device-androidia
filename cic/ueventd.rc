@@ -14,9 +14,4 @@
 ##############################################################
 # Camera
 /dev/video*       0660  system  camera
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/ueventd.rc
-##############################################################
-/dev/block/p*/*/*/by-name/teedata      0660 system system
-
 # ------------------ END MIX-IN DEFINITIONS ------------------
