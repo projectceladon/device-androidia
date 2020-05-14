@@ -16,7 +16,7 @@ dexpreopt: true
 device-specific: cic(file_encryption=true,dm_verity=true)
 graphics: aic_mdc
 usb: acc
-wlan: mac80211_hwsim
+wlan: cic
 houdini: true
 usb-gadget: cic-configfs
 media: mesa(add_sw_msdk=false, opensource_msdk=true)
