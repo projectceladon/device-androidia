@@ -9,14 +9,12 @@ product.mk: device.mk
 [groups]
 boot-arch: project-celadon(uefi_arch=x86_64,use_cic=true)
 allow-missing-dependencies: true
-sepolicy: enforcing
-loop-mount: true
 audio: aic
 cpu-arch: x86_64
 debug-unresponsive: false
 dexpreopt: true
-device-specific: cic(file_encryption=true,dm_verity=true)
-ais: true
+device-specific: cic_dev(file_encryption=true)
+ais: false
 graphics: aic_mdc
 usb: acc
 wlan: mac80211_hwsim
