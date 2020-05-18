@@ -9,14 +9,12 @@ product.mk: device.mk
 [groups]
 boot-arch: project-celadon(uefi_arch=x86_64,use_cic=true)
 allow-missing-dependencies: true
-sepolicy: enforcing
-loop-mount: true
 audio: aic
 cpu-arch: x86_64
 debug-unresponsive: false
 dexpreopt: true
-device-specific: cic(file_encryption=true,dm_verity=true)
-ais: true
+device-specific: cic_dev(file_encryption=true)
+ais: false
 graphics: aic_mdc
 usb: acc
 wlan: cic
@@ -27,6 +25,4 @@ codecs: configurable(hw_ve_h265=true, hw_vd_vp9=true, hw_vd_mp2=true, hw_vd_vc1=
 codec2: true
 camera-ext: ext-camera-only
 bluetooth: cic
-trusty: true(ref_target=cic)
 storage: sdcard-mmc0-usb-sd(adoptablesd=false,adoptableusb=false)
-avb: true
