@@ -10,10 +10,6 @@ TARGET_UEFI_ARCH := x86_64
 KERNELFLINGER_SSL_LIBRARY := boringssl
 
 ##############################################################
-# Source: device/intel/mixins/groups/loop-mount/true/product.mk
-##############################################################
-TARGET_LOOP_MOUNT_SYSTEM_IMAGES := true
-##############################################################
 # Source: device/intel/mixins/groups/audio/aic/product.mk
 ##############################################################
 PRODUCT_PACKAGES += \
@@ -49,7 +45,7 @@ PRODUCT_PACKAGES += \
     audio_policy.default.so \
     audio_configuration_files
 ##############################################################
-# Source: device/intel/mixins/groups/device-specific/cic/product.mk
+# Source: device/intel/mixins/groups/device-specific/cic_dev/product.mk
 ##############################################################
 PRODUCT_PACKAGES += \
     docker \
@@ -294,39 +290,4 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-service.vbt \
     libbt-vendor
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/product.mk
-##############################################################
-
-KM_VERSION := 2
-
-ifeq ($(KM_VERSION),2)
-PRODUCT_PACKAGES += \
-	keystore.trusty
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.keystore=trusty
-endif
-
-ifeq ($(KM_VERSION),1)
-PRODUCT_PACKAGES += \
-	keystore.${TARGET_BOARD_PLATFORM}
-endif
-
-PRODUCT_PACKAGES += \
-	libtrusty \
-	storageproxyd \
-	libinteltrustystorage \
-	libinteltrustystorageinterface \
-	gatekeeper.trusty \
-	android.hardware.gatekeeper@1.0-impl \
-	android.hardware.gatekeeper@1.0-service \
-
-PRODUCT_PACKAGES_DEBUG += \
-	intel-secure-storage-unit-test \
-	gatekeeper-unit-tests \
-	libscrypt_static \
-	scrypt_test \
-
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.gatekeeper=trusty \
 # ------------------ END MIX-IN DEFINITIONS ------------------
