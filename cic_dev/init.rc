@@ -9,7 +9,7 @@
 on boot
     setprop ro.config.media_vol_default 8
 ##############################################################
-# Source: device/intel/mixins/groups/device-specific/cic/init.rc
+# Source: device/intel/mixins/groups/device-specific/cic_dev/init.rc
 ##############################################################
 on early-init
 
@@ -258,24 +258,6 @@ on property:sys.usb.config=ncm,acm && property:sys.usb.configfs=1
 on post-fs
     chmod 0664 /dev/ion
     chown system system /dev/ion
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/init.rc
-##############################################################
-on post-fs-data
-    mkdir /data/vendor/securestorage 0700 system system
-    chmod 666 /dev/rpmb0
-
-on early-boot
-    start storageproxyd
-
-service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/vendor/securestorage -r /dev/rpmb0
-    user system
-    group system
-    oneshot
-
-on post-fs
-    # Update device node r/w attribute
-    chmod 666 /dev/trusty-ipc-dev0
 ##############################################################
 # Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/init.rc
 ##############################################################

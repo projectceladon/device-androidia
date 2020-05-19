@@ -26,15 +26,12 @@ PRODUCT_CHARACTERISTICS := tablet
 PRODUCT_AAPT_CONFIG := normal large xlarge mdpi hdpi
 PRODUCT_AAPT_PREF_CONFIG := mdpi
 
-TARGET_DM_VERITY_SUPPORT := true
-
-INTEL_PATH_DEVICE_CIC := device/intel/project-celadon/$(TARGET_PRODUCT)
+INTEL_PATH_DEVICE_CIC := device/intel/project-celadon/cic_dev
 INTEL_PATH_KERNEL_MODULES_CIC := kernel/modules/cic
 INTEL_PATH_VENDOR_CIC := vendor/intel/cic
 INTEL_PATH_SEPOLICY := device/intel/project-celadon/sepolicy
 INTEL_PATH_VENDOR_CIC_GRAPHIC := $(INTEL_PATH_VENDOR_CIC)/target/graphics
 INTEL_PATH_VENDOR_CIC_HAL := $(INTEL_PATH_VENDOR_CIC)/target/hals
-INTEL_PATH_PREBUILTS_OUT = $(PRODUCT_OUT)/prebuilts
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml   \
@@ -48,9 +45,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/manifest.xml:$(TARGET_COPY_OUT_VENDOR)/manifest.xml \
     out/target/product/$(TARGET_PRODUCT)/system/bin/sdcard-fuse:system/bin/sdcard \
 
-PRODUCT_PACKAGES += android.hardware.health@2.0-service.intel
-
-PRODUCT_NAME := cic
-PRODUCT_DEVICE := cic
+PRODUCT_NAME := cic_dev
+PRODUCT_DEVICE := cic_dev
 PRODUCT_BRAND := Intel
 PRODUCT_MODEL := CIC Container image
