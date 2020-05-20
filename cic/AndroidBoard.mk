@@ -132,28 +132,6 @@ publish: aic
 	$(hide) mkdir -p $(TOP)/pub/$(TARGET_PRODUCT)/$(TARGET_BUILD_VARIANT)
 	$(hide) cp $(PRODUCT_OUT)/$(TARGET_AIC_FILE_NAME) $(TOP)/pub/$(TARGET_PRODUCT)/$(TARGET_BUILD_VARIANT)
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/AndroidBoard.mk
-##############################################################
-.PHONY: tosimage multiboot
-
-EVMM_PKG := $(TOP)/$(PRODUCT_OUT)/obj/trusty/evmm_pkg.bin
-EVMM_LK_PKG := $(TOP)/$(PRODUCT_OUT)/obj/trusty/evmm_lk_pkg.bin
-
-LOCAL_MAKE := make
-
-$(EVMM_PKG):
-	@echo "making evmm.."
-	$(hide) (cd $(TOPDIR)$(INTEL_PATH_VENDOR)/fw/evmm && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE))
-
-$(EVMM_LK_PKG):
-	@echo "making evmm(packing with lk.bin).."
-	$(hide) (cd $(TOPDIR)$(INTEL_PATH_VENDOR)/fw/evmm && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE))
-
-# include sub-makefile according to boot_arch
-include $(TARGET_DEVICE_DIR)/extra_files/trusty/trusty_project-celadon.mk
-
-LOAD_MODULES_H_IN += $(TARGET_DEVICE_DIR)/extra_files/trusty/load_trusty_modules.in
-##############################################################
 # Source: device/intel/mixins/groups/vndk/default/AndroidBoard.mk
 ##############################################################
 define define-vndk-sp-lib
