@@ -265,4 +265,8 @@ on init
     # Support legacy paths
     symlink /sdcard /mnt/sdcard
     symlink /sdcard /storage/sdcard0
+##############################################################
+# Source: device/intel/mixins/groups/debug-crashlogd/true/init.rc
+##############################################################
+import /init.crashlogd.rc
 # ------------------ END MIX-IN DEFINITIONS ------------------

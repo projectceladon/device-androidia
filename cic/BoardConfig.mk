@@ -234,4 +234,11 @@ DEVICE_PACKAGE_OVERLAYS += device/intel/project-celadon/$(TARGET_PRODUCT)/blueto
 
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/bluetooth
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/bluetooth/common
+##############################################################
+# Source: device/intel/mixins/groups/debug-crashlogd/true/BoardConfig.mk
+##############################################################
+ifeq ($(MIXIN_DEBUG_LOGS),true)
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/crashlogd
+BOARD_SEPOLICY_M4DEFS += module_debug_crashlogd=true
+endif
 # ------------------ END MIX-IN DEFINITIONS ------------------

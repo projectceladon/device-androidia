@@ -294,4 +294,26 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-service.vbt \
     libbt-vendor
+##############################################################
+# Source: device/intel/mixins/groups/debug-crashlogd/true/product.mk
+##############################################################
+ifneq ($(TARGET_BUILD_VARIANT),user)
+MIXIN_DEBUG_LOGS := true
+endif
+
+ifeq ($(MIXIN_DEBUG_LOGS),true)
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/extra_files/debug-crashlogd/init.crashlogd.rc:root/init.crashlogd.rc \
+	$(call add-to-product-copy-files-if-exists,$(LOCAL_PATH)/extra_files/debug-crashlogd/crashlog.conf:$(TARGET_COPY_OUT_VENDOR)/etc/crashlog.conf)
+PRODUCT_PACKAGES += crashlogd \
+	dumpstate_dropbox.sh \
+	elogs.sh \
+	aplog.sh \
+	logfs.sh
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.vendor.crashlogd.data_quota=50
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.vendor.service.default_logfs=apklogfs
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.logd.logpersistd.size=100
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.vendor.intel.logger.rot_cnt=100
+endif
 # ------------------ END MIX-IN DEFINITIONS ------------------
