@@ -1,0 +1,10 @@
+#
+# system_app
+#
+
+get_prop(system_app, vendor_crashlogd_prop)
+
+# for aplog
+allow system_app log_file:dir create_dir_perms;
+allow system_app log_file:file create_file_perms;
+allow system_app log_file:filesystem getattr;

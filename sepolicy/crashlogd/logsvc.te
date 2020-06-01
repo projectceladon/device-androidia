@@ -1,0 +1,49 @@
+# Rules for aplogs specific services
+type logsvc, domain;
+type logsvc_exec, exec_type, file_type, vendor_file_type;
+init_daemon_domain(logsvc);
+
+userdebug_or_eng(`
+  allow logsvc self:capability { sys_nice };
+  allow logsvc self:capability2 syslog;
+
+  allow logsvc logdr_socket:sock_file write;
+  allow logsvc logd:unix_stream_socket connectto;
+
+  allow logsvc kmsg_device:chr_file { open read };
+  allow logsvc kernel:system syslog_read;
+  allow logsvc vendor_toolbox_exec:file entrypoint;
+
+  set_prop(logsvc, ctl_default_prop)
+  set_prop(logsvc, vendor_elogs_prop)
+  set_prop(logsvc, logpersistd_logging_prop)
+
+  allow logsvc misc_logd_file:file getattr;
+  permissive logsvc;
+
+  dontaudit logsvc self:capability *;
+  dontaudit logsvc misc_logd_file:dir *;
+  dontaudit logsvc sysfs:file *;
+  dontaudit logsvc cache_file:file *;
+  dontaudit logsvc cache_file:dir rw_dir_perms;
+  dontaudit logsvc cache_file:lnk_file create_file_perms;
+  dontaudit logsvc log_file:file create_file_perms;
+  dontaudit logsvc log_file:dir *;
+  dontaudit logsvc log_file:lnk_file create_file_perms;
+  dontaudit logsvc vendor_apklogfs_prop:file create_file_perms;
+  dontaudit logsvc vendor_aplogfs_prop:file create_file_perms;
+
+  allow logsvc vendor_toolbox_exec:file execute_no_trans;
+  allow logsvc logd_socket:sock_file write;
+
+  not_full_treble(`
+    # Execute toolbox/toybox commands
+    allow logsvc toolbox_exec:file rx_file_perms;
+    allow logsvc system_file:file x_file_perms;
+    allow logsvc shell_exec:file rx_file_perms;
+  ')
+  full_treble_only(`
+    allow logsvc vendor_toolbox_exec:file rx_file_perms;
+    allow logsvc vendor_shell_exec:file rx_file_perms;
+  ')
+')

@@ -1,0 +1,39 @@
+userdebug_or_eng(`
+  type dumpstate_dropbox, domain;
+  type dumpstate_dropbox_exec, exec_type, file_type, vendor_file_type;
+
+  domain_auto_trans(init, dumpstate_dropbox_exec, dumpstate_dropbox)
+
+  permissive dumpstate_dropbox;
+
+  allow dumpstate_dropbox self:capability { chown };
+
+  allow domain dumpstate_dropbox:fd use;
+
+  # breaks treble, but its a permisisve debug domain so just dontaudit it.
+  dontaudit dumpstate_dropbox dropbox_service:service_manager find;
+
+  set_prop(dumpstate_dropbox, ctl_dumpstate_prop)
+
+  # Breaks treble, just ignore it.
+  dontaudit dumpstate_dropbox dumpstate_socket:sock_file write;
+  dontaudit dumpstate_dropbox dumpstate:unix_stream_socket connectto;
+
+
+  # Breaks treble since its on system partition. Since this is
+  # a permissive domain, just dontaudit it.
+  # Execute shell scripts, toolbox and system bin files.
+  dontaudit dumpstate_dropbox vendor_toolbox_exec:file rx_file_perms;
+
+  # breaks on treble, but since this is a permissive domain,
+  # just dontaudit them rather than allow.
+  dontaudit dumpstate_dropbox shell_exec:file rx_file_perms;
+  dontaudit dumpstate_dropbox system_file:file rx_file_perms;
+  dontaudit dumpstate_dropbox system_file:file rx_file_perms;
+  dontaudit dumpstate_dropbox self:capability *;
+  dontaudit dumpstate_dropbox servicemanager:binder *;
+  dontaudit dumpstate_dropbox binder_device: chr_file *;
+  dontaudit dumpstate_dropbox default_prop:file *;
+  dontaudit dumpstate_dropbox {fs_type dev_type file_type}:dir_file_class_set *;
+
+')

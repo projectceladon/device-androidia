@@ -1,0 +1,5 @@
+userdebug_or_eng(`
+  binder_call(system_server, crashlogd);
+  allow system_server crashlogd:fifo_file w_file_perms;
+  allow system_server dumpstate_dropbox:fifo_file w_file_perms;
+')

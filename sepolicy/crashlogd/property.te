@@ -1,0 +1,5 @@
+type vendor_crashlogd_prop, property_type;
+type vendor_core_prop, property_type;
+type vendor_apklogfs_prop, property_type;
+type vendor_aplogfs_prop, property_type;
+type vendor_elogs_prop, property_type;
