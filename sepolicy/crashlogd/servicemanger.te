@@ -1,0 +1,7 @@
+userdebug_or_eng(`
+ allow servicemanager crashlogd:dir search;
+ allow servicemanager crashlogd:process getattr;
+ allow servicemanager crashlogd:file {open read};
+ allow servicemanager dumpstate_dropbox:dir search;
+ allow servicemanager dumpstate_dropbox:file r_file_perms;
+')

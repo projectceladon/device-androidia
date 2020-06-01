@@ -1,0 +1,7 @@
+# user changable crashlogd properties
+persist.vendor.crashlogd.          u:object_r:vendor_crashlogd_prop:s0
+persist.vendor.core.enabled        u:object_r:vendor_core_prop:s0
+# user changable aplog properties
+persist.vendor.service.apklogfs.enable          u:object_r:vendor_apklogfs_prop:s0
+persist.vendor.service.aplogfs.enable           u:object_r:vendor_aplogfs_prop:s0
+persist.vendor.service.elogs.enable             u:object_r:vendor_elogs_prop:s0

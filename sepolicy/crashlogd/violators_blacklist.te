@@ -1,0 +1,7 @@
+userdebug_or_eng(`
+
+  typeattribute dumpstate_dropbox data_between_core_and_vendor_violators;
+
+')
+
+typeattribute logsvc data_between_core_and_vendor_violators;
