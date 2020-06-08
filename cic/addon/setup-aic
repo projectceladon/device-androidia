@@ -168,7 +168,9 @@ echo 'COPY ./root/ /' >> $AIC_WORK_DIR/update/Dockerfile
 echo ' ' >> $AIC_WORK_DIR/update/Dockerfile
 
 #Install Feature set packages / modules
-./pre-requisites/setup-feature
+if [[ -z $DEBIAN ]]; then
+  ./pre-requisites/setup-feature
+fi
 
 #Initiate Early-Launch
 #./pre-requisites/launch-early
@@ -195,6 +197,11 @@ fi
 AIC_INSTALL_ARGUMENTS="-e -d none"
 if [[ $MULTIPLE_USER == "true" ]]; then
 AIC_INSTALL_ARGUMENTS="$AIC_INSTALL_ARGUMENTS -j"
+fi
+
+if [[ $SECURE == "false" ]]; then
+cp $AIC_WORK_DIR/update/customize-android $AIC_WORK_DIR/update/root/customize-android
+AIC_INSTALL_ARGUMENTS="$AIC_INSTALL_ARGUMENTS -u"
 fi
 
 #Install CIC
@@ -295,5 +302,8 @@ fi
 sudo update-grub
 echo ""
 echo "Reboot required for changes to be reflected !!"
-read -p "Press Enter key to reboot: "
-sudo reboot
+
+if [[ -z $DEBIAN ]]; then
+  read -p "Press Enter key to reboot: "
+  sudo reboot
+fi
