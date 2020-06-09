@@ -8,3 +8,4 @@ allow rootfs labeledfs:filesystem associate;
 allow cgroup labeledfs:filesystem associate;
 allow oemfs  labeledfs:filesystem associate;
 allow proc_cmdline labeledfs:filesystem associate;
+allow system_data_file device:filesystem associate;

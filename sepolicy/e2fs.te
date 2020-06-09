@@ -1,0 +1,2 @@
+allow e2fs tmpfs:dir search;
+allow e2fs tmpfs:blk_file rw_file_perms;
