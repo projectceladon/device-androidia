@@ -59,6 +59,12 @@ on init
 
 on fs
     mount_all /fstab.${ro.hardware}
+
+on post-fs-data
+    copy /ipc/config/ethernet/ipconfig.txt /data/misc/ethernet/ipconfig.txt
+    chown system system /data/misc/ethernet/ipconfig.txt
+    chmod 0644 /data/misc/ethernet/ipconfig.txt
+    copy /ipc/config/local.prop /data/local.prop
 ##############################################################
 # Source: device/intel/mixins/groups/graphics/aic_mdc/init.rc
 ##############################################################
