@@ -112,7 +112,7 @@ TARGET_USERIMAGES_SPARSE_EXT_DISABLED := true
 USE_OPENGL_RENDERER := true
 
 # framework switches 
-TARGET_USES_HWC2 			:= false
+TARGET_USES_HWC2 			:= true
 USE_OPENGL_RENDERER 		:= true
 TARGET_HARDWARE_3D 			:= true
 
