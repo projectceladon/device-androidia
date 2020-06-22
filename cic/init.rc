@@ -275,4 +275,9 @@ on init
 # Source: device/intel/mixins/groups/debug-crashlogd/true/init.rc
 ##############################################################
 import /init.crashlogd.rc
+##############################################################
+# Source: device/intel/mixins/groups/suspend/never/init.rc
+##############################################################
+on boot
+    write /sys/power/wake_lock nosleeptillbrooklyn
 # ------------------ END MIX-IN DEFINITIONS ------------------
