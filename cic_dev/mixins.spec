@@ -14,7 +14,7 @@ cpu-arch: x86_64
 debug-unresponsive: false
 dexpreopt: true
 device-specific: cic_dev(file_encryption=true)
-ais: false
+ais: true
 graphics: aic_mdc
 usb: acc
 wlan: cic
