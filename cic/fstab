@@ -12,8 +12,8 @@
 ##############################################################
 # Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/fstab
 ##############################################################
-*/usb*/*/host*/*/block/sd*              auto             vfat    defaults                                   voldmanaged=usbdisk:auto
-*/block/mmcblk0*                        auto             vfat    defaults                                   voldmanaged=sdcard1:auto
+*/usb*/*/host*/*/block/sd*              auto             vfat    defaults                                   voldmanaged=usbdisk:auto,encryptable=userdata
+*/block/mmcblk0*                        auto             vfat    defaults                                   voldmanaged=sdcard1:auto,encryptable=userdata
 /dev/block/mmcblk0p1                    /sdcard          vfat    defaults                                   recoveryonly
 
 # ------------------ END MIX-IN DEFINITIONS ------------------
