@@ -1,1 +1,2 @@
 ServiceAgent                                   u:object_r:serviceagent_service:s0
+CicKeymasterd                                  u:object_r:cickeymaster_service:s0
