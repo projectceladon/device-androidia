@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# author: sundar.gnanasekaran@intel.com
+
+security=$1
+
+## copy KF and tos to ubuntu
+if [[ $security == "true" ]]; then
+
+    a=`sudo grep -irnsH 'microsoft corporation' /boot/efi/EFI/ubuntu/shimx64.efi`
+    b=`sudo grep -irnsH 'android@android' /boot/efi/EFI/ubuntu/shimx64.efi`
+    c=`sudo grep -irnsH 'microsoft corporation' /boot/efi/EFI/ubuntu/loaderx64.efi`
+    if [[ ! -z $a ]]; then
+        sudo cp /boot/efi/EFI/ubuntu/shimx64.efi /boot/efi/EFI/ubuntu/loaderx64.efi
+        sudo cp $AIC_WORK_DIR/kf4cic.efi /boot/efi/EFI/ubuntu/shimx64.efi
+    fi
+    if [[ ! -z $b && ! -z $c ]]; then
+        sudo cp $AIC_WORK_DIR/kf4cic.efi /boot/efi/EFI/ubuntu/shimx64.efi
+    fi
+
+fi
+
+### If trusty is disabled
+
+if [[ $security == "" || $security == "false" ]]; then
+
+
+    a=`sudo grep -irnsH 'microsoft corporation' /boot/efi/EFI/ubuntu/shimx64.efi`
+    b=`sudo grep -irnsH 'android@android' /boot/efi/EFI/ubuntu/shimx64.efi`
+    c=`sudo grep -irnsH 'microsoft corporation' /boot/efi/EFI/ubuntu/loaderx64.efi`
+    if [[ (-z $a) && ! (-z $c) ]]; then
+        sudo mv /boot/efi/EFI/ubuntu/loaderx64.efi /boot/efi/EFI/ubuntu/shimx64.efi
+    fi
+
+    ## Remove cpu_init_udelay=10000 from ubuntu
+    sudo sed -i "s/cpu_init_udelay=10000//g" /etc/default/grub
+fi
