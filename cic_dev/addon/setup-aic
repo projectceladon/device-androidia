@@ -1,23 +1,285 @@
 #!/usr/bin/env bash
 # author: sundar.gnanasekaran@intel.com
 
+unset SECURE=$SECURE WIFI_MT=$WIFI_MT WIFI_PT=$WIFI_PT BT_MT=$BT_MT BT_PT=$BT_PT AUDIO_MT=$AUDIO_MT AUDIO_PT=$AUDIO_PT CENTOS=$CENTOS DISPLAY=$DISPLAY >& /dev/null
 export AIC_WORK_DIR=${PWD}
 
+rm -f $AIC_WORK_DIR/update/customize-android && touch $AIC_WORK_DIR/update/customize-android && chmod 777 $AIC_WORK_DIR/update/customize-android
+
+USAGE="
+
+./setup-aic -s/-ns -m [audio,wifi,bt] -p [audio,wifi,bt] -c x11/drm
+
+-s    Security enabled [Trusty]
+-ns   Non-Secure
+-m    Mediation. Select which component you like to enable mediation.
+      ex: -m audio,wifi
+-p    Pass through. Select which component you like to enable pass through.
+      ex: -p audio,bt
+-j    Support multi-users, with this installation option, we need to use \"aic start -u \$AIC_USER\" to start AIC
+-h    Usage
+-c    For cent OS. Select display x11 / drm. Default its 'x11'.
+
+      Note:
+      * Dont select -m and -p for same component.
+      * By default, security is disabled, and all components are mediated.
+      * For -c, there will be no cic/monitor service && no cfc installation.
+
+"
+
+#Parse arguments
+arg=$*
+
+while [[ "$#" -gt 0 ]]
+do
+    case "$1" in
+        -s|--secure)
+            if [[ $SECURE == "false" ]]; then
+                echo "Select only secure or non-secure"
+                exit -1
+            fi
+            SECURE="true"
+            shift
+            ;;
+        -ns|--no-secure)
+            if [[ $SECURE == "true" ]]; then
+                echo "Select only secure or non-secure"
+                exit -1
+            fi
+            SECURE="false"
+            shift
+            ;;
+        -p|--pass-through)
+            shift
+            if [[ "$#" -lt 1 ]]; then
+                echo "$USAGE"
+                exit -1
+            fi
+            PT=$1
+            for i in $(echo $1 | sed "s/,/ /g")
+            do
+                case $i in
+                        audio)
+                                if [[ $AUDIO_MT == "true" ]]; then
+                                    echo "Audio: Select either Mediation / passthrough"
+                                    exit -1
+                                fi
+                                AUDIO_PT=true
+                                ;;
+                        wifi)
+                                if [[ $WIFI_MT == "true" ]]; then
+                                    echo "Wifi: Select either Mediation / passthrough"
+                                    exit -1
+                                fi
+                                WIFI_PT=true
+                                ;;
+                        bt)
+                                if [[ $BT_MT == "true" ]]; then
+                                    echo "BT: Select either Mediation / passthrough"
+                                    exit -1
+                                fi
+                                BT_PT=true
+                                ;;
+                        *)
+                                echo "$USAGE"
+                                exit -1
+                                ;;
+                esac
+            done
+            shift
+            ;;
+        -c|--centos)
+            shift
+            if [[ $1 == "drm" || $1 == "x11" ]]; then
+                DISPLAY="$1"
+            elif [[ $1 == "" ]]; then
+                DISPLAY="x11"
+            else
+                echo "$USAGE"
+                exit -1
+            fi
+            CENTOS=true
+            shift
+            ;;
+        -m|--mediation)
+            shift
+            if [[ "$#" -lt 1 ]]; then
+                echo "$USAGE"
+                exit -1
+            fi
+            MT=$1
+            for i in $(echo $1 | sed "s/,/ /g")
+            do
+                case $i in
+                        audio)
+                                if [[ $AUDIO_PT == "true" ]]; then
+                                    echo "Audio: Select either Mediation / passthrough"
+                                    exit -1
+                                fi
+                                AUDIO_MT=true
+                                ;;
+                        wifi)
+                                if [[ $WIFI_PT == "true" ]]; then
+                                    echo "Wifi: Select either Mediation / passthrough"
+                                    exit -1
+                                fi
+                                WIFI_MT=true
+                                ;;
+                        bt)
+                                if [[ $BT_PT == "true" ]]; then
+                                    echo "BT: Select either Mediation / passthrough"
+                                    exit -1
+                                fi
+                                BT_MT=true
+                                ;;
+                        *)
+                                echo "$USAGE"
+                                exit -1
+                                ;;
+                esac
+            done
+            shift
+            ;;
+        -j|--multi-user)
+            MULTIPLE_USER="true"
+            shift
+            ;;
+        *)
+            echo "$USAGE"
+            exit -1
+            ;;
+    esac
+done
+
+if [[ -z $SECURE ]]; then
+  SECURE="false"
+fi
+
+if [[ -z $AUDIO_MT && -z $AUDIO_PT ]]; then
+  AUDIO_MT="true"
+fi
+
+if [[ -z $WIFI_MT && -z $WIFI_PT ]]; then
+  WIFI_MT="true"
+fi
+
+if [[ -z $BT_MT && -z $BT_PT ]]; then
+  BT_MT="true"
+fi
+
+echo "SECURITY : $SECURE"
+echo "WIFI : MT $WIFI_MT | PT $WIFI_PT"
+echo "BT : MT $BT_MT | PT $BT_PT"
+echo "AUDIO : MT $AUDIO_MT | PT $AUDIO_PT"
+
+# export setup-aic configs
+export SECURE=$SECURE WIFI_MT=$WIFI_MT WIFI_PT=$WIFI_PT BT_MT=$BT_MT BT_PT=$BT_PT AUDIO_MT=$AUDIO_MT AUDIO_PT=$AUDIO_PT
+
+sudo rm -rf $AIC_WORK_DIR/workdir/data*
+#Re-create fresh Dockerfile
+echo 'FROM android_base' > $AIC_WORK_DIR/update/Dockerfile
+echo ' ' >> $AIC_WORK_DIR/update/Dockerfile
+echo 'COPY ./root/ /' >> $AIC_WORK_DIR/update/Dockerfile
+echo ' ' >> $AIC_WORK_DIR/update/Dockerfile
+
 #Install Feature set packages / modules
-./pre-requisites/setup-feature
+if [[ -z $DEBIAN && -z $CENTOS ]]; then
+  ./pre-requisites/setup-feature
+fi
 
 #Initiate Early-Launch
-#./pre-requisites/launch-early
-./pre-requisites/cic-service
+if [[ -z $CENTOS ]]; then
+    #./pre-requisites/launch-early
+    ./pre-requisites/cic-service
+    ./pre-requisites/cic-monitor-service
+fi
+
+#BT Service
+if [[ $BT_MT == "true" ]]; then
+  ./pre-requisites/bt mediation
+fi
+
+if [[ $WIFI_PT == "true" && -z `grep 'WLAN_PT="true"' aic` ]]; then
+  sed -i 's/\#\!\/bin\/bash/\#\!\/bin\/bash\nWLAN_PT=\"true\"/g' aic
+else
+  sed -i '/WLAN_PT=\"true\"/d' aic
+fi
 
 #customize android (add/remove apps etc.)
 ./pre-requisites/customize-android
 
+#Security settings
+if [[ -z $CENTOS ]]; then
+    ./pre-requisites/secure $SECURE
+fi
+
+if [[ $CENTOS == "true" ]]; then
+    AIC_INSTALL_ARGUMENTS="-d $DISPLAY"
+else
+    AIC_INSTALL_ARGUMENTS="-e -d none"
+fi
+
+if [[ $MULTIPLE_USER == "true" ]]; then
+AIC_INSTALL_ARGUMENTS="$AIC_INSTALL_ARGUMENTS -j"
+fi
+
+if [[ $SECURE == "false" ]]; then
+  cp $AIC_WORK_DIR/update/customize-android $AIC_WORK_DIR/update/root/customize-android
+  AIC_INSTALL_ARGUMENTS="$AIC_INSTALL_ARGUMENTS -u"
+else
+  # Enable FBE for secure installation
+  AIC_INSTALL_ARGUMENTS="$AIC_INSTALL_ARGUMENTS -g"
+
+  # lvm2 and thin-provisioning-tools are required by FBE
+  if [ ! -x "$(command -v pvcreate)" ]; then
+      echo "The lvm2 tool seems not installed, will install for you..."
+      sudo apt --assume-yes install lvm2
+  fi
+
+  if [ ! -x "$(command -v thin_check)" ]; then
+      echo "The thin-provisioning-tools seems not installed, will install for you..."
+      sudo apt --assume-yes install thin-provisioning-tools
+  fi
+
+fi
+
 #Install CIC
 cd $AIC_WORK_DIR
 echo "Installing CIC -- START"
-./aic install -u -e -d none
+./aic install $AIC_INSTALL_ARGUMENTS
 echo "Installing CIC -- DONE"
+
+#Update sepolicy mode
+a=`grep GRUB_CMDLINE_LINUX /etc/default/grub | grep -i 'androidboot.selinux=permissive'`
+b=`grep GRUB_CMDLINE_LINUX /etc/default/grub | grep -i 'androidboot.selinux=enforcing'`
+
+VERITY_METADATA_IMG=$AIC_WORK_DIR/verity_metadata
+VERITY_TMP_HASHTREE=$AIC_WORK_DIR/system_hashtree
+if [[ $SECURE == "true" ]]; then
+  if [ ! -z "$a" ]; then
+    sudo sed -i 's/androidboot.selinux=permissive//g' /etc/default/grub
+  fi
+
+  #Copying the verity metadata images
+  if [[ -f $VERITY_METADATA_IMG ]]; then
+    roothash_size=$(od -N4 -An -td $VERITY_METADATA_IMG |tr -d '  \n' |awk '{print $0}')
+    hash_tree_size=$(od -N4 -j$(($roothash_size+4)) -An -td $VERITY_METADATA_IMG |tr -d ' \n' |awk '{print $0}')
+
+    sudo dd if=$VERITY_METADATA_IMG of=$VERITY_TMP_HASHTREE bs=1 count=$hash_tree_size skip=$(($roothash_size+4+4)) conv=notrunc
+    echo "copying the verity metadta to aic-manager"
+    sudo docker cp $VERITY_TMP_HASHTREE aic-manager:/images
+    sudo docker cp $VERITY_METADATA_IMG aic-manager:/images
+    sudo rm -rf $VERITY_TMP_HASHTREE
+  fi
+fi
+if [[ $SECURE == "false" && -z $CENTOS ]]; then
+  if [[ -z "$a" && -z "$b" ]]; then
+    echo 'GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX androidboot.selinux=permissive"' | sudo tee -a /etc/default/grub
+  fi
+  if [ ! -z "$b" ]; then
+    sudo sed -i 's/androidboot.selinux=enforcing/androidboot.selinux=permissive/g' /etc/default/grub
+  fi
+fi
 
 #Check env path
 AIC_WORK_DIR_PATH=$AIC_WORK_DIR/workdir
@@ -39,33 +301,58 @@ fi
 
 ## Identify & set device serial ID
 serial=`sudo cat /sys/devices/virtual/dmi/id/board_serial`
-if [[ ! -f $AIC_WORK_DIR_PATH/data0/local.prop ]]; then
-  mkdir -p $AIC_WORK_DIR_PATH/data0
-  cd $AIC_WORK_DIR_PATH/data0 && touch local.prop
+LOCAL_PROP_PATH=$AIC_WORK_DIR_PATH/data0
+if [[ $SECURE == "true" ]]; then
+    LOCAL_PROP_PATH=$AIC_WORK_DIR_PATH/ipc/config
+fi
+
+if [[ ! -f $LOCAL_PROP_PATH/local.prop ]]; then
+  mkdir -p $LOCAL_PROP_PATH
+  cd $LOCAL_PROP_PATH && touch local.prop
   cd $AIC_WORK_DIR
 fi
 
-if [[ -z `grep "ro.serialno" $AIC_WORK_DIR_PATH/data0/local.prop` ]]; then
-  echo "ro.serialno=$serial" >> $AIC_WORK_DIR_PATH/data0/local.prop
+if [[ -z `grep "ro.serialno" $LOCAL_PROP_PATH/local.prop` ]]; then
+  echo "ro.serialno=$serial" >> $LOCAL_PROP_PATH/local.prop
 fi
 
 #set Time zone property
 localtz=$(timedatectl status |grep "Time zone")
 localtzarr=(${localtz// / })
 shorttz=${localtzarr[2]}
-if [[ -z `grep "persist.sys.timezone" $AIC_WORK_DIR_PATH/data0/local.prop` ]]; then
-  echo "persist.sys.timezone=$shorttz" >> $AIC_WORK_DIR_PATH/data0/local.prop
+if [[ -z `grep "persist.sys.timezone" $LOCAL_PROP_PATH/local.prop` ]]; then
+  echo "persist.sys.timezone=$shorttz" >> $LOCAL_PROP_PATH/local.prop
 fi
 
 sudo chmod 777 -R $AIC_WORK_DIR_PATH
-sudo chmod 0644 $AIC_WORK_DIR_PATH/data0/local.prop
+sudo chmod 0644 $LOCAL_PROP_PATH/local.prop
 
-sudo systemctl enable cic
+if [[ $MULTIPLE_USER == "true" ]]; then
+  sudo cp pre-requisites/cic_user_notify.sh /etc/profile.d/.
+fi
+
+if [[ -z $CENTOS ]]; then
+    sudo systemctl enable cic
+    sudo systemctl enable cic-monitor
+fi
 
 #Run pactl
-./pre-requisites/pactl_socket $(whoami)
+if [[ $AUDIO_MT == "true" ]]; then
+  ./pre-requisites/pactl_socket $(whoami)
+  ./sof_audio/configure_sof.sh "install" $AIC_WORK_DIR
+fi
+if [[ $AUDIO_PT == "true" ]]; then
+  sudo rm -rf /etc/profile.d/create_pasocket.sh
+fi
 
+sudo update-grub
 echo ""
-echo "Reboot required for changes to be reflected !!"
-read -p "Press Enter key to reboot: "
-sudo reboot
+
+if [[ -z $DEBIAN && -z $CENTOS ]]; then
+  read -p "Press Enter key to reboot.."
+  sudo reboot
+elif [[ $CENTOS == "true" ]]; then
+  echo "Please do './aic start' now to launch android.."
+else
+  echo "Reboot required for changes to be reflected.."
+fi

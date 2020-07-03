@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# author: sundar.gnanasekaran@intel.com
+
+if [[ $1 == "mediation" ]]; then
+
+## Remove BT from android
+echo '
+#Remove BT
+rm -rf /system/vendor/etc/permissions/android.hardware.bluetooth.xml
+rm -rf /system/vendor/etc/permissions/android.hardware.bluetooth_le.xml
+
+' >> $AIC_WORK_DIR/update/customize-android
+
+fi
