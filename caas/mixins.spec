@@ -85,4 +85,3 @@ firmware: true(all_firmwares=true)
 aaf: true
 suspend: never
 sensors: mediation
-cbc: true
