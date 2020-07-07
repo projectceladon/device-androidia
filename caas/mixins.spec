@@ -38,7 +38,7 @@ usb-gadget: configfs(usb_config=adb,mtp_adb_pid=0x0a5f,ptp_adb_pid=0x0a61,rndis_
 midi: true
 touch: cvt0f21
 navigationbar: true
-device-type: tablet
+device-type: car
 debug-tools: true
 fota: true
 default-drm: true
@@ -85,3 +85,4 @@ firmware: true(all_firmwares=true)
 aaf: true
 suspend: never
 sensors: mediation
+cbc: true
