@@ -30,3 +30,4 @@ bluetooth: cic
 storage: sdcard-mmc0-usb-sd(adoptablesd=true,adoptableusb=true)
 debug-crashlogd: true
 suspend: never
+neuralnetworks: true
