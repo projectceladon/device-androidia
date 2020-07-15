@@ -316,4 +316,22 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.vendor.service.default_logfs=apklogfs
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.logd.logpersistd.size=100
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.vendor.intel.logger.rot_cnt=100
 endif
+##############################################################
+# Source: device/intel/mixins/groups/neuralnetworks/true/product.mk
+##############################################################
+# neuralnetworks HAL
+PRODUCT_PACKAGES += \
+    android.hardware.neuralnetworks@1.1-generic-service \
+    android.hardware.neuralnetworks@1.1-generic-impl \
+    android.hardware.neuralnetworks@1.2-service-gpgpu
+
+PRODUCT_PACKAGES += \
+    libinference_engine
+
+PRODUCT_PACKAGES += \
+    libMKLDNNPlugin\
+    libmkldnn
+
+PRODUCT_PACKAGES += \
+    graphtest_cpu
 # ------------------ END MIX-IN DEFINITIONS ------------------

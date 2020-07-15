@@ -241,4 +241,8 @@ ifeq ($(MIXIN_DEBUG_LOGS),true)
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/crashlogd
 BOARD_SEPOLICY_M4DEFS += module_debug_crashlogd=true
 endif
+##############################################################
+# Source: device/intel/mixins/groups/neuralnetworks/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/neuralnetworks
 # ------------------ END MIX-IN DEFINITIONS ------------------
