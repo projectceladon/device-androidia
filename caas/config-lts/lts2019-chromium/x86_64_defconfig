@@ -5087,7 +5087,7 @@ CONFIG_RTC_INTF_DEV=y
 # CONFIG_RTC_DRV_MAX6902 is not set
 # CONFIG_RTC_DRV_PCF2123 is not set
 # CONFIG_RTC_DRV_MCP795 is not set
-CONFIG_RTC_I2C_AND_SPI=y
+#CONFIG_RTC_I2C_AND_SPI is not set
 
 #
 # SPI and I2C RTC drivers
@@ -5099,7 +5099,7 @@ CONFIG_RTC_I2C_AND_SPI=y
 #
 # Platform RTC drivers
 #
-CONFIG_RTC_DRV_CMOS=y
+# CONFIG_RTC_DRV_CMOS is not set
 # CONFIG_RTC_DRV_DS1286 is not set
 # CONFIG_RTC_DRV_DS1511 is not set
 # CONFIG_RTC_DRV_DS1553 is not set
