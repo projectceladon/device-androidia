@@ -26,3 +26,4 @@ codec2: true
 camera-ext: ext-camera-only
 bluetooth: cic
 storage: sdcard-mmc0-usb-sd(adoptablesd=true,adoptableusb=true)
+sensors: iio
