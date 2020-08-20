@@ -1,0 +1,1 @@
+/data/vendor/sensors(/.*)?            u:object_r:iiosensor_vendor_data_file:s0
