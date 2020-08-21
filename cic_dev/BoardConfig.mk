@@ -229,4 +229,10 @@ DEVICE_PACKAGE_OVERLAYS += device/intel/project-celadon/$(TARGET_PRODUCT)/blueto
 
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/bluetooth
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/bluetooth/common
+##############################################################
+# Source: device/intel/mixins/groups/sensors/iio/BoardConfig.mk
+##############################################################
+USE_IIO_SENSOR_HAL := true
+
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/iio-sensors
 # ------------------ END MIX-IN DEFINITIONS ------------------
