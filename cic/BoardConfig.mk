@@ -245,4 +245,10 @@ endif
 # Source: device/intel/mixins/groups/neuralnetworks/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/neuralnetworks
+##############################################################
+# Source: device/intel/mixins/groups/sensors/iio/BoardConfig.mk
+##############################################################
+USE_IIO_SENSOR_HAL := true
+
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/iio-sensors
 # ------------------ END MIX-IN DEFINITIONS ------------------
