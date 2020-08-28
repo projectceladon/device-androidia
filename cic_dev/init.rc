@@ -269,10 +269,16 @@ on init
 # Source: device/intel/mixins/groups/sensors/iio/init.rc
 ##############################################################
 on early-init
-    mkdir /sys/kernel/config    0660 root root
+    mkdir /sys/kernel/config 0660 system system
     mount configfs none /sys/kernel/config
 
 on post-fs
     chown system system /sys/kernel/config/iio
     chown system system /sys/kernel/config/iio/triggers
+
+on late-fs
+    chown system system /sys/bus/iio
+    chown system system /sys/bus/iio/devices
+    chown system system /sys/bus/iio/devices/iio:device*
+    chown system system /dev/iio:device*
 # ------------------ END MIX-IN DEFINITIONS ------------------
