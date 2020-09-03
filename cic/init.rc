@@ -66,17 +66,6 @@ on post-fs-data
     chmod 0644 /data/misc/ethernet/ipconfig.txt
     copy /ipc/config/local.prop /data/local.prop
 ##############################################################
-# Source: device/intel/mixins/groups/graphics/aic_mdc/init.rc
-##############################################################
-service auto_start_apk /system/bin/auto_start_apk.sh
-    user root
-    group root
-    disabled
-    oneshot
-
-on property:sys.boot_completed=1
-    start auto_start_apk
-##############################################################
 # Source: device/intel/mixins/groups/wlan/cic/init.rc
 ##############################################################
 on boot
