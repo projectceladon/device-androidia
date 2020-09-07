@@ -77,7 +77,7 @@ factory-scripts: true
 filesystem_config: common
 load_modules: true
 gptbuild: true(size=32G,generate_craff=false,compress_gptimage=true)
-dynamic-partitions: true(super_img_in_flashzip=true)
+dynamic-partitions: true(super_img_in_flashzip=true, super_partition_size=8000)
 dbc: true
 atrace: true
 firmware: true(all_firmwares=true)
