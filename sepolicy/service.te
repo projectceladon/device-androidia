@@ -1,1 +1,7 @@
 type serviceagent_service,          service_manager_type;
+
+# sepolicy for cickeymaster
+type cickeymaster_service,         service_manager_type;
+binder_use(hal_keymaster_default);
+binder_call(hal_keymaster_default, kernel);
+allow hal_keymaster_default cickeymaster_service:service_manager find;
