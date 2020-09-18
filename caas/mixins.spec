@@ -84,4 +84,4 @@ atrace: true
 firmware: true(all_firmwares=false)
 aaf: true
 suspend: auto
-sensors: mediation
+sensors: mediation(disable_static_sensor_list=true)
