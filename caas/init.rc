@@ -664,8 +664,8 @@ on fs
     mount 9p aaf /mnt/share
     exec - system system -- /vendor/bin/logwrapper /vendor/bin/sh /vendor/bin/auto_detection.sh
     setprop ro.hardware.egl ${vendor.egl.set}
-    setprop ro.hardware.hwcomposer ${vendor.hwcomposer.set}
-    setprop ro.hardware.gralloc ${vendor.gralloc.set}
+    setprop ro.hardware.hwcomposer drm_minigbm
+    setprop ro.hardware.gralloc minigbm
 ##############################################################
 # Source: device/intel/mixins/groups/suspend/auto/init.rc
 ##############################################################
