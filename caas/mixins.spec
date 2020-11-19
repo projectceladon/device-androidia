@@ -67,7 +67,7 @@ vndk: true
 public-libraries: true
 device-specific: caas
 hdcpd: true
-treble: true
+treble: false
 swap: zram_auto(size=1073741824,swappiness=true,hardware=gordon_peak)
 art-config: true
 psdapp: true
