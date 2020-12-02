@@ -85,3 +85,4 @@ firmware: true(all_firmwares=false)
 aaf: true
 suspend: auto
 sensors: mediation
+mainline-mod: true
