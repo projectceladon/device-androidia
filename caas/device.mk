@@ -601,17 +601,6 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.vendor.service.default_logfs=apklogfs
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += persist.logd.logpersistd.size=100
 endif
 ##############################################################
-# Source: device/intel/mixins/groups/lights/true/product.mk
-##############################################################
-# Lights HAL
-BOARD_SEPOLICY_DIRS += \
-    $(INTEL_PATH_SEPOLICY)/light
-
-PRODUCT_PACKAGES += lights.$(TARGET_BOARD_PLATFORM) \
-    android.hardware.light@2.0-service \
-    android.hardware.light@2.0-impl
-
-##############################################################
 # Source: device/intel/mixins/groups/power/true/product.mk
 ##############################################################
 # Power HAL
@@ -723,28 +712,6 @@ $(call inherit-product,device/intel/common/firmware.mk)
 ##############################################################
 PRODUCT_PACKAGES += aafd \
                     auto_detection.sh
-##############################################################
-# Source: device/intel/mixins/groups/sensors/mediation/product.mk
-##############################################################
-ifeq ($(TARGET_BOARD_PLATFORM),)
-    $(error Please define TARGET_BOARD_PLATFORM in product-level Makefile)
-endif
-
-# Sensors HAL modules
-PRODUCT_PACKAGES += \
-        sensors.$(TARGET_BOARD_PLATFORM)
-
-PRODUCT_PACKAGES += \
-        android.hardware.sensors@1.0-service \
-        android.hardware.sensors@1.0-impl
-
-PRODUCT_COPY_FILES += \
-        frameworks/native/data/etc/android.hardware.sensor.ambient_temperature.xml:vendor/etc/permissions/android.hardware.sensor.ambient_temperature.xml \
-        frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:vendor/etc/permissions/android.hardware.sensor.accelerometer.xml \
-        frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:vendor/etc/permissions/android.hardware.sensor.gyroscope.xml \
-        frameworks/native/data/etc/android.hardware.sensor.compass.xml:vendor/etc/permissions/android.hardware.sensor.compass.xml \
-        frameworks/native/data/etc/android.hardware.sensor.light.xml:vendor/etc/permissions/android.hardware.sensor.light.xml
-
 ##############################################################
 # Source: device/intel/mixins/groups/debug-unresponsive/default/product.mk
 ##############################################################

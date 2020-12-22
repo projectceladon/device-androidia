@@ -48,7 +48,7 @@ flashfiles: ini(fast_flashfiles=false, oemvars=false,installer=true,flash_dnx_os
 net: common
 debug-crashlogd: true
 debug-coredump: false
-lights: true
+lights: false
 power: true(power_throttle=true)
 debug-usb-config: true(source_dev=dvcith-0-msc0)
 intel_prop: true
@@ -83,4 +83,4 @@ atrace: true
 firmware: true(all_firmwares=true)
 aaf: true
 suspend: auto
-sensors: mediation
+sensors: false
