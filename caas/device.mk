@@ -123,7 +123,7 @@ KERNEL_MODULES_ROOT_PATH ?= vendor/lib/modules
 KERNEL_MODULES_ROOT ?= $(KERNEL_MODULES_ROOT_PATH)
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.vendor.boot.moduleslocation=/$(KERNEL_MODULES_ROOT_PATH)
 ##############################################################
-# Source: device/intel/mixins/groups/sepolicy/enforcing/product.mk
+# Source: device/intel/mixins/groups/sepolicy/permissive/product.mk
 ##############################################################
 PRODUCT_PACKAGES += sepolicy-areq-checker
 ##############################################################
@@ -264,7 +264,8 @@ PRODUCT_PACKAGES += android.hardware.keymaster@3.0-impl \
                     android.hardware.graphics.mapper@4.0-impl.minigbm \
                     android.hardware.graphics.allocator@4.0-service.minigbm \
                     android.hardware.renderscript@1.0-impl \
-                    android.hardware.graphics.composer@2.4-service
+		    android.hardware.graphics.composer@2.3-impl \
+                    android.hardware.graphics.composer@2.3-service
 
 
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
@@ -298,39 +299,10 @@ PRODUCT_COPY_FILES += device/intel/civ/host/vm-manager/scripts/start_flash_usb.s
 PRODUCT_COPY_FILES += vendor/intel/fw/trusty-release-binaries/rpmb_dev:$(PRODUCT_OUT)/scripts/rpmb_dev
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/wakeup.py:$(PRODUCT_OUT)/scripts/wakeup.py
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/product.mk
+# Source: device/intel/mixins/groups/trusty/false/product.mk
 ##############################################################
-
-KM_VERSION := 2
-
-ifeq ($(KM_VERSION),2)
 PRODUCT_PACKAGES += \
-	keystore.trusty
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.keystore=trusty
-endif
-
-ifeq ($(KM_VERSION),1)
-PRODUCT_PACKAGES += \
-	keystore.${TARGET_BOARD_PLATFORM}
-endif
-
-PRODUCT_PACKAGES += \
-	libtrusty \
-	storageproxyd \
-	libinteltrustystorage \
-	libinteltrustystorageinterface \
-	android.hardware.gatekeeper@1.0-service.trusty \
-	keybox_provisioning \
-
-PRODUCT_PACKAGES_DEBUG += \
-	intel-secure-storage-unit-test \
-	gatekeeper-unit-tests \
-	libscrypt_static \
-	scrypt_test \
-
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.gatekeeper=trusty \
+    android.hardware.gatekeeper@1.0-service.software
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
@@ -443,19 +415,30 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     hwcomposer.$(TARGET_GFX_INTEL)
 
+# VHal
+PRODUCT_PACKAGES += \
+    hwcomposer.remote
+
 INTEL_HWC_CONFIG := $(INTEL_PATH_VENDOR)/external/hwcomposer-intel
+
+REMOTE_HWC_CONFIG := $(INTEL_PATH_VENDOR)/external/cic-graphic-vhal
 
 ifeq ($(findstring _acrn,$(TARGET_PRODUCT)),_acrn)
 PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display_virt.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
-else
-PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
-PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display.kvm.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.kvm.ini
+#else
+#PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
+#PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display.kvm.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.kvm.ini
 endif
+
+PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/display_settings.xml:$(TARGET_COPY_OUT_VENDOR)/etc/display_settings.xml
+PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/input-port-associations.xml:$(TARGET_COPY_OUT_VENDOR)/etc/input-port-associations.xml
+
+PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/lib64/hw/hwcomposer.remote.so:vendor/lib64/hw/hwcomposer.remote.so
+PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/lib/hw/hwcomposer.remote.so:vendor/lib/hw/hwcomposer.remote.so
 
 # Mini gbm
 
 PRODUCT_PACKAGES += \
-    gralloc.minigbm \
     gralloc.$(TARGET_GFX_INTEL)
 
 
@@ -522,6 +505,7 @@ PRODUCT_COPY_FILES += $(INTEL_PATH_COMMON)/rfkill/rfkill-init.sh:vendor/bin/rfki
 # Audio/video codec support.
 PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:vendor/etc/media_codecs_google_audio.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:vendor/etc/media_codecs_google_video.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_profiles_1080p.xml:vendor/etc/media_profiles_V1_0.xml
 
 ifeq ($(BASE_YOCTO_KERNEL),true)
@@ -695,13 +679,6 @@ PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/usb-otg-switch/usb_otg_switch.sh
 ##############################################################
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/public-libraries/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
 ##############################################################
-# Source: device/intel/mixins/groups/hdcpd/true/product.mk
-##############################################################
-# Enable media content protection services
-
-# HDCP Daemon
-PRODUCT_PACKAGES += hdcpd
-##############################################################
 # Source: device/intel/mixins/groups/load_modules/true/product.mk
 ##############################################################
 PRODUCT_PACKAGES += load_modules.sh
@@ -784,6 +761,29 @@ PRODUCT_COPY_FILES += \
 # Enable userspace reboot
  $(call inherit-product, $(SRC_TARGET_DIR)/product/userspace_reboot.mk)
 
+##############################################################
+# Source: device/intel/mixins/groups/houdini/true/product.mk
+##############################################################
+# Houdini support
+TARGET_SUPPORTS_64_BIT_APPS := true
+$(call inherit-product, device/intel/project-celadon/$(TARGET_PRODUCT)/houdini.mk)
+
+PRODUCT_PACKAGES += libhoudini Houdini
+PRODUCT_PROPERTY_OVERRIDES += ro.dalvik.vm.isa.arm=x86 ro.enable.native.bridge.exec=1
+
+ENABLE_NATIVEBRIDGE_64BIT := false
+ifeq ($(BOARD_USE_64BIT_USERSPACE),true)
+  ENABLE_NATIVEBRIDGE_64BIT = true
+else
+  ifeq ($(TARGET_SUPPORTS_64_BIT_APPS),true)
+    ENABLE_NATIVEBRIDGE_64BIT = true
+  endif
+endif
+ifeq ($(ENABLE_NATIVEBRIDGE_64BIT),true)
+  PRODUCT_PACKAGES += houdini64
+  PRODUCT_PROPERTY_OVERRIDES += ro.dalvik.vm.isa.arm64=x86_64 ro.enable.native.bridge.exec64=1
+endif
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.dalvik.vm.native.bridge=libhoudini.so
 ##############################################################
 # Source: device/intel/mixins/groups/debug-unresponsive/default/product.mk
 ##############################################################
