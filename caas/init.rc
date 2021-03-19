@@ -186,33 +186,9 @@ on post-fs
     insmod /vendor/lib/modules/asix.ko
     insmod /vendor/lib/modules/r8152.ko
     insmod /vendor/lib/modules/r8169.ko
-##############################################################
-# Source: device/intel/mixins/groups/trusty/true/init.rc
-##############################################################
+
 on post-fs-data
-    mkdir /data/vendor/securestorage 0700 system system
-    chmod 666 /dev/rpmb0
-
-on early-boot
-    start storageproxyd
-
-service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/vendor/securestorage -r /dev/vport0p1 -t virt
-    user system
-    group system
-
-on boot
-    start keyboxd
-
-service keyboxd /vendor/bin/keybox_provisioning -d /dev/trusty-ipc-dev0 -p /dev/block/by-name/teedata
-    user system
-    group system
-    oneshot
-
-on post-fs
-    wait_for_prop vendor.modules.trusty.ready true
-    # Update device node r/w attribute
-    chmod 666 /dev/trusty-ipc-dev0
-    chmod 666 /dev/vport0p1
+    setprop debug.stagefright.ccodec 0
 ##############################################################
 # Source: device/intel/mixins/groups/config-partition/true/init.rc
 ##############################################################
@@ -222,7 +198,6 @@ on post-fs
 ##############################################################
 # Source: device/intel/mixins/groups/graphics/auto/init.rc.1
 ##############################################################
-# for hardware accelerated graphics
 service msync /system/vendor/bin/msync
     class main
     user media
@@ -236,21 +211,13 @@ service coreu /system/vendor/bin/coreu
 # Note that this service must start as root to set up a mem-mapped region
 # and once that is set up it will drop all unnecessary capabilities and
 # will not show up as a root process in the steady state.
-service hdcpd /system/vendor/bin/hdcpd
-    disabled
-    user media
-    group media shell
-    seclabel u:r:hdcpd:s0
-
-on property:vendor.hwc.ready=1
-    start hdcpd
 
 on post-fs-data
     # Change ownership of pci syfs file to 'media', as hdcpd runs as 'media'
     chown media media /sys/devices/pci0000\:00/0000\:00\:02.0/resource0
     mkdir /data/system 0770 system system
     mkdir /data/vendor/coreu 0770 media root
-    mkdir /data/vendor/hdcp 0770 media root
+    #mkdir /data/vendor/hdcp 0770 media root
 on boot
     #Give permission to system to use i915_videostatus sysfs interface
     chown system system /sys/class/drm/card0/power/i915_videostatus
@@ -612,17 +579,6 @@ on property:vendor.sys.usb.role=host
 on property:vendor.sys.usb.role=device
     exec - system system -- /vendor/bin/usb_otg_switch.sh p
 ##############################################################
-# Source: device/intel/mixins/groups/hdcpd/true/init.rc
-##############################################################
-# Note that this service must start as root to set up a mem-mapped region
-# and once that is set up it will drop all unnecessary capabilities and
-# will not show up as a root process in the steady state.
-
-# mkdir hdcp data folder here, non system service don't have permission
-# to write in /data/
-on post-fs-data
-    mkdir /data/hdcp 0770 media media
-##############################################################
 # Source: device/intel/mixins/groups/load_modules/true/init.rc
 ##############################################################
 service load_modules /vendor/bin/load_modules.sh
@@ -746,4 +702,21 @@ service bugreport /system/bin/dumpstate -d -p -B -z \
     disabled
     oneshot
     keycodes 114 115 116
+##############################################################
+# Source: device/intel/mixins/groups/houdini/true/init.rc
+##############################################################
+import /init.houdini.rc
+
+#houdini releated patch start
+on early-init
+    mount binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
+
+on property:ro.enable.native.bridge.exec=1
+    copy /system/etc/binfmt_misc/arm_exe /proc/sys/fs/binfmt_misc/register
+    copy /system/etc/binfmt_misc/arm_dyn /proc/sys/fs/binfmt_misc/register
+
+on property:ro.enable.native.bridge.exec64=1
+    copy /system/etc/binfmt_misc/arm64_exe /proc/sys/fs/binfmt_misc/register
+    copy /system/etc/binfmt_misc/arm64_dyn /proc/sys/fs/binfmt_misc/register
+#houdini releated patch end
 # ------------------ END MIX-IN DEFINITIONS ------------------
