@@ -444,6 +444,7 @@ TARGET_USE_PRIVATE_LIBDRM := true
 LIBDRM_VER ?= intel
 
 BOARD_KERNEL_CMDLINE += vga=current i915.modeset=1 drm.atomic=1 i915.nuclear_pageflip=1 drm.vblankoffdelay=1 i915.fastboot=1
+BOARD_KERNEL_CMDLINE += i915.enable_guc=2
 
 ifeq ($(BASE_YOCTO_KERNEL),true)
 BOARD_KERNEL_CMDLINE += i915.enable_guc=2
