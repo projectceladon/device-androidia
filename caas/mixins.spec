@@ -25,14 +25,14 @@ cpu-arch: x86
 allow-missing-dependencies: true
 dexpreopt: true
 pstore: false
-media: auto(add_sw_msdk=false, opensource_msdk=true, opensource_msdk_omx_il=true)
+media: auto(add_sw_msdk=true, opensource_msdk=false, opensource_msdk_omx_il=false)
 graphics: auto(gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true,gralloc1=true,enable_guc=false)
 storage: sdcard-mmc0-v-usb-sd-r(adoptablesd=false,adoptableusb=false)
 ethernet: dhcp
 camera-ext: ext-camera-only
 rfkill: true(force_disable=)
 wlan: iwlwifi(libwifi-hal=true)
-codecs: configurable(hw_ve_h265=true, hw_vd_vp9=true, hw_vd_mp2=true, hw_vd_vc1=false, platform=cml, profile_file=media_profiles_1080p.xml, gpu=gen9)
+codecs: configurable(hw_ve_h265=true, hw_vd_vp9=true, hw_vd_mp2=true, hw_vd_vc1=false, sw_vd_h264=true, platform=cml, profile_file=media_profiles_1080p.xml, gpu=gen9)
 codec2: true
 usb: host+acc
 usb-gadget: auto(usb_config=adb,mtp_adb_pid=0x0a5f,ptp_adb_pid=0x0a61,rndis_pid=0x0a62,rndis_adb_pid=0x0a63,bcdDevice=0x0,bcdUSB=0x200,controller=dwc3.2.auto,f_acm=false,f_dvc_trace=true,dvctrace_source_dev=dvcith-0-msc0)
