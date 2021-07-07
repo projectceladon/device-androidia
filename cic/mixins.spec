@@ -17,3 +17,4 @@ device-specific: cic
 graphics: aic_mdc
 usb: acc
 wlan: mac80211_hwsim
+graphics: mesa(gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true,gralloc1=true,enable_guc=true)
