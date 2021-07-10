@@ -794,4 +794,8 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += vendor.sys.dump.peer_depth=3
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += vendor.sys.dump.stacks_timeout=1500
 
 endif
+
+PRODUCT_PACKAGES += \
+		PenguinPeakUtils
+
 # ------------------ END MIX-IN DEFINITIONS ------------------
