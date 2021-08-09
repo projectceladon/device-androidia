@@ -83,7 +83,7 @@ dynamic-partitions: true(super_img_in_flashzip=true)
 dbc: true
 atrace: true
 firmware: true(all_firmwares=false)
-aaf: true
+aaf: cfc
 suspend: auto
 sensors: mediation
 bugreport: true
