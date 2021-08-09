@@ -615,7 +615,7 @@ endif
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/dbc
 ##############################################################
-# Source: device/intel/mixins/groups/aaf/true/BoardConfig.mk
+# Source: device/intel/mixins/groups/aaf/cfc/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/aafd
 ##############################################################

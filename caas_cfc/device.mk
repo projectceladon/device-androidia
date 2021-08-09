@@ -255,7 +255,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.$(TARGET_PRODUCT).rc \
     $(LOCAL_PATH)/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/ueventd.rc \
 
-PRODUCT_PACKAGES += vndservicemanager
+PRODUCT_PACKAGES += vndservicemanager \
+                    hwcomposer.remote
 
 PRODUCT_PACKAGES += android.hardware.keymaster@3.0-impl \
                     android.hardware.keymaster@3.0-service \
@@ -719,7 +720,7 @@ FIRMWARES_DIR ?= vendor/linux/firmware
 
 $(call inherit-product,device/intel/common/firmware.mk)
 ##############################################################
-# Source: device/intel/mixins/groups/aaf/true/product.mk
+# Source: device/intel/mixins/groups/aaf/cfc/product.mk
 ##############################################################
 PRODUCT_PACKAGES += \
     auto_detection.sh

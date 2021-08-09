@@ -901,7 +901,7 @@ $(GPTIMAGE_BIN): \
 .PHONY: gptimage
 gptimage: $(GPTIMAGE_BIN)
 ##############################################################
-# Source: device/intel/mixins/groups/aaf/true/AndroidBoard.mk
+# Source: device/intel/mixins/groups/aaf/cfc/AndroidBoard.mk
 ##############################################################
 include $(CLEAR_VARS)
 LOCAL_MODULE := auto_detection.sh
