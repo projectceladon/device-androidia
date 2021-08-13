@@ -205,8 +205,6 @@ service keyboxd /vendor/bin/keybox_provisioning -d /dev/trusty-ipc-dev0 -p /dev/
 
 on post-fs
     wait_for_prop vendor.modules.trusty.ready true
-    # Update device node r/w attribute
-    chmod 666 /dev/trusty-ipc-dev0
     chmod 666 /dev/vport0p1
 ##############################################################
 # Source: device/intel/mixins/groups/config-partition/true/init.rc
