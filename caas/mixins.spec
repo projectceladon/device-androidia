@@ -20,7 +20,7 @@ config-partition: true
 product-partition: true
 odm-partition: true
 display-density: medium
-dalvik-heap: tablet-10in-xhdpi-2048
+dalvik-heap: phone-xhdpi-1024
 cpu-arch: x86
 allow-missing-dependencies: true
 dexpreopt: true
@@ -39,7 +39,7 @@ usb-gadget: auto(usb_config=adb,mtp_adb_pid=0x0a5f,ptp_adb_pid=0x0a61,rndis_pid=
 midi: true
 touch: cvt0f21
 navigationbar: true
-device-type: tablet
+device-type: handheld
 debug-tools: true
 fota: true
 default-drm: true
@@ -88,3 +88,4 @@ suspend: auto
 sensors: mediation
 bugreport: true
 mainline-mod: true
+houdini: true
