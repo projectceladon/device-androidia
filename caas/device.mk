@@ -769,6 +769,7 @@ PRODUCT_COPY_FILES += \
         frameworks/native/data/etc/android.hardware.sensor.compass.xml:vendor/etc/permissions/android.hardware.sensor.compass.xml \
         frameworks/native/data/etc/android.hardware.sensor.light.xml:vendor/etc/permissions/android.hardware.sensor.light.xml
 
+AUTO_IN += $(TARGET_DEVICE_DIR)/extra_files/sensors/auto_hal.in
 ##############################################################
 # Source: device/intel/mixins/groups/mainline-mod/true/product.mk
 ##############################################################
