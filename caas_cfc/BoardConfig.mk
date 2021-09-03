@@ -124,6 +124,9 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/bootloader.img
 
 
 
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/boot-arch/multiuser
+MULTI_USER_SUPPORT := true
+
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/boot-arch/generic
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/abota/generic
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/abota/efi
@@ -206,13 +209,7 @@ endif
 BOARD_SEPOLICY_M4DEFS += module_kernel=true
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/kernel
 ##############################################################
-# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk.1
-##############################################################
-# start kernel in permissive mode, this way we don't
-# need 'setenforce 0' from init.rc files
-BOARD_KERNEL_CMDLINE += enforcing=0 androidboot.selinux=permissive
-##############################################################
-# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk
+# Source: device/intel/mixins/groups/sepolicy/enforcing/BoardConfig.mk
 ##############################################################
 # SELinux Policy
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)
