@@ -87,5 +87,5 @@ aaf: cfc
 suspend: auto
 sensors: mediation
 bugreport: true
-mainline-mod: true
+mainline-mod: false
 houdini: true
