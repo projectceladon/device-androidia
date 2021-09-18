@@ -816,7 +816,7 @@ $(LOCAL_BUILT_MODULE): $(LOCAL_SRC)
 ##############################################################
 # Source: device/intel/mixins/groups/gptbuild/true/AndroidBoard.mk
 ##############################################################
-gptimage_size ?= 32G
+gptimage_size ?= 8500M
 
 raw_config := none
 raw_factory := none
