@@ -299,6 +299,8 @@ BUILD_BROKEN_USES_BUILD_HOST_STATIC_LIBRARY := true
 BUILD_BROKEN_USES_BUILD_HOST_SHARED_LIBRARY := true
 BUILD_BROKEN_USES_BUILD_HOST_EXECUTABLE := true
 BUILD_BROKEN_USES_BUILD_COPY_HEADERS := true
+# PRODUCT_COPY_FILES directives.
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/true/BoardConfig.mk
 ##############################################################
@@ -562,10 +564,6 @@ ifneq ($(KERNELFLINGER_SUPPORT_NON_EFI_BOOT), true)
 INTEL_PROP_LIBDMI := true
 endif
 
-##############################################################
-# Source: device/intel/mixins/groups/memtrack/true/BoardConfig.mk
-##############################################################
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/memtrack
 ##############################################################
 # Source: device/intel/mixins/groups/avx/auto/BoardConfig.mk
 ##############################################################
