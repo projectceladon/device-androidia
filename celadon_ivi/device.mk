@@ -27,9 +27,10 @@ PRODUCT_PACKAGES += \
     libavb \
     update_engine_sideload \
     avbctl \
-    android.hardware.boot@1.1-impl \
-    android.hardware.boot@1.1-impl.recovery \
-    android.hardware.boot@1.1-service
+    android.hardware.boot@1.2-impl-intel \
+    android.hardware.boot@1.2-impl-intel.recovery \
+    android.hardware.boot@1.2-service \
+    bootctrl.intel
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.bootctrl=intel
@@ -185,8 +186,8 @@ PRODUCT_PACKAGES += \
 
 # Audio HAL
 PRODUCT_PACKAGES += \
-    android.hardware.audio.effect@6.0-impl \
-    android.hardware.audio@6.0-impl \
+    android.hardware.audio.effect@7.0-impl \
+    android.hardware.audio@7.0-impl \
     android.hardware.audio@2.0-service
 
 #Audio policy engine configuration files

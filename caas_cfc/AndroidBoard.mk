@@ -250,7 +250,7 @@ kernel: $(PRODUCT_OUT)/kernel
 
 else
 
-TARGET_KERNEL_CLANG_VERSION := r412851
+TARGET_KERNEL_CLANG_VERSION := r416183b1
 CLANG_PREBUILTS_PATH := $(abspath $(INTEL_PATH_DEVICE)/../../../prebuilts/clang)
 
 ifneq ($(TARGET_KERNEL_CLANG_VERSION),)
@@ -573,8 +573,8 @@ ALL_DEFAULT_INSTALLED_MODULES += $(RECOVERY_VENDOR_LINKS)
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-boot/true/AndroidBoard.mk
 ##############################################################
-BOARD_PREBUILT_VENDOR_BOOT_DIR := $(TARGET_DEVICE_DIR)/vendor-boot-ramdisk
-INTERNAL_VENDOR_RAMDISK_TARGET := $(call intermediates-dir-for,PACKAGING,vendor-boot)/vendor-ramdisk.cpio.gz
+BOARD_PREBUILT_VENDOR_BOOT_DIR := $(TARGET_DEVICE_DIR)/vendor_boot-ramdisk
+INTERNAL_VENDOR_RAMDISK_TARGET := $(call intermediates-dir-for,PACKAGING,vendor_boot)/vendor_ramdisk.cpio.gz
 
 .PHONY: vendor_boot_prebuilt
 vendor_boot_prebuilt:
