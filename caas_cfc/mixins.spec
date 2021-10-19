@@ -19,7 +19,7 @@ acpio-partition: true(partition_size=2)
 config-partition: true
 product-partition: true
 odm-partition: true
-display-density: medium
+display-density: high
 dalvik-heap: tablet-10in-xhdpi-2048
 cpu-arch: x86
 allow-missing-dependencies: true
