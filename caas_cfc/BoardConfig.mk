@@ -627,12 +627,6 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/dbc
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/aafd
 ##############################################################
-# Source: device/intel/mixins/groups/sensors/mediation/BoardConfig.mk
-##############################################################
-USE_SENSOR_MEDIATION_HAL := true
-
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/sensors/mediation
-##############################################################
 # Source: device/intel/mixins/groups/houdini/true/BoardConfig.mk
 ##############################################################
 # Native Bridge ABI List
