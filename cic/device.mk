@@ -130,7 +130,8 @@ PRODUCT_COPY_FILES += \
 # Source: device/intel/mixins/groups/trusty/default/product.mk
 ##############################################################
 PRODUCT_PACKAGES += \
-    android.hardware.gatekeeper@1.0-service.software
+    android.hardware.gatekeeper@1.0-service.software \
+    android.hardware.security.keymint-service
 ##############################################################
 # Source: device/intel/mixins/groups/bluetooth/default/product.mk
 ##############################################################
