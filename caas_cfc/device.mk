@@ -315,7 +315,8 @@ PRODUCT_COPY_FILES += device/intel/civ/host/virtual-input-manager/input-port-ass
 # Source: device/intel/mixins/groups/trusty/false/product.mk
 ##############################################################
 PRODUCT_PACKAGES += \
-    android.hardware.gatekeeper@1.0-service.software
+    android.hardware.gatekeeper@1.0-service.software \
+    android.hardware.security.keymint-service
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
