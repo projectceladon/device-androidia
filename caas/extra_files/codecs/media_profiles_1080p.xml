@@ -79,7 +79,7 @@
 
         <EncoderProfile quality="low" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="256000"
+                   bitRate="2560000"
                    width="176"
                    height="144"
                    frameRate="30" />
@@ -93,7 +93,7 @@
 
         <EncoderProfile quality="qcif" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="256000"
+                   bitRate="2560000"
                    width="176"
                    height="144"
                    frameRate="30" />
@@ -106,7 +106,7 @@
 
         <EncoderProfile quality="cif" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="256000"
+                   bitRate="2560000"
                    width="352"
                    height="288"
                    frameRate="30" />
@@ -145,7 +145,7 @@
 
         <EncoderProfile quality="720p" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="256000"
+                   bitRate="2560000"
                    width="1280"
                    height="720"
                    frameRate="30" />
@@ -182,7 +182,7 @@
 
         <EncoderProfile quality="timelapselow" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="256000"
+                   bitRate="2560000"
                    width="176"
                    height="144"
                    frameRate="30" />
@@ -196,7 +196,7 @@
 
         <EncoderProfile quality="timelapseqcif" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="256000"
+                   bitRate="2560000"
                    width="176"
                    height="144"
                    frameRate="30" />
@@ -209,7 +209,7 @@
 
         <EncoderProfile quality="timelapsecif" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="256000"
+                   bitRate="2560000"
                    width="352"
                    height="288"
                    frameRate="30" />
@@ -295,7 +295,7 @@
 
         <EncoderProfile quality="low" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="256000"
+                   bitRate="2560000"
                    width="176"
                    height="144"
                    frameRate="30" />
@@ -308,7 +308,7 @@
 
         <EncoderProfile quality="qcif" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="256000"
+                   bitRate="2560000"
                    width="176"
                    height="144"
                    frameRate="30" />
@@ -335,7 +335,7 @@
 
         <EncoderProfile quality="cif" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="256000"
+                   bitRate="2560000"
                    width="352"
                    height="288"
                    frameRate="30" />
@@ -410,7 +410,7 @@
 
         <EncoderProfile quality="timelapselow" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="256000"
+                   bitRate="2560000"
                    width="176"
                    height="144"
                    frameRate="30" />
@@ -424,7 +424,7 @@
 
         <EncoderProfile quality="timelapseqcif" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="256000"
+                   bitRate="2560000"
                    width="176"
                    height="144"
                    frameRate="30" />
@@ -437,7 +437,7 @@
 
         <EncoderProfile quality="timelapsecif" fileFormat="mp4" duration="30">
             <Video codec="h264"
-                   bitRate="256000"
+                   bitRate="2560000"
                    width="352"
                    height="288"
                    frameRate="30" />
