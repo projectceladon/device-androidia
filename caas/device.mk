@@ -383,6 +383,14 @@ PRODUCT_PACKAGES += \
 endif
 
 
+PRODUCT_PACKAGES += \
+    libmfx_c2_components_hw
+
+PRODUCT_PACKAGES += \
+    libvpl \
+    libmfx-gen
+USE_ONEVPL := true
+
 BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
 
 BOARD_HAVE_OMX_SRC := true
