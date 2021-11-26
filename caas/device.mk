@@ -383,14 +383,6 @@ PRODUCT_PACKAGES += \
 endif
 
 
-PRODUCT_PACKAGES += \
-    libmfx_c2_components_hw
-
-PRODUCT_PACKAGES += \
-    libvpl \
-    libmfx-gen
-USE_ONEVPL := true
-
 BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
 
 BOARD_HAVE_OMX_SRC := true
@@ -543,6 +535,27 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_tgl.xml:vendor/etc/media_codecs_performance.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_cml.xml:vendor/etc/media_codecs_performance_cml.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_tgl.xml:vendor/etc/media_codecs_performance_tgl.xml
+##############################################################
+# Source: device/intel/mixins/groups/codec2/true/product.mk
+##############################################################
+# MSDK codec2.0 support.
+
+PRODUCT_COPY_FILES += \
+    vendor/intel/mediasdk_c2/c2_store/data/mfx_c2_store.conf:vendor/etc/mfx_c2_store.conf \
+    vendor/intel/mediasdk_c2/c2_store/data/media_codecs_c2.xml:vendor/etc/media_codecs_c2.xml \
+    vendor/intel/mediasdk_c2/c2_store/data/media_codecs_intel_c2_video.xml:vendor/etc/media_codecs_intel_c2_video.xml
+
+PRODUCT_PACKAGES += \
+    libmfx_c2_components_hw \
+    hardware.intel.media.c2@1.0-service
+
+BOARD_HAVE_MEDIASDK_CODEC2 := true
+
+PRODUCT_PACKAGES += \
+    libvpl \
+    libmfx-gen
+USE_ONEVPL := true
+
 ##############################################################
 # Source: device/intel/mixins/groups/usb/host/product.mk
 ##############################################################
