@@ -337,6 +337,10 @@ PRODUCT_PACKAGES += \
      toybox_static \
      toybox_vendor \
 ##############################################################
+# Source: device/intel/mixins/groups/vendor-boot/true/product.mk
+##############################################################
+BOOTCONFIG_ENABLE := true
+##############################################################
 # Source: device/intel/mixins/groups/product-partition/true/product.mk
 ##############################################################
 
