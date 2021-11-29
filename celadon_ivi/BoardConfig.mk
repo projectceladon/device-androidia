@@ -189,8 +189,13 @@ endif
 
 BOARD_KERNEL_CMDLINE += \
         loglevel=$(KERNEL_LOGLEVEL) \
-        androidboot.hardware=$(TARGET_DEVICE)\
         firmware_class.path=/vendor/firmware
+
+ifeq ($(BOOTCONFIG_ENABLE), true)
+BOARD_BOOTCONFIG += androidboot.hardware=$(TARGET_DEVICE)
+else
+BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_DEVICE)
+endif
 
 
 BOARD_KERNEL_CMDLINE += \

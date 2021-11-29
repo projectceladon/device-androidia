@@ -190,8 +190,13 @@ endif
 
 BOARD_KERNEL_CMDLINE += \
         loglevel=$(KERNEL_LOGLEVEL) \
-        androidboot.hardware=$(TARGET_DEVICE)\
         firmware_class.path=/vendor/firmware
+
+ifeq ($(BOOTCONFIG_ENABLE), true)
+BOARD_BOOTCONFIG += androidboot.hardware=$(TARGET_DEVICE)
+else
+BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_DEVICE)
+endif
 
 
 BOARD_KERNEL_CMDLINE += \
@@ -361,9 +366,16 @@ AB_OTA_PARTITIONS += vendor
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-boot/true/BoardConfig.mk
 ##############################################################
+ifeq ($(BOOTCONFIG_ENABLE), true)
+BOARD_BOOT_HEADER_VERSION := 4
+BOARD_KERNEL_CMDLINE += bootconfig
+else
 BOARD_BOOT_HEADER_VERSION := 3
+endif
+
 BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := $(shell echo 16*1048576 | bc)
+
 
 AB_OTA_PARTITIONS += vendor_boot
 ##############################################################
