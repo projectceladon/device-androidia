@@ -51,7 +51,7 @@ debug-usb-config: true(source_dev=dvcith-0-msc0)
 intel_prop: true
 trusty: true(ref_target=celadon_64)
 memtrack: true
-avb: true
+tpm: true
 health: true
 slot-ab: true
 abota-fw: true

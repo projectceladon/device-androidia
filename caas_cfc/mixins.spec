@@ -55,7 +55,7 @@ debug-usb-config: true(source_dev=dvcith-0-msc0)
 intel_prop: true
 trusty: false
 memtrack: true
-avb: true
+tpm: false
 avx: auto
 health: hal
 slot-ab: true
