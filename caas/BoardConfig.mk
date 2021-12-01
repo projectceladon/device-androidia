@@ -387,6 +387,7 @@ BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 PRODUCT_PARTITION_SIZE := $(shell echo 100*1048576 | bc)
 TARGET_USE_PRODUCT := true
 AB_OTA_PARTITIONS += product
+BOARD_EXT4_SHARE_DUP_BLOCKS := true
 ##############################################################
 # Source: device/intel/mixins/groups/odm-partition/true/BoardConfig.mk
 ##############################################################
