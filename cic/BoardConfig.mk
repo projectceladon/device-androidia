@@ -140,4 +140,8 @@ WIFI_DRIVER_FW_PATH_AP      := "/dev/null"
 # Source: device/intel/mixins/groups/trusty/default/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/trusty/disabled
+##############################################################
+# Source: device/intel/mixins/groups/tpm/default/BoardConfig.mk
+##############################################################
+TARGET_USE_TPM := true
 # ------------------ END MIX-IN DEFINITIONS ------------------
