@@ -51,7 +51,6 @@ KERNELFLINGER_SSL_LIBRARY := boringssl
 
 BIOS_VARIANT := release
 
-
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/fstab:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.$(TARGET_PRODUCT)
 
@@ -161,15 +160,6 @@ PRODUCT_PACKAGES += sepolicy-areq-checker
 ##############################################################
 # Source: device/intel/mixins/groups/bluetooth/btusb/product.mk
 ##############################################################
-PRODUCT_PACKAGES += \
-    hciconfig
-
-# Bluetooth tools eng / userdebug
-ifneq ($(TARGET_BUILD_VARIANT),user)
-PRODUCT_PACKAGES += \
-    btmon \
-    hcitool
-endif
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.bluetooth.xml:vendor/etc/permissions/android.hardware.bluetooth.xml \
@@ -331,7 +321,6 @@ PRODUCT_COPY_FILES += \
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
-
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/vendor-partition/mkshrc_recovery:recovery/root/vendor/etc/mkshrc
 PRODUCT_PACKAGES += \
      toybox_static \
