@@ -126,15 +126,6 @@ PRODUCT_PACKAGES += sepolicy-areq-checker
 ##############################################################
 # Source: device/intel/mixins/groups/bluetooth/btusb/product.mk
 ##############################################################
-PRODUCT_PACKAGES += \
-    hciconfig
-
-# Bluetooth tools eng / userdebug
-ifneq ($(TARGET_BUILD_VARIANT),user)
-PRODUCT_PACKAGES += \
-    btmon \
-    hcitool
-endif
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.bluetooth.xml:vendor/etc/permissions/android.hardware.bluetooth.xml \
