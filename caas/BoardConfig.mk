@@ -659,5 +659,9 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/aafd
 ##############################################################
 USE_SENSOR_MEDIATION_HAL := true
 
+SOONG_CONFIG_NAMESPACES += senPlugin
+SOONG_CONFIG_senPlugin  += SENSOR_LIST
+SOONG_CONFIG_senPlugin_SENSOR_LIST := False
+
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/sensors/mediation
 # ------------------ END MIX-IN DEFINITIONS ------------------
