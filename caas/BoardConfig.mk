@@ -690,6 +690,7 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/dbc
 # Source: device/intel/mixins/groups/aaf/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/aafd
+BOARD_SEPOLICY_M4DEFS += module_aafd=true
 ##############################################################
 # Source: device/intel/mixins/groups/sensors/mediation/BoardConfig.mk
 ##############################################################
