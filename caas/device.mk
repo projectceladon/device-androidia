@@ -253,10 +253,11 @@ PRODUCT_PACKAGES +=  \
                     android.hardware.usb@1.0-service \
                     camera.device@1.0-impl \
                     android.hardware.camera.provider@2.4-impl \
-                    android.hardware.graphics.mapper@4.0-impl.minigbm \
-                    android.hardware.graphics.allocator@4.0-service.minigbm \
                     android.hardware.renderscript@1.0-impl \
-                    android.hardware.graphics.composer@2.4-service
+                    android.hardware.graphics.composer@2.1-service \
+                    android.hardware.graphics.allocator@2.0-impl \
+                    android.hardware.graphics.allocator@2.0-service \
+                    android.hardware.graphics.mapper@2.0-impl
 
 
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
@@ -419,17 +420,17 @@ PRODUCT_PACKAGES += \
     hwcomposer.drm_minigbm
 
 # HWComposer IA
-PRODUCT_PACKAGES += \
-    hwcomposer.$(TARGET_GFX_INTEL)
+#PRODUCT_PACKAGES += \
+#     hwcomposer.$(TARGET_GFX_INTEL)
 
-INTEL_HWC_CONFIG := $(INTEL_PATH_VENDOR)/external/hwcomposer-intel
+# INTEL_HWC_CONFIG := $(INTEL_PATH_VENDOR)/external/hwcomposer-intel
 
-ifeq ($(findstring _acrn,$(TARGET_PRODUCT)),_acrn)
-PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display_virt.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
-else
-PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
-PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display.kvm.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.kvm.ini
-endif
+# ifeq ($(findstring _acrn,$(TARGET_PRODUCT)),_acrn)
+# PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display_virt.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
+# else
+# PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
+# PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display.kvm.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.kvm.ini
+# endif
 
 # Mini gbm
 
