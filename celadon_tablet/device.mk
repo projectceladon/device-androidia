@@ -505,6 +505,7 @@ else
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_gen12.xml:vendor/etc/media_codecs.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_gen9.xml:vendor/etc/media_codecs_gen9.xml \
+    $(LOCAL_PATH)/extra_files/codecs/media_codecs_gen11.xml:vendor/etc/media_codecs_gen11.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_gen12.xml:vendor/etc/media_codecs_gen12.xml \
     $(LOCAL_PATH)/extra_files/codecs/mfx_omxil_core.conf:vendor/etc/mfx_omxil_core.conf
 endif
@@ -512,6 +513,7 @@ endif
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_bxt.xml:vendor/etc/media_codecs_performance.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_cml.xml:vendor/etc/media_codecs_performance_cml.xml \
+    $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_ehl.xml:vendor/etc/media_codecs_performance_ehl.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_tgl.xml:vendor/etc/media_codecs_performance_tgl.xml
 ##############################################################
 # Source: device/intel/mixins/groups/usb/host/product.mk
