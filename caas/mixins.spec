@@ -90,3 +90,4 @@ sensors: mediation
 bugreport: true
 mainline-mod: true
 houdini: true
+neuralnetworks: true
