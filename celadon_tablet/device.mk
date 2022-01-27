@@ -405,20 +405,25 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/graphics/drirc:system/etc/drirc
 
 
-# HWComposer IA
+# DRM HWComposer
 PRODUCT_PACKAGES += \
-    hwcomposer.$(TARGET_BOARD_PLATFORM)
+    hwcomposer.drm
 
 PRODUCT_PROPERTY_OVERRIDES += \
-   ro.hardware.hwcomposer=$(TARGET_BOARD_PLATFORM)
+   ro.hardware.hwcomposer=drm
+# HWComposer IA
+#PRODUCT_PACKAGES += \
+#    hwcomposer.$(TARGET_BOARD_PLATFORM)
+#PRODUCT_PROPERTY_OVERRIDES += \
+#   ro.hardware.hwcomposer=$(TARGET_BOARD_PLATFORM)
 
-INTEL_HWC_CONFIG := $(INTEL_PATH_VENDOR)/external/hwcomposer-intel
+#INTEL_HWC_CONFIG := $(INTEL_PATH_VENDOR)/external/hwcomposer-intel
 
-ifeq ($(findstring _acrn,$(TARGET_PRODUCT)),_acrn)
-PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display_virt.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
-else
-PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
-endif
+#ifeq ($(findstring _acrn,$(TARGET_PRODUCT)),_acrn)
+#PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display_virt.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
+#else
+#PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
+#endif
 
 
 # Mini gbm
