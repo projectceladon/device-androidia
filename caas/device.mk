@@ -767,6 +767,8 @@ ifeq ($(TARGET_BOARD_PLATFORM),)
     $(error Please define TARGET_BOARD_PLATFORM in product-level Makefile)
 endif
 
+PRODUCT_PRODUCT_PROPERTIES += ro.incremental.enable=yes
+
 PRODUCT_PACKAGES += \
         android.hardware.sensors@2.0-service.intel
 
