@@ -389,22 +389,12 @@ $(foreach fw,$(I915_FW),$(eval PRODUCT_PACKAGES += $(notdir $(fw))))
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/graphics/drirc:system/etc/drirc
 
-
-# HWComposer IA
+# DRM HWComposer
 PRODUCT_PACKAGES += \
-    hwcomposer.$(TARGET_BOARD_PLATFORM)
+    hwcomposer.drm_minigbm
 
 PRODUCT_PROPERTY_OVERRIDES += \
-   ro.hardware.hwcomposer=$(TARGET_BOARD_PLATFORM)
-
-INTEL_HWC_CONFIG := $(INTEL_PATH_VENDOR)/external/hwcomposer-intel
-
-ifeq ($(findstring _acrn,$(TARGET_PRODUCT)),_acrn)
-PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display_virt.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
-else
-PRODUCT_COPY_FILES += $(INTEL_HWC_CONFIG)/hwc_display.ini:$(TARGET_COPY_OUT_VENDOR)/etc/hwc_display.ini
-endif
-
+   ro.hardware.hwcomposer=drm
 
 # Mini gbm
 PRODUCT_PROPERTY_OVERRIDES += \
