@@ -15,6 +15,11 @@ PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/fstab:$(TARGET_COPY_OUT_RAMDISK)/fstab.$(TARGET_PRODUCT)
 PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/fstab:$(PRODUCT_OUT)/recovery/root/first_stage_ramdisk/fstab.$(TARGET_PRODUCT)
+$(call inherit-product, \
+    $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
+$(call inherit-product, \
+    $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)
+PRODUCT_PACKAGES += snapuserd_ramdisk
 
 SUPER_IMG_IN_FLASHZIP := true
 ##############################################################
@@ -328,6 +333,9 @@ PRODUCT_PACKAGES += \
 # Source: device/intel/mixins/groups/vendor-boot/true/product.mk
 ##############################################################
 BOOTCONFIG_ENABLE := true
+
+PRODUCT_COPY_FILES += \
+		$(LOCAL_PATH)/fstab:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.$(TARGET_PRODUCT)
 ##############################################################
 # Source: device/intel/mixins/groups/display-density/medium/product.mk
 ##############################################################
