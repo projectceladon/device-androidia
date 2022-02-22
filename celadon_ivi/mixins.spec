@@ -23,15 +23,15 @@ allow-missing-dependencies: true
 dexpreopt: true
 pstore: ram_dummy(address=0x50000000,size=0x400000,record_size=0x4000,console_size=0x200000,ftrace_size=0x2000,dump_oops=1)
 bugreport: true
-media: mesa(add_sw_msdk=false, opensource_msdk=true, opensource_msdk_omx_il=true)
+media: mesa(enable_msdk_omx=true, add_sw_msdk=false, opensource_msdk=true, opensource_msdk_omx_il=true)
 graphics: mesa(gen9+=true,vulkan=true,minigbm=true,gralloc1=true,enable_guc=false)
 storage: sdcard-mmc0-usb-sd(adoptablesd=true,adoptableusb=true)
 ethernet: dhcp
 camera-ext: ext-camera-only
 rfkill: true(force_disable=)
 wlan: iwlwifi(libwifi-hal=true)
-codecs: configurable(hw_ve_h265=true, hw_vd_vp9=true, hw_vd_mp2=true, hw_vd_vc1=false, platform=bxt,profile_file=media_profiles_1080p.xml)
-codec2: true
+codecs: configurable(sw_omx_video=false, hw_omx_video=true, hw_ve_h265=true, hw_ve_h264=true, hw_vd_vp9=true, hw_vd_mp2=true, hw_vd_vp8=true, hw_vd_h265=true, hw_vd_h264=true, platform=bxt, profile_file=media_profiles_1080p.xml)
+codec2: true(enable_msdk_c2=false, use_onevpl=false)
 usb: host
 usb-gadget: configfs(usb_config=adb,mtp_adb_pid=0x0a5f,ptp_adb_pid=0x0a61,rndis_pid=0x0a62,rndis_adb_pid=0x0a63,bcdDevice=0x0,bcdUSB=0x200,controller=dwc3.0.auto,f_acm=false,f_dvc_trace=true,dvctrace_source_dev=dvcith-0-msc0)
 midi: true
