@@ -426,10 +426,15 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     hwcomposer.drm_minigbm
 
-# Mini gbm
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hardware.hwcomposer=drm_minigbm
 
+# Mini gbm
 PRODUCT_PACKAGES += \
     gralloc.$(TARGET_GFX_INTEL)
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hardware.gralloc=$(TARGET_GFX_INTEL)
 
 
 
@@ -456,10 +461,7 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PACKAGES += \
     vulkan.$(TARGET_BOARD_PLATFORM) \
-    libvulkan_intel
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.vulkan=$(TARGET_BOARD_PLATFORM)
+    vulkan.pastel
 ##############################################################
 # Source: device/intel/mixins/groups/storage/sdcard-mmc0-v-usb-sd-r/product.mk
 ##############################################################

@@ -217,6 +217,12 @@ BOARD_KERNEL_CMDLINE += \
       snd-intel-dspcfg.dsp_driver=1
 endif
 
+ifeq ($(BASE_LTS2020_YOCTO_KERNEL), true)
+BOARD_KERNEL_CMDLINE += \
+      clearcpuid=517 \
+      mce=no_lmce
+endif
+
 BOARD_SEPOLICY_M4DEFS += module_kernel=true
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/kernel
 ##############################################################
@@ -436,6 +442,11 @@ BOARD_KERNEL_CMDLINE += vga=current i915.modeset=1 drm.atomic=1 i915.nuclear_pag
 
 ifeq ($(BASE_YOCTO_KERNEL),true)
 BOARD_KERNEL_CMDLINE += i915.enable_guc=2
+endif
+
+ifeq ($(BASE_LTS2020_YOCTO_KERNEL),true)
+BOARD_KERNEL_CMDLINE += i915.enable_guc=1
+BOARD_KERNEL_CMDLINE += i915.disable_display=1
 endif
 
 USE_OPENGL_RENDERER := true
