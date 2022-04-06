@@ -186,6 +186,11 @@ on post-fs
     insmod /vendor/lib/modules/asix.ko
     insmod /vendor/lib/modules/r8152.ko
     insmod /vendor/lib/modules/r8169.ko
+
+on post-fs-data
+    # Disable codec2
+    setprop debug.stagefright.ccodec 0
+
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/true/init.rc
 ##############################################################
