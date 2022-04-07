@@ -716,9 +716,11 @@ BOARD_SEPOLICY_M4DEFS += module_aafd=true
 ##############################################################
 USE_SENSOR_MEDIATION_HAL := true
 
+MEDIATION_HAL_DISABLE_STATIC_SENSOR_LIST := true
+
 SOONG_CONFIG_NAMESPACES += senPlugin
 SOONG_CONFIG_senPlugin  += SENSOR_LIST
-SOONG_CONFIG_senPlugin_SENSOR_LIST := true
+SOONG_CONFIG_senPlugin_SENSOR_LIST := False
 
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/sensors/mediation
 ##############################################################
