@@ -350,20 +350,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libstagefrighthw
 
-# Media SDK and OMX IL components
+# MSDK OMX IL components
 PRODUCT_PACKAGES += \
-    libmfxhw32 \
     libmfx_omx_core \
     libmfx_omx_components_hw
 
-# Open source media_driver
-PRODUCT_PACKAGES += i965_drv_video
-PRODUCT_PACKAGES += libgmm_umd
-PRODUCT_PACKAGES += libigfxcmrt
-
-# Open source hdcp
-PRODUCT_PACKAGES += libhdcpsdk
-PRODUCT_PACKAGES += lihdcpcommon
+# Media SDK libraries
+PRODUCT_PACKAGES += \
+    libmfxhw32
 
 ifeq ($(BOARD_USE_64BIT_USERSPACE),true)
 PRODUCT_PACKAGES += \
@@ -374,6 +368,14 @@ endif
 BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
 
 BOARD_HAVE_OMX_SRC := true
+
+# Open source media_driver
+PRODUCT_PACKAGES += i965_drv_video
+PRODUCT_PACKAGES += libigfxcmrt
+
+# Open source hdcp
+PRODUCT_PACKAGES += libhdcpsdk
+PRODUCT_PACKAGES += lihdcpcommon
 
 PRODUCT_PACKAGES += \
     libpciaccess
@@ -500,7 +502,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/codecs/mfx_omxil_core_vp9.conf:vendor/etc/mfx_omxil_core.conf
 else
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/extra_files/codecs/media_codecs_gen12.xml:vendor/etc/media_codecs.xml \
+    $(LOCAL_PATH)/extra_files/codecs/media_codecs_gen12.xml:vendor/etc/media_codecs.xml
+
+PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_gen9.xml:vendor/etc/media_codecs_gen9.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_gen12.xml:vendor/etc/media_codecs_gen12.xml \
     $(LOCAL_PATH)/extra_files/codecs/mfx_omxil_core.conf:vendor/etc/mfx_omxil_core.conf
@@ -510,26 +514,13 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_bxt.xml:vendor/etc/media_codecs_performance.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_cml.xml:vendor/etc/media_codecs_performance_cml.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_tgl.xml:vendor/etc/media_codecs_performance_tgl.xml
+
 ##############################################################
 # Source: device/intel/mixins/groups/codec2/true/product.mk
 ##############################################################
 # MSDK codec2.0 support.
 
-PRODUCT_COPY_FILES += \
-    vendor/intel/mediasdk_c2/c2_store/data/mfx_c2_store.conf:vendor/etc/mfx_c2_store.conf \
-    vendor/intel/mediasdk_c2/c2_store/data/media_codecs_c2.xml:vendor/etc/media_codecs_c2.xml \
-    vendor/intel/mediasdk_c2/c2_store/data/media_codecs_intel_c2_video.xml:vendor/etc/media_codecs_intel_c2_video.xml
 
-PRODUCT_PACKAGES += \
-    libmfx_c2_components_hw \
-    hardware.intel.media.c2@1.0-service
-
-BOARD_HAVE_MEDIASDK_CODEC2 := true
-
-PRODUCT_PACKAGES += \
-    libvpl \
-    libmfx-gen
-USE_ONEVPL := true
 
 ##############################################################
 # Source: device/intel/mixins/groups/usb/host/product.mk
