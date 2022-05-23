@@ -647,8 +647,7 @@ endif
 # memtrack HAL
 PRODUCT_PACKAGES += \
         memtrack.$(TARGET_BOARD_PLATFORM) \
-	android.hardware.memtrack@1.0-service \
-	android.hardware.memtrack@1.0-impl
+	android.hardware.memtrack-service.celadon
 ##############################################################
 # Source: device/intel/mixins/groups/avx/auto/product.mk
 ##############################################################
