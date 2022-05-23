@@ -656,6 +656,13 @@ PRODUCT_PACKAGES += intel_prop
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/intel_prop/intel_prop.cfg:$(TARGET_COPY_OUT_VENDOR)/etc/intel_prop.cfg
 endif
 ##############################################################
+# Source: device/intel/mixins/groups/memtrack/true/product.mk
+##############################################################
+# memtrack HAL
+PRODUCT_PACKAGES += \
+        memtrack.$(TARGET_BOARD_PLATFORM) \
+	android.hardware.memtrack-service.celadon
+##############################################################
 # Source: device/intel/mixins/groups/avx/auto/product.mk
 ##############################################################
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/avx/checkavx.sh:vendor/bin/checkavx.sh

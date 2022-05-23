@@ -600,6 +600,10 @@ INTEL_PROP_LIBDMI := true
 endif
 
 ##############################################################
+# Source: device/intel/mixins/groups/memtrack/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/memtrack
+##############################################################
 # Source: device/intel/mixins/groups/tpm/true/BoardConfig.mk
 ##############################################################
 TARGET_USE_TPM := true
