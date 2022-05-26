@@ -85,7 +85,7 @@ atrace: true
 firmware: true(all_firmwares=false)
 aaf: true
 suspend: auto
-sensors: mediation(enable_sensor_list=true)
+sensors: mediation
 bugreport: true
 mainline-mod: true
 houdini: true
