@@ -10,7 +10,7 @@ on fs
     # ro.boot.hardware = TARGET_PRODUCT (set in kernel command line
     # as androidboot.hardware). Mount all the filesystems as specified
     # in the fstab.
-    mount_all /vendor/etc/fstab.${ro.hardware}
+    mount_all /vendor/etc/fstab.${ro.hardware} --early
 
 service watchdogd /system/bin/watchdogd 10 30
     user system
@@ -20,6 +20,16 @@ service watchdogd /system/bin/watchdogd 10 30
 
 on charger
     start watchdogd
+
+# We need vold early for metadata encryption
+on early-fs
+    start vold
+
+on late-fs
+    # Wait for keymaster
+    exec_start wait_for_keymaster
+    # Mount latemount partitions which have not been mounted with "on fs"
+    mount_all /vendor/etc/fstab.${ro.hardware} --late
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/init.rc
 ##############################################################
@@ -210,11 +220,6 @@ on property:sys.boot_completed=1 && property:ro.vendor.hdmi.audio=tgl
     stop audioserver
     start audioserver
 ##############################################################
-# Source: device/intel/mixins/groups/device-type/car/init.rc
-##############################################################
-on property:sys.boot_completed=1
-   setprop vendor.boot_completed 1
-##############################################################
 # Source: device/intel/mixins/groups/device-specific/celadon_ivi/init.rc
 ##############################################################
 on post-fs-data
@@ -245,7 +250,7 @@ on boot
     write /sys/class/gpio/gpio444/direction out
     write /sys/class/gpio/gpio444/value 1
 
-# adb over ethernet
+# Set adb over network tcp port
     setprop service.adb.tcp.port 5555
 
 # workaround for the sys fs create
@@ -290,38 +295,7 @@ on post-fs
 on post-fs
     restorecon_recursive /mnt/vendor/oem_config
 ##############################################################
-# Source: device/intel/mixins/groups/pstore/ram_dummy/init.rc
-##############################################################
-on fs
-    mkdir /dev/pstore 0550 system log
-    mount pstore pstore /dev/pstore
-    chown system log /dev/pstore
-    chmod 0550 /dev/pstore
-
-on post-fs-data
-   mkdir /data/dontpanic 0770 root log
-
-service vendor.pstore-clean /system/vendor/bin/pstore-clean
-    user 5001
-    group log
-    class late_start
-    oneshot
-
-on property:init.svc.vendor.pstore-clean=stopped
-    umount /dev/pstore
-    rmdir /dev/pstore
-##############################################################
-# Source: device/intel/mixins/groups/bugreport/true/init.rc
-##############################################################
-# bugreport is triggered by holding down volume down, volume up and power
-service bugreport /system/bin/dumpstate -d -p -B -z \
-        -o /data/user_de/0/com.android.shell/files/bugreports/bugreport
-    class main
-    disabled
-    oneshot
-    keycodes 114 115 116
-##############################################################
-# Source: device/intel/mixins/groups/graphics/mesa/init.rc.1
+# Source: device/intel/mixins/groups/graphics/auto/init.rc.1
 ##############################################################
 # for hardware accelerated graphics
 service msync /system/vendor/bin/msync
@@ -367,11 +341,8 @@ on boot
     chown media media /sys/kernel/debug/tracing/events/i915/i915_ring_wait_end/enable
     chown media media /sys/devices/pci0000:00/0000:00:02.0/drm/card0/gt_max_freq_mhz
     chown media media /sys/devices/pci0000:00/0000:00:02.0/drm/card0/gt_min_freq_mhz
-    #Give permission to system to check GEN Graphics device id
-    chown system system /sys/devices/pci0000:00/0000:00:02.0/device
-    chown system system /sys/devices/pci0000:00/0000:00:02.0/vendor
 ##############################################################
-# Source: device/intel/mixins/groups/graphics/mesa/init.rc
+# Source: device/intel/mixins/groups/graphics/auto/init.rc
 ##############################################################
 on init
     chown system system /sys/class/backlight/intel_backlight/brightness
@@ -386,7 +357,7 @@ on boot
    chown system graphics /sys/kernel/debug/sync/sw_sync
    symlink /sys/kernel/debug/sync/sw_sync /dev/sw_sync
 ##############################################################
-# Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/init.rc
+# Source: device/intel/mixins/groups/storage/sdcard-mmc0-v-usb-sd-r/init.rc
 ##############################################################
 on init
     # Support legacy paths
@@ -440,7 +411,7 @@ on boot
 on charger
     write /sys/devices/pci0000\:00/0000\:00\:14.0/power/control auto
 ##############################################################
-# Source: device/intel/mixins/groups/usb-gadget/configfs/init.rc
+# Source: device/intel/mixins/groups/usb-gadget/auto/init.rc
 ##############################################################
 on boot
     mount configfs none /config
@@ -468,9 +439,8 @@ on boot
     symlink /config/usb_gadget/g1/configs/b.1 /config/usb_gadget/g1/os_desc/b.1
     mkdir /dev/usb-ffs 0775 shell shell
     mkdir /dev/usb-ffs/adb 0770 shell shell
-    mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
     setprop sys.usb.configfs 1
-    setprop sys.usb.controller dwc3.0.auto
+    setprop sys.usb.controller ${vendor.usb.controller}
 
 #create mtp+ffs gadget function
     mkdir /dev/usb-ffs/mtp 0770 mtp mtp
@@ -573,6 +543,10 @@ on property:sys.usb.config=accessory,audio_source && property:sys.usb.configfs=1
 on property:sys.usb.config=accessory,audio_source,adb && property:sys.usb.configfs=1
     write /config/usb_gadget/g1/idVendor 0x18d1
     write /config/usb_gadget/g1/idProduct 0x2d05
+
+on property:vendor.mount.ep0=1
+    mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
+
 ##############################################################
 # Source: device/intel/mixins/groups/midi/true/init.rc
 ##############################################################
@@ -676,6 +650,13 @@ service intel_prop /system/vendor/bin/intel_prop
     class core
     oneshot
 ##############################################################
+# Source: device/intel/mixins/groups/avx/auto/init.rc
+##############################################################
+on post-fs-data
+    exec - system system -- /vendor/bin/checkavx.sh
+    setprop dalvik.vm.isa.x86.variant ${vendor.dalvik.vm.isa.x86.variant}
+    setprop dalvik.vm.isa.x86_64.variant ${vendor.dalvik.vm.isa.x86_64.variant}
+##############################################################
 # Source: device/intel/mixins/groups/abota-fw/true/init.rc
 ##############################################################
 
@@ -717,11 +698,6 @@ on property:vendor.sys.usb.role=device
 on post-fs-data
     mkdir /data/hdcp 0770 media media
 ##############################################################
-# Source: device/intel/mixins/groups/neuralnetworks/true/init.rc
-##############################################################
-on post-fs-data
-    mkdir /data/vendor/neuralnetworks 0770 system system
-##############################################################
 # Source: device/intel/mixins/groups/load_modules/true/init.rc
 ##############################################################
 service load_modules /vendor/bin/load_modules.sh
@@ -742,6 +718,8 @@ on boot
     write /proc/sys/vm/page-cluster 0
    # Avoid evicting pages and use zram disk
     write /proc/sys/vm/swappiness 100
+   # Enable disk_based_swap on Chromium kernels
+    write /proc/sys/vm/disk_based_swap 1
 
 on post-fs
     exec - system system -- /vendor/bin/check_lowmem.sh
@@ -775,6 +753,12 @@ on early-boot
 on post-fs-data
     setprop vold.post_fs_data_done 1
 ##############################################################
+# Source: device/intel/mixins/groups/telephony/false/init.rc
+##############################################################
+on boot
+    # Disable rild
+    setprop ro.radio.noril yes
+##############################################################
 # Source: device/intel/mixins/groups/dbc/true/init.rc
 ##############################################################
 # switch adb over dwc
@@ -793,9 +777,47 @@ on property:persist.vendor.sys.usb.adbover=dbc && property:sys.boot_completed=1
     stop adbd
     start adbd
 ##############################################################
-# Source: device/intel/mixins/groups/telephony/default/init.rc
+# Source: device/intel/mixins/groups/aaf/true/init.rc
 ##############################################################
-on boot
-    # Disable rild
-    setprop ro.radio.noril yes
+on fs
+    mkdir /mnt/share
+    mount 9p aaf /mnt/share
+    exec - system system -- /vendor/bin/logwrapper /vendor/bin/sh /vendor/bin/auto_detection.sh
+    setprop ro.hardware.hwcomposer ${vendor.hwcomposer.set}
+    setprop ro.hardware.gralloc ${vendor.gralloc.set}
+    setprop ro.hardware.egl ${vendor.egl.set}
+    setprop ro.hardware.vulkan ${vendor.vulkan.set}
+    setprop ro.power.fixed_performance_scale_factor ${vendor.power.fixed_performance_scale_factor}
+    setprop ro.media.xml_variant.codecs ${ro.vendor.media.target_variant}
+    setprop ro.media.xml_variant.codecs_performance ${ro.vendor.media.target_variant_platform}
+##############################################################
+# Source: device/intel/mixins/groups/suspend/auto/init.rc
+##############################################################
+on property:vendor.suspend=false
+    write /sys/power/wake_lock nosleeptillbrooklyn
+##############################################################
+# Source: device/intel/mixins/groups/bugreport/true/init.rc
+##############################################################
+# bugreport is triggered by holding down volume down, volume up and power
+service bugreport /system/bin/dumpstate -d -p -B -z \
+        -o /data/user_de/0/com.android.shell/files/bugreports/bugreport
+    class main
+    disabled
+    oneshot
+    keycodes 114 115 116
+##############################################################
+# Source: device/intel/mixins/groups/houdini/true/init.rc
+##############################################################
+# Enable native bridge for target executables
+on early-init
+    mount binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
+
+on property:ro.vendor.enable.native.bridge.exec=1
+    copy /vendor/etc/binfmt_misc/arm_exe /proc/sys/fs/binfmt_misc/register
+    copy /vendor/etc/binfmt_misc/arm_dyn /proc/sys/fs/binfmt_misc/register
+
+on property:ro.vendor.enable.native.bridge.exec64=1
+    copy /vendor/etc/binfmt_misc/arm64_exe /proc/sys/fs/binfmt_misc/register
+    copy /vendor/etc/binfmt_misc/arm64_dyn /proc/sys/fs/binfmt_misc/register
+
 # ------------------ END MIX-IN DEFINITIONS ------------------
