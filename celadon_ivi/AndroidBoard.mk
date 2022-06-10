@@ -278,19 +278,19 @@ KERNEL_CCSLOP := $(subst $(space),$(comma),$(KERNEL_CCSLOP))
 
 
 ifeq ($(BASE_CHROMIUM_KERNEL), true)
-  LOCAL_KERNEL_SRC := 
-  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/
+  LOCAL_KERNEL_SRC := kernel/lts2019-chromium
+  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2019-chromium
 else ifeq ($(BASE_LTS2020_YOCTO_KERNEL), true)
-  LOCAL_KERNEL_SRC := 
-  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/
+  LOCAL_KERNEL_SRC := kernel/lts2020-yocto
+  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2020-yocto
 else ifeq ($(BASE_LTS2020_CHROMIUM_KERNEL), true)
-  LOCAL_KERNEL_SRC := 
-  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/
+  LOCAL_KERNEL_SRC := kernel/lts2020-chromium
+  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2020-chromium
 else
-  LOCAL_KERNEL_SRC := kernel/lts2018
+  LOCAL_KERNEL_SRC := kernel/lts2020-chromium
   EXT_MODULES := 
   DEBUG_MODULES := 
-  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2018/bxt/android/non-embargoed
+  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2020-chromium
 endif
 
 EXTMOD_SRC := ../modules
@@ -335,6 +335,10 @@ KERNEL_MAKE_OPTIONS += \
     LLVM=1 \
     HOSTLDFLAGS=-fuse-ld=lld \
 
+KERNEL_MODULES_DIFFCONFIG += $(wildcard $(KERNEL_CONFIG_PATH)/modules_diffconfig)
+ifneq ($(KERNEL_MODULES_DIFFCONFIG),)
+    KERNEL_DIFFCONFIG += $(KERNEL_MODULES_DIFFCONFIG)
+endif
 
 KERNEL_CONFIG_DEPS = $(strip $(KERNEL_DEFCONFIG) $(KERNEL_DIFFCONFIG))
 
@@ -501,19 +505,38 @@ pfw_rebuild_settings := true
 include $(TARGET_DEVICE_DIR)/audio/AndroidBoard.mk
 AUTO_IN += $(TARGET_DEVICE_DIR)/extra_files/audio/auto_hal.in
 ##############################################################
-# Source: device/intel/mixins/groups/device-type/car/AndroidBoard.mk
-##############################################################
-# Car device required kernel diff config
-KERNEL_CAR_DIFFCONFIG = $(wildcard $(KERNEL_CONFIG_PATH)/car_diffconfig)
-KERNEL_DIFFCONFIG += $(KERNEL_CAR_DIFFCONFIG)
-##############################################################
 # Source: device/intel/mixins/groups/device-specific/celadon_ivi/AndroidBoard.mk
 ##############################################################
 KERNEL_APL_DIFFCONFIG = $(wildcard $(KERNEL_CONFIG_PATH)/apl_nuc_diffconfig)
 KERNEL_DIFFCONFIG += $(KERNEL_APL_DIFFCONFIG)
+KERNEL_caas_DIFFCONFIG = $(wildcard $(KERNEL_CONFIG_PATH)/caas_diffconfig)
+KERNEL_DIFFCONFIG += $(KERNEL_caas_DIFFCONFIG)
 
 # Specify /dev/mmcblk0 size here
 BOARD_MMC_SIZE = 15335424K
+
+LOCAL_CLANG_PATH = $(CLANG_PREBUILTS_PATH)/host/$(HOST_OS)-x86/$(KERNEL_CLANG_VERSION)/bin
+
+LOCAL_MAKE:= \
+        PATH="$(LOCAL_CLANG_PATH):$(PWD)/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8/x86_64-linux/bin:$$PATH" \
+	$(PWD)/prebuilts/build-tools/linux-x86/bin/make
+
+.PHONY: vinput-manager
+vinput-manager:
+	cd device/intel/civ/host/virtual-input-manager && $(LOCAL_MAKE)
+	cp device/intel/civ/host/virtual-input-manager/vinput-manager $(PRODUCT_OUT)/scripts/
+	cp device/intel/civ/host/virtual-input-manager/sendkey $(PRODUCT_OUT)/scripts/
+
+.PHONY: em-host-utilities
+em-host-utilities:
+	mkdir -p $(PRODUCT_OUT)/scripts/
+	cd device/intel/civ/host/backend/battery/vm_battery_utility && $(LOCAL_MAKE)
+	cp device/intel/civ/host/backend/battery/vm_battery_utility/batsys $(PRODUCT_OUT)/scripts/
+	cd device/intel/civ/host/backend/thermal/vm_thermal_utility && $(LOCAL_MAKE)
+	cp device/intel/civ/host/backend/thermal/vm_thermal_utility/thermsys $(PRODUCT_OUT)/scripts/
+
+.PHONY: host-pkg
+host-pkg: em-host-utilities vinput-manager
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/true/AndroidBoard.mk
 ##############################################################
@@ -675,7 +698,26 @@ INSTALLED_RADIOIMAGE_TARGET += $(INSTALLED_CONFIGIMAGE_TARGET)
 
 selinux_fc :=
 ##############################################################
-# Source: device/intel/mixins/groups/graphics/mesa/AndroidBoard.mk
+# Source: device/intel/mixins/groups/product-partition/true/AndroidBoard.mk
+##############################################################
+include $(CLEAR_VARS)
+LOCAL_MODULE := product-partition
+INSTALLED_PRODUCTIMAGE_TARGET := $(PRODUCT_OUT)/product.img
+include $(BUILD_PHONY_PACKAGE)
+##############################################################
+# Source: device/intel/mixins/groups/odm-partition/true/AndroidBoard.mk
+##############################################################
+include $(CLEAR_VARS)
+LOCAL_MODULE := odm-partition
+INSTALLED_ODMIMAGE_TARGET := $(PRODUCT_OUT)/odm.img
+include $(BUILD_PHONY_PACKAGE)
+##############################################################
+# Source: device/intel/mixins/groups/media/auto/AndroidBoard.mk
+##############################################################
+AUTO_IN += $(TARGET_DEVICE_DIR)/extra_files/media/auto_hal.in
+
+##############################################################
+# Source: device/intel/mixins/groups/graphics/auto/AndroidBoard.mk
 ##############################################################
 
 I915_FW_PATH := vendor/linux/firmware/i915
@@ -684,6 +726,8 @@ I915_FW_PATH := vendor/linux/firmware/i915
 $(foreach t, $(patsubst $(I915_FW_PATH)/%,%,$(wildcard $(I915_FW_PATH)/*)) ,$(eval I915_FW += i915/$(t)) $(eval $(LOCAL_KERNEL) : $(PRODUCT_OUT)/vendor/firmware/i915/$(t)))
 
 _EXTRA_FW_ += $(I915_FW)
+
+AUTO_IN += $(TARGET_DEVICE_DIR)/extra_files/graphics/auto_hal.in
 
 
 ##############################################################
@@ -694,6 +738,10 @@ LOAD_MODULES_IN += $(TARGET_DEVICE_DIR)/extra_files/ethernet/load_eth_modules.in
 # Source: device/intel/mixins/groups/codecs/configurable/AndroidBoard.mk
 ##############################################################
 AUTO_IN += $(TARGET_DEVICE_DIR)/extra_files/codecs/auto_hal.in
+##############################################################
+# Source: device/intel/mixins/groups/usb-gadget/auto/AndroidBoard.mk
+##############################################################
+AUTO_IN += $(TARGET_DEVICE_DIR)/extra_files/usb-gadget/auto_hal.in
 ##############################################################
 # Source: device/intel/mixins/groups/thermal/thermal-daemon/AndroidBoard.mk
 ##############################################################
@@ -765,10 +813,6 @@ AUTO_IN += $(TARGET_DEVICE_DIR)/extra_files/power/auto_hal.in
 ##############################################################
 LOAD_MODULES_IN += $(TARGET_DEVICE_DIR)/extra_files/usb-init/load_usb_modules.in
 ##############################################################
-# Source: device/intel/mixins/groups/usb-audio-init/true/AndroidBoard.mk
-##############################################################
-LOAD_MODULES_IN += $(TARGET_DEVICE_DIR)/extra_files/usb-audio-init/load_usbaudio_modules.in
-##############################################################
 # Source: device/intel/mixins/groups/load_modules/true/AndroidBoard.mk
 ##############################################################
 include $(CLEAR_VARS)
@@ -789,7 +833,7 @@ $(LOCAL_BUILT_MODULE): $(LOCAL_SRC)
 ##############################################################
 # Source: device/intel/mixins/groups/gptbuild/true/AndroidBoard.mk
 ##############################################################
-gptimage_size ?= 16G
+gptimage_size ?= 32G
 
 raw_config := none
 raw_factory := none
@@ -834,6 +878,11 @@ endif
 tos_bin = $(INSTALLED_TOS_IMAGE_TARGET)
 endif
 
+ifdef INSTALLED_ODMIMAGE_TARGET
+raw_odm := $(INSTALLED_ODMIMAGE_TARGET).raw
+$(GPTIMAGE_BIN): odmimage $(SIMG2IMG)
+	$(SIMG2IMG) $(INSTALLED_ODMIMAGE_TARGET) $(INSTALLED_ODMIMAGE_TARGET).raw
+endif
 
 
 ifdef INSTALLED_ACPIOIMAGE_TARGET
@@ -867,9 +916,29 @@ $(GPTIMAGE_BIN): \
 		--vbmeta $(INSTALLED_VBMETAIMAGE_TARGET) \
 		--super $(INSTALLED_SUPERIMAGE_TARGET).raw \
 		--acpio $(raw_acpio) \
+		--vendor_boot $(INSTALLED_VENDOR_BOOTIMAGE_TARGET) \
 		--config $(raw_config) \
 		--factory $(raw_factory)
 
 .PHONY: gptimage
 gptimage: $(GPTIMAGE_BIN)
+##############################################################
+# Source: device/intel/mixins/groups/aaf/true/AndroidBoard.mk
+##############################################################
+include $(CLEAR_VARS)
+LOCAL_MODULE := auto_detection.sh
+LOCAL_PROPRIETARY_MODULE := true
+LOCAL_MODULE_OWNER := intel
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := EXECUTABLES
+LOCAL_SRC := $(AUTO_IN)
+include $(BUILD_SYSTEM)/base_rules.mk
+$(LOCAL_BUILT_MODULE): $(LOCAL_SRC)
+	$(hide) mkdir -p "$(dir $@)"
+	echo "#!/vendor/bin/sh" > $@
+	cat $(AUTO_IN) >> $@
+##############################################################
+# Source: device/intel/mixins/groups/suspend/auto/AndroidBoard.mk
+##############################################################
+AUTO_IN += $(TARGET_DEVICE_DIR)/extra_files/suspend/auto_hal.in
 # ------------------ END MIX-IN DEFINITIONS ------------------

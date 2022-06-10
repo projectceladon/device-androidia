@@ -5,10 +5,11 @@
 ##############################################################
 # Configure super partitions
 BOARD_SUPER_PARTITION_GROUPS := group_sys
-BOARD_GROUP_SYS_PARTITION_LIST := system vendor
+BOARD_GROUP_SYS_PARTITION_LIST := system vendor product odm
 
-BOARD_SUPER_PARTITION_SIZE := $(shell echo 8000*1024*1024 | bc)
-BOARD_GROUP_SYS_SIZE = $(shell echo "$(BOARD_SUPER_PARTITION_SIZE) / 2 - 4*1024*1024" | bc)
+BOARD_SUPER_PARTITION_SIZE := $(shell echo 5000*1024*1024 | bc)
+BOARD_GROUP_SYS_SIZE = $(shell echo "$(BOARD_SUPER_PARTITION_SIZE) - 4*1024*1024" | bc)
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/virtual_ab
 
 ##############################################################
 # Source: device/intel/mixins/groups/slot-ab/true/BoardConfig.mk
@@ -76,6 +77,8 @@ BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
 INTERNAL_USERIMAGES_EXT_VARIANT := ext4
 endif
 
+BOARD_USES_METADATA_PARTITION := true
+BOARD_ROOT_EXTRA_FOLDERS += metadata
 
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
 
@@ -126,7 +129,6 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/abota/generic
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/abota/efi
 
 
-KERNELFLINGER_USE_RPMB_SIMULATE := true
 
 
 AB_OTA_POSTINSTALL_CONFIG += \
@@ -174,13 +176,13 @@ TARGET_USES_64_BIT_BINDER := true
 ##############################################################
 # Specify location of board-specific kernel headers
 ifeq ($(BASE_CHROMIUM_KERNEL), true)
-  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)//kernel-headers
+  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2019-chromium/kernel-headers
 else ifeq ($(BASE_LTS2020_YOCTO_KERNEL), true)
-  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)//kernel-headers
+  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2020-yocto/kernel-headers
 else ifeq ($(BASE_LTS2020_CHROMIUM_KERNEL), true)
-  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)//kernel-headers
+  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2020-chromium/kernel-headers
 else
-  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2018/kernel-headers
+  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2020-chromium/kernel-headers
 endif
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
@@ -235,7 +237,7 @@ BOARD_SEPOLICY_M4DEFS += board_sepolicy_target_product=$(TARGET_PRODUCT)
 # Source: device/intel/mixins/groups/bluetooth/btusb/BoardConfig.mk
 ##############################################################
 BOARD_HAVE_BLUETOOTH_INTEL_ICNV := true
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(INTEL_PATH_COMMON)/bluetooth/intel/car/
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(INTEL_PATH_COMMON)/bluetooth/intel/tablet/
 DEVICE_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-bt-pan
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/bluetooth/common
 ##############################################################
@@ -264,15 +266,9 @@ USE_CONFIGURABLE_AUDIO_POLICY := 0
 # Use Baseline Legacy Audio HAL
 USE_LEGACY_BASELINE_AUDIO_HAL := true
 ##############################################################
-# Source: device/intel/mixins/groups/device-type/car/BoardConfig.mk
+# Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += \
-    packages/services/Car/car_product/sepolicy \
-    device/generic/car/common/sepolicy \
-    $(INTEL_PATH_SEPOLICY)/car
-
-TARGET_USES_CAR_FUTURE_FEATURES := true
-BOARD_SEPOLICY_M4DEFS += module_carservice_app=true
+DEVICE_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/device-type/overlay-tablet
 ##############################################################
 # Source: device/intel/mixins/groups/device-specific/celadon_ivi/BoardConfig.mk
 ##############################################################
@@ -284,10 +280,21 @@ BOARD_KERNEL_CMDLINE += \
 	reboot_panic=p,w \
 	i915.hpd_sense_invert=0x7 \
 	intel_iommu=off \
+	i915.enable_pvmmio=0 \
 	loop.max_part=7
 
 BOARD_FLASHFILES += ${TARGET_DEVICE_DIR}/bldr_utils.img:bldr_utils.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/LICENSE
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/start_flash_usb.sh
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/auto_switch_pt_usb_vms.sh
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/findall.py
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/setup_host.sh
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/sof_audio/configure_sof.sh
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/setup_audio_host.sh
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/guest_pm_control
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/intel-thermal-conf.xml
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/thermald.service
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/rpmb_dev
 
 # for USB OTG WA
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/bxt_usb
@@ -303,10 +310,13 @@ BOARD_USES_GENERIC_AUDIO := false
 
 DEVICE_MANIFEST_FILE := ${TARGET_DEVICE_DIR}/manifest.xml
 DEVICE_MATRIX_FILE   := ${TARGET_DEVICE_DIR}/compatibility_matrix.xml
+DEVICE_FRAMEWORK_MANIFEST_FILE := ${TARGET_DEVICE_DIR}/framework_manifest.xml
 BUILD_BROKEN_USES_BUILD_HOST_STATIC_LIBRARY := true
 BUILD_BROKEN_USES_BUILD_HOST_SHARED_LIBRARY := true
 BUILD_BROKEN_USES_BUILD_HOST_EXECUTABLE := true
 BUILD_BROKEN_USES_BUILD_COPY_HEADERS := true
+# PRODUCT_COPY_FILES directives.
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/true/BoardConfig.mk
 ##############################################################
@@ -379,6 +389,21 @@ BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 VENDOR_PARTITION_SIZE := $(shell echo 600*1048576 | bc)
 AB_OTA_PARTITIONS += vendor
 ##############################################################
+# Source: device/intel/mixins/groups/vendor-boot/true/BoardConfig.mk
+##############################################################
+ifeq ($(BOOTCONFIG_ENABLE), true)
+BOARD_BOOT_HEADER_VERSION := 4
+BOARD_KERNEL_CMDLINE += bootconfig
+else
+BOARD_BOOT_HEADER_VERSION := 3
+endif
+
+BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOT_HEADER_VERSION)
+BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := $(shell echo 16*1048576 | bc)
+
+
+AB_OTA_PARTITIONS += vendor_boot
+##############################################################
 # Source: device/intel/mixins/groups/acpio-partition/true/BoardConfig.mk
 ##############################################################
 TARGET_USE_ACPIO := true
@@ -391,6 +416,26 @@ AB_OTA_PARTITIONS += acpio
 BOARD_CONFIGIMAGE_PARTITION_SIZE := 8388608
 BOARD_SEPOLICY_M4DEFS += module_config_partition=true
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/config-partition
+##############################################################
+# Source: device/intel/mixins/groups/product-partition/true/BoardConfig.mk
+##############################################################
+# Those 3 lines are required to enable product image generation.
+# Remove them if product partition is not used.
+TARGET_COPY_OUT_PRODUCT := product
+BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
+PRODUCT_PARTITION_SIZE := $(shell echo 100*1048576 | bc)
+TARGET_USE_PRODUCT := true
+AB_OTA_PARTITIONS += product
+##############################################################
+# Source: device/intel/mixins/groups/odm-partition/true/BoardConfig.mk
+##############################################################
+# Those 3 lines are required to enable odm image generation.
+# Remove them if odm partition is not used.
+TARGET_COPY_OUT_ODM := odm
+BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := ext4
+ODM_PARTITION_SIZE := $(shell echo 100*1048576 | bc)
+TARGET_USE_ODM := true
+AB_OTA_PARTITIONS += odm
 ##############################################################
 # Source: device/intel/mixins/groups/cpu-arch/x86/BoardConfig.mk
 ##############################################################
@@ -424,60 +469,31 @@ ALLOW_MISSING_DEPENDENCIES := true
 # enable dex-preoptimization.
 WITH_DEXPREOPT := true
 ##############################################################
-# Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk.1
+# Source: device/intel/mixins/groups/media/auto/BoardConfig.mk
 ##############################################################
-BOARD_KERNEL_CMDLINE += pstore.backend=ramoops
 ##############################################################
-# Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk.2
-##############################################################
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/pstore
-##############################################################
-# Source: device/intel/mixins/groups/pstore/ram_dummy/BoardConfig.mk
-##############################################################
-BOARD_KERNEL_CMDLINE += \
-	memmap=0x400000\$$0x50000000 \
-	ramoops.mem_address=0x50000000 \
-	ramoops.mem_size=0x400000
-BOARD_KERNEL_CMDLINE += \
-	ramoops.record_size=0x4000
-
-BOARD_KERNEL_CMDLINE += \
-	ramoops.console_size=0x200000
-
-BOARD_KERNEL_CMDLINE += \
-	ramoops.ftrace_size=0x2000
-
-BOARD_KERNEL_CMDLINE += \
-	ramoops.dump_oops=1
-
-##############################################################
-# Source: device/intel/mixins/groups/media/mesa/BoardConfig.mk
-##############################################################
-INTEL_STAGEFRIGHT := true
-
-# Settings for the Media SDK library and plug-ins:
-# - USE_MEDIASDK: use Media SDK support or not
-# Used for mediasdk_release only
-USE_MEDIASDK := true
-##############################################################
-# Source: device/intel/mixins/groups/graphics/mesa/BoardConfig.mk
+# Source: device/intel/mixins/groups/graphics/auto/BoardConfig.mk
 ##############################################################
 # Use external/drm-bxt
 TARGET_USE_PRIVATE_LIBDRM := true
 LIBDRM_VER ?= intel
 
 BOARD_KERNEL_CMDLINE += vga=current i915.modeset=1 drm.atomic=1 i915.nuclear_pageflip=1 drm.vblankoffdelay=1 i915.fastboot=1
+
+ifeq ($(BASE_YOCTO_KERNEL),true)
+BOARD_KERNEL_CMDLINE += i915.enable_guc=2
+endif
+
+ifeq ($(BASE_LTS2020_YOCTO_KERNEL),true)
+BOARD_KERNEL_CMDLINE += i915.enable_guc=1
+endif
+
 USE_OPENGL_RENDERER := true
-NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 USE_INTEL_UFO_DRIVER := false
-BOARD_GPU_DRIVERS := i965
+BOARD_GPU_DRIVERS := i965 swrast virgl iris
 BOARD_USE_CUSTOMIZED_MESA := true
 
-# System's VSYNC phase offsets in nanoseconds
-VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
-SF_VSYNC_EVENT_PHASE_OFFSET_NS := 3000000
-
-BOARD_GPU_DRIVERS ?= i965 swrast
+BOARD_GPU_DRIVERS ?= i965 swrast virgl iris
 ifneq ($(strip $(BOARD_GPU_DRIVERS)),)
 TARGET_HARDWARE_3D := true
 TARGET_USES_HWC2 := true
@@ -498,6 +514,7 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/graphics/mesa
 
 
 BOARD_SEPOLICY_M4DEFS += module_hwc_info_service=true
+
 ##############################################################
 # Source: device/intel/mixins/groups/ethernet/dhcp/BoardConfig.mk
 ##############################################################
@@ -523,7 +540,7 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/codecs
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/codec2/msdk-codec2
 ##############################################################
-# Source: device/intel/mixins/groups/usb-gadget/configfs/BoardConfig.mk
+# Source: device/intel/mixins/groups/usb-gadget/auto/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/usb-gadget/configfs
 ##############################################################
@@ -536,15 +553,19 @@ DEVICE_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/navigationbar/overlay
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/debug-tools/androidterm
 ##############################################################
+# Source: device/intel/mixins/groups/default-drm/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/drm-default
+##############################################################
 # Source: device/intel/mixins/groups/thermal/thermal-daemon/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += device/intel/sepolicy/thermal
 BOARD_SEPOLICY_DIRS += device/intel/sepolicy/thermal/thermal-daemon
 ##############################################################
-# Source: device/intel/mixins/groups/serialport/ttyUSB0/BoardConfig.mk
+# Source: device/intel/mixins/groups/serialport/ttyS0/BoardConfig.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)
-BOARD_KERNEL_CMDLINE += console=ttyUSB0,115200n8
+BOARD_KERNEL_CMDLINE += console=ttyS0,115200n8
 endif
 ##############################################################
 # Source: device/intel/mixins/groups/flashfiles/ini/BoardConfig.mk
@@ -587,7 +608,11 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/memtrack
 ##############################################################
 TARGET_USE_TPM := true
 ##############################################################
-# Source: device/intel/mixins/groups/health/true/BoardConfig.mk
+# Source: device/intel/mixins/groups/avx/auto/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/avx
+##############################################################
+# Source: device/intel/mixins/groups/health/hal/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/health_hal
 ##############################################################
@@ -615,10 +640,6 @@ BOARD_VNDK_VERSION := current
 # Source: device/intel/mixins/groups/hdcpd/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/hdcpd
-##############################################################
-# Source: device/intel/mixins/groups/neuralnetworks/true/BoardConfig.mk
-##############################################################
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/neuralnetworks
 ##############################################################
 # Source: device/intel/mixins/groups/load_modules/true/BoardConfig.mk
 ##############################################################
@@ -670,13 +691,36 @@ endif
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/dbc
 ##############################################################
-# Source: device/intel/mixins/groups/evs/true/BoardConfig.mk
+# Source: device/intel/mixins/groups/aaf/true/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += \
-    packages/services/Car/evs/sepolicy \
-    $(INTEL_PATH_SEPOLICY)/evs
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/aafd
+BOARD_SEPOLICY_M4DEFS += module_aafd=true
 ##############################################################
-# Source: device/intel/mixins/groups/default-drm/true/BoardConfig.mk
+# Source: device/intel/mixins/groups/sensors/mediation/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/drm-default
+USE_SENSOR_MEDIATION_HAL := true
+
+SOONG_CONFIG_NAMESPACES += senPlugin
+SOONG_CONFIG_senPlugin  += SENSOR_LIST
+SOONG_CONFIG_senPlugin_SENSOR_LIST := true
+
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/sensors/mediation
+##############################################################
+# Source: device/intel/mixins/groups/houdini/true/BoardConfig.mk
+##############################################################
+# Native Bridge ABI List
+NB_ABI_LIST_32_BIT := armeabi-v7a armeabi
+NB_ABI_LIST_64_BIT := arm64-v8a
+# Support 64 Bit Apps
+TARGET_CPU_ABI_LIST_64_BIT ?= $(TARGET_CPU_ABI) $(TARGET_CPU_ABI2)
+TARGET_CPU_ABI_LIST_32_BIT ?= $(TARGET_2ND_CPU_ABI) $(TARGET_2ND_CPU_ABI2)
+TARGET_CPU_ABI_LIST := \
+    $(TARGET_CPU_ABI_LIST_64_BIT) \
+    $(TARGET_CPU_ABI_LIST_32_BIT) \
+    $(NB_ABI_LIST_64_BIT) \
+    $(NB_ABI_LIST_32_BIT)
+TARGET_CPU_ABI_LIST_32_BIT += $(NB_ABI_LIST_32_BIT)
+TARGET_CPU_ABI_LIST_64_BIT += $(NB_ABI_LIST_64_BIT)
+
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/houdini
 # ------------------ END MIX-IN DEFINITIONS ------------------
