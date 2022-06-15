@@ -309,6 +309,7 @@ PRODUCT_COPY_FILES += $(LOCAL_PATH)/mount_share.sh:$(TARGET_COPY_OUT_VENDOR)/bin
 ##############################################################
 PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-service.software \
+    android.hardware.keymaster@3.0-impl \
     android.hardware.keymaster@3.0-service
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
