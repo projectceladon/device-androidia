@@ -481,7 +481,7 @@ kernel: $(LOCAL_KERNEL_PATH)/copy_modules $(PRODUCT_OUT)/kernel
 endif
 
 ##############################################################
-# Source: device/intel/mixins/groups/sepolicy/enforcing/AndroidBoard.mk
+# Source: device/intel/mixins/groups/sepolicy/permissive/AndroidBoard.mk
 ##############################################################
 include $(CLEAR_VARS)
 LOCAL_MODULE := sepolicy-areq-checker
@@ -504,6 +504,12 @@ pfw_rebuild_settings := true
 # Target specific audio configuration files
 include $(TARGET_DEVICE_DIR)/audio/AndroidBoard.mk
 AUTO_IN += $(TARGET_DEVICE_DIR)/extra_files/audio/auto_hal.in
+##############################################################
+# Source: device/intel/mixins/groups/device-type/car/AndroidBoard.mk
+##############################################################
+# Car device required kernel diff config
+KERNEL_CAR_DIFFCONFIG = $(wildcard $(KERNEL_CONFIG_PATH)/car_diffconfig)
+KERNEL_DIFFCONFIG += $(KERNEL_CAR_DIFFCONFIG)
 ##############################################################
 # Source: device/intel/mixins/groups/device-specific/celadon_ivi/AndroidBoard.mk
 ##############################################################
