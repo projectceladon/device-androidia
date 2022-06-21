@@ -226,7 +226,18 @@ endif
 BOARD_SEPOLICY_M4DEFS += module_kernel=true
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/kernel
 ##############################################################
-# Source: device/intel/mixins/groups/sepolicy/enforcing/BoardConfig.mk
+# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk.1
+##############################################################
+# start kernel in permissive mode, this way we don't
+# need 'setenforce 0' from init.rc files
+BOARD_KERNEL_CMDLINE += enforcing=0
+ifeq ($(BOOTCONFIG_ENABLE), true)
+BOARD_BOOTCONFIG += androidboot.selinux=permissive
+else
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+endif
+##############################################################
+# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk
 ##############################################################
 # SELinux Policy
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)
@@ -266,9 +277,15 @@ USE_CONFIGURABLE_AUDIO_POLICY := 0
 # Use Baseline Legacy Audio HAL
 USE_LEGACY_BASELINE_AUDIO_HAL := true
 ##############################################################
-# Source: device/intel/mixins/groups/device-type/tablet/BoardConfig.mk
+# Source: device/intel/mixins/groups/device-type/car/BoardConfig.mk
 ##############################################################
-DEVICE_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/device-type/overlay-tablet
+BOARD_SEPOLICY_DIRS += \
+    packages/services/Car/car_product/sepolicy \
+    device/generic/car/common/sepolicy \
+    $(INTEL_PATH_SEPOLICY)/car
+
+TARGET_USES_CAR_FUTURE_FEATURES := true
+BOARD_SEPOLICY_M4DEFS += module_carservice_app=true
 ##############################################################
 # Source: device/intel/mixins/groups/device-specific/celadon_ivi/BoardConfig.mk
 ##############################################################
