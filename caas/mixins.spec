@@ -27,7 +27,7 @@ dexpreopt: true
 pstore: false
 media: auto(enable_msdk_omx=false, add_sw_msdk=false, opensource_msdk=true, opensource_msdk_omx_il=false)
 graphics: auto(gen9+=true,vulkan=true,minigbm=true,gralloc1=true,enable_guc=false)
-storage: sdcard-mmc0-v-usb-sd-r(adoptablesd=false,adoptableusb=false)
+storage: sdcard-v-usb-only(adoptablesd=false,adoptableusb=false)
 ethernet: dhcp
 camera-ext: ext-camera-only
 rfkill: true(force_disable=)
