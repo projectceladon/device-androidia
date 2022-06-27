@@ -486,6 +486,10 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/rfkill
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/codecs
 ##############################################################
+# Source: device/intel/mixins/groups/codec2/configurable/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/codecs/v4l2-codec2
+##############################################################
 # Source: device/intel/mixins/groups/usb-gadget/auto/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/usb-gadget/configfs
