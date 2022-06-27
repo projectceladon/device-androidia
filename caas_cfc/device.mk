@@ -538,6 +538,21 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_ehl.xml:vendor/etc/media_codecs_performance_ehl.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_tgl.xml:vendor/etc/media_codecs_performance_tgl.xml
 ##############################################################
+# Source: device/intel/mixins/groups/codec2/configurable/product.mk
+##############################################################
+# Audio/video codec support.
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/extra_files/codec2/media_codecs_c2_v4l2.xml:vendor/etc/media_codecs_c2.xml \
+    $(LOCAL_PATH)/extra_files/codec2/media_codecs_performance_c2_v4l2.xml:vendor/etc/media_codecs_performance_c2.xml \
+	$(LOCAL_PATH)/extra_files/codec2/codec2.vendor.ext.policy:/vendor/etc/seccomp_policy/codec2.vendor.ext.policy
+
+PRODUCT_PACKAGES += android.hardware.media.c2@1.0-service-v4l2 \
+                     libv4l2_codec2_components \
+                     libv4l2_codec2_accel \
+                     libv4l2_codec2_common \
+                     libv4l2_codec2_store \
+                     libc2plugin_store
+##############################################################
 # Source: device/intel/mixins/groups/usb/host+acc/product.mk
 ##############################################################
 PRODUCT_COPY_FILES += \

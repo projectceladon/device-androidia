@@ -334,11 +334,13 @@ service rfkill-init /vendor/bin/rfkill-init.sh
     group system
     oneshot
 ##############################################################
-# Source: device/intel/mixins/groups/codec2/true/init.rc
+# Source: device/intel/mixins/groups/codec2/configurable/init.rc
 ##############################################################
 on post-fs
     chmod 0664 /dev/ion
     chown system system /dev/ion
+    setprop debug.stagefright.ccodec 4
+    setprop debug.stagefright.c2-poolmask 0xf50000
 ##############################################################
 # Source: device/intel/mixins/groups/usb/host+acc/init.rc
 ##############################################################
