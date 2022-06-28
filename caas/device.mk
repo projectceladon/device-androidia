@@ -460,7 +460,7 @@ PRODUCT_PACKAGES += \
     vulkan.$(TARGET_BOARD_PLATFORM) \
     vulkan.pastel
 ##############################################################
-# Source: device/intel/mixins/groups/storage/sdcard-mmc0-v-usb-sd-r/product.mk
+# Source: device/intel/mixins/groups/storage/sdcard-v-usb-only/product.mk
 ##############################################################
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 ##############################################################
