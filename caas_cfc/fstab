@@ -9,13 +9,13 @@
 # specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
 system   /system  ext4 ro,barrier=1 wait,slotselect,avb_keys=/avb/q-gsi.avbpubkey:/avb/r-gsi.avbpubkey:/avb/s-gsi.avbpubkey,avb=vbmeta,logical,first_stage_mount
 /dev/block/by-name/vbmeta       /vbmeta         emmc    defaults                                                   defaults,slotselect,avb
-/dev/block/vdb         /data           ext4    noatime,nosuid,nodev,noauto_da_alloc,errors=panic   wait,check,formattable,quota,reservedsize=50m,fsverity,latemount,keydirectory=/metadata/vold/metadata_encryption
+/dev/block/vdb         /data           ext4    noatime,nosuid,nodev,discard,commit=30,barrier=0,noauto_da_alloc,errors=panic   wait,check,formattable,quota,reservedsize=50m,fsverity
 /dev/block/by-name/boot         /boot           emmc    defaults                                                    defaults,slotselect,avb
 /dev/block/by-name/misc         /misc           emmc    defaults                                                    defaults
 /dev/block/by-name/bootloader   /bootloader     emmc    defaults                                                    recoveryonly
 /dev/block/by-name/bootloader2  /bootloader2    emmc    defaults                                                    recoveryonly
 /dev/block/by-name/persistent   /persistent     emmc    defaults                                                    defaults
-/dev/block/by-name/metadata     /metadata       ext4    noatime,nosuid,nodev,errors=panic,discard                           wait,check,formattable,first_stage_mount
+/dev/block/by-name/metadata     /metadata       ext4    noatime,nosuid,nodev,errors=panic                           wait,check,formattable,first_stage_mount
 
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/fstab
