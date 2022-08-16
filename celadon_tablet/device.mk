@@ -112,7 +112,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/persistent
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:vendor/bin/update_ifwi_ab
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:recovery/root/vendor/bin/update_ifwi_ab
 
-$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
 
 KERNELFLINGER_SUPPORT_KEYBOX_PROVISION := true
 ##############################################################
@@ -212,7 +212,7 @@ PRODUCT_PACKAGES += \
 # Audio HAL
 PRODUCT_PACKAGES += \
     android.hardware.audio.effect@7.0-impl \
-    android.hardware.audio@7.0-impl \
+    android.hardware.audio@7.1-impl \
     android.hardware.audio@2.0-service
 
 #Audio policy engine configuration files
