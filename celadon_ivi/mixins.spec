@@ -27,7 +27,8 @@ dexpreopt: true
 pstore: false
 media: auto(enable_msdk_omx=false, add_sw_msdk=false, opensource_msdk=true, opensource_msdk_omx_il=false)
 graphics: auto(gen9+=true,vulkan=true,minigbm=true,gralloc1=true,enable_guc=false)
-storage: sdcard-mmc0-v-usb-sd-r(adoptablesd=false,adoptableusb=false)
+#storage: sdcard-mmc0-v-usb-sd-r(adoptablesd=false,adoptableusb=false)
+storage: sdcard-v-usb-only(adoptablesd=false,adoptableusb=false)
 ethernet: dhcp
 camera-ext: ext-camera-only
 rfkill: true(force_disable=)
@@ -53,7 +54,7 @@ lights: true
 power: true(power_throttle=true)
 debug-usb-config: true(source_dev=dvcith-0-msc0)
 intel_prop: true
-trusty: true(ref_target=celadon_64)
+trusty: false
 memtrack: true
 tpm: true
 avx: auto
@@ -85,7 +86,7 @@ atrace: true
 firmware: true(all_firmwares=false)
 aaf: true
 suspend: auto
-sensors: mediation(enable_sensor_list=true)
+sensors: mediation
 bugreport: true
 mainline-mod: true
 houdini: true
