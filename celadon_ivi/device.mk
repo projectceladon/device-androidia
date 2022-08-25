@@ -252,10 +252,12 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += android.hardware.automotive.audiocontrol@1.0-service.intel
 
-PRODUCT_PACKAGES += android.hardware.automotive.vehicle@2.0-service \
-    android.hardware.automotive.vehicle@2.0-impl
+PRODUCT_PACKAGES += android.hardware.automotive.vehicle@2.0-default-service \
+    android.hardware.automotive.vehicle@2.0-default-impl
 
 VEHICLE_HAL_PROTO_TYPE := google-emulator
+
+PRODUCT_PROPERTY_OVERRIDES += telephony.active_modems.max_count=2
 ##############################################################
 # Source: device/intel/mixins/groups/device-specific/celadon_ivi/product.mk
 ##############################################################
