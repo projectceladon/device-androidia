@@ -40,7 +40,7 @@ midi: true
 touch: cvt0f21
 navigationbar: true
 device-type: tablet
-googleservice: gms
+googleservice: default
 debug-tools: true
 fota: true
 default-drm: true
