@@ -187,7 +187,7 @@ else ifeq ($(BASE_LTS2020_YOCTO_KERNEL), true)
 else ifeq ($(BASE_LTS2020_CHROMIUM_KERNEL), true)
   TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2020-chromium/kernel-headers
 else
-  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2020-chromium/kernel-headers
+  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2021-chromium/kernel-headers
 endif
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
