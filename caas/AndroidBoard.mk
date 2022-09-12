@@ -250,7 +250,7 @@ kernel: $(PRODUCT_OUT)/kernel
 
 else
 
-TARGET_KERNEL_CLANG_VERSION := r416183b1
+TARGET_KERNEL_CLANG_VERSION := r450784d
 CLANG_PREBUILTS_PATH := $(abspath $(INTEL_PATH_DEVICE)/../../../prebuilts/clang)
 
 ifneq ($(TARGET_KERNEL_CLANG_VERSION),)
@@ -287,10 +287,10 @@ else ifeq ($(BASE_LTS2020_CHROMIUM_KERNEL), true)
   LOCAL_KERNEL_SRC := kernel/lts2020-chromium
   KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2020-chromium
 else
-  LOCAL_KERNEL_SRC := kernel/lts2020-chromium
+  LOCAL_KERNEL_SRC := kernel/lts2021-chromium
   EXT_MODULES := 
   DEBUG_MODULES := 
-  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2020-chromium
+  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2021-chromium
 endif
 
 EXTMOD_SRC := ../modules

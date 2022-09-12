@@ -148,7 +148,6 @@ BOARD_AVB_VENDOR_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_ODM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 
 AB_OTA_PARTITIONS += vbmeta
-AB_OTA_PARTITIONS += tos
 
 
 KERNELFLINGER_SUPPORT_USB_STORAGE ?= true
@@ -312,6 +311,9 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/auto_switch_pt_usb_vms.sh
 BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/findall.py
 BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/setup_host.sh
 BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/sof_audio/configure_sof.sh
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/cam_sharing/0001-Netlink-sync.patch
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/cam_sharing/IntelCameraService
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/cam_sharing/virtualcamera.service
 BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/setup_audio_host.sh
 BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/guest_pm_control
 BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/intel-thermal-conf.xml
@@ -340,62 +342,9 @@ BUILD_BROKEN_USES_BUILD_COPY_HEADERS := true
 # PRODUCT_COPY_FILES directives.
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/BoardConfig.mk
+# Source: device/intel/mixins/groups/trusty/false/BoardConfig.mk
 ##############################################################
-TARGET_USE_TRUSTY := true
-
-ifneq (, $(filter abl sbl, project-celadon))
-TARGET_USE_MULTIBOOT := true
-endif
-
-BOARD_USES_TRUSTY := true
-BOARD_USES_KEYMASTER1 := true
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/trusty/enabled
-BOARD_SEPOLICY_M4DEFS += module_trusty=true
-
-TRUSTY_BUILDROOT = $(PWD)/$(PRODUCT_OUT)/obj/trusty/
-
-TRUSTY_ENV_VAR += TRUSTY_REF_TARGET=celadon_64
-
-#for trusty vmm
-# use same toolchain as android kernel
-TRUSTY_ENV_VAR += CLANG_BINDIR=$(PWD)/$(LLVM_PREBUILTS_PATH)
-TRUSTY_ENV_VAR += COMPILE_TOOLCHAIN=$(YOCTO_CROSSCOMPILE)
-TRUSTY_ENV_VAR += TARGET_BUILD_VARIANT=$(TARGET_BUILD_VARIANT)
-TRUSTY_ENV_VAR += BOOT_ARCH=project-celadon
-
-# output build dir to android out folder
-TRUSTY_ENV_VAR += BUILD_DIR=$(TRUSTY_BUILDROOT)
-ifeq ($(LKDEBUG),2)
-TRUSTY_ENV_VAR += LKBIN_DIR=$(PWD)/vendor/intel/fw/trusty-release-binaries/debug/
-else
-TRUSTY_ENV_VAR += LKBIN_DIR=$(PWD)/vendor/intel/fw/trusty-release-binaries/
-endif
-
-#Fix the cpu hotplug fail due to the trusty.
-#Trusty will introduce some delay for cpu_up().
-#Experiment show need wait at least 60us after
-#apic_icr_write(APIC_DM_STARTUP | (start_eip >> 12), phys_apicid);
-#So here override the cpu_init_udelay to have the cpu wait for 300us
-#to guarantee the cpu_up success.
-BOARD_KERNEL_CMDLINE += cpu_init_udelay=10
-
-ifeq ($(BOOTCONFIG_ENABLE), true)
-BOARD_BOOTCONFIG += androidboot.brand=$(subst $(space),$(comma),$(PRODUCT_BRAND))
-BOARD_BOOTCONFIG += androidboot.device=$(subst $(space),$(comma),$(PRODUCT_DEVICE))
-BOARD_BOOTCONFIG += androidboot.model=$(subst $(space),$(comma),$(PRODUCT_MODEL))
-BOARD_BOOTCONFIG += androidboot.manufacturer=$(subst $(space),$(comma),$(PRODUCT_MANUFACTURER))
-BOARD_BOOTCONFIG += androidboot.name=$(subst $(space),$(comma),$(PRODUCT_NAME))
-else
-BOARD_KERNEL_CMDLINE += androidboot.brand=$(subst $(space),$(comma),$(PRODUCT_BRAND))
-BOARD_KERNEL_CMDLINE += androidboot.device=$(subst $(space),$(comma),$(PRODUCT_DEVICE))
-BOARD_KERNEL_CMDLINE += androidboot.model=$(subst $(space),$(comma),$(PRODUCT_MODEL))
-BOARD_KERNEL_CMDLINE += androidboot.manufacturer=$(subst $(space),$(comma),$(PRODUCT_MANUFACTURER))
-BOARD_KERNEL_CMDLINE += androidboot.name=$(subst $(space),$(comma),$(PRODUCT_NAME))
-endif
-
-#TOS_PREBUILT := $(PWD)/$(INTEL_PATH_VENDOR)/fw/evmm/tos.img
-#EVMM_PREBUILT := $(PWD)/$(INTEL_PATH_VENDOR)/fw/evmm/multiboot.img
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/trusty/disabled
 ##############################################################
 # Source: device/intel/mixins/groups/firststage-mount/true/BoardConfig.mk
 ##############################################################
@@ -466,6 +415,7 @@ BUILD_CPU_ARCH ?= silvermont
 # Items that are common between slm 32b and 64b:
 TARGET_CPU_ABI_LIST_32_BIT := x86
 TARGET_ARCH_VARIANT := $(if $(BUILD_CPU_ARCH),$(BUILD_CPU_ARCH),x86)
+TARGET_CPU_VARIANT := generic
 TARGET_CPU_SMP := true
 
 ifeq ($(BOARD_USE_64BIT_USERSPACE),true)
@@ -475,7 +425,7 @@ TARGET_CPU_ABI := x86_64
 TARGET_2ND_CPU_ABI := x86
 TARGET_2ND_ARCH := x86
 TARGET_2ND_ARCH_VARIANT := $(if $(BUILD_CPU_ARCH),$(BUILD_CPU_ARCH))
-TARGET_2ND_CPU_VARIANT := $(if $(BUILD_CPU_ARCH),$(BUILD_CPU_ARCH))
+TARGET_2ND_CPU_VARIANT := generic
 else
 # 32b-specific items:
 TARGET_ARCH := x86

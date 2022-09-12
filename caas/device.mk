@@ -88,7 +88,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:vendor/bin/update_ifwi_ab
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:recovery/root/vendor/bin/update_ifwi_ab
 
-$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
 
 KERNELFLINGER_SUPPORT_KEYBOX_PROVISION := true
 ##############################################################
@@ -187,7 +187,7 @@ PRODUCT_PACKAGES += \
 # Audio HAL
 PRODUCT_PACKAGES += \
     android.hardware.audio.effect@7.0-impl \
-    android.hardware.audio@7.0-impl \
+    android.hardware.audio@7.1-impl \
     android.hardware.audio@2.0-service
 
 #Audio policy engine configuration files
@@ -251,7 +251,7 @@ endif
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/init.recovery.rc:root/init.recovery.$(TARGET_PRODUCT).rc \
     $(LOCAL_PATH)/init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.$(TARGET_PRODUCT).rc \
-    $(LOCAL_PATH)/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/ueventd.rc \
+    $(LOCAL_PATH)/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.rc \
 
 PRODUCT_PACKAGES += vndservicemanager
 
@@ -698,8 +698,8 @@ PRODUCT_PACKAGES += libaudioprocessing_avx2 \
 ##############################################################
 # Source: device/intel/mixins/groups/health/hal/product.mk
 ##############################################################
-PRODUCT_PACKAGES += android.hardware.health@2.1-service \
-                    android.hardware.health@2.1-impl-intel
+PRODUCT_PACKAGES +=   android.hardware.health-service.example \
+                      android.hardware.health@2.1-impl-intel
 ##############################################################
 # Source: device/intel/mixins/groups/abota-fw/true/product.mk
 ##############################################################

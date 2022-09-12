@@ -88,7 +88,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:vendor/bin/update_ifwi_ab
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:recovery/root/vendor/bin/update_ifwi_ab
 
-$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
 
 KERNELFLINGER_SUPPORT_KEYBOX_PROVISION := true
 ##############################################################
@@ -187,7 +187,7 @@ PRODUCT_PACKAGES += \
 # Audio HAL
 PRODUCT_PACKAGES += \
     android.hardware.audio.effect@7.0-impl \
-    android.hardware.audio@7.0-impl \
+    android.hardware.audio@7.1-impl \
     android.hardware.audio@2.0-service
 
 #Audio policy engine configuration files
@@ -252,10 +252,12 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += android.hardware.automotive.audiocontrol@1.0-service.intel
 
-PRODUCT_PACKAGES += android.hardware.automotive.vehicle@2.0-service \
-    android.hardware.automotive.vehicle@2.0-impl
+PRODUCT_PACKAGES += android.hardware.automotive.vehicle@2.0-default-service \
+    android.hardware.automotive.vehicle@2.0-default-impl
 
 VEHICLE_HAL_PROTO_TYPE := google-emulator
+
+PRODUCT_PROPERTY_OVERRIDES += telephony.active_modems.max_count=2
 ##############################################################
 # Source: device/intel/mixins/groups/device-specific/celadon_ivi/product.mk
 ##############################################################
@@ -268,7 +270,7 @@ endif
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/init.recovery.rc:root/init.recovery.$(TARGET_PRODUCT).rc \
     $(LOCAL_PATH)/init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.$(TARGET_PRODUCT).rc \
-    $(LOCAL_PATH)/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/ueventd.rc \
+    $(LOCAL_PATH)/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.rc \
 
 PRODUCT_PACKAGES += vndservicemanager
 
@@ -317,34 +319,11 @@ PRODUCT_COPY_FILES += device/intel/civ/host/vm-manager/scripts/start_flash_usb.s
 PRODUCT_COPY_FILES += vendor/intel/fw/trusty-release-binaries/rpmb_dev:$(PRODUCT_OUT)/scripts/rpmb_dev
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/wakeup.py:$(PRODUCT_OUT)/scripts/wakeup.py
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/product.mk
+# Source: device/intel/mixins/groups/trusty/false/product.mk
 ##############################################################
-
 PRODUCT_PACKAGES += \
-	libtrusty \
-	storageproxyd \
-	libinteltrustystorage \
-	libinteltrustystorageinterface \
-	android.hardware.gatekeeper@1.0-service.trusty \
-	android.hardware.security.keymint-service.trusty \
-	keybox_provisioning \
-	RemoteProvisioner
-
-PRODUCT_PACKAGES_DEBUG += \
-	intel-secure-storage-unit-test \
-	gatekeeper-unit-tests \
-	libscrypt_static \
-	scrypt_test \
-	RemoteProvisionerUnitTests \
-	libkeymint_remote_prov_support_test
-
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.gatekeeper=trusty \
-	ro.hardware.keystore=trusty
-
-PRODUCT_COPY_FILES += \
-	frameworks/native/data/etc/android.hardware.keystore.app_attest_key.xml:vendor/etc/permissions/android.hardware.keystore.app_attest_key.xml
-
+    android.hardware.gatekeeper@1.0-service.software \
+    android.hardware.security.keymint-service
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
@@ -496,7 +475,7 @@ PRODUCT_PACKAGES += \
     vulkan.$(TARGET_BOARD_PLATFORM) \
     vulkan.pastel
 ##############################################################
-# Source: device/intel/mixins/groups/storage/sdcard-mmc0-v-usb-sd-r/product.mk
+# Source: device/intel/mixins/groups/storage/sdcard-v-usb-only/product.mk
 ##############################################################
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 ##############################################################
@@ -715,8 +694,8 @@ PRODUCT_PACKAGES += libaudioprocessing_avx2 \
 ##############################################################
 # Source: device/intel/mixins/groups/health/hal/product.mk
 ##############################################################
-PRODUCT_PACKAGES += android.hardware.health@2.1-service \
-                    android.hardware.health@2.1-impl-intel
+PRODUCT_PACKAGES +=   android.hardware.health-service.example \
+                      android.hardware.health@2.1-impl-intel
 ##############################################################
 # Source: device/intel/mixins/groups/abota-fw/true/product.mk
 ##############################################################
