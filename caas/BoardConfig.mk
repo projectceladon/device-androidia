@@ -7,8 +7,6 @@
 BOARD_SUPER_PARTITION_GROUPS := group_sys
 BOARD_GROUP_SYS_PARTITION_LIST := system vendor product odm
 
-BOARD_SUPER_PARTITION_SIZE := $(shell echo 5000*1024*1024 | bc)
-BOARD_GROUP_SYS_SIZE = $(shell echo "$(BOARD_SUPER_PARTITION_SIZE) - 4*1024*1024" | bc)
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/virtual_ab
 
 ##############################################################
@@ -741,4 +739,8 @@ TARGET_CPU_ABI_LIST_32_BIT += $(NB_ABI_LIST_32_BIT)
 TARGET_CPU_ABI_LIST_64_BIT += $(NB_ABI_LIST_64_BIT)
 
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/houdini
+##############################################################
+# Source: device/intel/mixins/groups/neuralnetworks/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/neuralnetworks
 # ------------------ END MIX-IN DEFINITIONS ------------------
