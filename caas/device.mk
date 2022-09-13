@@ -302,6 +302,18 @@ PRODUCT_COPY_FILES += device/intel/civ/host/vm-manager/scripts/guest_time_keepin
 PRODUCT_COPY_FILES += device/intel/civ/host/vm-manager/scripts/start_flash_usb.sh:$(PRODUCT_OUT)/scripts/start_flash_usb.sh
 PRODUCT_COPY_FILES += vendor/intel/fw/trusty-release-binaries/rpmb_dev:$(PRODUCT_OUT)/scripts/rpmb_dev
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/wakeup.py:$(PRODUCT_OUT)/scripts/wakeup.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/setup_rinfer_host.sh:$(PRODUCT_OUT)/scripts/setup_rinfer_host.sh
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/object_detection.sh:$(PRODUCT_OUT)/scripts/remote_infer/object_detection.sh
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/client_requirements.txt:$(PRODUCT_OUT)/scripts/remote_infer/client_requirements.txt
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/README.txt:$(PRODUCT_OUT)/scripts/remote_infer/README.txt
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/adaptors/base_adaptor.py:$(PRODUCT_OUT)/scripts/remote_infer/adaptors/base_adaptor.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/adaptors/create_interface.py:$(PRODUCT_OUT)/scripts/remote_infer/adaptors/create_interface.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/adaptors/ovms/interface.py:$(PRODUCT_OUT)/scripts/remote_infer/adaptors/ovms/interface.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/adaptors/ovms/load_model.py:$(PRODUCT_OUT)/scripts/remote_infer/adaptors/ovms/load_model.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/adaptors/ovtoolkit/interface.py:$(PRODUCT_OUT)/scripts/remote_infer/adaptors/ovtoolkit/interface.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/adaptors/ovtoolkit/load_model.py:$(PRODUCT_OUT)/scripts/remote_infer/adaptors/ovtoolkit/load_model.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/services/rawTensor/nnhal_raw_tensor.proto:$(PRODUCT_OUT)/scripts/remote_infer/services/rawTensor/nnhal_raw_tensor.proto
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/services/rawTensor/rawTensor.py:$(PRODUCT_OUT)/scripts/remote_infer/services/rawTensor/rawTensor.py
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/true/product.mk
 ##############################################################
