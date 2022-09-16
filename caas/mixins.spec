@@ -9,7 +9,7 @@ product.mk: device.mk
 [groups]
 kernel: gmin64(useprebuilt=false,src_path=kernel/lts2020-chromium, loglevel=7, interactive_governor=false, relative_sleepstates=false, modules_in_bootimg=false, external_modules=,debug_modules=, use_bcmdhd=false, use_iwlwifi=false, extmod_platform=bxt, iwl_defconfig=, cfg_path=config-lts/lts2020-chromium, more_modules=true, chromium_src_path=kernel/lts2019-chromium, chromium_cfg_path=config-lts/lts2019-chromium, lts2020_yocto_src_path=kernel/lts2020-yocto, lts2020_yocto_cfg_path=config-lts/lts2020-yocto, lts2020_chromium_src_path=kernel/lts2020-chromium, lts2020_chromium_cfg_path=config-lts/lts2020-chromium)
 disk-bus: auto
-boot-arch: project-celadon(uefi_arch=x86_64,fastboot=efi,ignore_rsci=true,disable_watchdog=true,watchdog_parameters=10 30,verity_warning=false,txe_bind_root_of_trust=false,bootloader_block_size=4096,verity_mode=false,disk_encryption=false,file_encryption=true,metadata_encryption=true,fsverity=true,target=caas,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true,usb_storage=true,live_boot=true,userdata_checkpoint=false,multi_user_support=true)
+boot-arch: project-celadon(uefi_arch=x86_64,fastboot=efi,ignore_rsci=true,disable_watchdog=true,watchdog_parameters=10 30,verity_warning=false,txe_bind_root_of_trust=false,bootloader_block_size=4096,verity_mode=false,disk_encryption=false,file_encryption=false,metadata_encryption=false,fsverity=true,nobarrier=true,target=caas,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true,usb_storage=true,live_boot=true,userdata_checkpoint=false,multi_user_support=true)
 sepolicy: permissive
 bluetooth: btusb(ivi=false)
 audio: project-celadon
@@ -29,7 +29,7 @@ media: auto(enable_msdk_omx=false, add_sw_msdk=false, opensource_msdk=true, open
 graphics: auto(gen9+=true,vulkan=true,minigbm=true,gralloc1=true,enable_guc=false)
 storage: sdcard-v-usb-only(adoptablesd=false,adoptableusb=false)
 ethernet: dhcp
-camera-ext: ext-camera-only
+camera-ext: false
 rfkill: true(force_disable=)
 wlan: iwlwifi(libwifi-hal=true)
 codecs: configurable(sw_omx_video=false, hw_omx_video=false, platform=tgl, profile_file=media_profiles_1080p.xml, gpu=gen12)
