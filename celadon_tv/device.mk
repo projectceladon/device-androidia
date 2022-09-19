@@ -125,7 +125,7 @@ KERNEL_MODULES_ROOT_PATH ?= vendor/lib/modules
 KERNEL_MODULES_ROOT ?= $(KERNEL_MODULES_ROOT_PATH)
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.vendor.boot.moduleslocation=/$(KERNEL_MODULES_ROOT_PATH)
 ##############################################################
-# Source: device/intel/mixins/groups/sepolicy/enforcing/product.mk
+# Source: device/intel/mixins/groups/sepolicy/permissive/product.mk
 ##############################################################
 PRODUCT_PACKAGES += sepolicy-areq-checker
 ##############################################################
@@ -222,15 +222,27 @@ PRODUCT_PROPERTY_OVERRIDES += audio.safemedia.bypass=true
 
 PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/audio/overlay-car-legacy
 ##############################################################
-# Source: device/intel/mixins/groups/device-type/tablet/product.mk
+# Source: device/intel/mixins/groups/device-type/tv/product.mk
 ##############################################################
-PRODUCT_CHARACTERISTICS := tablet
+PRODUCT_CHARACTERISTICS := tv
+
+DEVICE_MANIFEST_FILE += device/google/cuttlefish/shared/config/manifest.xml
+DEVICE_MANIFEST_FILE += device/google/cuttlefish/shared/tv/manifest.xml
 
 PRODUCT_COPY_FILES += \
-        frameworks/native/data/etc/tablet_core_hardware.xml:vendor/etc/permissions/tablet_core_hardware.xml
+	device/google/atv/permissions/tv_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/tv_core_hardware.xml \
+	frameworks/native/data/etc/android.hardware.bluetooth.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.bluetooth.xml \
+	frameworks/native/data/etc/android.hardware.hdmi.cec.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.hdmi.cec.xml \
+	frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.accelerometer.xml \
+	frameworks/native/data/etc/android.hardware.sensor.compass.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.compass.xml \
+	frameworks/native/data/etc/android.hardware.touchscreen.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.touchscreen.xml \
 
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.software.freeform_window_management.xml:vendor/etc/permissions/android.software.freeform_window_management.xml
+# HDMI CEC HAL
+PRODUCT_PACKAGES += android.hardware.tv.cec@1.0-service.mock
+
+# Tuner HAL
+PRODUCT_PACKAGES += android.hardware.tv.tuner@1.0-service
+
 
 ##############################################################
 # Source: device/intel/mixins/groups/device-specific/celadon_tv/product.mk
@@ -289,27 +301,12 @@ PRODUCT_COPY_FILES += device/intel/civ/host/vm-manager/scripts/start_flash_usb.s
 PRODUCT_COPY_FILES += vendor/intel/fw/trusty-release-binaries/rpmb_dev:$(PRODUCT_OUT)/scripts/rpmb_dev
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/wakeup.py:$(PRODUCT_OUT)/scripts/wakeup.py
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/product.mk
+# Source: device/intel/mixins/groups/trusty/false/product.mk
 ##############################################################
-
 PRODUCT_PACKAGES += \
-	libtrusty \
-	storageproxyd \
-	libinteltrustystorage \
-	libinteltrustystorageinterface \
-	android.hardware.gatekeeper@1.0-service.trusty \
-	android.hardware.keymaster@3.0-service.trusty \
-	keybox_provisioning \
-
-PRODUCT_PACKAGES_DEBUG += \
-	intel-secure-storage-unit-test \
-	gatekeeper-unit-tests \
-	libscrypt_static \
-	scrypt_test \
-
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.gatekeeper=trusty \
-	ro.hardware.keystore=trusty
+    android.hardware.gatekeeper@1.0-service.software \
+    android.hardware.keymaster@3.0-impl \
+    android.hardware.keymaster@3.0-service
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
@@ -484,12 +481,25 @@ PRODUCT_COPY_FILES += \
 
 # External camera service
 PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-external-service \
+                    android.hardware.camera.provider@2.4-service_64 \
                     android.hardware.camera.provider@2.4-impl
+#VHAL camera
+PRODUCT_PACKAGES += camera.$(TARGET_BOARD_PLATFORM) \
+                    camera.$(TARGET_BOARD_PLATFORM).jpeg
 
+PRODUCT_PROPERTY_OVERRIDES += ro.vendor.remote.sf.fake_camera ="both" \
+                              ro.vendor.camera.in_frame_format.h264=false \
+                              ro.vendor.camera.in_frame_format.i420=true \
+                              ro.vendor.camera.decode.vaapi=false \
+                              ro.vendor.remote.sf.back_camera_hal= \
+                              ro.vendor.remote.sf.front_camera_hal= \
+                              ro.vendor.camera.transference="VSOCK" \
+                              vendor.camera.external="VHAL"
+#removing not required apps
 # Only include test apps in eng or userdebug builds.
-PRODUCT_PACKAGES_DEBUG += TestingCamera
+#PRODUCT_PACKAGES_DEBUG += TestingCamera
 
-PRODUCT_PACKAGES += MultiCameraApp
+#PRODUCT_PACKAGES += MultiCameraApp
 ##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/product.mk
 ##############################################################
@@ -768,9 +778,4 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += vendor.sys.dump.peer_depth=3
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += vendor.sys.dump.stacks_timeout=1500
 
 endif
-##############################################################
-# Source: device/intel/mixins/groups/ipp/default/product.mk
-##############################################################
-PRODUCT_PACKAGES += libippcustom \
-                    libippcustom_vendor
 # ------------------ END MIX-IN DEFINITIONS ------------------
