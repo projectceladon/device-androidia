@@ -9,6 +9,8 @@ TARGET_UEFI_ARCH := x86_64
 # bootloader policy
 KERNELFLINGER_SSL_LIBRARY := boringssl
 
+
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/set_soc_prop.sh:vendor/bin/set_soc_prop.sh
 ##############################################################
 # Source: device/intel/mixins/groups/audio/aic/product.mk
 ##############################################################
