@@ -26,6 +26,8 @@ BOARD_CACHEIMAGE_PARTITION_SIZE ?= 104857600
 
 KERNELFLINGER_USE_RPMB_SIMULATE := true
 
+
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/soc
 ##############################################################
 # Source: device/intel/mixins/groups/allow-missing-dependencies/true/BoardConfig.mk
 ##############################################################
