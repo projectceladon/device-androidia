@@ -13,8 +13,16 @@ case "$(cat /proc/fb)" in
                 setprop vendor.intel.video.codec hardware
                 ;;
         *)
-                echo "Intel SRIOV"
-                setprop vendor.intel.video.codec hardware
+                case "$(cat /mnt/share/mixins.spec)" in
+                        *gpu-type:sriov*)
+	                        echo "Intel SRIOV"
+                                setprop vendor.intel.video.codec hardware
+                                ;;
+                        *)
+                                echo "Software codec"
+                                setprop vendor.intel.video.codec software
+                                ;;
+                esac
                 ;;
 esac
 }
