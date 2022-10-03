@@ -90,4 +90,4 @@ sensors: mediation(disable_static_sensor_list=true)
 bugreport: true
 mainline-mod: true
 houdini: true
-neuralnetworks: true
+neuralnetworks: false
