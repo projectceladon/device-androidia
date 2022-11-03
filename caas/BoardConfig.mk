@@ -484,6 +484,8 @@ WITH_DEXPREOPT := true
 ##############################################################
 # Source: device/intel/mixins/groups/media/auto/BoardConfig.mk
 ##############################################################
+SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/system_ext/private
+
 ##############################################################
 # Source: device/intel/mixins/groups/graphics/auto/BoardConfig.mk
 ##############################################################
