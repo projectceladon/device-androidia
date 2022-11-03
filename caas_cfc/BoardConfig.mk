@@ -433,6 +433,8 @@ WITH_DEXPREOPT := true
 ##############################################################
 # Source: device/intel/mixins/groups/media/auto/BoardConfig.mk
 ##############################################################
+SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/system_ext/private
+
 INTEL_STAGEFRIGHT := true
 
 # Settings for the Media SDK library and plug-ins:
