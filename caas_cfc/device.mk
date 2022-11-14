@@ -142,6 +142,7 @@ PRODUCT_PROPERTY_OVERRIDES += bluetooth.rfkill=1
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-service.vbt \
     libbt-vendor \
+    android.hardware.bluetooth.audio@2.1-impl \
 
 
 PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/bluetooth/overlay-tablet
@@ -179,6 +180,10 @@ PRODUCT_PACKAGES += \
     audio_policy.default.so \
     audio_configuration_files
 
+# Bluetooth Auido HAL
+PRODUCT_PACKAGES += \
+    audio.bluetooth.default
+
 # Audio HAL
 PRODUCT_PACKAGES += \
     android.hardware.audio.effect@7.0-impl \
@@ -193,6 +198,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/default/policy/audio_policy_configuration.xml:vendor/etc/audio_policy_configuration.xml \
     $(LOCAL_PATH)/audio/default/policy/a2dp_audio_policy_configuration.xml:vendor/etc/a2dp_audio_policy_configuration.xml \
+    $(LOCAL_PATH)/audio/default/policy/bluetooth_audio_policy_configuration_7_0.xml:vendor/etc/bluetooth_audio_policy_configuration_7_0.xml \
+    $(LOCAL_PATH)/audio/default/policy/a2dp_in_audio_policy_configuration_7_0.xml:vendor/etc/a2dp_in_audio_policy_configuration_7_0.xml \
     $(LOCAL_PATH)/audio/default/policy/r_submix_audio_policy_configuration.xml:vendor/etc/r_submix_audio_policy_configuration.xml \
     $(LOCAL_PATH)/audio/default/policy/usb_audio_policy_configuration.xml:vendor/etc/usb_audio_policy_configuration.xml \
     $(LOCAL_PATH)/audio/default/policy/hdmi_audio_policy_configuration.xml:vendor/etc/hdmi_audio_policy_configuration.xml \
