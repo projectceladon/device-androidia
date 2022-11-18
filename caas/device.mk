@@ -461,6 +461,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:vendor/etc/permissions/android.hardware.opengles.aep.xml
 
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.software.opengles.deqp.level-2020-03-01.xml:vendor/etc/permissions/android.software.opengles.deqp.level.xml
+
 # GLES version
 PRODUCT_PROPERTY_OVERRIDES += \
    ro.opengles.version=196610
