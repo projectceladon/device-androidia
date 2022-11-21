@@ -28,10 +28,10 @@ on post-fs-data
     setprop wifi.interface wlan0
     setprop wifi.direct.interface p2p-dev-wlan0
 
-on early-boot
+on post-fs
  
     insmod /vendor/lib/modules/cfg80211.ko
-    insmod /vendor/lib/modules/iwl7000_mac80211.ko
+    insmod /vendor/lib/modules/mac80211.ko
     insmod /vendor/lib/modules/iwlwifi.ko
     insmod /vendor/lib/modules/iwlmvm.ko power_scheme=1
 

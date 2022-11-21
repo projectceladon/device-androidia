@@ -281,8 +281,8 @@ ifeq ($(BASE_CHROMIUM_KERNEL), true)
   LOCAL_KERNEL_SRC := kernel/lts2019-chromium
   KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2019-chromium
 else ifeq ($(BASE_LTS2020_YOCTO_KERNEL), true)
-  LOCAL_KERNEL_SRC := kernel/lts2020-yocto
-  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2020-yocto
+  LOCAL_KERNEL_SRC := kernel/lts2020-yocto-sriov
+  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2020-yocto-sriov
 else ifeq ($(BASE_LTS2020_CHROMIUM_KERNEL), true)
   LOCAL_KERNEL_SRC := kernel/lts2020-chromium
   KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2020-chromium

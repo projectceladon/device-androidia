@@ -7,8 +7,6 @@
 BOARD_SUPER_PARTITION_GROUPS := group_sys
 BOARD_GROUP_SYS_PARTITION_LIST := system vendor product odm
 
-BOARD_SUPER_PARTITION_SIZE := $(shell echo 5000*1024*1024 | bc)
-BOARD_GROUP_SYS_SIZE = $(shell echo "$(BOARD_SUPER_PARTITION_SIZE) - 4*1024*1024" | bc)
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/virtual_ab
 
 ##############################################################
@@ -287,6 +285,7 @@ BOARD_KERNEL_CMDLINE += \
 	i915.hpd_sense_invert=0x7 \
 	intel_iommu=off \
 	i915.enable_pvmmio=0 \
+	reboot=a,e,p,t,f \
 	loop.max_part=7
 
 BOARD_FLASHFILES += ${TARGET_DEVICE_DIR}/bldr_utils.img:bldr_utils.img
@@ -493,13 +492,14 @@ TARGET_USE_PRIVATE_LIBDRM := true
 LIBDRM_VER ?= intel
 
 BOARD_KERNEL_CMDLINE += vga=current i915.modeset=1 drm.atomic=1 i915.nuclear_pageflip=1 drm.vblankoffdelay=1 i915.fastboot=1
-
-ifeq ($(BASE_YOCTO_KERNEL),true)
+ifeq ($(BASE_LTS2020_YOCTO_KERNEL),true)
+BOARD_KERNEL_CMDLINE += i915.enable_guc=1
+else
 BOARD_KERNEL_CMDLINE += i915.enable_guc=2
 endif
 
-ifeq ($(BASE_LTS2020_YOCTO_KERNEL),true)
-BOARD_KERNEL_CMDLINE += i915.enable_guc=1
+ifeq ($(BASE_YOCTO_KERNEL),true)
+BOARD_KERNEL_CMDLINE += i915.enable_guc=2
 endif
 
 USE_OPENGL_RENDERER := true
@@ -718,9 +718,11 @@ BOARD_SEPOLICY_M4DEFS += module_aafd=true
 ##############################################################
 USE_SENSOR_MEDIATION_HAL := true
 
+MEDIATION_HAL_DISABLE_STATIC_SENSOR_LIST := true
+
 SOONG_CONFIG_NAMESPACES += senPlugin
 SOONG_CONFIG_senPlugin  += SENSOR_LIST
-SOONG_CONFIG_senPlugin_SENSOR_LIST := true
+SOONG_CONFIG_senPlugin_SENSOR_LIST := False
 
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/sensors/mediation
 ##############################################################
@@ -741,4 +743,8 @@ TARGET_CPU_ABI_LIST_32_BIT += $(NB_ABI_LIST_32_BIT)
 TARGET_CPU_ABI_LIST_64_BIT += $(NB_ABI_LIST_64_BIT)
 
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/houdini
+##############################################################
+# Source: device/intel/mixins/groups/neuralnetworks/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/neuralnetworks
 # ------------------ END MIX-IN DEFINITIONS ------------------
