@@ -302,6 +302,18 @@ PRODUCT_COPY_FILES += device/intel/civ/host/vm-manager/scripts/guest_time_keepin
 PRODUCT_COPY_FILES += device/intel/civ/host/vm-manager/scripts/start_flash_usb.sh:$(PRODUCT_OUT)/scripts/start_flash_usb.sh
 PRODUCT_COPY_FILES += vendor/intel/fw/trusty-release-binaries/rpmb_dev:$(PRODUCT_OUT)/scripts/rpmb_dev
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/wakeup.py:$(PRODUCT_OUT)/scripts/wakeup.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/setup_rinfer_host.sh:$(PRODUCT_OUT)/scripts/setup_rinfer_host.sh
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/object_detection.sh:$(PRODUCT_OUT)/scripts/remote_infer/object_detection.sh
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/client_requirements.txt:$(PRODUCT_OUT)/scripts/remote_infer/client_requirements.txt
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/README.txt:$(PRODUCT_OUT)/scripts/remote_infer/README.txt
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/adaptors/base_adaptor.py:$(PRODUCT_OUT)/scripts/remote_infer/adaptors/base_adaptor.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/adaptors/create_interface.py:$(PRODUCT_OUT)/scripts/remote_infer/adaptors/create_interface.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/adaptors/ovms/interface.py:$(PRODUCT_OUT)/scripts/remote_infer/adaptors/ovms/interface.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/adaptors/ovms/load_model.py:$(PRODUCT_OUT)/scripts/remote_infer/adaptors/ovms/load_model.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/adaptors/ovtoolkit/interface.py:$(PRODUCT_OUT)/scripts/remote_infer/adaptors/ovtoolkit/interface.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/adaptors/ovtoolkit/load_model.py:$(PRODUCT_OUT)/scripts/remote_infer/adaptors/ovtoolkit/load_model.py
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/services/rawTensor/nnhal_raw_tensor.proto:$(PRODUCT_OUT)/scripts/remote_infer/services/rawTensor/nnhal_raw_tensor.proto
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/remote_infer/services/rawTensor/rawTensor.py:$(PRODUCT_OUT)/scripts/remote_infer/services/rawTensor/rawTensor.py
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/true/product.mk
 ##############################################################
@@ -461,6 +473,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:vendor/etc/permissions/android.hardware.opengles.aep.xml
 
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.software.opengles.deqp.level-2020-03-01.xml:vendor/etc/permissions/android.software.opengles.deqp.level.xml
+
 # GLES version
 PRODUCT_PROPERTY_OVERRIDES += \
    ro.opengles.version=196610
@@ -588,6 +603,13 @@ PRODUCT_COPY_FILES += \
         $(INTEL_PATH_COMMON)/touch/Vendor_1ff7_Product_0f21.idc:system/usr/idc/Vendor_1ff7_Product_0f21.idc\
         $(INTEL_PATH_COMMON)/touch/Vendor_2386_Product_3115.idc:system/usr/idc/Vendor_2386_Product_3115.idc\
         $(INTEL_PATH_COMMON)/touch/Vendor_056a_Product_489c.idc:system/usr/idc/Vendor_056a_Product_489c.idc
+##############################################################
+# Source: device/intel/mixins/groups/googleservice/gms/product.mk
+##############################################################
+FLAG_GMS_AVAILABLE ?= true
+ifeq ($(FLAG_GMS_AVAILABLE),true)
+$(call inherit-product-if-exists, vendor/google/gms/products/gms.mk)
+endif
 ##############################################################
 # Source: device/intel/mixins/groups/debug-tools/true/product.mk
 ##############################################################
@@ -784,14 +806,6 @@ endif
 PRODUCT_PACKAGES += \
 	android.hardware.sensors@2.0-service.intel
 
-PRODUCT_COPY_FILES += \
-        frameworks/native/data/etc/android.hardware.sensor.ambient_temperature.xml:vendor/etc/permissions/android.hardware.sensor.ambient_temperature.xml \
-        frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:vendor/etc/permissions/android.hardware.sensor.accelerometer.xml \
-        frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:vendor/etc/permissions/android.hardware.sensor.gyroscope.xml \
-        frameworks/native/data/etc/android.hardware.sensor.compass.xml:vendor/etc/permissions/android.hardware.sensor.compass.xml \
-        frameworks/native/data/etc/android.hardware.sensor.light.xml:vendor/etc/permissions/android.hardware.sensor.light.xml
-
-AUTO_IN += $(TARGET_DEVICE_DIR)/extra_files/sensors/auto_hal.in
 ##############################################################
 # Source: device/intel/mixins/groups/mainline-mod/true/product.mk
 ##############################################################
@@ -823,6 +837,24 @@ ifeq ($(ENABLE_NATIVEBRIDGE_64BIT),true)
   PRODUCT_PROPERTY_OVERRIDES += ro.dalvik.vm.isa.arm64=x86_64 ro.vendor.enable.native.bridge.exec64=1
 endif
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.dalvik.vm.native.bridge=libhoudini.so
+##############################################################
+# Source: device/intel/mixins/groups/neuralnetworks/true/product.mk
+##############################################################
+# neuralnetworks HAL
+PRODUCT_PACKAGES += \
+    android.hardware.neuralnetworks@1.3-generic-service \
+    android.hardware.neuralnetworks@1.3-generic-impl \
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/extra_files/neuralnetworks/plugins.xml:vendor/etc/openvino/plugins.xml \
+
+
+PRODUCT_PACKAGES += \
+    libMKLDNNPlugin \
+    libinference_engine_preproc \
+    libinference_engine_ir_reader
+
+PRODUCT_PROPERTY_OVERRIDES += vendor.nn.hal.ngraph=true
 ##############################################################
 # Source: device/intel/mixins/groups/debug-unresponsive/default/product.mk
 ##############################################################

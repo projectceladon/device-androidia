@@ -13,13 +13,16 @@ case "$(cat /proc/fb)" in
                 setprop vendor.intel.video.codec hardware
                 ;;
         *)
-                if [ "$(cat /sys/kernel/debug/dri/0/i915_sriov_info |grep virtualization |awk '{print $2}')" = "enabled" ];then
-                       echo "Intel SRIOV"
-                       setprop vendor.intel.video.codec hardware
-                else
-                       echo "software codec"
-                       setprop vendor.intel.video.codec software
-                fi
+                case "$(cat /mnt/share/mixins.spec)" in
+                        *gpu-type:sriov*)
+	                        echo "Intel SRIOV"
+                                setprop vendor.intel.video.codec hardware
+                                ;;
+                        *)
+                                echo "Software codec"
+                                setprop vendor.intel.video.codec software
+                                ;;
+                esac
                 ;;
 esac
 }
