@@ -211,17 +211,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/default/policy/audio_policy_volumes.xml:vendor/etc/audio_policy_volumes.xml \
     $(LOCAL_PATH)/audio/default/policy/default_volume_tables.xml:vendor/etc/default_volume_tables.xml \
     $(LOCAL_PATH)/audio/default/effect/audio_effects.xml:vendor/etc/audio_effects.xml
-ifeq ($(BASE_YOCTO_KERNEL), true)
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/audio/default/mixer_paths_ehl.xml:vendor/etc/mixer_paths_0.xml \
-    $(LOCAL_PATH)/audio/default/mixer_paths_usb.xml:vendor/etc/mixer_paths_usb.xml
 
-PRODUCT_PROPERTY_OVERRIDES += ro.vendor.hdmi.audio=ehl
-else
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/default/mixer_paths_0.xml:vendor/etc/mixer_paths_0.xml \
     $(LOCAL_PATH)/audio/default/mixer_paths_usb.xml:vendor/etc/mixer_paths_usb.xml
-endif
 
 #fallback
 PRODUCT_COPY_FILES += \
@@ -535,15 +528,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/codecs/media_profiles_1080p.xml:vendor/etc/media_profiles_V1_0.xml
 
 
-ifeq ($(BASE_YOCTO_KERNEL),true)
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/extra_files/codecs/media_codecs_vp9.xml:vendor/etc/media_codecs.xml \
-    $(LOCAL_PATH)/extra_files/codecs/mfx_omxil_core_vp9.conf:vendor/etc/mfx_omxil_core.conf
-else
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_gen12.xml:vendor/etc/media_codecs.xml
 
-endif
 
 
 ##############################################################

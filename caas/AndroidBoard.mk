@@ -277,15 +277,9 @@ KERNEL_CCSLOP := $(filter-out time_macros,$(subst $(comma), ,$(CCACHE_SLOPPINESS
 KERNEL_CCSLOP := $(subst $(space),$(comma),$(KERNEL_CCSLOP))
 
 
-ifeq ($(BASE_CHROMIUM_KERNEL), true)
-  LOCAL_KERNEL_SRC := kernel/lts2019-chromium
-  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2019-chromium
-else ifeq ($(BASE_LTS2020_YOCTO_KERNEL), true)
-  LOCAL_KERNEL_SRC := kernel/lts2020-yocto
-  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2020-yocto
-else ifeq ($(BASE_LTS2020_CHROMIUM_KERNEL), true)
-  LOCAL_KERNEL_SRC := kernel/lts2020-chromium
-  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2020-chromium
+ifeq ($(BASE_LTS2021_CHROMIUM_KERNEL), true)
+  LOCAL_KERNEL_SRC := kernel/lts2021-chromium
+  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2021-chromium
 else
   LOCAL_KERNEL_SRC := kernel/lts2021-chromium
   EXT_MODULES := 
