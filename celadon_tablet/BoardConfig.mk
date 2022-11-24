@@ -183,14 +183,10 @@ TARGET_USES_64_BIT_BINDER := true
 # Source: device/intel/mixins/groups/kernel/gmin64/BoardConfig.mk
 ##############################################################
 # Specify location of board-specific kernel headers
-ifeq ($(BASE_CHROMIUM_KERNEL), true)
-  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)//kernel-headers
-else ifeq ($(BASE_LTS2020_YOCTO_KERNEL), true)
-  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)//kernel-headers
-else ifeq ($(BASE_LTS2020_CHROMIUM_KERNEL), true)
+ifeq ($(BASE_LTS2021_CHROMIUM_KERNEL), true)
   TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)//kernel-headers
 else
-  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2018/kernel-headers
+  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2021-chromium/kernel-headers
 endif
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
@@ -216,11 +212,6 @@ endif
 
 BOARD_KERNEL_CMDLINE += \
        intel_pstate=passive
-
-ifeq ($(BASE_YOCTO_KERNEL), true)
-BOARD_KERNEL_CMDLINE += \
-      snd-intel-dspcfg.dsp_driver=1
-endif
 
 BOARD_KERNEL_CMDLINE += \
       clearcpuid=517 \
