@@ -280,6 +280,9 @@ KERNEL_CCSLOP := $(subst $(space),$(comma),$(KERNEL_CCSLOP))
 ifeq ($(BASE_LTS2021_CHROMIUM_KERNEL), true)
   LOCAL_KERNEL_SRC := kernel/lts2021-chromium
   KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2021-chromium
+else ifeq ($(BASE_LINUX_INTEL_LTS2021_KERNEL), true)
+  LOCAL_KERNEL_SRC := kernel/linux-intel-lts2021
+  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/linux-intel-lts2021
 else
   LOCAL_KERNEL_SRC := kernel/lts2021-chromium
   EXT_MODULES := 

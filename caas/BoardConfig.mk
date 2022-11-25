@@ -182,6 +182,8 @@ TARGET_USES_64_BIT_BINDER := true
 # Specify location of board-specific kernel headers
 ifeq ($(BASE_LTS2021_CHROMIUM_KERNEL), true)
   TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2021-chromium/kernel-headers
+else ifeq ($(BASE_LINUX_INTEL_LTS2021_KERNEL), true)
+  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/linux-intel-lts2021/kernel-headers
 else
   TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2021-chromium/kernel-headers
 endif
