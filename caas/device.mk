@@ -87,6 +87,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:vendor/bin/update_ifwi_ab
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:recovery/root/vendor/bin/update_ifwi_ab
+PRODUCT_COPY_FILES += system/extras/checkpoint_gc/checkpoint_gc.sh:vendor/bin/checkpoint_gc
+PRODUCT_COPY_FILES += system/extras/checkpoint_gc/checkpoint_gc.sh:recovery/root/vendor/bin/checkpoint_gc
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
 
