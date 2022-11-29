@@ -90,3 +90,4 @@ mainline-mod: true
 houdini: true
 neuralnetworks: true
 docker: true
+ipu: true
