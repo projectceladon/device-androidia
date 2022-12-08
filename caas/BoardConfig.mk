@@ -25,7 +25,7 @@ BOARD_KERNEL_CMDLINE += rootfstype=ext4
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_vendor=true \
-    FILESYSTEM_TYPE_vendor=ext4 \
+    FILESYSTEM_TYPE_vendor=erofs \
     POSTINSTALL_OPTIONAL_vendor=false \
     POSTINSTALL_PATH_vendor=bin/postinstall
 ##############################################################
@@ -62,7 +62,7 @@ SYSTEM_PARTITION_SIZE = $(shell echo 2560*1024*1024 | bc)
 BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
 BOARD_BOOTLOADER_PARTITION_SIZE ?= $$((33 * 1024 * 1024))
 BOARD_BOOTLOADER_BLOCK_SIZE := 4096
-BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := erofs
 DATA_USE_F2FS := true
 
 #fastbootd over ethernet support
@@ -76,6 +76,8 @@ TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
 INTERNAL_USERIMAGES_EXT_VARIANT := ext4
 endif
+
+BOARD_EROFS_PCLUSTER_SIZE := 262144
 
 BOARD_USES_METADATA_PARTITION := true
 BOARD_ROOT_EXTRA_FOLDERS += metadata
@@ -134,7 +136,7 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/abota/efi
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_vendor=true \
     POSTINSTALL_PATH_vendor=bin/update_ifwi_ab \
-    FILESYSTEM_TYPE_vendor=ext4 \
+    FILESYSTEM_TYPE_vendor=erofs \
     POSTINSTALL_OPTIONAL_vendor=true
 
 BOARD_AVB_ENABLE := true
@@ -387,7 +389,7 @@ FIRSTSTAGE_MOUNT_SSDT = $(PRODUCT_OUT)/firststage-mount.aml
 # Those 3 lines are required to enable vendor image generation.
 # Remove them if vendor partition is not used.
 TARGET_COPY_OUT_VENDOR := vendor
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := erofs
 VENDOR_PARTITION_SIZE := $(shell echo 600*1048576 | bc)
 AB_OTA_PARTITIONS += vendor
 ##############################################################
@@ -424,7 +426,7 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/config-partition
 # Those 3 lines are required to enable product image generation.
 # Remove them if product partition is not used.
 TARGET_COPY_OUT_PRODUCT := product
-BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := erofs
 PRODUCT_PARTITION_SIZE := $(shell echo 100*1048576 | bc)
 TARGET_USE_PRODUCT := true
 AB_OTA_PARTITIONS += product
@@ -434,7 +436,7 @@ AB_OTA_PARTITIONS += product
 # Those 3 lines are required to enable odm image generation.
 # Remove them if odm partition is not used.
 TARGET_COPY_OUT_ODM := odm
-BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := erofs
 ODM_PARTITION_SIZE := $(shell echo 100*1048576 | bc)
 TARGET_USE_ODM := true
 AB_OTA_PARTITIONS += odm
