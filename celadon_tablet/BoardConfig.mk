@@ -24,7 +24,7 @@ BOARD_KERNEL_CMDLINE += rootfstype=ext4
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_vendor=true \
-    FILESYSTEM_TYPE_vendor=ext4 \
+    FILESYSTEM_TYPE_vendor=erofs \
     POSTINSTALL_OPTIONAL_vendor=false \
     POSTINSTALL_PATH_vendor=bin/postinstall
 ##############################################################
@@ -61,7 +61,7 @@ SYSTEM_PARTITION_SIZE = $(shell echo 2560*1024*1024 | bc)
 BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
 BOARD_BOOTLOADER_PARTITION_SIZE ?= $$((33 * 1024 * 1024))
 BOARD_BOOTLOADER_BLOCK_SIZE := 4096
-BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := erofs
 DATA_USE_F2FS := False
 
 #fastbootd over ethernet support
@@ -75,6 +75,8 @@ TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
 INTERNAL_USERIMAGES_EXT_VARIANT := ext4
 endif
+
+BOARD_EROFS_PCLUSTER_SIZE := 262144
 
 
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
@@ -137,7 +139,7 @@ KERNELFLINGER_USE_RPMB_SIMULATE := true
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_vendor=true \
     POSTINSTALL_PATH_vendor=bin/update_ifwi_ab \
-    FILESYSTEM_TYPE_vendor=ext4 \
+    FILESYSTEM_TYPE_vendor=erofs \
     POSTINSTALL_OPTIONAL_vendor=true
 
 BOARD_AVB_ENABLE := true
@@ -367,7 +369,7 @@ FIRSTSTAGE_MOUNT_SSDT = $(PRODUCT_OUT)/firststage-mount.aml
 # Those 3 lines are required to enable vendor image generation.
 # Remove them if vendor partition is not used.
 TARGET_COPY_OUT_VENDOR := vendor
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := erofs
 VENDOR_PARTITION_SIZE := $(shell echo 600*1048576 | bc)
 AB_OTA_PARTITIONS += vendor
 ##############################################################
