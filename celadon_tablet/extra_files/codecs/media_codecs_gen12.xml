@@ -149,6 +149,7 @@ Only the three quirks included above are recognized at this point:
             <Limit name="bitrate" range="1-40000000" />
             <Limit name="performance-point-3840x2160" value="30" />
         </MediaCodec>
+
     </Encoders>
     <Include href="media_codecs_google_audio.xml" />
     <Settings>
