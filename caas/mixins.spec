@@ -26,7 +26,7 @@ allow-missing-dependencies: true
 dexpreopt: true
 pstore: false
 media: auto(add_sw_msdk=false, opensource_msdk=true, opensource_msdk_omx_il=true)
-graphics: auto(gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true,gralloc1=true,enable_guc=true)
+graphics: auto(gen9+=true,hwc2=true,vulkan=true,drmhwc=true,minigbm=true,gralloc1=true,enable_guc=true)
 storage: sdcard-mmc0-v-usb-sd-r(adoptablesd=false,adoptableusb=false)
 ethernet: dhcp
 camera-ext: ext-camera-only
@@ -68,7 +68,7 @@ usb-otg-switch: true
 vndk: true
 public-libraries: true
 device-specific: caas
-hdcpd: true
+hdcpd: false
 treble: true
 swap: zram_auto(size=1073741824,swappiness=true,hardware=gordon_peak,disk_based_swap=true)
 art-config: true
