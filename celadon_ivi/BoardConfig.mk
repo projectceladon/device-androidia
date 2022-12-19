@@ -442,6 +442,10 @@ LIBDRM_VER ?= intel
 BOARD_KERNEL_CMDLINE += vga=current i915.modeset=1 drm.atomic=1 i915.nuclear_pageflip=1 drm.vblankoffdelay=1 i915.fastboot=1
 BOARD_KERNEL_CMDLINE += i915.enable_guc=1
 
+ifeq ($(BASE_LINUX_INTEL_LTS2021_KERNEL),true)
+BOARD_KERNEL_CMDLINE += i915.enable_guc=1
+endif
+
 USE_OPENGL_RENDERER := true
 USE_INTEL_UFO_DRIVER := false
 BOARD_GPU_DRIVERS := i965 swrast virgl iris
