@@ -610,9 +610,9 @@ endif
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/memtrack
 ##############################################################
-# Source: device/intel/mixins/groups/tpm/true/BoardConfig.mk
+# Source: device/intel/mixins/groups/tpm/false/BoardConfig.mk
 ##############################################################
-TARGET_USE_TPM := true
+TARGET_USE_TPM := false
 ##############################################################
 # Source: device/intel/mixins/groups/avx/auto/BoardConfig.mk
 ##############################################################
