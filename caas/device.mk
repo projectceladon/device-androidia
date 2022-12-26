@@ -685,13 +685,6 @@ PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/usb-otg-switch/usb_otg_switch.sh
 ##############################################################
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/public-libraries/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
 ##############################################################
-# Source: device/intel/mixins/groups/hdcpd/true/product.mk
-##############################################################
-# Enable media content protection services
-
-# HDCP Daemon
-PRODUCT_PACKAGES += hdcpd
-##############################################################
 # Source: device/intel/mixins/groups/load_modules/true/product.mk
 ##############################################################
 PRODUCT_PACKAGES += load_modules.sh
