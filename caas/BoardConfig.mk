@@ -607,10 +607,6 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/usb-role-switch
 ##############################################################
 BOARD_VNDK_VERSION := current
 ##############################################################
-# Source: device/intel/mixins/groups/hdcpd/true/BoardConfig.mk
-##############################################################
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/hdcpd
-##############################################################
 # Source: device/intel/mixins/groups/load_modules/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS +=  $(INTEL_PATH_SEPOLICY)/load_modules
