@@ -18,6 +18,12 @@ service watchdogd /system/bin/watchdogd
 on charger
     start watchdogd
 
+on fs
+   # Update dm-verity persistent state and set partition.*.verified
+   # properties
+   verity_update_state
+
+
 on init
    # Load persistent dm-verity state and detect if a restart was
    # triggered after dm-verity detected a corrupted block
@@ -26,11 +32,6 @@ on init
 on early-boot
      chmod 0440 /sys/firmware/dmi/entries/148-0/raw
      chmod 0440 /sys/firmware/dmi/entries/0-0/raw
-
-on fs
-   # Update dm-verity persistent state and set partition.*.verified
-   # properties
-   verity_update_state
 
 on verity-logging
     exec u:r:slideshow:s0 -- /sbin/slideshow -t 30000 -p warning/verity_red_1 warning/verity_red_2

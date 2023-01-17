@@ -20,6 +20,12 @@ service watchdogd /system/bin/watchdogd 10 30
 
 on charger
     start watchdogd
+
+on fs
+   # Update dm-verity persistent state and set partition.*.verified
+   # properties
+   verity_update_state
+
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/init.rc
 ##############################################################
