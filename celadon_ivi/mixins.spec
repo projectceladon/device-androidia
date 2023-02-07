@@ -78,7 +78,7 @@ factory-scripts: true
 filesystem_config: common
 telephony: false
 load_modules: true
-gptbuild: true(size=64G,generate_craff=false,compress_gptimage=true)
+gptbuild: true(size=160G,generate_craff=false,compress_gptimage=true)
 dynamic-partitions: true(super_img_in_flashzip=true,super_partition_size=6000,virtual_ab=true,virtual_ab_compression=true)
 dbc: true
 atrace: true
