@@ -676,8 +676,8 @@ PRODUCT_PACKAGES += hdcpd
 ##############################################################
 # neuralnetworks HAL
 PRODUCT_PACKAGES += \
-    android.hardware.neuralnetworks@1.2-generic-service \
-    android.hardware.neuralnetworks@1.2-generic-impl \
+    android.hardware.neuralnetworks@1.3-generic-service \
+    android.hardware.neuralnetworks@1.3-generic-impl \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/neuralnetworks/plugins.xml:vendor/etc/openvino/plugins.xml \
