@@ -20,6 +20,7 @@ health: true
 houdini: true
 input: remote
 media: true
+neuralnetworks: true
 power: dummy
 sensors: remote
 wlan: dummy

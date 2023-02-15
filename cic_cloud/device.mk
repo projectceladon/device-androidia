@@ -437,6 +437,24 @@ PRODUCT_PACKAGES += \
     libva
 
 ##############################################################
+# Source: device/intel/mixins/groups/neuralnetworks/true/product.mk
+##############################################################
+# neuralnetworks HAL
+PRODUCT_PACKAGES += \
+    android.hardware.neuralnetworks@1.3-generic-service \
+    android.hardware.neuralnetworks@1.3-generic-impl \
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/extra_files/neuralnetworks/plugins.xml:system/vendor/etc/openvino/plugins.xml \
+
+
+PRODUCT_PACKAGES += \
+    libopenvino \
+    libopenvino_intel_cpu_plugin \
+    libopenvino_ir_frontend
+
+PRODUCT_PROPERTY_OVERRIDES += vendor.nn.hal.ngraph=true
+##############################################################
 # Source: device/intel/mixins/groups/power/dummy/product.mk
 ##############################################################
 PRODUCT_PACKAGES += \
