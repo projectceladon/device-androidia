@@ -380,9 +380,6 @@ PRODUCT_PACKAGES += \
 # Source: device/intel/mixins/groups/graphics/auto/product.mk
 ##############################################################
 PRODUCT_PACKAGES += \
-    libEGL_swiftshader \
-    libGLESv1_CM_swiftshader \
-    libGLESv2_swiftshader \
     libGLES_android \
     libigdrcl \
     libOpenCL \
@@ -476,6 +473,12 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     vulkan.$(TARGET_BOARD_PLATFORM) \
     vulkan.pastel
+
+PRODUCT_PACKAGES += \
+    libEGL_angle \
+    libGLESv1_CM_angle \
+    libGLESv2_angle
+
 ##############################################################
 # Source: device/intel/mixins/groups/storage/sdcard-v-usb-only/product.mk
 ##############################################################
