@@ -12,7 +12,6 @@ system   /system  erofs ro wait,slotselect,avb_keys=/avb/q-gsi.avbpubkey:/avb/r-
 /dev/block/by-name/userdata         /data           f2fs     noatime,nosuid,nodev   wait,check,formattable,fileencryption=aes-256-xts:aes-256-cts
 /dev/block/by-name/boot         /boot           emmc    defaults                                                    defaults
 /dev/block/by-name/misc         /misc           emmc    defaults                                                    defaults
-/dev/block/by-name/tos          /tos            emmc    defaults                                                    defaults,slotselect
 /dev/block/by-name/bootloader   /bootloader     emmc    defaults                                                    recoveryonly
 /dev/block/by-name/bootloader2  /bootloader2    emmc    defaults                                                    recoveryonly
 /dev/block/by-name/persistent   /persistent     emmc    defaults                                                    defaults
