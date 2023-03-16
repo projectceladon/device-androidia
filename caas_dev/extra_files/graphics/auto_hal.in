@@ -1,0 +1,37 @@
+update_graphics() {
+case "$(cat /proc/fb)" in
+        *i915*)
+                echo "i915 rendering"
+                setprop vendor.egl.set mesa
+                setprop vendor.vulkan.set intel
+                ;;
+        *intel*)
+                echo "intel rendering"
+                setprop vendor.egl.set mesa
+                setprop vendor.vulkan.set intel
+                ;;
+	*virtio*)
+                if [ -d "/sys/class/drm/card0/engine" ];then
+                        echo "sriov rendering"
+                        setprop vendor.egl.set mesa
+                        setprop vendor.vulkan.set intel
+                else
+                        if [ "$(cat /sys/module/virtio_gpu/parameters/is_virgl_3d)" = "N" ];then
+                                echo "swiftshader rendering"
+                                setprop vendor.egl.set swiftshader
+                                setprop vendor.vulkan.set pastel
+                        else
+                                echo "virtio rendering"
+                                setprop vendor.egl.set mesa
+                                setprop vendor.vulkan.set intel
+                        fi
+                fi
+                ;;
+        *)
+                echo "sw rendering"
+                setprop vendor.egl.set swiftshader
+                setprop vendor.vulkan.set pastel
+                ;;
+esac
+}
+update_graphics
