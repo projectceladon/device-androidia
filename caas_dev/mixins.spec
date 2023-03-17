@@ -7,10 +7,10 @@ mixinsrel: false
 product.mk: device.mk
 
 [groups]
-kernel: gmin64(useprebuilt=false,src_path=kernel/lts2020-chromium, loglevel=7, interactive_governor=false, relative_sleepstates=false, modules_in_bootimg=false, external_modules=,debug_modules=, use_bcmdhd=false, use_iwlwifi=false, extmod_platform=bxt, iwl_defconfig=, cfg_path=config-lts/lts2020-chromium, more_modules=true, chromium_src_path=kernel/lts2019-chromium, chromium_cfg_path=config-lts/lts2019-chromium, lts2020_yocto_src_path=kernel/lts2020-yocto, lts2020_yocto_cfg_path=config-lts/lts2020-yocto, lts2020_chromium_src_path=kernel/lts2020-chromium, lts2020_chromium_cfg_path=config-lts/lts2020-chromium)
+kernel: gmin64(useprebuilt=false,src_path=kernel/lts2020-chromium, loglevel=8, interactive_governor=false, relative_sleepstates=false, modules_in_bootimg=false, external_modules=,debug_modules=, use_bcmdhd=false, use_iwlwifi=false, extmod_platform=bxt, iwl_defconfig=, cfg_path=config-lts/lts2020-chromium, more_modules=true, chromium_src_path=kernel/lts2019-chromium, chromium_cfg_path=config-lts/lts2019-chromium, lts2020_yocto_src_path=kernel/lts2020-yocto, lts2020_yocto_cfg_path=config-lts/lts2020-yocto, lts2020_chromium_src_path=kernel/lts2020-chromium, lts2020_chromium_cfg_path=config-lts/lts2020-chromium)
 disk-bus: auto
 boot-arch: project-celadon(uefi_arch=x86_64,fastboot=efi,ignore_rsci=true,disable_watchdog=true,watchdog_parameters=10 30,verity_warning=false,txe_bind_root_of_trust=false,bootloader_block_size=4096,verity_mode=false,disk_encryption=false,file_encryption=true,metadata_encryption=true,fsverity=true,target=caas_dev,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true,usb_storage=true,live_boot=true,userdata_checkpoint=false)
-sepolicy: enforcing
+sepolicy: permissive
 bluetooth: btusb(ivi=false)
 audio: project-celadon
 vendor-partition: true(partition_size=600,partition_name=vendor)
@@ -53,9 +53,9 @@ lights: true
 power: true(power_throttle=true)
 debug-usb-config: true(source_dev=dvcith-0-msc0)
 intel_prop: true
-trusty: true(ref_target=celadon_64)
+trusty: false
 memtrack: true
-tpm: true
+tpm: false
 avx: auto
 health: hal
 slot-ab: true
@@ -78,8 +78,8 @@ factory-scripts: true
 filesystem_config: common
 telephony: false
 load_modules: true
-gptbuild: true(size=32G,generate_craff=false,compress_gptimage=true)
-dynamic-partitions: true(super_img_in_flashzip=true,super_partition_size=5000,virtual_ab=true,virtual_ab_compression=true)
+gptbuild: true(size=6G,generate_craff=false,compress_gptimage=true)
+dynamic-partitions: true(super_img_in_flashzip=true,super_partition_size=5120,virtual_ab=true,virtual_ab_compression=true)
 dbc: true
 atrace: true
 firmware: true(all_firmwares=false)
