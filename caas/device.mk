@@ -299,6 +299,8 @@ PRODUCT_COPY_FILES += $(LOCAL_PATH)/guest_pm_control:$(PRODUCT_OUT)/scripts/gues
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/intel-thermal-conf.xml:$(PRODUCT_OUT)/scripts/intel-thermal-conf.xml
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/thermald.service:$(PRODUCT_OUT)/scripts/thermald.service
 PRODUCT_COPY_FILES += device/intel/common/host_scripts/setup_host.sh:$(PRODUCT_OUT)/scripts/setup_host.sh
+PRODUCT_COPY_FILES += device/intel/common/host_scripts/ai_raw_tensor.sh:$(PRODUCT_OUT)/scripts/ai_raw_tensor.sh
+PRODUCT_COPY_FILES += device/intel/common/host_scripts/setup_ai_dispatcher.sh:$(PRODUCT_OUT)/scripts/setup_ai_dispatcher.sh
 PRODUCT_COPY_FILES += device/intel/common/host_scripts/setup_cam_sharing.sh:$(PRODUCT_OUT)/scripts/setup_cam_sharing.sh
 PRODUCT_COPY_FILES += device/intel/common/host_scripts/guest_time_keeping.sh:$(PRODUCT_OUT)/scripts/guest_time_keeping.sh
 PRODUCT_COPY_FILES += device/intel/common/host_scripts/start_flash_usb.sh:$(PRODUCT_OUT)/scripts/start_flash_usb.sh
@@ -842,6 +844,8 @@ PRODUCT_PACKAGES += \
     libopenvino \
     libopenvino_intel_cpu_plugin \
     libopenvino_ir_frontend
+
+PRODUCT_PROPERTY_OVERRIDES += vendor.nn.hal.grpc_ip_port=vsock:2:50059
 
 PRODUCT_PROPERTY_OVERRIDES += vendor.nn.hal.ngraph=true
 ##############################################################

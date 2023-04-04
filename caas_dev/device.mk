@@ -820,6 +820,7 @@ PRODUCT_PACKAGES += \
     libopenvino_intel_cpu_plugin \
     libopenvino_ir_frontend
 
+
 PRODUCT_PROPERTY_OVERRIDES += vendor.nn.hal.ngraph=true
 ##############################################################
 # Source: device/intel/mixins/groups/debug-unresponsive/default/product.mk
