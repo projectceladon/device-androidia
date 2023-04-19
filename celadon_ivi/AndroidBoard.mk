@@ -547,31 +547,6 @@ em-host-utilities:
 .PHONY: host-pkg
 host-pkg: em-host-utilities vinput-manager
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/AndroidBoard.mk
-##############################################################
-.PHONY: tosimage multiboot
-
-EVMM_PKG := $(TOP)/$(PRODUCT_OUT)/obj/trusty/evmm_pkg.bin
-EVMM_LK_PKG := $(TOP)/$(PRODUCT_OUT)/obj/trusty/evmm_lk_pkg.bin
-
-LOCAL_CLANG_PATH = $(CLANG_PREBUILTS_PATH)/host/$(HOST_OS)-x86/$(KERNEL_CLANG_VERSION)/bin
-
-LOCAL_MAKE := \
-        PATH="$(LOCAL_CLANG_PATH):$(PWD)/prebuilts/gcc/linux-x86/host/x86_64-linux-glibc2.17-4.8/x86_64-linux/bin:$$PATH" \
-        $(PWD)/prebuilts/build-tools/linux-x86/bin/make
-$(EVMM_PKG):
-	@echo "making evmm.."
-	$(hide) (cd $(TOPDIR)$(INTEL_PATH_VENDOR)/fw/evmm && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE))
-
-$(EVMM_LK_PKG):
-	@echo "making evmm(packing with lk.bin).."
-	$(hide) (cd $(TOPDIR)$(INTEL_PATH_VENDOR)/fw/evmm && $(TRUSTY_ENV_VAR) $(LOCAL_MAKE))
-
-# include sub-makefile according to boot_arch
-include $(TARGET_DEVICE_DIR)/extra_files/trusty/trusty_project-celadon.mk
-
-LOAD_MODULES_H_IN += $(TARGET_DEVICE_DIR)/extra_files/trusty/load_trusty_modules.in
-##############################################################
 # Source: device/intel/mixins/groups/firststage-mount/true/AndroidBoard.mk
 ##############################################################
 FIRST_STAGE_MOUNT_CFG_FILE := $(TARGET_DEVICE_DIR)/extra_files/firststage-mount/config.asl

@@ -320,34 +320,11 @@ PRODUCT_COPY_FILES += device/intel/civ/host/vm-manager/scripts/start_flash_usb.s
 PRODUCT_COPY_FILES += vendor/intel/fw/trusty-release-binaries/rpmb_dev:$(PRODUCT_OUT)/scripts/rpmb_dev
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/wakeup.py:$(PRODUCT_OUT)/scripts/wakeup.py
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/product.mk
+# Source: device/intel/mixins/groups/trusty/false/product.mk
 ##############################################################
-
 PRODUCT_PACKAGES += \
-	libtrusty \
-	storageproxyd \
-	libinteltrustystorage \
-	libinteltrustystorageinterface \
-	android.hardware.gatekeeper@1.0-service.trusty \
-	android.hardware.security.keymint-service.trusty \
-	keybox_provisioning \
-	RemoteProvisioner
-
-PRODUCT_PACKAGES_DEBUG += \
-	intel-secure-storage-unit-test \
-	gatekeeper-unit-tests \
-	libscrypt_static \
-	scrypt_test \
-	RemoteProvisionerUnitTests \
-	libkeymint_remote_prov_support_test
-
-PRODUCT_PROPERTY_OVERRIDES += \
-	ro.hardware.gatekeeper=trusty \
-	ro.hardware.keystore=trusty
-
-PRODUCT_COPY_FILES += \
-	frameworks/native/data/etc/android.hardware.keystore.app_attest_key.xml:vendor/etc/permissions/android.hardware.keystore.app_attest_key.xml
-
+    android.hardware.gatekeeper@1.0-service.software \
+    android.hardware.security.keymint-service
 ##############################################################
 # Source: device/intel/mixins/groups/vendor-partition/true/product.mk
 ##############################################################
