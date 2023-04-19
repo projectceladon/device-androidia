@@ -189,7 +189,7 @@ else ifeq ($(BASE_LTS2020_YOCTO_KERNEL), true)
 else ifeq ($(BASE_LTS2020_CHROMIUM_KERNEL), true)
   TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2020-chromium/kernel-headers
 else
-  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2020-chromium/kernel-headers
+  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/linux-intel-lts2021/kernel-headers
 endif
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
@@ -226,6 +226,14 @@ else ifeq ($(BASE_LTS2020_YOCTO_KERNEL), true)
 BOARD_KERNEL_CMDLINE += \
       mce=no_lmce
 endif
+
+BOARD_KERNEL_CMDLINE += \
+      snd_intel_dspcfg.dsp_driver=4 \
+      snd_soc_core.dyndbg==pmf \
+      snd_hda_core.dyndbg==pmf \
+      snd_hda_ext_core.dyndbg==pmf \
+      snd_hda_codec.dyndbg==pmf \
+      modprobe.blacklist=snd_hda_intel
 
 BOARD_KERNEL_CMDLINE += \
       clearcpuid=517 \
@@ -303,7 +311,6 @@ DEVICE_PACKAGE_OVERLAYS += ${TARGET_DEVICE_DIR}/overlay
 BOARD_KERNEL_CMDLINE += \
 	no_timer_check \
 	noxsaves \
-	reboot_panic=p,w \
 	i915.hpd_sense_invert=0x7 \
 	intel_iommu=off \
 	i915.enable_pvmmio=0 \
@@ -506,11 +513,9 @@ SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/system_ext/private
 TARGET_USE_PRIVATE_LIBDRM := true
 LIBDRM_VER ?= intel
 
-BOARD_KERNEL_CMDLINE += vga=current i915.modeset=1 drm.atomic=1 i915.nuclear_pageflip=1 drm.vblankoffdelay=1 i915.fastboot=1
+BOARD_KERNEL_CMDLINE += i915.modeset=1 drm.atomic=1 i915.nuclear_pageflip=1 drm.vblankoffdelay=1 i915.fastboot=1
 
-ifeq ($(BASE_LTS2020_YOCTO_KERNEL),true)
 BOARD_KERNEL_CMDLINE += i915.enable_guc=1
-endif
 
 USE_OPENGL_RENDERER := true
 USE_INTEL_UFO_DRIVER := false

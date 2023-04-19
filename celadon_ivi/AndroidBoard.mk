@@ -286,11 +286,14 @@ else ifeq ($(BASE_LTS2020_YOCTO_KERNEL), true)
 else ifeq ($(BASE_LTS2020_CHROMIUM_KERNEL), true)
   LOCAL_KERNEL_SRC := kernel/lts2020-chromium
   KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2020-chromium
+else ifeq ($(BASE_LINUX_INTEL_LTS2021_KERNEL), true)
+  LOCAL_KERNEL_SRC := kernel/linux-intel-lts2021
+  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/linux-intel-lts2021
 else
-  LOCAL_KERNEL_SRC := kernel/lts2020-chromium
+  LOCAL_KERNEL_SRC := kernel/linux-intel-lts2021
   EXT_MODULES := 
   DEBUG_MODULES := 
-  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2020-chromium
+  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/linux-intel-lts2021
 endif
 
 EXTMOD_SRC := ../modules
