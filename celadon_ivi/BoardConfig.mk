@@ -313,7 +313,8 @@ BOARD_KERNEL_CMDLINE += \
 	i915.hpd_sense_invert=0x7 \
 	intel_iommu=off \
 	i915.enable_pvmmio=0 \
-	loop.max_part=7
+	loop.max_part=7 \
+	idle=halt
 
 BOARD_FLASHFILES += ${TARGET_DEVICE_DIR}/bldr_utils.img:bldr_utils.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/LICENSE
@@ -702,4 +703,8 @@ TARGET_CPU_ABI_LIST_32_BIT += $(NB_ABI_LIST_32_BIT)
 TARGET_CPU_ABI_LIST_64_BIT += $(NB_ABI_LIST_64_BIT)
 
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/houdini
+##############################################################
+# Source: device/intel/mixins/groups/neuralnetworks/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/neuralnetworks
 # ------------------ END MIX-IN DEFINITIONS ------------------
