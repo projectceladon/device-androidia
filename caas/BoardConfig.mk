@@ -315,6 +315,9 @@ BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/guest_pm_control
 BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/intel-thermal-conf.xml
 BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/thermald.service
 BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/rpmb_dev
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/ai_raw_tensor.sh
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/setup_ai_dispatcher.sh
+BOARD_FLASHFILES += $(PRODUCT_OUT)/scripts/Security.md
 
 # for USB OTG WA
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/bxt_usb
@@ -746,4 +749,8 @@ TARGET_CPU_ABI_LIST_32_BIT += $(NB_ABI_LIST_32_BIT)
 TARGET_CPU_ABI_LIST_64_BIT += $(NB_ABI_LIST_64_BIT)
 
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/houdini
+##############################################################
+# Source: device/intel/mixins/groups/neuralnetworks/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/neuralnetworks
 # ------------------ END MIX-IN DEFINITIONS ------------------

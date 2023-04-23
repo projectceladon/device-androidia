@@ -821,6 +821,25 @@ ifeq ($(ENABLE_NATIVEBRIDGE_64BIT),true)
 endif
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.dalvik.vm.native.bridge=libhoudini.so
 ##############################################################
+# Source: device/intel/mixins/groups/neuralnetworks/true/product.mk
+##############################################################
+# neuralnetworks HAL
+PRODUCT_PACKAGES += \
+    android.hardware.neuralnetworks@1.3-generic-service \
+    android.hardware.neuralnetworks@1.3-generic-impl \
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/extra_files/neuralnetworks/plugins.xml:vendor/etc/openvino/plugins.xml \
+
+
+PRODUCT_PACKAGES += \
+    libopenvino \
+    libopenvino_intel_cpu_plugin \
+    libopenvino_ir_frontend
+
+
+PRODUCT_PROPERTY_OVERRIDES += vendor.nn.hal.ngraph=true
+##############################################################
 # Source: device/intel/mixins/groups/debug-unresponsive/default/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)
