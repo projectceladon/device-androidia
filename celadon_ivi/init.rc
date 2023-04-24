@@ -794,4 +794,17 @@ on property:ro.vendor.enable.native.bridge.exec64=1
 ##############################################################
 on post-fs-data
     mkdir /data/vendor/neuralnetworks 0770 system system
+##############################################################
+# Source: device/intel/mixins/groups/docker/true/init.rc
+##############################################################
+service docker_manager /vendor/bin/docker_manager
+    group root shell
+    user root
+    class main
+    setenv XDG_RUNTIME_DIR /data/docker/tmp
+    disabled
+
+on property:sys.boot_completed=1
+    start docker_manager
+
 # ------------------ END MIX-IN DEFINITIONS ------------------

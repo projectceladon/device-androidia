@@ -880,6 +880,31 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PROPERTY_OVERRIDES += vendor.nn.hal.ngraph=true
 ##############################################################
+# Source: device/intel/mixins/groups/docker/true/product.mk
+##############################################################
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/extra_files/docker/lic_install.sh:/vendor/bin/lic_install.sh \
+    $(LOCAL_PATH)/extra_files/docker/docker_manager:/vendor/bin/docker_manager \
+    $(LOCAL_PATH)/extra_files/docker/containerd:/vendor/bin/containerd \
+    $(LOCAL_PATH)/extra_files/docker/containerd-shim-runc-v2:/vendor/bin/containerd-shim-runc-v2 \
+    $(LOCAL_PATH)/extra_files/docker/docker:/vendor/bin/docker \
+    $(LOCAL_PATH)/extra_files/docker/dockerd:/vendor/bin/dockerd \
+    $(LOCAL_PATH)/extra_files/docker/runc:/vendor/bin/runc \
+    $(LOCAL_PATH)/extra_files/docker/99-ignore-keyboard.rules:/vendor/etc/docker/config/99-ignore-keyboard.rules \
+    $(LOCAL_PATH)/extra_files/docker/99-ignore-mouse.rules:/vendor/etc/docker/config/99-ignore-mouse.rules \
+    $(LOCAL_PATH)/extra_files/docker/config.toml:/vendor/etc/docker/etc/containerd/config.toml \
+    $(LOCAL_PATH)/extra_files/docker/daemon.json:/vendor/etc/docker/etc/docker/daemon.json
+
+PRODUCT_PACKAGES += sumClientInAndroid \
+    multiplyServiceInAndroid \
+    multiplyClientInAndroid \
+    subtractServiceApplicationInAndroid \
+    SharedBufferServiceInAndroid \
+    SharedBufferClientInAndroid
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    vendor.nn.hal.grpc_socket_path=/data/vendor/neuralnetworks/ai.socket
+##############################################################
 # Source: device/intel/mixins/groups/debug-unresponsive/default/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)

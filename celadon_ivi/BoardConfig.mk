@@ -720,4 +720,8 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/houdini
 # Source: device/intel/mixins/groups/neuralnetworks/true/BoardConfig.mk
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/neuralnetworks
+##############################################################
+# Source: device/intel/mixins/groups/docker/true/BoardConfig.mk
+##############################################################
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/docker
 # ------------------ END MIX-IN DEFINITIONS ------------------
