@@ -273,6 +273,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.$(TARGET_PRODUCT).rc \
     $(LOCAL_PATH)/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/ueventd.rc \
 
+PRODUCT_PACKAGES += MultiDisplaySecondaryHomeTestLauncher
+
 PRODUCT_PACKAGES += vndservicemanager
 
 PRODUCT_PACKAGES +=  \
