@@ -138,4 +138,9 @@ PRODUCT_PACKAGES += \
 # Source: device/intel/mixins/groups/bluetooth/default/product.mk
 ##############################################################
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += config.disable_bluetooth=true
+##############################################################
+# Source: device/intel/mixins/groups/ipp/default/product.mk
+##############################################################
+PRODUCT_PACKAGES += libippcustom \
+                    libippcustom_vendor
 # ------------------ END MIX-IN DEFINITIONS ------------------

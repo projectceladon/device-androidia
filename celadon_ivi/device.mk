@@ -861,4 +861,9 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += vendor.sys.dump.peer_depth=3
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += vendor.sys.dump.stacks_timeout=1500
 
 endif
+##############################################################
+# Source: device/intel/mixins/groups/ipp/default/product.mk
+##############################################################
+PRODUCT_PACKAGES += libippcustom \
+                    libippcustom_vendor
 # ------------------ END MIX-IN DEFINITIONS ------------------
