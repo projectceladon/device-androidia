@@ -47,7 +47,7 @@ on post-fs-data
 on early-boot
  
     insmod /vendor/lib/modules/cfg80211.ko
-    insmod /vendor/lib/modules/iwl7000_mac80211.ko
+    insmod /vendor/lib/modules/mac80211.ko
     insmod /vendor/lib/modules/iwlwifi.ko
     insmod /vendor/lib/modules/iwlmvm.ko power_scheme=1
 
