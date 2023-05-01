@@ -253,6 +253,10 @@ PRODUCT_PACKAGES += \
     VmsSubscriberClientSample \
 
 
+PRODUCT_PACKAGES += android.hardware.automotive.evs@1.1-sample
+PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
+PRODUCT_PACKAGES += evs_app
+
 PRODUCT_PACKAGES += android.hardware.automotive.audiocontrol@1.0-service.intel
 
 PRODUCT_PACKAGES += android.hardware.automotive.vehicle@2.0-service \
