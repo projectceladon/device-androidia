@@ -141,6 +141,7 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
 # Source: device/intel/mixins/groups/audio/project-celadon/init.rc
 ##############################################################
 on post-fs && property:vendor.intel.enable.audio=legacy-hda
+    insmod /vendor/lib/modules/snd-dummy.ko
     insmod /vendor/lib/modules/snd-compress.ko
     insmod /vendor/lib/modules/snd-hrtimer.ko
     insmod /vendor/lib/modules/snd-ctl-led.ko
@@ -158,6 +159,7 @@ on post-fs && property:vendor.intel.enable.audio=legacy-hda
     insmod /vendor/lib/modules/usblp.ko
 
 on post-fs && property:vendor.intel.enable.audio=sof-hda
+    insmod /vendor/lib/modules/snd-dummy.ko
     insmod /vendor/lib/modules/snd-compress.ko
     insmod /vendor/lib/modules/snd-hrtimer.ko
     insmod /vendor/lib/modules/snd-ctl-led.ko
@@ -199,8 +201,6 @@ on post-fs && property:vendor.intel.enable.audio=sof-hda
     insmod /vendor/lib/modules/snd-seq-midi-event.ko
     insmod /vendor/lib/modules/snd-seq-midi.ko
 
-on boot
-    insmod /vendor/lib/modules/snd-dummy.ko
 
 on property:sys.boot_completed=1 && property:ro.vendor.hdmi.audio=tgl
     stop audioserver
