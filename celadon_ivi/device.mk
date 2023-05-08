@@ -191,6 +191,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.audio.effect@7.0-impl \
     android.hardware.audio@7.0-impl \
+    android.hardware.automotive.audiocontrol-service.example \
     android.hardware.audio@2.0-service
 
 #Audio policy engine configuration files
@@ -200,6 +201,7 @@ PRODUCT_COPY_FILES += \
 # Vendor audio configuration files
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/default/policy/audio_policy_configuration.xml:vendor/etc/audio_policy_configuration.xml \
+    $(LOCAL_PATH)/audio/default/policy/car_audio_configuration.xml:vendor/etc/car_audio_configuration.xml \
     $(LOCAL_PATH)/audio/default/policy/a2dp_audio_policy_configuration.xml:vendor/etc/a2dp_audio_policy_configuration.xml \
     $(LOCAL_PATH)/audio/default/policy/r_submix_audio_policy_configuration.xml:vendor/etc/r_submix_audio_policy_configuration.xml \
     $(LOCAL_PATH)/audio/default/policy/usb_audio_policy_configuration.xml:vendor/etc/usb_audio_policy_configuration.xml \
@@ -222,6 +224,7 @@ endif
 #fallback
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/default/policy/fallback/audio_policy_configuration_generic.xml:system/etc/audio_policy_configuration.xml \
+    $(LOCAL_PATH)/audio/default/policy/fallback/car_audio_configuration.xml:system/etc/car_audio_configuration.xml \
     $(LOCAL_PATH)/audio/default/policy/fallback/primary_audio_policy_configuration.xml:system/etc/primary_audio_policy_configuration.xml \
     $(LOCAL_PATH)/audio/default/policy/fallback/r_submix_audio_policy_configuration.xml:system/etc/r_submix_audio_policy_configuration.xml \
     $(LOCAL_PATH)/audio/default/policy/fallback/audio_policy_volumes.xml:system/etc/audio_policy_volumes.xml \
@@ -230,7 +233,7 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PROPERTY_OVERRIDES += audio.safemedia.bypass=true
 
-PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/audio/overlay-car-legacy
+#PRODUCT_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/audio/overlay-car-legacy
 ##############################################################
 # Source: device/intel/mixins/groups/device-type/car/product.mk
 ##############################################################
@@ -311,6 +314,21 @@ PRODUCT_COPY_FILES += vendor/intel/utils/LICENSE:$(PRODUCT_OUT)/LICENSE
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/auto_switch_pt_usb_vms.sh:$(PRODUCT_OUT)/scripts/auto_switch_pt_usb_vms.sh
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/findall.py:$(PRODUCT_OUT)/scripts/findall.py
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/sof_audio/configure_sof.sh:$(PRODUCT_OUT)/scripts/sof_audio/configure_sof.sh
+#PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/avmapp.apk:$(PRODUCT_OUT)/product/app/avmapk/avmapp.apk
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/lib64/libcarcam_feature_avm.so:$(PRODUCT_OUT)/system/lib64/libcarcam_feature_avm.so
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/lib64/libSurroundViewSim.so:$(PRODUCT_OUT)/system/lib64/libSurroundViewSim.so
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/lib64/libvc_avm.so:$(PRODUCT_OUT)/system/lib64/libvc_avm.so
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/lib64/libvideocat.so:$(PRODUCT_OUT)/system/lib64/libvideocat.so
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/lib64/libvideocatsupport.so:$(PRODUCT_OUT)/system/lib64/libvideocatsupport.so
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/bin/carcam:$(PRODUCT_OUT)/system/bin/carcam
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/etc/automotive/videocat_support/videocat_config.json:$(PRODUCT_OUT)/system/etc/automotive/videocat_support/videocat_config.json
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/etc/avm_main/config/intel.fbx:$(PRODUCT_OUT)/system/etc/avm_main/config/intel.fbx
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/etc/avm_main/config/SViewConfig.json:$(PRODUCT_OUT)/system/etc/avm_main/config/SViewConfig.json
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/etc/SViewCam4Lens_default.txt:$(PRODUCT_OUT)/system/etc/SViewCam4Lens_default.txt
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/etc/SViewTune.camera:$(PRODUCT_OUT)/system/etc/SViewTune.camera
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/etc/SViewTune_calib.camera:$(PRODUCT_OUT)/system/etc/SViewTune_calib.camera
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/etc/underCar_padded.ppm:$(PRODUCT_OUT)/system/etc/underCar_padded.ppm
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/avm_app/system/etc/underCar_TC.ppm:$(PRODUCT_OUT)/system/etc/underCar_TC.ppm
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/cam_sharing/0001-Netlink-sync.patch:$(PRODUCT_OUT)/scripts/cam_sharing/0001-Netlink-sync.patch
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/cam_sharing/IntelCameraService:$(PRODUCT_OUT)/scripts/cam_sharing/IntelCameraService
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/cam_sharing/virtualcamera.service:$(PRODUCT_OUT)/scripts/cam_sharing/virtualcamera.service
@@ -525,6 +543,7 @@ PRODUCT_PROPERTY_OVERRIDES += ro.vendor.remote.sf.fake_camera ="both" \
 #PRODUCT_PACKAGES_DEBUG += TestingCamera
 
 PRODUCT_PACKAGES += MultiCameraApp
+PRODUCT_PACKAGES += avmapp
 ##############################################################
 # Source: device/intel/mixins/groups/rfkill/true/product.mk
 ##############################################################
