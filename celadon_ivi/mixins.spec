@@ -43,7 +43,7 @@ device-type: car(vhal-proto-type=google-emulator,aosp_hal=true)
 debug-tools: true
 fota: true
 default-drm: true
-thermal: thermal-daemon
+thermal: false
 serialport: ttyS0
 flashfiles: ini(fast_flashfiles=false, oemvars=false,installer=true,flash_dnx_os=false,blank_no_fw=true,version=3.0)
 net: common
