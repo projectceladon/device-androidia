@@ -246,12 +246,12 @@ endif
 # Source: device/intel/mixins/groups/codecs/configurable/product.mk
 ##############################################################
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance.xml:system/etc/media_codecs_performance.xml \
-    $(LOCAL_PATH)/extra_files/codecs/mfx_omxil_core.conf:system/vendor/etc/mfx_omxil_core.conf \
-    $(LOCAL_PATH)/extra_files/codecs/media_profiles.xml:system/etc/media_profiles.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_profiles.xml:system/vendor/etc/media_profiles_V1_0.xml \
-    $(LOCAL_PATH)/extra_files/codecs/media_codecs.xml:system/vendor/etc/media_codecs.xml
+    $(LOCAL_PATH)/extra_files/codecs/media_profiles.xml:system/etc/media_profiles.xml \
 
+
+PRODUCT_COPY_FILES += \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/vendor/etc/media_codecs_google_video.xml
 ##############################################################
 # Source: device/intel/mixins/groups/debug-crashlogd/true/product.mk
 ##############################################################
@@ -319,9 +319,8 @@ PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-impl \
     android.hardware.drm@1.3-service.clearkey \
     android.hardware.graphics.composer@2.3-service \
-    android.hardware.graphics.allocator@2.0-service \
-    android.hardware.graphics.allocator@2.0-impl \
-    android.hardware.graphics.mapper@2.0-impl
+    android.hardware.graphics.mapper@4.0-impl.minigbm \
+    android.hardware.graphics.allocator@4.0-service.minigbm
 
 PRODUCT_PACKAGES += \
     vulkan.intel \
@@ -422,17 +421,15 @@ PRODUCT_COPY_FILES += \
 USE_ONEVPL := true
 
 PRODUCT_PACKAGES += \
-    libvpl \
-    libmfx-gen \
     i965_drv_video \
-    libmfxhw32 \
-    libmfxhw64 \
-    libmfx_omx_core \
-    libmfx_omx_components_hw \
-    libstagefrighthw \
     libva-android \
     libva
 
+
+USE_ONEVPL := true
+PRODUCT_PACKAGES += \
+    libvpl \
+    libmfx-gen \
 ##############################################################
 # Source: device/intel/mixins/groups/neuralnetworks/true/product.mk
 ##############################################################
@@ -489,4 +486,21 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml
 
 PRODUCT_PROPERTY_OVERRIDES += sys.container.fakewifi=true
+##############################################################
+# Source: device/intel/mixins/groups/codec2/true/product.mk
+##############################################################
+# MSDK codec2.0 support.
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/extra_files/codec2/media_codecs_performance_c2.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
+    $(LOCAL_PATH)/extra_files/codec2/mfx_c2_store.conf:$(TARGET_COPY_OUT_VENDOR)/etc/mfx_c2_store.conf \
+    $(LOCAL_PATH)/extra_files/codec2/media_codecs_c2.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
+    $(LOCAL_PATH)/extra_files/codec2/media_codecs_intel_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_intel_c2_video.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_c2_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_audio.xml
+
+PRODUCT_PACKAGES += \
+    libmfx_c2_components_hw \
+    hardware.intel.media.c2@1.0-service
+
+BOARD_HAVE_MEDIASDK_CODEC2 := true
 # ------------------ END MIX-IN DEFINITIONS ------------------
