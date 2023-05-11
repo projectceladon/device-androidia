@@ -102,12 +102,8 @@ TARGET_CPU_ABI_LIST_64_BIT += $(NB_ABI_LIST_64_BIT)
 ##############################################################
 # Source: device/intel/mixins/groups/media/true/BoardConfig.mk
 ##############################################################
-INTEL_STAGEFRIGHT := true
-USE_MEDIASDK := true
-BOARD_HAVE_MEDIASDK_OPEN_SOURCE := true
-ENABLE_MAX_NUM_REORDER_FRAMES_OUTPUT := false
-BOARD_HAVE_OMX_SRC := true
 
+ENABLE_MAX_NUM_REORDER_FRAMES_OUTPUT := false
 # OneVPL integration
 USE_ONEVPL := true
 
