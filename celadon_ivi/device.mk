@@ -323,6 +323,14 @@ PRODUCT_COPY_FILES += device/intel/civ/host/vm-manager/scripts/guest_time_keepin
 PRODUCT_COPY_FILES += device/intel/civ/host/vm-manager/scripts/start_flash_usb.sh:$(PRODUCT_OUT)/scripts/start_flash_usb.sh
 PRODUCT_COPY_FILES += vendor/intel/fw/trusty-release-binaries/rpmb_dev:$(PRODUCT_OUT)/scripts/rpmb_dev
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/wakeup.py:$(PRODUCT_OUT)/scripts/wakeup.py
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.heapstartsize?=32m \
+    dalvik.vm.heapgrowthlimit?=256m \
+    dalvik.vm.heapsize?=512m \
+    dalvik.vm.heaptargetutilization?=0.5 \
+    dalvik.vm.heapminfree?=32m \
+    dalvik.vm.heapmaxfree?=64m
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/false/product.mk
 ##############################################################
@@ -350,11 +358,6 @@ PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := mdpi
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.sf.lcd_density=160
-##############################################################
-# Source: device/intel/mixins/groups/dalvik-heap/tablet-10in-xhdpi-2048/product.mk
-##############################################################
-include frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk
-
 ##############################################################
 # Source: device/intel/mixins/groups/media/auto/product.mk
 ##############################################################
