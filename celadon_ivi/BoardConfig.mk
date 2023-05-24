@@ -217,19 +217,6 @@ BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_DEVICE)
 endif
 
 
-ifneq ($(TARGET_BUILD_VARIANT),user)
-BOARD_KERNEL_CMDLINE += \
-        memmap=4M\$$0x100000000
-BOARD_KERNEL_CMDLINE += \
-        ramoops.mem_address=0x100000000
-BOARD_KERNEL_CMDLINE += \
-        ramoops.mem_size=0x400000
-BOARD_KERNEL_CMDLINE += \
-        ramoops.console_size=0x200000
-BOARD_KERNEL_CMDLINE += \
-        ramoops.dump_oops=1
-endif
-
 
 BOARD_KERNEL_CMDLINE += \
        intel_pstate=passive
@@ -334,6 +321,20 @@ BOARD_KERNEL_CMDLINE += \
 	i915.enable_pvmmio=0 \
 	loop.max_part=7 \
 	idle=halt
+
+# for ramoops
+ifneq ($(TARGET_BUILD_VARIANT),user)
+BOARD_KERNEL_CMDLINE += \
+        memmap=4M\$$0x100000000
+BOARD_KERNEL_CMDLINE += \
+        ramoops.mem_address=0x100000000
+BOARD_KERNEL_CMDLINE += \
+        ramoops.mem_size=0x400000
+BOARD_KERNEL_CMDLINE += \
+        ramoops.console_size=0x200000
+BOARD_KERNEL_CMDLINE += \
+        ramoops.dump_oops=1
+endif
 
 BOARD_FLASHFILES += ${TARGET_DEVICE_DIR}/bldr_utils.img:bldr_utils.img
 BOARD_FLASHFILES += $(PRODUCT_OUT)/LICENSE
