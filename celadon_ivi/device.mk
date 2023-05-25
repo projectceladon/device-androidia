@@ -104,6 +104,7 @@ PRODUCT_PACKAGES += \
     wpa_supplicant \
     wpa_cli \
     iw \
+    NetworkConfigOverlay \
     TetheringConfigOverlay \
     TetheringConfigOverlayGsi \
     ServiceConnectivityResourcesConfigOverlay
