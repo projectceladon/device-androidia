@@ -888,7 +888,11 @@ PRODUCT_PACKAGES += sumClientInAndroid \
     SharedBufferServiceInAndroid \
     SharedBufferClientInAndroid \
     Steam \
-    Genshin
+    Genshin \
+    Epic \
+    liblic-epic \
+    liblic-genshin \
+    liblic-steam
 
 PRODUCT_PROPERTY_OVERRIDES += \
     vendor.nn.hal.grpc_socket_path=/data/vendor/neuralnetworks/ai.socket
