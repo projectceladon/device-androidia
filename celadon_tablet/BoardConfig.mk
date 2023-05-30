@@ -36,6 +36,11 @@ BOARD_DISK_BUS = ff.ff
 ##############################################################
 BOARD_AVB_ENABLE := true
 
+# Don't include super.img to out/dist by default
+ifneq ($(GENERATE_SUPER_IMG), true)
+BOARD_SUPER_IMAGE_IN_UPDATE_PACKAGE := true
+endif
+
 #
 # -- OTA RELATED DEFINES --
 #
