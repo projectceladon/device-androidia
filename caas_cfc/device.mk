@@ -613,6 +613,11 @@ PRODUCT_COPY_FILES += \
 # Thermal Hal
 PRODUCT_PACKAGES += android.hardware.thermal@2.0-service.intel
 ##############################################################
+# Source: device/intel/mixins/groups/net/common/product.mk
+##############################################################
+PRODUCT_PACKAGES += \
+    NetworkConfigOverlay 
+##############################################################
 # Source: device/intel/mixins/groups/debug-crashlogd/true/product.mk
 ##############################################################
 ifneq ($(TARGET_BUILD_VARIANT),user)
