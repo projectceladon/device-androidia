@@ -320,6 +320,7 @@ BOARD_KERNEL_CMDLINE += \
 	intel_iommu=off \
 	i915.enable_pvmmio=0 \
 	loop.max_part=7 \
+	idle=halt
 
 # for ramoops
 ifneq ($(TARGET_BUILD_VARIANT),user)
