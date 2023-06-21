@@ -505,7 +505,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_bxt.xml:vendor/etc/media_codecs_performance.xml \
     $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_cml.xml:vendor/etc/media_codecs_performance_cml.xml \
-    $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_tgl.xml:vendor/etc/media_codecs_performance_tgl.xml
+    $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_tgl.xml:vendor/etc/media_codecs_performance_tgl.xml \
+    $(LOCAL_PATH)/extra_files/codecs/media_codecs_performance_adl.xml:vendor/etc/media_codecs_performance_adl.xml
 
 ##############################################################
 # Source: device/intel/mixins/groups/codec2/true/product.mk
