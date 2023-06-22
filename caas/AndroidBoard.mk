@@ -201,13 +201,15 @@ INSTALLED_RADIOIMAGE_TARGET += $(bootloader_zip) $(bootloader_bin) $(bootloader_
 
 droidcore: $(bootloader_bin)
 
-.PHONY: bootloader
 bootloader: $(bootloader_bin)
 $(call dist-for-goals,droidcore,$(bootloader_bin):$(TARGET_PRODUCT)-bootloader-$(FILE_NAME_TAG))
 
 $(call dist-for-goals,droidcore,$(INTEL_PATH_BUILD)/testkeys/testkeys_lockdown.txt:test-keys_efi_lockdown.txt)
 $(call dist-for-goals,droidcore,$(INTEL_PATH_BUILD)/testkeys/unlock.txt:efi_unlock.txt)
 
+
+
+.PHONY: bootloader
 
 # Used for efi update
 $(PRODUCT_OUT)/vendor.img: $(PRODUCT_OUT)/vendor/firmware/kernelflinger.efi

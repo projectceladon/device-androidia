@@ -201,13 +201,15 @@ INSTALLED_RADIOIMAGE_TARGET += $(bootloader_zip) $(bootloader_bin) $(bootloader_
 
 droidcore: $(bootloader_bin)
 
-.PHONY: bootloader
 bootloader: $(bootloader_bin)
 $(call dist-for-goals,droidcore,$(bootloader_bin):$(TARGET_PRODUCT)-bootloader-$(FILE_NAME_TAG))
 
 $(call dist-for-goals,droidcore,$(INTEL_PATH_BUILD)/testkeys/testkeys_lockdown.txt:test-keys_efi_lockdown.txt)
 $(call dist-for-goals,droidcore,$(INTEL_PATH_BUILD)/testkeys/unlock.txt:efi_unlock.txt)
 
+
+
+.PHONY: bootloader
 ifeq ($(TARGET_BOOTLOADER_POLICY),$(filter $(TARGET_BOOTLOADER_POLICY),static external))
 # The bootloader policy is not built but is provided statically in the
 # repository or in $(PRODUCT_OUT)/.
