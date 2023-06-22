@@ -49,6 +49,7 @@ PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/slot-ab/postinstall.sh:recovery/
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/product.mk
 ##############################################################
+
 TARGET_UEFI_ARCH := x86_64
 
 # Android Kernelflinger uses the OpenSSL library to support the
