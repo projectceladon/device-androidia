@@ -332,6 +332,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heaptargetutilization?=0.5 \
     dalvik.vm.heapminfree?=32m \
     dalvik.vm.heapmaxfree?=64m
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/display_settings.xml:$(TARGET_COPY_OUT_VENDOR)/etc/display_settings.xml
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/false/product.mk
 ##############################################################
