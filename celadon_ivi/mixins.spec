@@ -89,3 +89,4 @@ bugreport: true
 mainline-mod: true
 houdini: true
 neuralnetworks: true
+googleservice: gas
