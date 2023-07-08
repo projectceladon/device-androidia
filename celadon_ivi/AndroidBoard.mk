@@ -127,20 +127,33 @@ $(foreach var,$(FLASHFILE_VARIANTS), \
 endif
 endif
 
-# We stash a copy of BIOSUPDATE.fv so the FW sees it, applies the
-# update, and deletes the file. Follows Google's desire to update all
-# bootloader pieces with a single "fastboot flash bootloader" command.
-# Since it gets deleted we can't do incremental updates of it, we keep
-# a copy as capsules/current.fv for this purpose.
+
+
+bootloader_bin := $(PRODUCT_OUT)/bootloader
+BOARD_BOOTLOADER_DEFAULT_IMG := $(PRODUCT_OUT)/bootloader.img
+BOARD_BOOTLOADER_DIR := $(PRODUCT_OUT)/sbl
+BOARD_BOOTLOADER_IASIMAGE := $(BOARD_BOOTLOADER_DIR)/kf4sbl.sbl
+BOARD_BOOTLOADER_VAR_IMG := $(BOARD_BOOTLOADER_DIR)/bootloader.img
+BOARD_FLASHFILES += $(BOARD_BOOTLOADER_DEFAULT_IMG):bootloader
+
+PREBUILT_INSTALLER := hardware/intel/kernelflinger/prebuilt/board/RPL_IVI/installer.efi
+PREBUILT_KERNELFLINGER := hardware/intel/kernelflinger/prebuilt/board/RPL_IVI/kernelflinger.efi
+INSTALLER_EFI := $(PRODUCT_OUT)/efi/installer.efi
+
+$(BOARD_BOOTLOADER_DIR):
+	$(hide) rm -rf $(BOARD_BOOTLOADER_DIR)
+	$(hide) mkdir -p $(BOARD_BOOTLOADER_DIR)
+
 intermediates := $(call intermediates-dir-for,PACKAGING,bootloader_zip)
 bootloader_zip := $(intermediates)/bootloader.zip
 $(bootloader_zip): intermediates := $(intermediates)
 $(bootloader_zip): efi_root := $(intermediates)/root
 $(bootloader_zip): \
 		$(TARGET_DEVICE_DIR)/AndroidBoard.mk \
-		$(BOARD_FIRST_STAGE_LOADER) \
 		$(BOARD_EXTRA_EFI_MODULES) \
+		kf4sbl-$(TARGET_BUILD_VARIANT) \
 		$(BOARD_SFU_UPDATE) \
+		$(INSTALLER_EFI) \
 		| $(ACP) \
 
 	$(hide) rm -rf $(efi_root)
@@ -148,19 +161,20 @@ $(bootloader_zip): \
 ifneq ($(BOOTLOADER_SLOT), true)
 	$(hide) mkdir -p $(efi_root)/capsules
 	$(hide) mkdir -p $(efi_root)/EFI/BOOT
+	$(hide) mkdir -p $(efi_root)/boot
 	$(foreach EXTRA,$(BOARD_EXTRA_EFI_MODULES), \
 		$(hide) $(ACP) $(EXTRA) $(efi_root)/)
 ifneq ($(BOARD_SFU_UPDATE),)
 	$(hide) $(ACP) $(BOARD_SFU_UPDATE) $(efi_root)/BIOSUPDATE.fv
 	$(hide) $(ACP) $(BOARD_SFU_UPDATE) $(efi_root)/capsules/current.fv
 endif
-	$(hide) $(ACP) $(BOARD_FIRST_STAGE_LOADER) $(efi_root)/loader.efi
-	$(hide) $(ACP) $(BOARD_FIRST_STAGE_LOADER) $(efi_root)/EFI/BOOT/$(efi_default_name)
 	$(hide) echo "Android-IA=\\EFI\\BOOT\\$(efi_default_name)" > $(efi_root)/manifest.txt
 else # BOOTLOADER_SLOT == false
 	$(hide) mkdir -p $(efi_root)/EFI/INTEL/
-	$(hide) $(ACP) $(KF4UEFI) $(efi_root)/EFI/INTEL/KF4UEFI.EFI
 endif # BOOTLOADER_SLOT
+	$(hide) $(ACP) $(PRODUCT_OUT)/sbl_os $(efi_root)/boot
+	$(hide) $(ACP) $(TOP)/$(PREBUILT_KERNELFLINGER) $(efi_root)/EFI/BOOT/bootx64.efi
+	$(hide) $(ACP) $(TOP)/$(PREBUILT_KERNELFLINGER) $(efi_root)/EFI/BOOT/bootia32.efi
 	$(hide) (cd $(efi_root) && zip -qry ../$(notdir $@) .)
 
 bootloader_info := $(intermediates)/bootloader_image_info.txt
@@ -169,52 +183,58 @@ $(bootloader_info):
 	$(hide) echo "size=$(BOARD_BOOTLOADER_PARTITION_SIZE)" > $@
 	$(hide) echo "block_size=$(BOARD_BOOTLOADER_BLOCK_SIZE)" >> $@
 
-
-# Rule to create $(OUT)/bootloader image, binaries within are signed with
-# testing keys
-
-bootloader_bin := $(PRODUCT_OUT)/bootloader.img
 ifeq ($(INTEL_PREBUILT),true)
-$(bootloader_bin):
-	$(hide) $(ACP) $(INTEL_PATH_PREBUILTS)/bootloader.img $@
+bootloader:
+	$(hide) $(ACP) $(INTEL_PATH_PREBUILTS)/bootloader.img $(PRODUCT_OUT)
 	@echo "Using prebuilt bootloader image from $(INTEL_PATH_PREBUILTS)"
 else # INTEL_PREBUILT
-$(bootloader_bin): \
-		$(bootloader_zip) \
-		$(IMG2SIMG) \
-		$(BOOTLOADER_ADDITIONAL_DEPS) \
-		$(INTEL_PATH_BUILD)/bootloader_from_zip \
 
-	$(hide) $(INTEL_PATH_BUILD)/bootloader_from_zip \
-		--size $(BOARD_BOOTLOADER_PARTITION_SIZE) \
-		--block-size $(BOARD_BOOTLOADER_BLOCK_SIZE) \
-		$(BOOTLOADER_ADDITIONAL_ARGS) \
-		--zipfile $(bootloader_zip) \
-		$@
+define generate_bootloader_var
+rm -f $(BOARD_BOOTLOADER_VAR_IMG)
+cnt=`expr $(BOARD_BOOTLOADER_PARTITION_SIZE) / $(BOARD_BOOTLOADER_BLOCK_SIZE) `;\
+dd of=$(BOARD_BOOTLOADER_VAR_IMG) if=/dev/zero bs=$(BOARD_BOOTLOADER_BLOCK_SIZE) count=$${cnt};\
+ls -l $(BOARD_BOOTLOADER_VAR_IMG)
+$(hide)mkdosfs -F32 -n ANDROIDIA $(BOARD_BOOTLOADER_VAR_IMG);
+$(hide)mmd -i $(BOARD_BOOTLOADER_VAR_IMG) ::capsules;
+$(hide)mmd -i $(BOARD_BOOTLOADER_VAR_IMG) ::EFI;
+$(hide)mmd -i $(BOARD_BOOTLOADER_VAR_IMG) ::EFI/BOOT;
+$(hide)mmd -i $(BOARD_BOOTLOADER_VAR_IMG) ::boot;
+$(hide)mcopy -Q -i $(BOARD_BOOTLOADER_VAR_IMG) $(PRODUCT_OUT)/sbl_os ::boot/sbl_os;
+$(hide)mcopy -Q -i $(BOARD_BOOTLOADER_VAR_IMG) $(TOP)/$(PREBUILT_KERNELFLINGER) ::EFI/BOOT/bootx64.efi;
+cp $(BOARD_BOOTLOADER_VAR_IMG) $(BOARD_BOOTLOADER_DEFAULT_IMG)
+cp $(BOARD_BOOTLOADER_VAR_IMG) $(bootloader_bin)
+echo "Bootloader image successfully generated $(BOARD_BOOTLOADER_VAR_IMG)"
+endef
+
+fastboot_image: fb4sbl-$(TARGET_BUILD_VARIANT)
+
+bootloader: $(BOARD_BOOTLOADER_DIR) kf4sbl-$(TARGET_BUILD_VARIANT)
+	$(call generate_bootloader_var)
+
 ifneq ($(INTEL_PATH_PREBUILTS_OUT),)
 	$(hide) mkdir -p $(INTEL_PATH_PREBUILTS_OUT)
-	$(hide) $(ACP) $@ $(INTEL_PATH_PREBUILTS_OUT)
+	$(hide) $(ACP) $(BOARD_BOOTLOADER_DEFAULT_IMG) $(INTEL_PATH_PREBUILTS_OUT)
 endif # INTEL_PATH_PREBUILTS_OUT
 endif # INTEL_PREBUILT
 
-INSTALLED_RADIOIMAGE_TARGET += $(bootloader_zip) $(bootloader_bin) $(bootloader_info)
+$(BOARD_BOOTLOADER_DEFAULT_IMG): bootloader
+	@echo "Generate default bootloader: $@ finished."
+droidcore: bootloader
 
-droidcore: $(bootloader_bin)
+INSTALLED_RADIOIMAGE_TARGET += $(bootloader_zip) $(BOARD_BOOTLOADER_DEFAULT_IMG) $(bootloader_info)
 
-bootloader: $(bootloader_bin)
-$(call dist-for-goals,droidcore,$(bootloader_bin):$(TARGET_PRODUCT)-bootloader-$(FILE_NAME_TAG))
+$(bootloader_bin): bootloader
 
-$(call dist-for-goals,droidcore,$(INTEL_PATH_BUILD)/testkeys/testkeys_lockdown.txt:test-keys_efi_lockdown.txt)
-$(call dist-for-goals,droidcore,$(INTEL_PATH_BUILD)/testkeys/unlock.txt:efi_unlock.txt)
+$(INSTALLER_EFI):
+	@echo "Using prebuild installer image for SBL"
+	mkdir -p $(PRODUCT_OUT)/efi/
+	$(ACP) -r $(TOP)/$(PREBUILT_INSTALLER) $@
 
 
 
 .PHONY: bootloader
 
 # Used for efi update
-$(PRODUCT_OUT)/vendor.img: $(PRODUCT_OUT)/vendor/firmware/kernelflinger.efi
-$(PRODUCT_OUT)/vendor/firmware/kernelflinger.efi: $(PRODUCT_OUT)/efi/kernelflinger.efi
-	$(ACP) $(PRODUCT_OUT)/efi/kernelflinger.efi $@
 
 make_bootloader_dir:
 	@mkdir -p $(PRODUCT_OUT)/root/bootloader

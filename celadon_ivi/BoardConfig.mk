@@ -142,6 +142,7 @@ AB_OTA_POSTINSTALL_CONFIG += \
     FILESYSTEM_TYPE_vendor=ext4 \
     POSTINSTALL_OPTIONAL_vendor=true
 
+    TARGET_USE_SBL := true
 
 
 BOARD_AVB_ENABLE := true

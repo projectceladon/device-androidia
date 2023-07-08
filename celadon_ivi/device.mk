@@ -49,8 +49,8 @@ PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/slot-ab/postinstall.sh:recovery/
 ##############################################################
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/product.mk
 ##############################################################
+TARGET_UEFI_ARCH := i386
 
-TARGET_UEFI_ARCH := x86_64
 
 # Android Kernelflinger uses the OpenSSL library to support the
 # bootloader policy
@@ -75,7 +75,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # when setting the bootreason
 KERNELFLINGER_IGNORE_NOT_APPLICABLE_RESET := true
 
-KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := true
+KERNELFLINGER_SUPPORT_SELF_USB_DEVICE_MODE_PROTOCOL := false
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.frp.pst=/dev/block/by-name/persistent
 
@@ -92,6 +92,28 @@ PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/update_ifwi_ab.sh:reco
 $(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
 KERNELFLINGER_SUPPORT_KEYBOX_PROVISION := true
+TARGET_NO_DEVICE_UNLOCK := false
+TARGET_IAFW_ARCH := i386
+
+# Libpayload configuration for SBL
+LIBPAYLOAD_BASE_ADDRESS := 0x12800000
+LIBPAYLOAD_HEAP_SIZE := 125829120
+LIBPAYLOAD_STACK_SIZE := 1048576
+
+LIBEFIWRAPPER_DRIVERS := s8250mem32 dw3 lpmemmap lprtc acpi cf9 abl heci lifecycle nvme
+
+CAPSULE_SOURCE := sbl
+
+# Disable Kernelflinger UI support
+KERNELFLINGER_USE_UI := false
+# Support boot from osloader
+KERNELFLINGER_SUPPORT_NON_EFI_BOOT := true
+KERNELFLINGER_SECURITY_PLATFORM := sbl
+# Disable kernelflinger debug print to save boot time
+KERNELFLINGER_DISABLE_DEBUG_PRINT := false
+KERNELFLINGER_DISABLE_EFI_MEMMAP := true
+
+
 
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/set_soc_prop.sh:vendor/bin/set_soc_prop.sh
 ##############################################################
