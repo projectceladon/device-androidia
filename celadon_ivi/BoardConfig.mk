@@ -731,3 +731,4 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/houdini
 ##############################################################
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/neuralnetworks
 # ------------------ END MIX-IN DEFINITIONS ------------------
+
