@@ -24,4 +24,4 @@ neuralnetworks: true
 power: dummy
 sensors: remote
 wlan: dummy
-codec2: false
+codec2: true(enable_hw=false)
