@@ -496,4 +496,21 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml
 
 PRODUCT_PROPERTY_OVERRIDES += sys.container.fakewifi=true
+##############################################################
+# Source: device/intel/mixins/groups/codec2/true/product.mk
+##############################################################
+# MSDK codec2.0 support.
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/extra_files/codec2/media_codecs_performance_c2.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
+    $(LOCAL_PATH)/extra_files/codec2/mfx_c2_store.conf:$(TARGET_COPY_OUT_VENDOR)/etc/mfx_c2_store.conf \
+    $(LOCAL_PATH)/extra_files/codec2/media_codecs_intel_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_intel_c2_video.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_c2_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_audio.xml
+
+
+PRODUCT_PACKAGES += \
+    libmfx_c2_components_hw \
+    hardware.intel.media.c2@1.0-service
+
+BOARD_HAVE_MEDIASDK_CODEC2 := true
 # ------------------ END MIX-IN DEFINITIONS ------------------
