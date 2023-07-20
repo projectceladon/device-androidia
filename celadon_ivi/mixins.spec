@@ -45,7 +45,7 @@ default-drm: true
 thermal: thermal-daemon
 serialport: ttyS0
 flashfiles: ini(fast_flashfiles=false, oemvars=false,installer=true,flash_dnx_os=false,blank_no_fw=true,version=3.0)
-net: common
+net: common(stmicro_mac=true)
 debug-crashlogd: true
 debug-coredump: false
 lights: true
