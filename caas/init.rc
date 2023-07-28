@@ -10,27 +10,40 @@ on fs
     # ro.boot.hardware = TARGET_PRODUCT (set in kernel command line
     # as androidboot.hardware). Mount all the filesystems as specified
     # in the fstab.
-    mount_all /vendor/etc/fstab.${ro.hardware}
+    mount_all /vendor/etc/fstab.${ro.hardware} --early
 
 service watchdogd /system/bin/watchdogd 10 30
-    user root
+    user system
     class core
     oneshot
     seclabel u:r:watchdogd:s0
 
 on charger
     start watchdogd
+
+# We need vold early for metadata encryption
+on early-fs
+    start vold
+
+on late-fs
+    # Wait for keymaster
+    exec_start wait_for_keymaster
+    # Mount latemount partitions which have not been mounted with "on fs"
+    mount_all /vendor/etc/fstab.${ro.hardware} --late
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/init.rc
 ##############################################################
 on post-fs-data
     chmod 0660 /data/misc/wifi/p2p_supplicant.conf
-
-    # create config WiFi NVM folder
-    mkdir /oem_config/wlan 0770 wifi system
-
     setprop wifi.interface wlan0
     setprop wifi.direct.interface p2p-dev-wlan0
+
+on early-boot
+ 
+    insmod /vendor/lib/modules/cfg80211.ko
+    insmod /vendor/lib/modules/iwl7000_mac80211.ko
+    insmod /vendor/lib/modules/iwlwifi.ko
+    insmod /vendor/lib/modules/iwlmvm.ko power_scheme=1
 
 on zygote-start
     # Create the directories used by the Wireless subsystem
@@ -40,36 +53,29 @@ on zygote-start
 
 service dhcpcd_wlan0 /system/bin/dhcpcd -ABDKL
     class main
+    user wifi
+    group wifi system dhcp inet
     disabled
     oneshot
 
 service iprenew_wlan0 /system/bin/dhcpcd -n
     class main
-    disabled
-    oneshot
-
-service wpa_supplicant /vendor/bin/hw/wpa_supplicant \
-    -O/data/vendor/wifi/wpa/sockets -puse_p2p_group_interface=1 \
-    -g@android:wpa_wlan0
-#   we will start as root and wpa_supplicant will switch to user wifi
-#   after setting up the capabilities required for WEXT
-#   user wifi
-#   group wifi inet keystore
-    interface android.hardware.wifi.supplicant@1.0::ISupplicant default
-    interface android.hardware.wifi.supplicant@1.1::ISupplicant default
-    class main
-    socket wpa_wlan0 dgram 660 wifi wifi
+    user wifi
+    group wifi system dhcp inet
     disabled
     oneshot
 
 service dhcpcd_p2p /system/bin/dhcpcd -aABKL
+    user wifi
+    group wifi system dhcp inet
     disabled
     oneshot
 
 service iprenew_p2p /system/bin/dhcpcd -n
+    user wifi
+    group wifi system dhcp inet
     disabled
     oneshot
-
 ##############################################################
 # Source: device/intel/mixins/groups/kernel/gmin64/init.rc
 ##############################################################
@@ -83,11 +89,24 @@ on boot
 
 
 
+on early-init
+	mount proc proc /proc remount hidepid=2,gid=3009
+
 on boot
 	setrlimit 8 8388608 8388608
 ##############################################################
 # Source: device/intel/mixins/groups/bluetooth/btusb/init.rc
 ##############################################################
+on early-boot
+    insmod /vendor/lib/modules/ecc.ko
+    insmod /vendor/lib/modules/ecdh_generic.ko
+    insmod /vendor/lib/modules/bluetooth.ko
+    insmod /vendor/lib/modules/btintel.ko
+    insmod /vendor/lib/modules/btbcm.ko
+    insmod /vendor/lib/modules/btrtl.ko
+    insmod /vendor/lib/modules/btusb.ko
+    insmod /vendor/lib/modules/btusb_sco_snd_card.ko
+
 on post-fs-data
     # To store BT paired info
     mkdir /data/misc/hcid 0770 bluetooth bluetooth
@@ -99,21 +118,82 @@ on boot
 on post-fs-data
     mkdir /data/misc/dhcp 0770 dhcp system
 
-on property:vendor.boot_completed=1
-	exec u:r:init:s0 -- /system/bin/logwrapper /system/bin/sh /vendor/bin/bluetooth_auto_detection.sh
-
 service dhcpcd_bt-pan /system/bin/dhcpcd -ABKL
+    class main
+    user bluetooth
+    group bluetooth system dhcp inet
     disabled
     oneshot
 
 service iprenew_bt-pan /system/bin/dhcpcd -n
+    class main
+    user bluetooth
+    group bluetooth system dhcp inet
     disabled
     oneshot
 ##############################################################
 # Source: device/intel/mixins/groups/audio/project-celadon/init.rc
 ##############################################################
+on post-fs && property:vendor.intel.enable.audio=legacy-hda
+    insmod /vendor/lib/modules/snd-compress.ko
+    insmod /vendor/lib/modules/snd-ctl-led.ko
+    insmod /vendor/lib/modules/snd-hda-core.ko
+    insmod /vendor/lib/modules/snd-hda-codec.ko
+    insmod /vendor/lib/modules/snd-hda-codec-generic.ko
+    insmod /vendor/lib/modules/snd-intel-dspcfg.ko dsp_driver=1
+    insmod /vendor/lib/modules/snd-hda-intel.ko
+    insmod /vendor/lib/modules/snd-hda-codec-realtek.ko
+    insmod /vendor/lib/modules/snd-hda-codec-hdmi.ko
+    insmod /vendor/lib/modules/snd-intel-sdw-acpi.ko
+    insmod /vendor/lib/modules/snd-soc-acpi.ko
+    insmod /vendor/lib/modules/snd-soc-acpi-intel-match.ko
+    insmod /vendor/lib/modules/snd-soc-core.ko
+
+on post-fs && property:vendor.intel.enable.audio=sof-hda
+    insmod /vendor/lib/modules/snd-compress.ko
+    insmod /vendor/lib/modules/snd-ctl-led.ko
+    insmod /vendor/lib/modules/snd-hda-core.ko
+    insmod /vendor/lib/modules/snd-hda-codec.ko
+    insmod /vendor/lib/modules/snd-hda-codec-generic.ko
+    insmod /vendor/lib/modules/snd-intel-dspcfg.ko dsp_driver=3
+    insmod /vendor/lib/modules/snd-hda-intel.ko
+    insmod /vendor/lib/modules/snd-hda-codec-realtek.ko
+    insmod /vendor/lib/modules/snd-hda-codec-hdmi.ko
+    insmod /vendor/lib/modules/snd-intel-sdw-acpi.ko
+    insmod /vendor/lib/modules/snd-soc-acpi.ko
+    insmod /vendor/lib/modules/snd-soc-acpi-intel-match.ko
+    insmod /vendor/lib/modules/snd-soc-core.ko
+    insmod /vendor/lib/modules/snd-sof-utils.ko
+    insmod /vendor/lib/modules/snd-sof-xtensa-dsp.ko
+    insmod /vendor/lib/modules/snd-sof.ko
+    insmod /vendor/lib/modules/snd-sof-pci.ko
+    insmod /vendor/lib/modules/snd-sof-acpi.ko
+    insmod /vendor/lib/modules/snd-hda-ext-core.ko
+    insmod /vendor/lib/modules/snd-sof-intel-hda.ko
+    insmod /vendor/lib/modules/snd-soc-hdac-hda.ko
+    insmod /vendor/lib/modules/snd-sof-intel-hda-common.ko
+    insmod /vendor/lib/modules/snd-soc-dmic.ko
+    insmod /vendor/lib/modules/snd-soc-hdac-hdmi.ko
+    insmod /vendor/lib/modules/snd-soc-intel-hda-dsp-common.ko
+    insmod /vendor/lib/modules/snd-soc-sst-dsp.ko
+    insmod /vendor/lib/modules/snd-soc-sst-ipc.ko
+    insmod /vendor/lib/modules/snd-sof-acpi-intel-bdw.ko
+    insmod /vendor/lib/modules/snd-sof-pci-intel-apl.ko
+    insmod /vendor/lib/modules/snd-sof-pci-intel-cnl.ko
+    insmod /vendor/lib/modules/snd-sof-pci-intel-icl.ko
+    insmod /vendor/lib/modules/snd-usb-hiface.ko
+    insmod /vendor/lib/modules/snd-soc-skl_hda_dsp.ko
+    insmod /vendor/lib/modules/snd-sof-pci-intel-tgl.ko
+
 on boot
+    insmod /vendor/lib/modules/snd.ko
+    insmod /vendor/lib/modules/snd-timer.ko
+    insmod /vendor/lib/modules/snd-pcm.ko
     insmod /vendor/lib/modules/snd-dummy.ko
+
+on property:sys.boot_completed=1 && property:ro.vendor.hdmi.audio=tgl
+    stop audioserver
+    start audioserver
 ##############################################################
 # Source: device/intel/mixins/groups/device-specific/caas/init.rc
 ##############################################################
@@ -145,7 +225,7 @@ on boot
     write /sys/class/gpio/gpio444/direction out
     write /sys/class/gpio/gpio444/value 1
 
-# adb over ethernet
+# Set adb over network tcp port
     setprop service.adb.tcp.port 5555
 
 # workaround for the sys fs create
@@ -160,6 +240,10 @@ on post-fs
     insmod /vendor/lib/modules/asix.ko
     insmod /vendor/lib/modules/r8152.ko
     insmod /vendor/lib/modules/r8169.ko
+
+on post-fs-data
+    exec - system system -- /vendor/bin/set_soc_prop.sh
+    setprop ro.soc.model ${vendor.cpu.model_name}
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/true/init.rc
 ##############################################################
@@ -167,25 +251,24 @@ on post-fs-data
     mkdir /data/vendor/securestorage 0700 system system
     chmod 666 /dev/rpmb0
 
-on early-boot
+on early-fs
     start storageproxyd
 
-on property:ro.vendor.copy.ss=1
-    copy /data/misc/securestorage/0 /data/vendor/securestorage/0
-    restart storageproxyd
+service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/vendor/securestorage -r /dev/vport0p1 -t virt
+    user system
+    group system
 
-service cp_securestorage /vendor/bin/cp_ss
+on boot
+    start keyboxd
+
+service keyboxd /vendor/bin/keybox_provisioning -d /dev/trusty-ipc-dev0 -p /dev/block/by-name/teedata
     user system
     group system
     oneshot
 
-service storageproxyd /vendor/bin/storageproxyd -d /dev/trusty-ipc-dev0 -p /data/vendor/securestorage -r /dev/rpmb0
-    user system
-    group system
-
 on post-fs
     wait_for_prop vendor.modules.trusty.ready true
-    # Update device node r/w attribute
+    chmod 666 /dev/vport0p1
     chmod 666 /dev/trusty-ipc-dev0
 ##############################################################
 # Source: device/intel/mixins/groups/config-partition/true/init.rc
@@ -256,7 +339,7 @@ on boot
    chown system graphics /sys/kernel/debug/sync/sw_sync
    symlink /sys/kernel/debug/sync/sw_sync /dev/sw_sync
 ##############################################################
-# Source: device/intel/mixins/groups/storage/sdcard-mmc0-usb-sd/init.rc
+# Source: device/intel/mixins/groups/storage/sdcard-v-usb-only/init.rc
 ##############################################################
 on init
     # Support legacy paths
@@ -266,14 +349,18 @@ on init
 # Source: device/intel/mixins/groups/ethernet/dhcp/init.rc
 ##############################################################
 service dhcpcd_eth0 /system/bin/dhcpcd -ABDKL
-     class main
-     disabled
-     oneshot
+    class main
+    user system
+    group system dhcp inet
+    disabled
+    oneshot
 
 service iprenew_eth0 /system/bin/dhcpcd -n
-     class main
-     disabled
-     oneshot
+    class main
+    user system
+    group system dhcp inet
+    disabled
+    oneshot
 
 on post-fs
     insmod /vendor/lib/modules/pps_core.ko
@@ -306,7 +393,7 @@ on boot
 on charger
     write /sys/devices/pci0000\:00/0000\:00\:14.0/power/control auto
 ##############################################################
-# Source: device/intel/mixins/groups/usb-gadget/configfs/init.rc
+# Source: device/intel/mixins/groups/usb-gadget/auto/init.rc
 ##############################################################
 on boot
     mount configfs none /config
@@ -334,9 +421,8 @@ on boot
     symlink /config/usb_gadget/g1/configs/b.1 /config/usb_gadget/g1/os_desc/b.1
     mkdir /dev/usb-ffs 0775 shell shell
     mkdir /dev/usb-ffs/adb 0770 shell shell
-    mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
     setprop sys.usb.configfs 1
-    setprop sys.usb.controller dwc3.0.auto
+    setprop sys.usb.controller ${vendor.usb.controller}
 
 #create mtp+ffs gadget function
     mkdir /dev/usb-ffs/mtp 0770 mtp mtp
@@ -439,6 +525,10 @@ on property:sys.usb.config=accessory,audio_source && property:sys.usb.configfs=1
 on property:sys.usb.config=accessory,audio_source,adb && property:sys.usb.configfs=1
     write /config/usb_gadget/g1/idVendor 0x18d1
     write /config/usb_gadget/g1/idProduct 0x2d05
+
+on property:vendor.mount.ep0=1
+    mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
+
 ##############################################################
 # Source: device/intel/mixins/groups/midi/true/init.rc
 ##############################################################
@@ -465,6 +555,7 @@ service thermal-daemon /system/vendor/bin/thermal-daemon --config-file /system/v
     class main
     user system
     group system
+    disabled
 
 on boot
     chown system system /sys/devices/system/cpu/intel_pstate/max_perf_pct
@@ -479,9 +570,11 @@ on boot
     restorecon_recursive /sys/class/powercap
 
 on post-fs-data
-    setprop persist.thermal.mode thermal-daemon
+    setprop persist.vendor.thermal.mode thermal-daemon
     mkdir /data/vendor/thermal-daemon 0660 system system
 
+on property:sys.boot_completed=1 && property:vendor.thermal.enable=1
+    start thermal-daemon
 ##############################################################
 # Source: device/intel/mixins/groups/net/common/init.rc
 ##############################################################
@@ -539,6 +632,13 @@ service intel_prop /system/vendor/bin/intel_prop
     class core
     oneshot
 ##############################################################
+# Source: device/intel/mixins/groups/avx/auto/init.rc
+##############################################################
+on post-fs-data
+    exec - system system -- /vendor/bin/checkavx.sh
+    setprop dalvik.vm.isa.x86.variant ${vendor.dalvik.vm.isa.x86.variant}
+    setprop dalvik.vm.isa.x86_64.variant ${vendor.dalvik.vm.isa.x86_64.variant}
+##############################################################
 # Source: device/intel/mixins/groups/abota-fw/true/init.rc
 ##############################################################
 
@@ -555,6 +655,20 @@ on early-boot
     copy /sys/devices/system/cpu/online /dev/cpuset/top-app/cpus
     copy /sys/devices/system/cpu/online /dev/cpuset/foreground/boost/cpus
 ##############################################################
+# Source: device/intel/mixins/groups/usb-otg-switch/true/init.rc
+##############################################################
+on boot
+    setprop vendor.sys.usb.role device
+
+on property:sys.boot_completed=1
+    setprop vendor.sys.usb.role device
+
+on property:vendor.sys.usb.role=host
+    exec - system system -- /vendor/bin/usb_otg_switch.sh h
+
+on property:vendor.sys.usb.role=device
+    exec - system system -- /vendor/bin/usb_otg_switch.sh p
+##############################################################
 # Source: device/intel/mixins/groups/hdcpd/true/init.rc
 ##############################################################
 # Note that this service must start as root to set up a mem-mapped region
@@ -569,13 +683,13 @@ on post-fs-data
 # Source: device/intel/mixins/groups/load_modules/true/init.rc
 ##############################################################
 service load_modules /vendor/bin/load_modules.sh
-    user 5200
-    group shell
+    user system
+    group system shell
     capabilities SYS_MODULE MKNOD
     oneshot
     disabled
 
-on early-init
+on init
     start load_modules
 ##############################################################
 # Source: device/intel/mixins/groups/swap/zram_auto/init.rc
@@ -586,6 +700,8 @@ on boot
     write /proc/sys/vm/page-cluster 0
    # Avoid evicting pages and use zram disk
     write /proc/sys/vm/swappiness 100
+   # Enable disk_based_swap on Chromium kernels
+    write /proc/sys/vm/disk_based_swap 1
 
 on post-fs
     exec - system system -- /vendor/bin/check_lowmem.sh
@@ -593,25 +709,6 @@ on post-fs
 on property:vendor.low_ram=1
     # Enable swaps described in the fstab
     swapon_all /vendor/etc/fstab.${ro.hardware}
-##############################################################
-# Source: device/intel/mixins/groups/psdapp/true/init.rc
-##############################################################
-on  post-fs-data
-    chown vendor_psd vendor_psd /sys/firmware/acpi/tables/PSDS
-
-on property:vendor.module.psdapp.enable=1
-    start psdapp
-
-on property:vendor.module.psdapp.enable=0
-    stop psdapp
-
-service psdapp /vendor/bin/logwrapper /vendor/bin/psdapp /sys/firmware/acpi/tables/PSDS
-    user vendor_psd
-    group vendor_psd
-    class main
-    disabled
-    oneshot
-
 ##############################################################
 # Source: device/intel/mixins/groups/debugfs/true/init.rc
 ##############################################################
@@ -638,6 +735,12 @@ on early-boot
 on post-fs-data
     setprop vold.post_fs_data_done 1
 ##############################################################
+# Source: device/intel/mixins/groups/telephony/false/init.rc
+##############################################################
+on boot
+    # Disable rild
+    setprop ro.radio.noril yes
+##############################################################
 # Source: device/intel/mixins/groups/dbc/true/init.rc
 ##############################################################
 # switch adb over dwc
@@ -648,25 +751,61 @@ on property:persist.vendor.sys.usb.adbover=dwc
 
 # switch adb over dbc
 on property:persist.vendor.sys.usb.adbover=dbc && property:sys.boot_completed=1
+    write /sys/bus/pci/devices/0000:00:06.0/dbc enable
     write /sys/bus/pci/devices/0000:00:14.0/dbc enable
     write /sys/bus/pci/devices/0000:00:15.0/dbc enable
+    write /sys/bus/pci/devices/0000:00:16.0/dbc enable
     write /sys/bus/pci/devices/0000:39:00.0/dbc enable
     stop adbd
     start adbd
 ##############################################################
 # Source: device/intel/mixins/groups/aaf/true/init.rc
 ##############################################################
-service vendor.aafd /system/vendor/bin/aafd
-    disabled
-
-on init
-    start vendor.aafd
-
 on fs
-    exec u:r:init:s0 -- /system/bin/logwrapper /system/bin/sh /vendor/bin/auto_detection.sh
+    mkdir /mnt/share
+    mount 9p aaf /mnt/share
+    exec - system system -- /vendor/bin/logwrapper /vendor/bin/sh /vendor/bin/auto_detection.sh
+    setprop ro.hardware.hwcomposer ${vendor.hwcomposer.set}
+    setprop ro.hardware.gralloc ${vendor.gralloc.set}
+    setprop ro.hardware.egl ${vendor.egl.set}
+    setprop ro.hardware.vulkan ${vendor.vulkan.set}
+    setprop ro.power.fixed_performance_scale_factor ${vendor.power.fixed_performance_scale_factor}
+    setprop ro.media.xml_variant.codecs ${ro.vendor.media.target_variant}
+    setprop ro.media.xml_variant.codecs_performance ${ro.vendor.media.target_variant_platform}
 ##############################################################
-# Source: device/intel/mixins/groups/suspend/never/init.rc
+# Source: device/intel/mixins/groups/suspend/auto/init.rc
 ##############################################################
-on boot
+on property:vendor.suspend=false
     write /sys/power/wake_lock nosleeptillbrooklyn
+##############################################################
+# Source: device/intel/mixins/groups/bugreport/true/init.rc
+##############################################################
+# bugreport is triggered by holding down volume down, volume up and power
+service bugreport /system/bin/dumpstate -d -p -B -z \
+        -o /data/user_de/0/com.android.shell/files/bugreports/bugreport
+    class main
+    disabled
+    oneshot
+    keycodes 114 115 116
+##############################################################
+# Source: device/intel/mixins/groups/houdini/true/init.rc
+##############################################################
+# Enable native bridge for target executables
+on early-init
+    mount binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
+
+on property:ro.vendor.enable.native.bridge.exec=1
+    copy /vendor/etc/binfmt_misc/arm_exe /proc/sys/fs/binfmt_misc/register
+    copy /vendor/etc/binfmt_misc/arm_dyn /proc/sys/fs/binfmt_misc/register
+    mount none /vendor/bin/houdini /system/bin/houdini bind rec
+
+on property:ro.vendor.enable.native.bridge.exec64=1
+    copy /vendor/etc/binfmt_misc/arm64_exe /proc/sys/fs/binfmt_misc/register
+    copy /vendor/etc/binfmt_misc/arm64_dyn /proc/sys/fs/binfmt_misc/register
+    mount none /vendor/bin/houdini64 /system/bin/houdini64 bind rec
+##############################################################
+# Source: device/intel/mixins/groups/neuralnetworks/true/init.rc
+##############################################################
+on post-fs-data
+    mkdir /data/vendor/neuralnetworks 0770 system system
 # ------------------ END MIX-IN DEFINITIONS ------------------

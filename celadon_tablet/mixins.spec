@@ -7,9 +7,9 @@ mixinsrel: false
 product.mk: device.mk
 
 [groups]
-kernel: gmin64(useprebuilt=false,src_path=kernel/lts2018, loglevel=7, interactive_governor=false, relative_sleepstates=false, modules_in_bootimg=false, external_modules=,debug_modules=, use_bcmdhd=false, use_iwlwifi=false, extmod_platform=bxt, iwl_defconfig=, cfg_path=config-lts/lts2018/bxt/android/non-embargoed)
+kernel: gmin64(useprebuilt=false,src_path=kernel/lts2021-chromium, loglevel=7, interactive_governor=false, relative_sleepstates=false, modules_in_bootimg=false, external_modules=,debug_modules=, use_bcmdhd=false, use_iwlwifi=false, extmod_platform=bxt, iwl_defconfig=, cfg_path=config-lts/lts2021-chromium, linux_intel_lts2021_src_path=kernel/linux-intel-lts2021, linux_intel_lts2021_cfg_path=config-lts/linux-intel-lts2021)
 disk-bus: auto
-boot-arch: project-celadon(uefi_arch=x86_64,fastboot=efi,ignore_rsci=true,disable_watchdog=true,watchdog_parameters=10 30,verity_warning=false,txe_bind_root_of_trust=false,bootloader_block_size=4096,verity_mode=false,disk_encryption=false,file_encryption=true,target=celadon_tablet,rpmb_simulate=true,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true,bootloader_policy=0x0,grub_installer=true,live_boot=true,usb_storage=true)
+boot-arch: project-celadon(uefi_arch=x86_64,fastboot=efi,ignore_rsci=true,disable_watchdog=true,watchdog_parameters=10 30,verity_warning=false,txe_bind_root_of_trust=false,bootloader_block_size=4096,verity_mode=false,disk_encryption=false,file_encryption=true,target=celadon_tablet,rpmb_simulate=true,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true,bootloader_policy=0x0,grub_installer=false,live_boot=true,usb_storage=true)
 sepolicy: enforcing
 bluetooth: btusb(ivi=true)
 audio: project-celadon
@@ -18,19 +18,19 @@ acpio-partition: true(partition_size=2)
 config-partition: true
 display-density: medium
 dalvik-heap: tablet-10in-xhdpi-2048
-cpu-arch: slm
+cpu-arch: x86
 allow-missing-dependencies: true
 dexpreopt: true
 pstore: ram_dummy(address=0x50000000,size=0x400000,record_size=0x4000,console_size=0x200000,ftrace_size=0x2000,dump_oops=1)
-media: mesa(add_sw_msdk=false, opensource_msdk=true)
-graphics: mesa(gen9+=true,hwc2=true,vulkan=true,drmhwc=false,minigbm=true,gralloc1=true,enable_guc=false)
+media: mesa(enable_msdk_omx=true, add_sw_msdk=false, opensource_msdk=true, opensource_msdk_omx_il=true)
+graphics: mesa(gen9+=true,vulkan=true,minigbm=true,gralloc1=true,enable_guc=true)
 storage: sdcard-mmc0-usb-sd(adoptablesd=true,adoptableusb=true)
 ethernet: dhcp
 camera-ext: ext-camera-only
 rfkill: true(force_disable=)
 wlan: iwlwifi(libwifi-hal=true)
-codecs: configurable(hw_ve_h265=true, hw_vd_vp9=true, hw_vd_mp2=true, hw_vd_vc1=false, platform=bxt,profile_file=media_profiles_1080p.xml)
-codec2: true
+codecs: configurable(sw_omx_video=false, hw_omx_video=true, hw_ve_h265=true, hw_ve_h264=true, hw_vd_vp9=true, hw_vd_mp2=true, hw_vd_vp8=true, hw_vd_h265=true, hw_vd_h264=true, platform=bxt, profile_file=media_profiles_1080p.xml)
+codec2: true(enable_msdk_c2=false, use_onevpl=false)
 usb: host
 usb-gadget: configfs(usb_config=adb,mtp_adb_pid=0x0a5f,ptp_adb_pid=0x0a61,rndis_pid=0x0a62,rndis_adb_pid=0x0a63,bcdDevice=0x0,bcdUSB=0x200,controller=dwc3.0.auto,f_acm=false,f_dvc_trace=true,dvctrace_source_dev=dvcith-0-msc0)
 midi: true
@@ -45,14 +45,13 @@ flashfiles: ini(fast_flashfiles=false, oemvars=false,installer=true,flash_dnx_os
 net: common
 debug-crashlogd: true
 debug-coredump: false
-debug-phonedoctor: true
 lights: true
 power: true(power_throttle=true)
 debug-usb-config: true(source_dev=dvcith-0-msc0)
 intel_prop: true
 trusty: true(ref_target=celadon_64)
 memtrack: true
-avb: true
+tpm: true
 health: true
 slot-ab: true
 abota-fw: true
@@ -69,7 +68,6 @@ neuralnetworks: true
 treble: true
 swap: zram_auto(size=1073741824,swappiness=true,hardware=gordon_peak)
 art-config: true
-psdapp: true
 debugfs: true
 disk-encryption: true
 factory-scripts: true

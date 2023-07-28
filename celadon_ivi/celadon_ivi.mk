@@ -23,6 +23,8 @@ PRODUCT_COPY_FILES += system/core/rootdir/init.zygote64_32.rc:root/init.zygote64
 
 BOARD_USE_64BIT_USERSPACE := true
 
+TARGET_GFX_INTEL := intel
+
 INTEL_PATH_DEVICE := device/intel/project-celadon
 INTEL_PATH_COMMON := device/intel/common
 INTEL_PATH_SEPOLICY := device/intel/sepolicy
@@ -32,6 +34,9 @@ INTEL_PATH_VENDOR := vendor/intel
 INTEL_PATH_PREKERNEL := device/intel/prebuilt_kernel
 INTEL_PATH_PREBUILTS := vendor/intel/prebuilts
 INTEL_PATH_PREBUILTS_OUT = $(PRODUCT_OUT)/prebuilts
+
+# Set Vendor SPL to match platform
+VENDOR_SECURITY_PATCH = $(PLATFORM_SECURITY_PATCH)
 
 # refer board_config_mk definition in build/make/core/envsetup.mk file to get TARGET_DEVICE
 _board_config_mk := $(shell find $(dir $(current_product_makefile)) -maxdepth 2 -name BoardConfig.mk)
@@ -52,7 +57,6 @@ PRODUCT_AAPT_CONFIG := normal large mdpi
 PRODUCT_AAPT_PREF_CONFIG := mdpi
 
 PRODUCT_RESTRICT_VENDOR_FILES := false
-PRODUCT_SHIPPING_API_LEVEL := 29
-ifneq ($(findstring $(DEV_BKC_KERNEL)$(MLT_KERNEL), true),)
-    PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
-endif
+PRODUCT_SET_DEBUGFS_RESTRICTIONS := false
+PRODUCT_SHIPPING_API_LEVEL := 33
+PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := true

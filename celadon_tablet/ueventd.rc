@@ -31,7 +31,7 @@
 # Source: device/intel/mixins/groups/trusty/true/ueventd.rc
 ##############################################################
 /dev/block/p*/*/*/by-name/teedata      0660 system system
-
+/dev/trusty-ipc-dev0                   0666 root root
 ##############################################################
 # Source: device/intel/mixins/groups/graphics/mesa/ueventd.rc
 ##############################################################
@@ -71,5 +71,5 @@
 ##############################################################
 # Source: device/intel/mixins/groups/dbc/true/ueventd.rc
 ##############################################################
-/dev/dbc_raw*            0777   system     system
+/dev/ttyDBC0            0777   system     system
 # ------------------ END MIX-IN DEFINITIONS ------------------

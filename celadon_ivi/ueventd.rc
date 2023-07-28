@@ -28,12 +28,7 @@
 # Used by WideVine
 /dev/meimm                    0660   system     drmrpc
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/true/ueventd.rc
-##############################################################
-/dev/block/p*/*/*/by-name/teedata      0660 system system
-
-##############################################################
-# Source: device/intel/mixins/groups/graphics/mesa/ueventd.rc
+# Source: device/intel/mixins/groups/graphics/auto/ueventd.rc
 ##############################################################
 /dev/sw_sync                  0666   system     mediadrm
 /dev/dri                      0666   root       graphics
@@ -52,6 +47,12 @@
 # rfkill node
 /dev/rfkill 0660 bluetooth system
 ##############################################################
+# Source: device/intel/mixins/groups/lights/true/ueventd.rc
+##############################################################
+# i915 backlight driver
+/sys/devices/pci0000:00/0000:00:02.0/drm/card*/card*/intel_backlight brightness 0644 system system
+
+##############################################################
 # Source: device/intel/mixins/groups/power/true/ueventd.rc
 ##############################################################
 # For I2C devices with 'enable' sysfs node
@@ -65,5 +66,5 @@
 ##############################################################
 # Source: device/intel/mixins/groups/dbc/true/ueventd.rc
 ##############################################################
-/dev/dbc_raw*            0777   system     system
+/dev/ttyDBC0            0777   system     system
 # ------------------ END MIX-IN DEFINITIONS ------------------
