@@ -10,7 +10,7 @@ product.mk: device.mk
 kernel: gmin64(useprebuilt=false,src_path=kernel/lts2021-chromium, loglevel=7, interactive_governor=false, relative_sleepstates=false, modules_in_bootimg=false, external_modules=,debug_modules=, use_bcmdhd=false, use_iwlwifi=false, extmod_platform=bxt, iwl_defconfig=, cfg_path=config-lts/lts2021-chromium, more_modules=true, lts2021_chromium_src_path=kernel/lts2021-chromium, lts2021_chromium_cfg_path=config-lts/lts2021-chromium, linux_intel_lts2021_src_path=kernel/linux-intel-lts2021, linux_intel_lts2021_cfg_path=config-lts/linux-intel-lts2021)
 disk-bus: auto
 boot-arch: project-celadon(uefi_arch=x86_64,fastboot=efi,ignore_rsci=true,disable_watchdog=true,watchdog_parameters=10 30,verity_warning=false,txe_bind_root_of_trust=false,bootloader_block_size=4096,verity_mode=false,disk_encryption=false,file_encryption=true,metadata_encryption=true,fsverity=true,target=caas,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true,usb_storage=true,live_boot=true,userdata_checkpoint=true,data_use_f2fs=true)
-sepolicy: enforcing
+sepolicy: permissive
 bluetooth: btusb(ivi=false)
 audio: project-celadon
 vendor-partition: true(partition_size=600,partition_name=vendor)
@@ -70,7 +70,9 @@ public-libraries: true
 device-specific: caas
 hdcpd: true
 treble: true
-swap: zram_auto(size=1073741824,swappiness=true,hardware=gordon_peak,disk_based_swap=true)
+# swap: zram_auto(size=1073741824,swappiness=true,hardware=gordon_peak,disk_based_swap=true)
+# swap: file_based_swap(size=1048576,path=/data/local/tmp/swap,swappiness=80)
+swap: partition_based_swap(size=512,path=/dev/block/by-name/swap,swappiness=80)
 art-config: true
 debugfs: true
 disk-encryption: true
