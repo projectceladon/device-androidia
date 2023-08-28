@@ -372,6 +372,9 @@ BUILD_BROKEN_USES_BUILD_HOST_EXECUTABLE := true
 BUILD_BROKEN_USES_BUILD_COPY_HEADERS := true
 # PRODUCT_COPY_FILES directives.
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
+
+# fastbootd over USB support
+TARGET_RECOVERY_UI_LIB := librecovery_ui_default
 ##############################################################
 # Source: device/intel/mixins/groups/trusty/false/BoardConfig.mk
 ##############################################################
