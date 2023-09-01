@@ -53,6 +53,7 @@ power: true(power_throttle=true)
 debug-usb-config: true(source_dev=dvcith-0-msc0)
 intel_prop: true
 trusty: false
+optee: true
 memtrack: true
 tpm: true
 avx: auto
