@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 
+#Added test comment
+
 PRODUCT_MAKEFILES := \
     $(LOCAL_DIR)/celadon_ivi/celadon_ivi.mk \
     $(LOCAL_DIR)/celadon_tablet/celadon_tablet.mk \
