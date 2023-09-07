@@ -587,6 +587,7 @@ on boot
     write /proc/sys/net/core/rmem_max 6291456
     write /proc/sys/net/core/wmem_max 4194304
 
+on early-boot
 ##############################################################
 # Source: device/intel/mixins/groups/debug-crashlogd/true/init.rc
 ##############################################################
