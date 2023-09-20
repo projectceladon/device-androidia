@@ -251,7 +251,18 @@ BOARD_KERNEL_CMDLINE += \
 BOARD_SEPOLICY_M4DEFS += module_kernel=true
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/kernel
 ##############################################################
-# Source: device/intel/mixins/groups/sepolicy/enforcing/BoardConfig.mk
+# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk.1
+##############################################################
+# start kernel in permissive mode, this way we don't
+# need 'setenforce 0' from init.rc files
+BOARD_KERNEL_CMDLINE += enforcing=0
+ifeq ($(BOOTCONFIG_ENABLE), true)
+BOARD_BOOTCONFIG += androidboot.selinux=permissive
+else
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+endif
+##############################################################
+# Source: device/intel/mixins/groups/sepolicy/permissive/BoardConfig.mk
 ##############################################################
 # SELinux Policy
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)
