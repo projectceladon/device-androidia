@@ -28,7 +28,8 @@ media: auto(enable_msdk_omx=false, add_sw_msdk=false, opensource_msdk=true, open
 graphics: auto(gen9+=true,vulkan=true,minigbm=true,gralloc1=true,enable_guc=false)
 storage: sdcard-mmc0-v-usb-sd-r(adoptablesd=false,adoptableusb=false)
 ethernet: dhcp
-camera-ext: ext-camera-only
+#camera-ext: ext-camera-only
+camera-ext: false
 rfkill: true(force_disable=)
 wlan: iwlwifi(libwifi-hal=true, iwl_7000_drv=false)
 codecs: configurable(sw_omx_video=false, hw_omx_video=false, platform=tgl, profile_file=media_profiles_1080p.xml, gpu=gen12)
@@ -90,3 +91,4 @@ mainline-mod: true
 houdini: true
 neuralnetworks: true
 docker: true
+evs: false
