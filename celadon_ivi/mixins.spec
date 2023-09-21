@@ -92,3 +92,4 @@ houdini: true
 neuralnetworks: true
 docker: true
 evs: false
+ipu: true
