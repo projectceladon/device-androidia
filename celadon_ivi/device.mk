@@ -897,7 +897,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/extra_files/docker/99-ignore-mouse.rules:/vendor/etc/docker/config/99-ignore-mouse.rules \
     $(LOCAL_PATH)/extra_files/docker/config.toml:/vendor/etc/docker/etc/containerd/config.toml \
     $(LOCAL_PATH)/extra_files/docker/daemon.json:/vendor/etc/docker/etc/docker/daemon.json
-
 ##############################################################
 # Source: device/intel/mixins/groups/debug-unresponsive/default/product.mk
 ##############################################################
