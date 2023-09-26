@@ -219,10 +219,12 @@ else
 BOARD_KERNEL_CMDLINE += androidboot.hardware=$(TARGET_DEVICE)
 endif
 
+BOARD_KERNEL_CMDLINE += \
+        silentmode=normal
 
 
 BOARD_KERNEL_CMDLINE += \
-       intel_pstate=passive
+       intel_pstate=active
 
 BOARD_KERNEL_CMDLINE += \
       snd-hda-intel.model=dell-headset-multi
