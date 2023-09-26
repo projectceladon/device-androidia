@@ -128,7 +128,7 @@ PRODUCT_PACKAGES += \
     wifilogd \
     wpa_supplicant \
     wpa_cli \
-    iw \
+    iw_vendor \
     TetheringConfigOverlay \
     TetheringConfigOverlayGsi \
     ServiceConnectivityResourcesConfigOverlay
