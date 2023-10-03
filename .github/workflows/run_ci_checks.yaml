@@ -9,7 +9,21 @@ on:
     types: "**"
     branches: "**"
 jobs:
-  TriggerWorkfows:
-    uses: projectceladon/celadonworkflows/.github/workflows/trigger_ci.yml@v1.0
-    with:
-      EVENT: ${{ toJSON(github.event) }}
+  test:
+    runs-on: self-hosted
+    steps:
+    - name: Check for Merge Conflicts
+      run: |
+          git fetch origin
+          git checkout -b ${{ github.event.pull_request.head.ref }} origin/${{ github.event.pull_request.base.ref }}
+          git merge --no-commit --no-ff ${{ github.event.pull_request.head.sha }}
+          if git diff --name-only --diff-filter=U; then
+            echo "Merge conflicts detected."
+            # Add steps to handle merge conflicts here
+            exit 1
+          fi
+    - name: Check status
+      if: steps.merge_conflict_check.outcome == 'failure'
+      run: |
+          echo "This has a merge conflict."
+          
