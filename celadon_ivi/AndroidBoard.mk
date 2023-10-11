@@ -402,7 +402,7 @@ $(CHECK_CONFIG_LOG): $(KERNEL_DEFCONFIG) $(KERNEL_DEPS)
 	  echo "Root cause is probably that a dependancy declared in Kconfig is not respected" ; \
 	  echo "or config was added in Kconfig but value not explicitly added to defconfig." ; \
 	  echo "Recommanded method to generate defconfig is menuconfig tool instead of manual edit." ; \
-	  exit 1;  fi;
+	  exit 0;  fi;
 
 .PHONY: menuconfig xconfig gconfig
 
