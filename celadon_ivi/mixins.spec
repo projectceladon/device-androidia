@@ -32,7 +32,7 @@ camera-ext: ext-camera-only
 rfkill: true(force_disable=)
 wlan: iwlwifi(libwifi-hal=true, iwl_7000_drv=false)
 codecs: configurable(sw_omx_video=false, hw_omx_video=false, platform=tgl, profile_file=media_profiles_1080p.xml, gpu=gen12)
-codec2: true(enable_msdk_c2=true, use_onevpl=true, platform=adl, hw_ve_vp9=true, hw_vd_vp8=false)
+codec2: true(enable_msdk_c2=true, use_onevpl=true, platform=adl, hw_ve_vp9=false, hw_vd_vp8=false)
 usb: host
 usb-gadget: auto(usb_config=adb,mtp_adb_pid=0x0a5f,ptp_adb_pid=0x0a61,rndis_pid=0x0a62,rndis_adb_pid=0x0a63,bcdDevice=0x0,bcdUSB=0x200,controller=dwc3.2.auto,f_acm=false,f_dvc_trace=true,dvctrace_source_dev=dvcith-0-msc0)
 midi: true
