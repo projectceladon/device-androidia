@@ -360,7 +360,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/display_settings.xml:$(TARGET_COPY_OUT_VENDOR)/etc/display_settings.xml
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/false/product.mk
+# Source: device/intel/mixins/groups/tee/false/product.mk
 ##############################################################
 PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-service.software \

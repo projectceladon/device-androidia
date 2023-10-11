@@ -366,9 +366,9 @@ BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 # fastbootd over USB support
 TARGET_RECOVERY_UI_LIB := librecovery_ui_default
 ##############################################################
-# Source: device/intel/mixins/groups/trusty/false/BoardConfig.mk
+# Source: device/intel/mixins/groups/tee/false/BoardConfig.mk
 ##############################################################
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/trusty/disabled
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/tee/disabled
 ##############################################################
 # Source: device/intel/mixins/groups/firststage-mount/true/BoardConfig.mk
 ##############################################################
