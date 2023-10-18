@@ -223,6 +223,9 @@ endif
 
 
 
+
+
+
 BOARD_KERNEL_CMDLINE += \
        intel_pstate=passive
 
