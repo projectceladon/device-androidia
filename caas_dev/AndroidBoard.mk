@@ -471,6 +471,7 @@ $(foreach m,$(EXTERNAL_MODULES),$(eval $(call bld_external_module,$(m),$(subst /
 
 
 
+
 # Add a kernel target, so "make kernel" will build the kernel
 .PHONY: kernel
 kernel: $(LOCAL_KERNEL_PATH)/copy_modules $(PRODUCT_OUT)/kernel
