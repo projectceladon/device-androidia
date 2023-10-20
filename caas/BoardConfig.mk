@@ -62,7 +62,7 @@ TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 #
 
 # NOTE: These values must be kept in sync with BOARD_GPT_INI
-BOARD_BOOTIMAGE_PARTITION_SIZE ?= 41943040
+BOARD_BOOTIMAGE_PARTITION_SIZE ?= 42991616
 SYSTEM_PARTITION_SIZE = $(shell echo 2560*1024*1024 | bc)
 BOARD_TOSIMAGE_PARTITION_SIZE := 10485760
 BOARD_BOOTLOADER_PARTITION_SIZE ?= $$((33 * 1024 * 1024))
@@ -737,8 +737,4 @@ TARGET_CPU_ABI_LIST_32_BIT += $(NB_ABI_LIST_32_BIT)
 TARGET_CPU_ABI_LIST_64_BIT += $(NB_ABI_LIST_64_BIT)
 
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/houdini
-##############################################################
-# Source: device/intel/mixins/groups/neuralnetworks/true/BoardConfig.mk
-##############################################################
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/neuralnetworks
 # ------------------ END MIX-IN DEFINITIONS ------------------

@@ -740,11 +740,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.sys.usb.adbover=dwc
 ##############################################################
-# Source: device/intel/mixins/groups/atrace/true/product.mk
-##############################################################
-PRODUCT_PACKAGES += \
-    android.hardware.atrace@1.0-service
-##############################################################
 # Source: device/intel/mixins/groups/firmware/true/product.mk
 ##############################################################
 FIRMWARES_DIR ?= vendor/linux/firmware

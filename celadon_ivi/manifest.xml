@@ -1,39 +1,4 @@
 <manifest version="1.0" type="device" target-level="7">
-    <hal format="aidl">
-        <name>android.hardware.security.keymint</name>
-        <version>2</version>
-        <interface>
-            <name>IKeyMintDevice</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="aidl">
-        <name>android.hardware.security.keymint</name>
-        <version>2</version>
-        <interface>
-            <name>IRemotelyProvisionedComponent</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="aidl">
-        <name>android.hardware.security.secureclock</name>
-        <interface>
-            <name>ISecureClock</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="aidl">
-        <name>android.hardware.security.sharedsecret</name>
-        <interface>
-            <name>ISharedSecret</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="aidl">
-        <name>android.hardware.health</name>
-        <version>1</version>
-        <fqname>IHealth/default</fqname>
-    </hal>
     <hal format="hidl">
         <name>android.hardware.thermal</name>
         <transport>hwbinder</transport>
@@ -130,15 +95,6 @@
         </interface>
     </hal>
     <hal format="hidl">
-        <name>android.hardware.boot</name>
-        <transport>hwbinder</transport>
-        <version>1.2</version>
-        <interface>
-            <name>IBootControl</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
         <name>android.hardware.renderscript</name>
         <transport arch="32+64">passthrough</transport>
         <version>1.0</version>
@@ -157,7 +113,7 @@
         </interface>
     </hal>
     <!--<kernel target-level="5"/>-->
-    <sepolicy>
+    <!--<sepolicy>
         <version>33.0</version>
-    </sepolicy>
+    </sepolicy>-->
 </manifest>
