@@ -765,11 +765,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.sys.usb.adbover=dwc
 ##############################################################
-# Source: device/intel/mixins/groups/atrace/true/product.mk
-##############################################################
-PRODUCT_PACKAGES += \
-    android.hardware.atrace@1.0-service
-##############################################################
 # Source: device/intel/mixins/groups/firmware/true/product.mk
 ##############################################################
 FIRMWARES_DIR ?= vendor/linux/firmware
@@ -830,26 +825,6 @@ ifeq ($(ENABLE_NATIVEBRIDGE_64BIT),true)
   PRODUCT_PROPERTY_OVERRIDES += ro.dalvik.vm.isa.arm64=x86_64 ro.vendor.enable.native.bridge.exec64=1
 endif
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.dalvik.vm.native.bridge=libhoudini.so
-##############################################################
-# Source: device/intel/mixins/groups/neuralnetworks/true/product.mk
-##############################################################
-# neuralnetworks HAL
-PRODUCT_PACKAGES += \
-    android.hardware.neuralnetworks@1.3-generic-service \
-    android.hardware.neuralnetworks@1.3-generic-impl \
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/extra_files/neuralnetworks/plugins.xml:vendor/etc/openvino/plugins.xml \
-
-
-PRODUCT_PACKAGES += \
-    libopenvino \
-    libopenvino_intel_cpu_plugin \
-    libopenvino_ir_frontend
-
-PRODUCT_PROPERTY_OVERRIDES += vendor.nn.hal.grpc_ip_port=vsock:2:50059
-
-PRODUCT_PROPERTY_OVERRIDES += vendor.nn.hal.ngraph=true
 ##############################################################
 # Source: device/intel/mixins/groups/debug-unresponsive/default/product.mk
 ##############################################################

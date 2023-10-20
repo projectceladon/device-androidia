@@ -803,9 +803,4 @@ on property:ro.vendor.enable.native.bridge.exec64=1
     copy /vendor/etc/binfmt_misc/arm64_exe /proc/sys/fs/binfmt_misc/register
     copy /vendor/etc/binfmt_misc/arm64_dyn /proc/sys/fs/binfmt_misc/register
     mount none /vendor/bin/houdini64 /system/bin/houdini64 bind rec
-##############################################################
-# Source: device/intel/mixins/groups/neuralnetworks/true/init.rc
-##############################################################
-on post-fs-data
-    mkdir /data/vendor/neuralnetworks 0770 system system
 # ------------------ END MIX-IN DEFINITIONS ------------------

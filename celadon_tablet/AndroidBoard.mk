@@ -267,7 +267,7 @@ kernel: $(PRODUCT_OUT)/kernel
 
 else
 
-TARGET_KERNEL_CLANG_VERSION := r450784d
+TARGET_KERNEL_CLANG_VERSION := r487747c
 CLANG_PREBUILTS_PATH := $(abspath $(INTEL_PATH_DEVICE)/../../../prebuilts/clang)
 
 ifneq ($(TARGET_KERNEL_CLANG_VERSION),)
@@ -300,6 +300,9 @@ ifeq ($(BASE_LTS2021_CHROMIUM_KERNEL), true)
 else ifeq ($(BASE_LINUX_INTEL_LTS2021_KERNEL), true)
   LOCAL_KERNEL_SRC := kernel/linux-intel-lts2021
   KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/linux-intel-lts2021
+else ifeq ($(BASE_LTS2022_CHROMIUM_KERNEL), true)
+  LOCAL_KERNEL_SRC := 
+  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/
 else
   LOCAL_KERNEL_SRC := kernel/lts2021-chromium
   EXT_MODULES := 
@@ -437,13 +440,6 @@ $(LOCAL_KERNEL_PATH)/copy_modules: $(LOCAL_KERNEL)
 	$(hide) for f in mei.ko mei-me.ko; do \
 		find $(LOCAL_KERNEL_PATH)/lib/modules/ -name $$f -exec cp {} $(TARGET_RECOVERY_ROOT_OUT)/$(KERNEL_MODULES_ROOT)/ \; ;\
 		done
-
-ifeq ($(PRODUCT_SUPPORTS_VERITY), true)
-DM_VERITY_CERT := $(LOCAL_KERNEL_PATH)/verity.x509
-$(DM_VERITY_CERT): $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_VERITY_SIGNING_KEY).x509.pem $(OPENSSL)
-	$(transform-pem-cert-to-der-cert)
-$(LOCAL_KERNEL): $(DM_VERITY_CERT)
-endif
 
 $(LOCAL_KERNEL): $(MINIGZIP) $(KERNEL_CONFIG) $(BOARD_DTB) $(KERNEL_DEPS)
 	$(KERNEL_MAKE_CMD) $(KERNEL_MAKE_OPTIONS)
