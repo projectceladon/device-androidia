@@ -7,6 +7,7 @@
 # Source: device/intel/mixins/groups/boot-arch/project-celadon/init.rc
 ##############################################################
 on fs
+    mkdir 0776 /mnt/share_data system system
     # ro.boot.hardware = TARGET_PRODUCT (set in kernel command line
     # as androidboot.hardware). Mount all the filesystems as specified
     # in the fstab.
@@ -216,6 +217,12 @@ on post-fs-data
     mkdir /data/kpanic/pstore 0770 system system
     # Set indication (checked by vold) that we have finished this action
     setprop vold.post_fs_data_done 1
+
+on post-fs-data
+   mkdir /data/docker 0776 system system
+   umount /mnt/share_data
+   rm /mnt/share_data
+   mount ext4 /dev/block/by-name/share_data /data/docker nosuid nodev noatime
 
 on boot
     write /sys/devices/platform/INT33BB:00/power/control on
