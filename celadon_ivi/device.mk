@@ -118,6 +118,8 @@ KERNELFLINGER_DISABLE_EFI_MEMMAP := true
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/extra_files/boot-arch/set_soc_prop.sh:vendor/bin/set_soc_prop.sh
 
 ACRN_HV := false
+
+TEE := False
 ##############################################################
 # Source: device/intel/mixins/groups/wlan/iwlwifi/product.mk
 ##############################################################
