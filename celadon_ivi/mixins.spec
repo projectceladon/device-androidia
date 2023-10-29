@@ -19,7 +19,7 @@ acpio-partition: true(partition_size=2)
 config-partition: true
 product-partition: true
 odm-partition: true
-display-density: medium
+display-density: high
 cpu-arch: x86
 allow-missing-dependencies: true
 dexpreopt: true
