@@ -43,7 +43,7 @@ debug-tools: true
 fota: true
 default-drm: true
 thermal: thermal-daemon
-serialport: ttyS0
+serialport: ttyS1
 flashfiles: ini(fast_flashfiles=false, oemvars=false,installer=true,flash_dnx_os=false,blank_no_fw=true,version=3.0)
 net: common(stmicro_mac=true)
 debug-crashlogd: true
