@@ -23,7 +23,7 @@ display-density: medium
 cpu-arch: x86
 allow-missing-dependencies: true
 dexpreopt: true
-pstore: false
+pstore: ram
 media: auto(enable_msdk_omx=false, add_sw_msdk=false, opensource_msdk=true, opensource_msdk_omx_il=false)
 graphics: auto(gen9+=true,vulkan=true,minigbm=true,gralloc1=true,enable_guc=false)
 storage: sdcard-mmc0-v-usb-sd-r(adoptablesd=false,adoptableusb=false)
