@@ -14,12 +14,8 @@
 # limitations under the License.
 #
 
-PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/celadon_ivi/celadon_ivi.mk \
-    $(LOCAL_DIR)/apollo_ivi/apollo_ivi.mk \
-    $(LOCAL_DIR)/blizzard_ivi/blizzard_ivi.mk
+PRODUCT_MAKEFILES += \
+    $(LOCAL_DIR)/celadon_ivi.mk \
 
 COMMON_LUNCH_CHOICES += \
     celadon_ivi-userdebug \
-    apollo_ivi-userdebug \
-    blizzard_ivi-userdebug
