@@ -47,8 +47,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
 
-PRODUCT_NAME := caas_dev
-PRODUCT_DEVICE := caas_dev
+PRODUCT_NAME := caas_vbb
+PRODUCT_DEVICE := caas_vbb
 PRODUCT_BRAND := intel
 PRODUCT_MODEL := AOSP on Intel Platform
 PRODUCT_MANUFACTURER := Intel

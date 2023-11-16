@@ -241,7 +241,7 @@ PRODUCT_COPY_FILES += \
         frameworks/native/data/etc/tablet_core_hardware.xml:vendor/etc/permissions/tablet_core_hardware.xml
 
 ##############################################################
-# Source: device/intel/mixins/groups/device-specific/caas_dev/product.mk
+# Source: device/intel/mixins/groups/device-specific/caas_vbb/product.mk
 ##############################################################
 TARGET_BOARD_PLATFORM := celadon
 

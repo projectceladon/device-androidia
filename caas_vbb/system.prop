@@ -1,5 +1,5 @@
 #
-# system.prop for caas_dev
+# system.prop for caas_vbb
 #
 
 persist.sys.enable_rescue=false
