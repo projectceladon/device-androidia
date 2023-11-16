@@ -76,14 +76,14 @@ KF4UEFI := $(PRODUCT_OUT)/efi/kernelflinger.efi
 BOARD_FIRST_STAGE_LOADER := $(KF4UEFI)
 BOARD_EXTRA_EFI_MODULES :=
 
-#$(call flashfile_add_blob,capsule.fv,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_dev/::variant::/$(BIOS_VARIANT)/capsule.fv,,BOARD_SFU_UPDATE)
-#$(call flashfile_add_blob,ifwi.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_dev/::variant::/$(BIOS_VARIANT)/ifwi.bin,,EFI_IFWI_BIN)
-#$(call flashfile_add_blob,ifwi_dnx.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_dev/::variant::/$(BIOS_VARIANT)/ifwi_dnx.bin,,EFI_IFWI_DNX_BIN)
-#$(call flashfile_add_blob,firmware.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_dev/::variant::/$(BIOS_VARIANT)/emmc.bin,,EFI_EMMC_BIN)
-#$(call flashfile_add_blob,afu.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_dev/::variant::/$(BIOS_VARIANT)/afu.bin,,EFI_AFU_BIN)
-#$(call flashfile_add_blob,dnxp_0x1.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_dev/::variant::/$(BIOS_VARIANT)/dnxp_0x1.bin,,DNXP_BIN)
-#$(call flashfile_add_blob,cfgpart.xml,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_dev/::variant::/$(BIOS_VARIANT)/cfgpart.xml,,CFGPART_XML)
-#$(call flashfile_add_blob,cse_spi.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_dev/::variant::/$(BIOS_VARIANT)/cse_spi.bin,,CSE_SPI_BIN)
+#$(call flashfile_add_blob,capsule.fv,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_vbb/::variant::/$(BIOS_VARIANT)/capsule.fv,,BOARD_SFU_UPDATE)
+#$(call flashfile_add_blob,ifwi.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_vbb/::variant::/$(BIOS_VARIANT)/ifwi.bin,,EFI_IFWI_BIN)
+#$(call flashfile_add_blob,ifwi_dnx.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_vbb/::variant::/$(BIOS_VARIANT)/ifwi_dnx.bin,,EFI_IFWI_DNX_BIN)
+#$(call flashfile_add_blob,firmware.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_vbb/::variant::/$(BIOS_VARIANT)/emmc.bin,,EFI_EMMC_BIN)
+#$(call flashfile_add_blob,afu.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_vbb/::variant::/$(BIOS_VARIANT)/afu.bin,,EFI_AFU_BIN)
+#$(call flashfile_add_blob,dnxp_0x1.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_vbb/::variant::/$(BIOS_VARIANT)/dnxp_0x1.bin,,DNXP_BIN)
+#$(call flashfile_add_blob,cfgpart.xml,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_vbb/::variant::/$(BIOS_VARIANT)/cfgpart.xml,,CFGPART_XML)
+#$(call flashfile_add_blob,cse_spi.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/caas_vbb/::variant::/$(BIOS_VARIANT)/cse_spi.bin,,CSE_SPI_BIN)
 
 
 ifneq ($(EFI_IFWI_BIN),)
@@ -503,7 +503,7 @@ pfw_rebuild_settings := true
 include $(TARGET_DEVICE_DIR)/audio/AndroidBoard.mk
 AUTO_IN += $(TARGET_DEVICE_DIR)/extra_files/audio/auto_hal.in
 ##############################################################
-# Source: device/intel/mixins/groups/device-specific/caas_dev/AndroidBoard.mk
+# Source: device/intel/mixins/groups/device-specific/caas_vbb/AndroidBoard.mk
 ##############################################################
 KERNEL_APL_DIFFCONFIG = $(wildcard $(KERNEL_CONFIG_PATH)/apl_nuc_diffconfig)
 KERNEL_DIFFCONFIG += $(KERNEL_APL_DIFFCONFIG)

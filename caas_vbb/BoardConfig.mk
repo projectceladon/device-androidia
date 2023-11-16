@@ -283,7 +283,7 @@ USE_LEGACY_BASELINE_AUDIO_HAL := true
 ##############################################################
 DEVICE_PACKAGE_OVERLAYS += $(INTEL_PATH_COMMON)/device-type/overlay-tablet
 ##############################################################
-# Source: device/intel/mixins/groups/device-specific/caas_dev/BoardConfig.mk
+# Source: device/intel/mixins/groups/device-specific/caas_vbb/BoardConfig.mk
 ##############################################################
 DEVICE_PACKAGE_OVERLAYS += ${TARGET_DEVICE_DIR}/overlay
 
