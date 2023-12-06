@@ -1,5 +1,5 @@
 #
-# system.prop for celadon_ivi
+# system.prop for base_aaos
 #
 
 persist.sys.enable_rescue=false

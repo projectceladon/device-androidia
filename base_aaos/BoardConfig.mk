@@ -307,7 +307,7 @@ BOARD_SEPOLICY_DIRS += \
 TARGET_USES_CAR_FUTURE_FEATURES := true
 BOARD_SEPOLICY_M4DEFS += module_carservice_app=true
 ##############################################################
-# Source: device/intel/mixins/groups/device-specific/celadon_ivi/BoardConfig.mk
+# Source: device/intel/mixins/groups/device-specific/base_aaos/BoardConfig.mk
 ##############################################################
 DEVICE_PACKAGE_OVERLAYS += ${TARGET_DEVICE_DIR}/overlay
 
