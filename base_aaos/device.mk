@@ -291,7 +291,7 @@ PRODUCT_PACKAGES += android.hardware.automotive.vehicle@2.0-service \
 
 VEHICLE_HAL_PROTO_TYPE := google-emulator
 ##############################################################
-# Source: device/intel/mixins/groups/device-specific/celadon_ivi/product.mk
+# Source: device/intel/mixins/groups/device-specific/base_aaos/product.mk
 ##############################################################
 TARGET_BOARD_PLATFORM := celadon
 
