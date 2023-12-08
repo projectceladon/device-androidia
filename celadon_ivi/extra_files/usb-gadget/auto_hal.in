@@ -1,7 +1,0 @@
-vendor_mount_EP0() {
-DIR="/sys/class/udc/"
-if [ "$(ls -A $DIR)" ]; then
-        setprop vendor.mount.ep0 1
-fi
-}
-vendor_mount_EP0
