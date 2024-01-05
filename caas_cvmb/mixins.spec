@@ -40,7 +40,7 @@ midi: true
 touch: cvt0f21
 navigationbar: true
 device-type: tablet
-debug-tools: true
+debug-tools: true(logcat2hvc=true)
 fota: true
 default-drm: true
 thermal: thermal-daemon
