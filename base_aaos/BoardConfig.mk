@@ -498,7 +498,7 @@ LIBDRM_VER ?= intel
 
 BOARD_KERNEL_CMDLINE += i915.modeset=1 drm.atomic=1 i915.nuclear_pageflip=1 drm.vblankoffdelay=1 i915.fastboot=1
 
-BOARD_KERNEL_CMDLINE += i915.enable_guc=1
+BOARD_KERNEL_CMDLINE += i915.enable_guc=7 udmabuf.list_limit=8192
 
 USE_OPENGL_RENDERER := true
 USE_INTEL_UFO_DRIVER := false
@@ -625,7 +625,7 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/memtrack
 ##############################################################
 # Source: device/intel/mixins/groups/tpm/true/BoardConfig.mk
 ##############################################################
-TARGET_USE_TPM := true
+TARGET_USE_TPM := false
 ##############################################################
 # Source: device/intel/mixins/groups/avx/auto/BoardConfig.mk
 ##############################################################
