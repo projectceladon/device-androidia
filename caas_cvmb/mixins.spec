@@ -12,7 +12,7 @@ disk-bus: auto
 boot-arch: project-celadon(uefi_arch=x86_64,fastboot=efi,ignore_rsci=true,disable_watchdog=true,watchdog_parameters=10 30,verity_warning=false,txe_bind_root_of_trust=false,bootloader_block_size=4096,verity_mode=false,disk_encryption=false,file_encryption=true,metadata_encryption=true,fsverity=true,target=caas_cvmb,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true,usb_storage=true,live_boot=true,userdata_checkpoint=true,data_use_f2fs=true)
 sepolicy: permissive
 bluetooth: btusb(ivi=false)
-audio: project-celadon
+audio: ranchu
 vendor-partition: true(partition_size=600,partition_name=vendor)
 vendor-boot: true(partition_size=16,bootconfig_enable=true)
 acpio-partition: true(partition_size=2)
