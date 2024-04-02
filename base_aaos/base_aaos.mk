@@ -47,8 +47,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
 
-PRODUCT_NAME := celadon_ivi
-PRODUCT_DEVICE := celadon_ivi
+PRODUCT_NAME := base_aaos
+PRODUCT_DEVICE := base_aaos
 PRODUCT_BRAND := intel
 PRODUCT_MODEL := AOSP on Intel Platform
 PRODUCT_MANUFACTURER := Intel
@@ -59,4 +59,4 @@ PRODUCT_AAPT_PREF_CONFIG := mdpi
 PRODUCT_RESTRICT_VENDOR_FILES := false
 PRODUCT_SET_DEBUGFS_RESTRICTIONS := false
 PRODUCT_SHIPPING_API_LEVEL := 33
-PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := true
+PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false

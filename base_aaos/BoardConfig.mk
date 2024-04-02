@@ -22,6 +22,7 @@ TARGET_NO_RECOVERY := true
 BOARD_USES_RECOVERY_AS_BOOT := true
 BOARD_SLOT_AB_ENABLE := true
 BOARD_KERNEL_CMDLINE += rootfstype=ext4
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/slot-ab
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_vendor=true \
@@ -175,9 +176,7 @@ BOARD_WLAN_DEVICE := iwlwifi
 
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB ?= lib_driver_cmd_intc
 
-BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/wlan/load_iwlwifi
-
-BOARD_SEPOLICY_M4DEFS += module_iwlwifi=true
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/wlan/load_iwl_modules
 BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/wlan/iwlwifi
 WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 ##############################################################
@@ -192,8 +191,10 @@ ifeq ($(BASE_LTS2021_CHROMIUM_KERNEL), true)
   TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2021-chromium/kernel-headers
 else ifeq ($(BASE_LINUX_INTEL_LTS2021_KERNEL), true)
   TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/linux-intel-lts2021/kernel-headers
+else ifeq ($(BASE_LINUX_INTEL_LTS2022_KERNEL), true)
+  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/linux-intel-lts2022/kernel-headers
 else
-  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/linux-intel-lts2021/kernel-headers
+  TARGET_BOARD_KERNEL_HEADERS := $(INTEL_PATH_COMMON)/kernel/lts2022-chromium/kernel-headers
 endif
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
@@ -289,7 +290,7 @@ BOARD_SEPOLICY_DIRS += \
 TARGET_USES_CAR_FUTURE_FEATURES := true
 BOARD_SEPOLICY_M4DEFS += module_carservice_app=true
 ##############################################################
-# Source: device/intel/mixins/groups/device-specific/celadon_ivi/BoardConfig.mk
+# Source: device/intel/mixins/groups/device-specific/base_aaos/BoardConfig.mk
 ##############################################################
 DEVICE_PACKAGE_OVERLAYS += ${TARGET_DEVICE_DIR}/overlay
 
@@ -450,11 +451,6 @@ TARGET_USE_PRIVATE_LIBDRM := true
 LIBDRM_VER ?= intel
 
 BOARD_KERNEL_CMDLINE += vga=current i915.modeset=1 drm.atomic=1 i915.nuclear_pageflip=1 drm.vblankoffdelay=1 i915.fastboot=1
-BOARD_KERNEL_CMDLINE += i915.enable_guc=1
-
-ifeq ($(BASE_LINUX_INTEL_LTS2021_KERNEL),true)
-BOARD_KERNEL_CMDLINE += i915.enable_guc=1
-endif
 
 USE_OPENGL_RENDERER := true
 USE_INTEL_UFO_DRIVER := false
@@ -488,6 +484,7 @@ BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/graphics/mesa
 
 BOARD_SEPOLICY_M4DEFS += module_hwc_info_service=true
 
+BOARD_SEPOLICY_DIRS += $(INTEL_PATH_SEPOLICY)/graphics/composer3
 ##############################################################
 # Source: device/intel/mixins/groups/ethernet/dhcp/BoardConfig.mk
 ##############################################################

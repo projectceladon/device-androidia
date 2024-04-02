@@ -9,7 +9,7 @@ product.mk: device.mk
 [groups]
 kernel: gmin64(useprebuilt=false,src_path=kernel/lts2022-chromium, loglevel=7, interactive_governor=false, relative_sleepstates=false, modules_in_bootimg=false, external_modules=,debug_modules=, use_bcmdhd=false, use_iwlwifi=false, extmod_platform=bxt, iwl_defconfig=, cfg_path=config-lts/lts2022-chromium, more_modules=true, lts2021_chromium_src_path=kernel/lts2021-chromium, lts2021_chromium_cfg_path=config-lts/lts2021-chromium, linux_intel_lts2021_src_path=kernel/linux-intel-lts2021, linux_intel_lts2021_cfg_path=config-lts/linux-intel-lts2021, linux_intel_lts2022_src_path=kernel/linux-intel-lts2022, linux_intel_lts2022_cfg_path=config-lts/linux-intel-lts2022)
 disk-bus: auto
-boot-arch: project-celadon(uefi_arch=x86_64,fastboot=efi,ignore_rsci=true,disable_watchdog=true,watchdog_parameters=10 30,verity_warning=false,txe_bind_root_of_trust=false,bootloader_block_size=4096,verity_mode=false,disk_encryption=false,file_encryption=true,metadata_encryption=true,fsverity=true,target=celadon_ivi,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true,usb_storage=true,live_boot=true,userdata_checkpoint=false)
+boot-arch: project-celadon(uefi_arch=x86_64,fastboot=efi,ignore_rsci=true,disable_watchdog=true,watchdog_parameters=10 30,verity_warning=false,txe_bind_root_of_trust=false,bootloader_block_size=4096,verity_mode=false,disk_encryption=false,file_encryption=true,metadata_encryption=true,fsverity=true,target=base_aaos,ignore_not_applicable_reset=true,self_usb_device_mode_protocol=true,usb_storage=true,live_boot=true,userdata_checkpoint=false)
 sepolicy: permissive
 bluetooth: btusb(ivi=false)
 audio: project-celadon
@@ -68,7 +68,7 @@ usb-audio-init: false
 usb-otg-switch: true
 vndk: true
 public-libraries: true
-device-specific: celadon_ivi
+device-specific: base_aaos
 hdcpd: true
 treble: true
 swap: zram_auto(size=1073741824,swappiness=true,hardware=gordon_peak,disk_based_swap=true)

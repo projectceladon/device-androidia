@@ -38,13 +38,6 @@ on post-fs-data
     setprop wifi.interface wlan0
     setprop wifi.direct.interface p2p-dev-wlan0
 
-on early-boot
- 
-    insmod /vendor/lib/modules/cfg80211.ko
-    insmod /vendor/lib/modules/iwl7000_mac80211.ko
-    insmod /vendor/lib/modules/iwlwifi.ko
-    insmod /vendor/lib/modules/iwlmvm.ko power_scheme=1
-
 on zygote-start
     # Create the directories used by the Wireless subsystem
     mkdir /data/vendor/wifi 0771 wifi wifi
@@ -76,6 +69,16 @@ service iprenew_p2p /system/bin/dhcpcd -n
     group wifi system dhcp inet
     disabled
     oneshot
+
+service load_iwl_modules /vendor/bin/load_iwl_modules.sh
+    user system
+    group system shell
+    capabilities SYS_MODULE MKNOD
+    oneshot
+    disabled
+
+on early-boot
+    start load_iwl_modules
 ##############################################################
 # Source: device/intel/mixins/groups/kernel/gmin64/init.rc
 ##############################################################
@@ -200,7 +203,7 @@ on property:sys.boot_completed=1 && property:ro.vendor.hdmi.audio=tgl
 on property:sys.boot_completed=1
    setprop vendor.boot_completed 1
 ##############################################################
-# Source: device/intel/mixins/groups/device-specific/celadon_ivi/init.rc
+# Source: device/intel/mixins/groups/device-specific/base_aaos/init.rc
 ##############################################################
 on post-fs-data
     mkdir /data/kpanic 0770 system system

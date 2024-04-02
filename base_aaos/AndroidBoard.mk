@@ -76,14 +76,14 @@ KF4UEFI := $(PRODUCT_OUT)/efi/kernelflinger.efi
 BOARD_FIRST_STAGE_LOADER := $(KF4UEFI)
 BOARD_EXTRA_EFI_MODULES :=
 
-#$(call flashfile_add_blob,capsule.fv,$(INTEL_PATH_HARDWARE)/fw_capsules/celadon_ivi/::variant::/$(BIOS_VARIANT)/capsule.fv,,BOARD_SFU_UPDATE)
-#$(call flashfile_add_blob,ifwi.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/celadon_ivi/::variant::/$(BIOS_VARIANT)/ifwi.bin,,EFI_IFWI_BIN)
-#$(call flashfile_add_blob,ifwi_dnx.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/celadon_ivi/::variant::/$(BIOS_VARIANT)/ifwi_dnx.bin,,EFI_IFWI_DNX_BIN)
-#$(call flashfile_add_blob,firmware.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/celadon_ivi/::variant::/$(BIOS_VARIANT)/emmc.bin,,EFI_EMMC_BIN)
-#$(call flashfile_add_blob,afu.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/celadon_ivi/::variant::/$(BIOS_VARIANT)/afu.bin,,EFI_AFU_BIN)
-#$(call flashfile_add_blob,dnxp_0x1.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/celadon_ivi/::variant::/$(BIOS_VARIANT)/dnxp_0x1.bin,,DNXP_BIN)
-#$(call flashfile_add_blob,cfgpart.xml,$(INTEL_PATH_HARDWARE)/fw_capsules/celadon_ivi/::variant::/$(BIOS_VARIANT)/cfgpart.xml,,CFGPART_XML)
-#$(call flashfile_add_blob,cse_spi.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/celadon_ivi/::variant::/$(BIOS_VARIANT)/cse_spi.bin,,CSE_SPI_BIN)
+#$(call flashfile_add_blob,capsule.fv,$(INTEL_PATH_HARDWARE)/fw_capsules/base_aaos/::variant::/$(BIOS_VARIANT)/capsule.fv,,BOARD_SFU_UPDATE)
+#$(call flashfile_add_blob,ifwi.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/base_aaos/::variant::/$(BIOS_VARIANT)/ifwi.bin,,EFI_IFWI_BIN)
+#$(call flashfile_add_blob,ifwi_dnx.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/base_aaos/::variant::/$(BIOS_VARIANT)/ifwi_dnx.bin,,EFI_IFWI_DNX_BIN)
+#$(call flashfile_add_blob,firmware.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/base_aaos/::variant::/$(BIOS_VARIANT)/emmc.bin,,EFI_EMMC_BIN)
+#$(call flashfile_add_blob,afu.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/base_aaos/::variant::/$(BIOS_VARIANT)/afu.bin,,EFI_AFU_BIN)
+#$(call flashfile_add_blob,dnxp_0x1.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/base_aaos/::variant::/$(BIOS_VARIANT)/dnxp_0x1.bin,,DNXP_BIN)
+#$(call flashfile_add_blob,cfgpart.xml,$(INTEL_PATH_HARDWARE)/fw_capsules/base_aaos/::variant::/$(BIOS_VARIANT)/cfgpart.xml,,CFGPART_XML)
+#$(call flashfile_add_blob,cse_spi.bin,$(INTEL_PATH_HARDWARE)/fw_capsules/base_aaos/::variant::/$(BIOS_VARIANT)/cse_spi.bin,,CSE_SPI_BIN)
 
 
 ifneq ($(EFI_IFWI_BIN),)
@@ -283,14 +283,17 @@ ifeq ($(BASE_LTS2021_CHROMIUM_KERNEL), true)
 else ifeq ($(BASE_LINUX_INTEL_LTS2021_KERNEL), true)
   LOCAL_KERNEL_SRC := kernel/linux-intel-lts2021
   KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/linux-intel-lts2021
+else ifeq ($(BASE_LINUX_INTEL_LTS2022_KERNEL), true)
+  LOCAL_KERNEL_SRC := kernel/linux-intel-lts2022
+  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/linux-intel-lts2022
 else ifeq ($(BASE_LTS2022_CHROMIUM_KERNEL), true)
   LOCAL_KERNEL_SRC := 
   KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/
 else
-  LOCAL_KERNEL_SRC := kernel/linux-intel-lts2021
+  LOCAL_KERNEL_SRC := kernel/lts2022-chromium
   EXT_MODULES := 
   DEBUG_MODULES := 
-  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/linux-intel-lts2021
+  KERNEL_CONFIG_PATH := $(TARGET_DEVICE_DIR)/config-lts/lts2022-chromium
 endif
 
 EXTMOD_SRC := ../modules
@@ -504,7 +507,7 @@ AUTO_IN += $(TARGET_DEVICE_DIR)/extra_files/audio/auto_hal.in
 KERNEL_CAR_DIFFCONFIG = $(wildcard $(KERNEL_CONFIG_PATH)/car_diffconfig)
 KERNEL_DIFFCONFIG += $(KERNEL_CAR_DIFFCONFIG)
 ##############################################################
-# Source: device/intel/mixins/groups/device-specific/celadon_ivi/AndroidBoard.mk
+# Source: device/intel/mixins/groups/device-specific/base_aaos/AndroidBoard.mk
 ##############################################################
 KERNEL_APL_DIFFCONFIG = $(wildcard $(KERNEL_CONFIG_PATH)/apl_nuc_diffconfig)
 KERNEL_DIFFCONFIG += $(KERNEL_APL_DIFFCONFIG)
