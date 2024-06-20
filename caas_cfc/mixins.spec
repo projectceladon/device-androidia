@@ -20,7 +20,7 @@ config-partition: true
 product-partition: true
 odm-partition: true
 display-density: medium
-dalvik-heap: tablet-10in-xhdpi-2048
+dalvik-heap: tablet-7in-400dpi-4096
 cpu-arch: x86
 allow-missing-dependencies: true
 dexpreopt: true
