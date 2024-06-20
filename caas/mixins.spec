@@ -39,7 +39,7 @@ usb-gadget: auto(usb_config=adb,mtp_adb_pid=0x0a5f,ptp_adb_pid=0x0a61,rndis_pid=
 midi: true
 touch: cvt0f21
 navigationbar: true
-device-type: tablet
+device-type: car
 debug-tools: true
 fota: true
 default-drm: true
