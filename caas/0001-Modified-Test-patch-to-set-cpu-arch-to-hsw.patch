@@ -1,0 +1,26 @@
+From f70224e268df2a73e509a2402518541a95b3e4cb Mon Sep 17 00:00:00 2001
+From: amritaintel <amrita.h.s@intel.com>
+Date: Fri, 4 Mar 2022 19:56:51 +0530
+Subject: [PATCH] Test patch to set cpu arch to haswell
+
+Signed-off-by: amritaintel <amrita.h.s@intel.com>
+---
+ caas/mixins.spec | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/caas/mixins.spec b/caas/mixins.spec
+index 7accafa..ec1845a 100755
+--- a/caas/mixins.spec
++++ b/caas/mixins.spec
+@@ -21,7 +21,7 @@ product-partition: true
+ odm-partition: true
+ display-density: medium
+ dalvik-heap: tablet-10in-xhdpi-2048
+-cpu-arch: x86
++cpu-arch: hsw
+ allow-missing-dependencies: true
+ dexpreopt: true
+ pstore: false
+-- 
+2.17.1
+
