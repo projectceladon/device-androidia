@@ -364,8 +364,6 @@ PRODUCT_PACKAGES += libigfxcmrt
 PRODUCT_PACKAGES += libhdcpsdk
 PRODUCT_PACKAGES += lihdcpcommon
 
-PRODUCT_PACKAGES += \
-    libpciaccess
 ##############################################################
 # Source: device/intel/mixins/groups/graphics/auto/product.mk
 ##############################################################
