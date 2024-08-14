@@ -49,7 +49,7 @@ net: common
 debug-crashlogd: true
 debug-coredump: false
 lights: true
-power: true(power_throttle=true)
+power: true(power_throttle=true, idle_display=true)
 debug-usb-config: true(source_dev=dvcith-0-msc0)
 intel_prop: true
 tee: false
