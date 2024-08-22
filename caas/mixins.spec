@@ -84,6 +84,7 @@ atrace: false
 firmware: true(all_firmwares=false)
 aaf: true
 suspend: auto
+widevine: L3_Gen
 sensors: mediation(enable_sensor_list=true)
 bugreport: true
 mainline-mod: true
