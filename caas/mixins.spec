@@ -54,7 +54,7 @@ debug-usb-config: true(source_dev=dvcith-0-msc0)
 intel_prop: true
 tee: trusty(ref_target=celadon_64)
 memtrack: true
-tpm: true
+tpm: false
 avx: auto
 health: hal
 slot-ab: true
