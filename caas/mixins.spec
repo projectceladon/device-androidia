@@ -56,7 +56,7 @@ intel_prop: true
 trusty: true(ref_target=celadon_64)
 memtrack: true
 tpm: true
-avx: auto
+avx: false
 health: hal
 slot-ab: true
 abota-fw: true
