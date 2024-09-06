@@ -83,7 +83,7 @@ dbc: true
 atrace: false
 firmware: true(all_firmwares=false)
 aaf: true
-suspend: auto
+suspend: never
 sensors: mediation(enable_sensor_list=true)
 bugreport: true
 mainline-mod: true
