@@ -90,3 +90,4 @@ mainline-mod: true
 houdini: true
 #neuralnetworks: true(vsock-remote-infer=true)
 neuralnetworks: false
+power-stats: true
