@@ -1,2 +1,0 @@
-# Specify additional native libraries
-# So that Apps can use Intel proprietary libraries
