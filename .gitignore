@@ -1,4 +1,4 @@
-# ignore base_aaos
-base_aaos/
-aaos_iasw/
-
+*
+!.gitignore
+!LICENSE
+!caas
