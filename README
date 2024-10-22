@@ -1,0 +1,5 @@
+### Important Notice ###
+
+# Any new file or folder added in device/intel/project-celadon
+# needs to be added to the device/intel/common/project-celadon/.gitignore
+# file as others are added to be visible for git repo.
