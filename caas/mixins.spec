@@ -89,4 +89,5 @@ sensors: mediation(enable_sensor_list=true)
 bugreport: true
 mainline-mod: true
 houdini: true
+googleservice: gms
 neuralnetworks: true(vsock-remote-infer=true)
