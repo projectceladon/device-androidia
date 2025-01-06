@@ -60,7 +60,7 @@ health: hal
 slot-ab: true
 abota-fw: true
 firststage-mount: true(trusty=true)
-cpuset: autocores
+cpuset: 4cores
 usb-init: true
 usb-audio-init: false
 usb-otg-switch: true
