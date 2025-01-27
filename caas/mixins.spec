@@ -56,7 +56,7 @@ tee: trusty(ref_target=celadon_64)
 memtrack: true
 tpm: true
 avx: auto
-health: hal
+health: hal(ivi=false)
 slot-ab: true
 abota-fw: true
 firststage-mount: true(trusty=true)
