@@ -78,7 +78,7 @@ filesystem_config: common
 telephony: false
 load_modules: true
 gptbuild: true(size=32G,generate_craff=false,compress_gptimage=true)
-dynamic-partitions: true(super_img_in_flashzip=true,super_partition_size=5000,virtual_ab=true,virtual_ab_compression=true)
+dynamic-partitions: true(super_img_in_flashzip=true)
 dbc: true
 atrace: false
 firmware: true(all_firmwares=false)
